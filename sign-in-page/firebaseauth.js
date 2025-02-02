@@ -1,11 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 import { getFirestore,setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
   authDomain: "studybase-data.firebaseapp.com",
@@ -15,12 +11,11 @@ const firebaseConfig = {
   appId: "1:471482464641:web:46fe6cf41e17a24e785080"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 function showMessage(message, divId) {
     var messageDiv = document.getElementById(divId);
     messageDiv.innerHTML = message;
-    messageDiv.style.display = 'block';  // Ensure the div is visible
+    messageDiv.style.display = 'block';  
  }
 const signUp=document.getElementById('submit-register');
 signUp.addEventListener('click', (event)=>{
@@ -53,7 +48,7 @@ signUp.addEventListener('click', (event)=>{
     })
 
     .catch((error) => {
-        const errorCode = error.code;  // Correct the error property
+        const errorCode = error.code;  
         if (errorCode == 'auth/email-already-in-use') {
             showMessage('Email already registered to a studybase account', 'signUpMessage');
         } else {
