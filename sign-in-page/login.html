@@ -1,21 +1,11 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-      
-      const firebaseConfig = {
-        apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
-        authDomain: "studybase-data.firebaseapp.com",
-        projectId: "studybase-data",
-        storageBucket: "studybase-data.firebasestorage.app",
-        messagingSenderId: "471482464641",
-        appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-      };
-    
-      const app = initializeApp(firebaseConfig);
-    </script>
-    <script type="module" src="firebaseauth.js" defer></script>
+
+
+
+    <script type="module" src="login.js"></script>
+
 
     <script src="../assets/js/color-modes.js"></script>
     <meta charset="utf-8">
@@ -169,6 +159,9 @@
     <h1 class="title">studybase</h1>
     <h1 class="h4 mb-3 fw-normal">Sign in</h1>
 
+    <div id="signInMessage" class="messageDiv mb-3" style="display: none; color: red;"></div>
+
+
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
       <label for="floatingInput">Email address</label>
@@ -184,7 +177,7 @@
         Remember me
       </label>
     </div>
-    <button class="btn btn-primary w-100 py-2 mb-3" type="submit">Sign in</button>
+    <button id="submit" class="btn btn-primary w-100 py-2 mb-3" type="submit">Sign in</button>
      <!-- error message/status from firebaseauth.js -->
      <div id="signInMessage" class="messageDiv" style="display: none;"></div>
      <!-- error message/status from firebaseauth.js -->
