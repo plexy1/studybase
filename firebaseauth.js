@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       alert("Account created successfully!");
-      window.location.href = "login.html"; // Redirect to login page
+      window.location.href = "index.html"; // Redirect to login page
 
     } catch (error) {
       console.error("Error signing up:", error);
