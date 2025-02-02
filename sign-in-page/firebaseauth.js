@@ -17,13 +17,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-function showMessage(message, divId){
-    var messageDiv=document.getElementById(divId);
-    messageDiv.innerHTML=message;
-
-
-
-}
+function showMessage(message, divId) {
+    var messageDiv = document.getElementById(divId);
+    messageDiv.innerHTML = message;
+    messageDiv.style.display = 'block';  // Ensure the div is visible
+ }
 const signUp=document.getElementById('submit-register');
 signUp.addEventListener('click', (event)=>{
     event.preventDefault();
@@ -43,7 +41,7 @@ signUp.addEventListener('click', (event)=>{
             university: university,
 
         };
-        showMessage('Account created successfully','signIpMessage' );
+        showMessage('Account created successfully','signUpMessage' );
         const docRef=doc(db, "users", user.uid);
         setDoc(docRef, userData)
         .then(()=>{ 
@@ -54,17 +52,15 @@ signUp.addEventListener('click', (event)=>{
         })
     })
 
-
-    .catch((error)=>{
-        const errorCode=error.errorCode;
-        if(errorCode=='auth/email-already-in-use'){
+    .catch((error) => {
+        const errorCode = error.code;  // Correct the error property
+        if (errorCode == 'auth/email-already-in-use') {
             showMessage('Email already registered to a studybase account', 'signUpMessage');
-
-        }
-        else{
+        } else {
             showMessage('Unable to create user', 'signUpMessage');
         }
-    })
+    });
+    
     
 
 

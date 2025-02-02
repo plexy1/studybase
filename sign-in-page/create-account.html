@@ -139,6 +139,7 @@
         user-select: none;
       }
 
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -207,11 +208,7 @@
     <h1 class="title">studybase</h1>
     <h1 class="h4 mb-3 fw-normal">Register a New Account</h1>
     
-    
-    <!-- error message/status from firebaseauth.js -->
-    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
-    <!-- error message/status from firebaseauth.js -->
-
+   
 
 
 
@@ -219,6 +216,9 @@
       <input type="text" class="form-control" id="floatingUsername" placeholder="Username" required>
       <label for="floatingUsername">Username</label>
     </div>
+      <!-- error message/status from firebaseauth.js -->
+      <div id="signUpMessage" class="alert alert-warning alert-dismissible fade show"  role="alert" style="display: none;"></div>
+      <!-- error message/status from firebaseauth.js -->
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" required>
       <label for="floatingEmail">Email address</label>
