@@ -16,12 +16,112 @@
         a.text-light:hover {
             text-decoration: underline;
         }
+        
+        /* Style for profile logo */
+        .profile-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Style for the search box */
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #searchResult {
+            margin-top: 20px;
+        }
+
+        /* Container to hold search results */
+.result-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.left-half, .right-half {
+    width: 48%;
+}
+
+/* Styling for video details */
+.video-details {
+    margin-top: 20px;
+}
+
+.video-details img {
+    width: 100%;
+    max-width: 400px;
+}
+
+.video-details p {
+    margin: 10px 0;
+}
+
+.video-details h3 {
+    text-align: left;
+}
+
+.video-details .video-info {
+    text-align: left;
+}
+
+.video-details .video-info p {
+    margin: 5px 0;
+}
+
+
     </style>
 </head>
 
 <body>
-    <div class="container text-center mt-5">
-        <h1>studybase</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">studybase</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Saved</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Profile Logo on the right -->
+            <img src="/assets/images/user.jpg" alt="Profile" class="profile-logo ms-auto">
+        </div>
+    </nav>
+
+    <div class="container text-center mt-5">        
+        <!-- Search box -->
+        <div class="search-box mt-4">
+            <input id="searchInput" type="text" class="form-control" placeholder="Search any topic or concept">
+            <button id="searchBtn" class="btn btn-primary mt-2 w-100">Search</button>
+        </div>
+        
+        <!-- Search result container -->
+        <div id="searchResult" class="result-container">
+            <!-- Left half (search box) -->
+            <div class="left-half">
+                <!-- You can add more elements if you want in this area -->
+            </div>
+            <!-- Right half (video result) -->
+            <div class="right-half">
+                <div id="videoDetails" class="video-details"></div>
+            </div>
+        </div>
     </div>
     
     <footer class="bg-dark text-light py-3 mt-5">
@@ -34,8 +134,10 @@
             </div>
         </div>
     </footer>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- External JS file -->
+    <script src="youtube-search.js"></script>
 </body>
 
 </html>
