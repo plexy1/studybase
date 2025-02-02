@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-import { getFirestore,setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
@@ -11,52 +10,49 @@ const firebaseConfig = {
   appId: "1:471482464641:web:46fe6cf41e17a24e785080"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-function showMessage(message, divId) {
-    var messageDiv = document.getElementById(divId);
-    messageDiv.innerHTML = message;
-    messageDiv.style.display = 'block';  
- }
-const signUp=document.getElementById('submit-register');
-signUp.addEventListener('click', (event)=>{
-    event.preventDefault();
-    const username=document.getElementById('floatingUsername').value;
-    const email=document.getElementById('floatingEmail').value;
-    const university=document.getElementById('floatingUniversity').value;
-    const password=document.getElementById('floatingPassword').value;
+const auth = getAuth(app);
 
+document.addEventListener("DOMContentLoaded", function () {
+  const signInForm = document.querySelector("form");
+  const emailInput = document.getElementById("floatingInput");
+  const passwordInput = document.getElementById("floatingPassword");
+  const signInMessage = document.getElementById("signInMessage");
 
-    const auth = getAuth();
-    const db = getFirestore();
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential)=>{
-        const user=userCredential.user;
-        const userData={
-            email: email,
-            university: university,
+  signInForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // Prevent form from refreshing the page
 
-        };
-        showMessage('Account created successfully','signUpMessage' );
-        const docRef=doc(db, "users", user.uid);
-        setDoc(docRef, userData)
-        .then(()=>{ 
-            window.location.href="index.html";
-        })
-        .catch((error)=>{
-            console.error("error writing document", error);
-        })
-    })
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-    .catch((error) => {
-        const errorCode = error.code;  
-        if (errorCode == 'auth/email-already-in-use') {
-            showMessage('Email already registered to a studybase account', 'signUpMessage');
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Login successful
+        signInMessage.style.display = "block";
+        signInMessage.style.color = "green";
+        signInMessage.innerText = "Login successful! Redirecting...";
+
+        setTimeout(() => {
+          window.location.href = "dashboard.html"; // Redirect to dashboard
+        }, 1500);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        console.error(errorCode, error.message);
+
+        signInMessage.style.display = "block";
+        signInMessage.style.color = "red";
+
+        if (errorCode === "auth/user-not-found") {
+          signInMessage.innerText = "Account does not exist. Please create one.";
+        } else if (errorCode === "auth/wrong-password") {
+          signInMessage.innerText = "Incorrect password. Try again.";
+        } else if (errorCode === "auth/invalid-email") {
+          signInMessage.innerText = "Invalid email format.";
         } else {
-            showMessage('Unable to create user', 'signUpMessage');
+          signInMessage.innerText = "Login failed. Please try again.";
         }
-    });
-    
-    
-
-
-})
+      });
+  });
+});
