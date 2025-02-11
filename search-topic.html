@@ -151,16 +151,42 @@
       />
     </div>
   </nav>
+
   <script>
-    // This listener ensures the search button does not submit a form by default.
-    document.getElementById('searchBtn').addEventListener('click', function(event) {
-      event.preventDefault(); // Prevent any default form submission behavior.
+    document.getElementById('searchBtn').addEventListener('click', function() {
       const query = document.getElementById('searchInput').value.trim();
       if (query) {
         searchYouTube(query);
         searchGoogle(query);
+  
+
+        let history = JSON.parse(sessionStorage.getItem('searchHistory') || '[]');
+        if (!history.includes(query)) {
+          history.push(query);
+          sessionStorage.setItem('searchHistory', JSON.stringify(history));
+        }
+  
+        updateHistoryDisplay();
       }
     });
+  
+    function updateHistoryDisplay() {
+      let history = JSON.parse(sessionStorage.getItem('searchHistory') || '[]');
+      const historyContainer = document.getElementById('historyContainer');
+      
+      if (historyContainer) {
+        historyContainer.innerHTML = ''; // Clear before updating
+        history.forEach(topic => {
+          const li = document.createElement('li');
+          li.textContent = topic;
+          historyContainer.appendChild(li);
+        });
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', updateHistoryDisplay);
+  </script>
+  
 
   </script>
    <div class="mt-4">
@@ -175,8 +201,6 @@
       window.location.href = 'index.html'; 
     });
   </script>
-  
-  
 
   <div class="container text-center mt-5">
     <!-- Single search box -->

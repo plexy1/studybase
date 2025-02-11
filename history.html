@@ -77,8 +77,19 @@
   </div>
 
   <script>
-
-
+    document.addEventListener('DOMContentLoaded', function() {
+      let history = JSON.parse(sessionStorage.getItem('searchHistory') || '[]');
+      const topicList = document.getElementById('topicList');
+      
+      topicList.innerHTML = ''; // Ensure list updates properly
+      history.forEach(topic => {
+        const li = document.createElement('li');
+        li.textContent = topic;
+        topicList.appendChild(li);
+      });
+    });
   </script>
+  
+  
 </body>
 </html>
