@@ -3,7 +3,7 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+  apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
   authDomain: "studybase-data.firebaseapp.com",
   projectId: "studybase-data",
   storageBucket: "studybase-data.firebasestorage.app",
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await signInWithEmailAndPassword(auth, email, password);
 
       // Redirect to home page or dashboard upon successful login
-      window.location.href = "search-topic.html"; // Modify this to your desired page
+      window.location.href = "account.html"; // Modify this to your desired page
 
     } catch (error) {
       const errorCode = error.code;
