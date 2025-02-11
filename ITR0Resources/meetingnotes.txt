@@ -1,0 +1,29 @@
+Product
+- AI Powered Study Tool
+- Search and Topic or Course
+- Roadmap
+- History of Topics Available
+- System to generate practice quizes and study reviews
+- Sources!!!
+
+Your Problems
+1) Having trouble studying due to bordem or procastination
+2) Some courses are outside of my area of expertise, and I need to know background information before getting advanced
+3) Long lectures make me miss some important course info due to spacing out
+
+My Solutions
+1) Roadmaps give good way to start studying and generations MUST provide videos to avoid long walls of text
+2) The ability to revisit topics, customize complexity level, and the ability to search related topics or common mistakes
+3) The ability to search course and that divides into several topics that are searchable.
+
+Andrew's Requests
+1) Could you add customizability to the app so it doesn't feel boring
+2) In the search course, could you add a way to display a Professor's rate your prof rating, a description and when they are teaching
+3) I want to be able to share some quizes or roadmap generations with people via a friend's list or QR code system
+
+Compromises
+1) Due to class time, my team and I could add light/dark mode preferences to the app.
+2) We could add the rate your prof rating and a brief description, but when they are teaching might be non public information so not that. If we do
+not have time for this, this will be the first feature cut however.
+3) A friend's list might be unintiutive for this type of product, but a copy link share feature could be completely done, and we would be able
+to allow you to see your past shares for quizes, courses or topics.

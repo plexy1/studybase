@@ -4,7 +4,7 @@ import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
+  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
   authDomain: "studybase-data.firebaseapp.com",
   projectId: "studybase-data",
   storageBucket: "studybase-data.firebasestorage.app",

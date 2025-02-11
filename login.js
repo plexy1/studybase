@@ -3,7 +3,7 @@ import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/fir
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
+  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
   authDomain: "studybase-data.firebaseapp.com",
   projectId: "studybase-data",
   storageBucket: "studybase-data.firebasestorage.app",

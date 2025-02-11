@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    a.text-light {
+      text-decoration: none;
+    }
+    a.text-light:hover {
+      text-decoration: underline;
+    }
+    /* Style for profile logo */
+    .profile-logo {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    /* Style for the search box */
+    .search-box {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #searchResult {
+      margin-top: 20px;
+    }
+    /* Container to hold search results */
+    .result-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    .left-half,
+    .right-half {
+      width: 48%;
+    }
+    /* Styling for video details (YouTube) */
+    .video-details {
+      margin-top: 20px;
+    }
+    .video-details img {
+      width: 100%;
+      max-width: 400px;
+    }
+    .video-details p {
+      margin: 10px 0;
+    }
+    .video-details h3 {
+      text-align: left;
+    }
+    .video-details h3 a {
+      font-size: 1.5rem; /* Adjust video link size here if needed */
+    }
+    .video-details .video-info {
+      text-align: left;
+    }
+    .video-details .video-info p {
+      margin: 5px 0;
+      font-size: 0.85rem;
+    }
+    .video-details .description {
+      margin-top: 10px;
+      text-align: left;
+    }
+    .video-details .description p {
+      font-size: 0.8rem;
+      line-height: 1.2;
+      margin: 5px 0;
+    }
+    /* Additional styling for Google results */
+    #googleResults {
+      text-align: left;
+    }
+    #googleResults .g-item {
+      margin-bottom: 1rem;
+    }
+    #googleResults .g-item h4 {
+      font-size: 1rem;
+      margin: 0;
+    }
+    #googleResults .g-item a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    #googleResults .g-item a:hover {
+      text-decoration: underline;
+    }
+    #googleResults .snippet {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    /* Styling for YouTube slider */
+    #videoSlider {
+      gap: 1rem;
+      white-space: nowrap;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      width: 90%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">studybase</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Profile Logo on the right -->
+      <img
+        src="/assets/images/user.jpg"
+        alt="Profile"
+        class="profile-logo ms-auto"
+      />
+    </div>
+  </nav>
+  <script>
+    // This listener ensures the search button does not submit a form by default.
+    document.getElementById('searchBtn').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent any default form submission behavior.
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        searchYouTube(query);
+        searchGoogle(query);
+      }
+    });
+  </script>
+   <div class="mt-4">
+    <button id="backToLogin" type="button" class="btn btn-secondary">
+      Back to Login
+    </button>
+  </div>
+</div>
+<script>
+    document.getElementById('backToLogin').addEventListener('click', function(event) {
+      event.preventDefault(); 
+      window.location.href = 'index.html'; 
+    });
+  </script>
+  
+  
+
+  <div class="container text-center mt-5">
+    <!-- Single search box -->
+    <div class="search-box mt-4">
+      <input
+        id="searchInput"
+        type="text"
+        class="form-control"
+        placeholder="Search any topic or concept"
+      >
+      <!-- Set the button type to "button" so it doesn't submit a form -->
+      <button id="searchBtn" type="button" class="btn btn-primary mt-2 w-100">
+        Search
+      </button>
+    </div>
+    <div id="searchResult" class="result-container">
+      <!-- Left half: Google results -->
+      <div class="left-half">
+        <div id="googleResults"></div>
+        <div class="mt-2 text-center">
+          <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
+          <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
+        </div>
+      </div>
+      <!-- Right half: YouTube results -->
+      <div class="right-half">
+        <div class="d-flex flex-column align-items-center">
+          <!-- Video Results Container (Slider) -->
+          <div id="videoSlider" class="d-flex overflow-hidden">
+            <!-- One YouTube video result will be displayed here -->
+          </div>
+          <!-- Navigation Buttons (for one video at a time) -->
+          <div class="mt-2">
+            <button id="prevVideos" class="btn btn-outline-secondary me-2" style="display: none;">◀ Previous</button>
+            <button id="nextVideos" class="btn btn-outline-secondary" style="display: none;">Next ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-light py-3 mt-5">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Search logic -->
+  <script src="google-search.js"></script>
+  <!-- Combined search button logic -->
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', (event) => {
+      // Prevent default action if needed
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        searchYouTube(query);
+        searchGoogle(query);
+      }
+    });
+    </script>
+  <script src ="youtube-search.js"></script>
+
+</body>
+</html>
