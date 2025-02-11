@@ -4,16 +4,10 @@ const API_KEY = 'AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw'; // temporary API key 
 
   let currentQuery = "";
   let nextPageToken = "";
-  let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || ["boom"];
   let prevPageToken = "";
 
   function searchYouTube(query, pageToken = "") {
     currentQuery = query; // update global query for pagination
-
-    if (!searchHistory.includes(query)) { //added this to help with getting history -Peter
-      searchHistory.push(query);
-      localStorage.setItem("searchHistory", JSON.stringify(searchHistory)); 
-  }
 
     let url = `${SEARCH_URL}?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&maxResults=1&type=video`;
     if (pageToken) {
@@ -37,11 +31,7 @@ const API_KEY = 'AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw'; // temporary API key 
       .catch(error => {
         console.error('Error fetching YouTube data:', error);
       });
-  }
-
-  function getQuery() { // method to return history topics -Peter
-    return JSON.parse(localStorage.getItem("searchHistory")) || searchHistory;
-  }
+    }
 
   function getVideoDetails(videoId) {
     const url = `${VIDEO_DETAILS_URL}?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;

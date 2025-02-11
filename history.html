@@ -77,22 +77,8 @@
   </div>
 
   <script>
-    function updateTopics() {
-        const topics = getQuery();
-        displayTopics(topics);
-    }
 
-    function displayTopics(topics) {
-        const list = document.getElementById("topicList");
-        list.innerHTML = "";
-        topics.forEach(topic => {
-            const listItem = document.createElement("li");
-            listItem.textContent = topic;
-            list.appendChild(listItem);
-        });
-    }
 
-    window.addEventListener("focus", updateTopics);
   </script>
 </body>
 </html>
