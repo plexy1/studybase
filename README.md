@@ -22,7 +22,7 @@ StudyBase is a powerful and dynamic study assistant designed to help university 
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/studybase.git](https://github.com/plexy1/studybase.git
+git clone https://github.com/plexy1/studybase.git
 cd studybase
 ```
 ## Access the Service (current status is pre-alpha)
