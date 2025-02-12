@@ -1,5 +1,5 @@
 
-# StudyBase
+# studybase
 
 StudyBase is a powerful and dynamic study assistant designed to help university students streamline their academic journey. Currently tailored for York University students, this tool provides several unique features such as a personalized roadmap, professor search, quiz generation, and course content reviews. The platform is scalable and is not limited to York University; future expansions may include broader functionalities for students from various institutions.
 
