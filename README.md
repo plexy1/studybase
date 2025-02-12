@@ -15,7 +15,7 @@ StudyBase is a powerful and dynamic study assistant designed to help university 
 - **YouTube API**: Integrated for accessing supplementary educational content and lectures.
 - **Custom GPT API**: Tailored to provide personalized academic recommendations and support for students, such as generating study plans, quizzes, and more.
 - **Google API**: Used for various features, including authentication and search functionality.
-- **Firebase & Cloud Firestore**: Utilized for storing user data, professor reviews, and other dynamic content.
+- **Firebase & Cloud Firestore**: Utilized for storing user data, professor reviews(alongside RateMyProf), and other dynamic content.
 
 ## Installation
 
