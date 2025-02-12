@@ -25,6 +25,6 @@ Clone this repository to your local machine:
 git clone https://github.com/plexy1/studybase.git
 cd studybase
 ```
-## Access the Service (current status is pre-alpha)
+## Access the Service (current state is pre-alpha)
 ``https://plexy1.github.io/studybase/index.html``
 (This is not the final address for our service.)
