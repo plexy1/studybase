@@ -107,3 +107,28 @@ html, body {
   display: none;
   color: red;
 }
+.status-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  background-color: #096efd; 
+  color: white;
+  padding: 10px 15px; 
+  border: none; 
+  border-radius: 5px;
+}
+
+.status-button:hover {
+  cursor: pointer;
+  background-color: #5a23c8;
+  color: white;
+}
+
+.status-button:hover::after {
+  content: " - Operational, click for detailed status";
+  font-size: 0.9rem;
+  font-style: italic;
+  color: white; 
+}
