@@ -1,0 +1,66 @@
+
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.footer {
+    width: 100%;
+    background-color: #212529;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+header h1 {
+    color: #333;
+}
+
+h2 {
+    color: #555;
+}
+
+.service-box {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.service-box h4 {
+    margin-bottom: 10px;
+}
+
+.status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.ok {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.issue {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+ul.list-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+#report-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 70px; 
+}
+
+#report-btn:hover {
+    background-color: rgb(200, 35, 51);
+    cursor: pointer;
+}
+
