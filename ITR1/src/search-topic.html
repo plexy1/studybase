@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Topic</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link href="search-topic.css" rel="stylesheet">
+  
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">studybase</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account & Settings</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Profile Logo on the right -->
+      <img
+        src="/assets/images/user.jpg"
+        alt="Profile"
+        class="profile-logo ms-auto"
+      />
+    </div>
+  </nav>
+
+  <script>
+  document.getElementById('searchBtn').addEventListener('click', function() {
+    const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        searchYouTube(query);
+        searchGoogle(query);
+  
+
+        let history = JSON.parse(localStorage.getItem('searchHistory') || []); 
+        if (!history.includes(query)) {
+          history.push(query);
+          localStorage.setItem('searchHistory', JSON.stringify(history));
+        }
+  
+        updateHistoryDisplay();
+      }
+    });
+  
+    function updateHistoryDisplay() {
+      let history = JSON.parse(localStorage.getItem('searchHistory') || []);
+      const historyContainer = document.getElementById('historyContainer');
+      
+      if (historyContainer) {
+        historyContainer.innerHTML = ''; // Clear before updating
+        history.forEach(topic => {
+          const li = document.createElement('li');
+          li.textContent = topic;
+          historyContainer.appendChild(li);
+        });
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', updateHistoryDisplay);
+  </script>
+  
+
+  </script>
+   
+</div>
+<script>
+    document.getElementById('backToLogin').addEventListener('click', function(event) {
+      event.preventDefault(); 
+      window.location.href = 'index.html'; 
+    });
+  </script>
+
+  <div class="container text-center mt-5">
+    <!-- Single search box -->
+    <div class="search-box mt-4">
+      <input
+        id="searchInput"
+        type="text"
+        class="form-control"
+        placeholder="Search any topic or concept"
+      >
+      <!-- Set the button type to "button" so it doesn't submit a form -->
+      <button id="searchBtn" type="button" class="btn btn-primary mt-2 w-100">
+        Search
+      </button>
+    </div>
+    <div id="searchResult" class="result-container">
+      <!-- Left half: Google results -->
+      <div class="left-half">
+        <div id="googleResults"></div>
+        <div class="mt-2 text-center">
+          <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
+          <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
+        </div>
+      </div>
+      <!-- Right half: YouTube results -->
+      <div class="right-half">
+        <div class="d-flex flex-column align-items-center">
+          <!-- Video Results Container (Slider) -->
+          <div id="videoSlider" class="d-flex overflow-hidden">
+            <!-- One YouTube video result will be displayed here -->
+          </div>
+          <!-- Navigation Buttons (for one video at a time) -->
+          <div class="mt-2">
+            <button id="prevVideos" class="btn btn-outline-secondary me-2" style="display: none;">◀ Previous</button>
+            <button id="nextVideos" class="btn btn-outline-secondary" style="display: none;">Next ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer bg-dark text-light py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Search logic -->
+  <script src="google-search.js"></script>
+  <!-- Combined search button logic -->
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', (event) => {
+      // Prevent default action if needed
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        searchYouTube(query);
+        searchGoogle(query);
+      }
+    });
+    </script>
+  <script src ="youtube-search.js"></script>
+
+</body>
+</html>
