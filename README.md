@@ -6,7 +6,7 @@ StudyBase is a powerful and dynamic study assistant designed to help university 
 ## Features
 
 - **Custom Roadmap Generator**: Powered by a custom GPT model, StudyBase generates a personalized roadmap to help students plan and manage their study schedule effectively. 
-- **Professor Finder**: Find professors for specific courses in upcoming semesters. Easily filter based on preferences and other criteria.
+- **Custom Course Search**: Find professors and roadmaps for specific courses. Easily filter based on preferences and other criteria.
 - **Quiz Generator**: Automatically generate quizzes for various course topics to help students test their knowledge and prepare for exams.
 - **Professor Reviews**: Access valuable student reviews and feedback on professors to make informed decisions when selecting courses and instructors.
 
