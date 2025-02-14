@@ -33,8 +33,8 @@ async function checkFirebaseStatus() {
   }
 }
 
-const GOOGLE_API_KEY = "AIzaSyBAvcoQFLKyNjHS_g-cbHW-3b5rRy89wjQ";
-const CX = "247a328ab0e4c4db3";
+const GOOGLE_API_KEY = "AIzaSyDhbZhNaXbdi55f8M6iGxG-A0--OOH2v20";
+const CX = "231b4ea4797884527";
 
 async function checkGoogleAPIStatus() {
     const googleAPIStatusElement = document.getElementById('google-api-status');
