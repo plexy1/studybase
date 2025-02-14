@@ -2,9 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebas
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
-// Firebase configuration
+// Firebase configuration (Keep your Firebase config)
 const firebaseConfig = {
-  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw", //apiKey is different from HTML - This is likely ok as you might have updated it
   authDomain: "studybase-data.firebaseapp.com",
   projectId: "studybase-data",
   storageBucket: "studybase-data.firebasestorage.app",
@@ -20,6 +20,7 @@ const db = getFirestore(app);
 // Handle form submission
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");
+  const successMessageDiv = document.getElementById("successMessage"); // Get the success message div
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -42,12 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
         university: university,
       });
 
-      alert("Account created successfully!");
-      window.location.href = "index.html"; // Redirect to login page
+      // Display success message
+      successMessageDiv.textContent = "Account created successfully! Redirecting...";
+      successMessageDiv.style.display = "block"; // Make the message visible
+      successMessageDiv.style.color = "green";   // Set text color to green
+
+
+      setTimeout(() => {
+        window.location.href = "index.html"; // Redirect to login page after 1 second
+      }, 1000);
+
 
     } catch (error) {
       console.error("Error signing up:", error);
-      alert(error.message);
+      successMessageDiv.textContent = "Error creating account: " + error.message; // Display error in successMessageDiv
+      successMessageDiv.style.display = "block";
+      successMessageDiv.style.color = "red"; // Change color to red for error
     }
   });
 });
