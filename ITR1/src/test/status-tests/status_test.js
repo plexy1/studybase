@@ -70,7 +70,7 @@ async function checkGoogleAPIStatus() {
     }
 }
 
-const YOUTUBE_API_KEY = 'AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw';
+const YOUTUBE_API_KEY = 'AIzaSyAs4Rbt-G3tXoCm8JKb7e-rn4V8oKx9r4s';
 const YOUTUBE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 async function checkYouTubeAPIStatus() {

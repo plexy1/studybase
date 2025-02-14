@@ -49,9 +49,9 @@
         </li>
       </ul>
     </div>
-      <!-- Profile Logo on the right -->
+      <!-- Profile Logo on the right, changed path -->
       <img
-        src="/assets/images/user.jpg"
+        src="user.jpg"
         alt="Profile"
         class="profile-logo ms-auto"
       />
@@ -64,18 +64,34 @@
   </div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let history = JSON.parse(localStorage.getItem('searchHistory') || '[]'); // Changed to localStorage
-    const topicList = document.getElementById('topicList');
-    
-    topicList.innerHTML = '';
-    history.forEach(topic => {
-      const li = document.createElement('li');
-      li.textContent = topic;
-      topicList.appendChild(li);
-    });
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+  
+    document.addEventListener('DOMContentLoaded', function() {
+      let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
+      const topicList = document.getElementById('topicList');
+  
+      topicList.innerHTML = '';
+      if (history.length === 0) {
+        topicList.innerHTML = "<p class='text-muted'>No search history found.</p>";
+      } else {
+        history.forEach(topic => {
+          const li = document.createElement('li');
+          li.textContent = topic;
+          li.classList.add("list-group-item");
+          topicList.appendChild(li);
+        });
+      }
     });
   </script>
+
   <footer class="footer bg-dark text-light py-3">
     <div class="container d-flex justify-content-between align-items-center">
       <p class="mb-0">&copy; 2025 Group 7</p>

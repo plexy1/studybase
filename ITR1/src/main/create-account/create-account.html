@@ -5,16 +5,16 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-      
+
       const firebaseConfig = {
-        apiKey: "AIzaSyAxZAi4bKJxNSO7paLae8rUDz6DxYbFc7o",
+        apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
         authDomain: "studybase-data.firebaseapp.com",
         projectId: "studybase-data",
         storageBucket: "studybase-data.firebasestorage.app",
         messagingSenderId: "471482464641",
         appId: "1:471482464641:web:46fe6cf41e17a24e785080"
       };
-    
+
       const app = initializeApp(firebaseConfig);
     </script>
     <script type="module" src="/ITR1/src/main/js/firebaseauth.js" defer></script>
@@ -39,7 +39,7 @@
     <link href="/ITR1/src/lib/assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    
+
     <link href="/ITR1/src/main/create-account/create-account.css" rel="stylesheet">
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
@@ -59,7 +59,7 @@
           <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
         </symbol>
       </svg>
-  
+
       <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
                 id="bd-theme"
@@ -95,18 +95,17 @@
         </ul>
       </div>
 
-    
 
       <main class="form-signin w-100 m-auto">
         <form id="registerForm">
           <h1 class="title">studybase</h1>
           <h1 class="h4 mb-3 fw-normal">Register a new account</h1>
-      
+
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingUsername" placeholder="Username" required>
             <label for="floatingUsername">Username</label>
           </div>
-          
+
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingUniversity" placeholder="University Name">
             <label for="floatingUniversity">University Name</label>
@@ -121,13 +120,14 @@
             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
             <label for="floatingPassword">Password</label>
           </div>
-      
+
           <button class="btn btn-primary w-100 py-2 mb-3" type="submit">Create Account</button>
-          
+
+          <div id="successMessage" class="text-center" style="display:none; color: green;"></div>
+
         </form>
-        <form action="/ITR1/src/main/index/index.html">
-          <button class="btn btn-secondary w-100 py-2" type="submit">Already have an account? Login here!</button>
-        </form>          
+        <form action="/ITR1/src/main/index/index.html" style="margin-bottom: 10px; margin-top: 10px;"> <button class="btn btn-secondary w-100 py-2" type="submit">Already have an account? Login here!</button>
+        </form>
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2025 Group 7</p>
 
       </main>

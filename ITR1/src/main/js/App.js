@@ -1,5 +1,5 @@
 
-const YT_API_KEY = 'AIzaSyBAvcoQFLKyNjHS_g-cbHW-3b5rRy89wjQ';
+const YT_API_KEY = 'AIzaSyAs4Rbt-G3tXoCm8JKb7e-rn4V8oKx9r4s';
 const YT_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 const YT_VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos';
 

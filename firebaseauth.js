@@ -4,7 +4,7 @@ import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11
 
 // Firebase configuration (Keep your Firebase config)
 const firebaseConfig = {
-  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw", //apiKey is different from HTML - This is likely ok as you might have updated it
+  apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw", 
   authDomain: "studybase-data.firebaseapp.com",
   projectId: "studybase-data",
   storageBucket: "studybase-data.firebasestorage.app",
