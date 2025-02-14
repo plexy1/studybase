@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw'; // temporary API key (.env to be used later)
+const API_KEY = 'AIzaSyAs4Rbt-G3tXoCm8JKb7e-rn4V8oKx9r4s'; // temporary API key (.env to be used later)
   const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
   const VIDEO_DETAILS_URL = 'https://www.googleapis.com/youtube/v3/videos';
 
