@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Frontend</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="19bb773a-eb95-814e-81fe-c3234b7f169d" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/computer_gray.svg"/></div><h1 class="page-title">Frontend</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesPerson"><path d="M10.9536 7.90088C12.217 7.90088 13.2559 6.79468 13.2559 5.38525C13.2559 4.01514 12.2114 2.92017 10.9536 2.92017C9.70142 2.92017 8.65137 4.02637 8.65698 5.39087C8.6626 6.79468 9.69019 7.90088 10.9536 7.90088ZM4.4231 8.03003C5.52368 8.03003 6.42212 7.05859 6.42212 5.83447C6.42212 4.63843 5.51245 3.68945 4.4231 3.68945C3.33374 3.68945 2.41846 4.64966 2.41846 5.84009C2.42407 7.05859 3.32251 8.03003 4.4231 8.03003ZM1.37964 13.168H5.49561C4.87231 12.292 5.43384 10.6074 6.78711 9.51807C6.18628 9.14746 5.37769 8.87231 4.4231 8.87231C1.95239 8.87231 0.262207 10.6917 0.262207 12.1628C0.262207 12.7974 0.548584 13.168 1.37964 13.168ZM7.50024 13.168H14.407C15.4009 13.168 15.7322 12.8423 15.7322 12.2864C15.7322 10.8489 13.8679 8.88354 10.9536 8.88354C8.04492 8.88354 6.17505 10.8489 6.17505 12.2864C6.17505 12.8423 6.50635 13.168 7.50024 13.168Z"></path></svg></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14GgWve3swXw4WQsvM_zZ-1-lHEyrdBjWZNZ5vRo49w=s100" class="icon user-icon"/>Rishab Yadav</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>Tags</th><td><span class="selected-value select-value-color-pink">Frontend</span></td></tr></tbody></table></header><div class="page-body"><h1 id="19bb773a-eb95-80bb-979c-fdf064bd4738" class="">Table of Contents</h1><h2 id="19bb773a-eb95-809a-8f5e-ce51acbfa9cb" class="">1. index.html</h2><p id="19bb773a-eb95-8071-9053-ef4dbb8bedf7" class="">: Landing page with sign-in form using Bootstrap, Firebase authentication, and theme toggle for StudyBase.</p><h2 id="19bb773a-eb95-8096-9b89-c6fbbe32e6e7" class="">2. index.css</h2><p id="19bb773a-eb95-8023-bde4-e6bca6c49f15" class="">: Styles the sign-in page, form, UI elements, error messages, and status button for index.html.</p><h2 id="19bb773a-eb95-8024-ab4e-e2038bad5bf4" class="">3. create-account.html</h2><p id="19bb773a-eb95-80d3-99bf-ec25e9241940" class="">: User registration page for StudyBase with Firebase integration and Bootstrap styling.</p><h2 id="19bb773a-eb95-80bb-b64c-f36b551c1573" class="">4. create-account.css</h2><p id="19bb773a-eb95-8077-8202-c39e46311d3e" class="">: Styles the user registration page, form, UI elements, and error messages for create-account.html.</p><h2 id="19bb773a-eb95-808d-b6ca-d9e0ec37a16d" class="">5. search-topic.html</h2><p id="19bb773a-eb95-80b0-aef4-ec21ed82f477" class="">: Allows users to search topics, courses, and quizzes, displaying Google and YouTube results with search history.</p><h2 id="19bb773a-eb95-80f1-bbb7-ce03e10e8424" class="">6. search-topic.css</h2><p id="19bb773a-eb95-8016-974f-c17725c832c8" class="">: Styles the search results page, including footer, search boxes, video details, and search result layouts.</p><h2 id="19bb773a-eb95-8098-803d-e267797073e0" class="">7. account.html</h2><p id="19bb773a-eb95-801a-a19f-fa33ea9c9194" class="">: &quot;Account &amp; Settings&quot; page with navigation, content section, and footer for user account management.</p><h2 id="19bb773a-eb95-803d-913e-fe087ecdfb81" class="">8. account.css</h2><p id="19bb773a-eb95-8027-a348-f60664419ea6" class="">: Styles the footer, profile logo, and link hover effects for account.html and similar pages.</p><h2 id="19bb773a-eb95-80f7-93b8-cc45674b16bb" class="">9. courses.html</h2><p id="19bb773a-eb95-8013-abde-f40b178a939a" class="">: &quot;Search Course&quot; page with navigation, content section, and footer to facilitate course searching, with future features planned.</p><h2 id="19bb773a-eb95-8081-a903-de9bc10d9efb" class="">10. courses.css</h2><p id="19bb773a-eb95-8025-adc9-d74117509f82" class="">: Styles the footer, profile logo, and link hover effects, similar to account.css, for courses.html and similar pages.</p><h2 id="19bb773a-eb95-802e-9a85-f4ab3cd5527b" class="">11. quiz.html</h2><p id="19bb773a-eb95-804a-b0f0-f44414e091ca" class="">: &quot;Generate Quiz&quot; page as a placeholder for future quiz and flash card functionalities, including navigation and footer.</p><h2 id="19bb773a-eb95-80a4-a9f3-cc6ccdb01bb7" class="">12. quiz.css</h2><p id="19bb773a-eb95-80b6-8eb7-f1e4a330f0c4" class="">: Styles the footer, profile logo, and link hover effects, consistent with account.css and courses.css, for quiz.html and similar pages.</p><h2 id="19bb773a-eb95-803a-a95a-e8a5907c9341" class="">13. history.html</h2><p id="19bb773a-eb95-80eb-9354-d73101371e0d" class="">: &quot;History&quot; page displaying user search history and intended for future starred topics and quizzes features.</p><h2 id="19bb773a-eb95-808d-8338-f606c3aa06d1" class="">14. history.css</h2><p id="19bb773a-eb95-80f6-9517-f87e113452c2" class="">: Styles the footer, profile logo, and link hover effects, in line with other content pages, for history.html and similar pages.</p><h2 id="19bb773a-eb95-8096-9db8-cf453d3e6a32" class="">15. status.html</h2><p id="19bb773a-eb95-8005-a9d7-f76a5459b5a4" class="">: Service Status page providing real-time operational status of platform services and issue reporting.</p><h2 id="19bb773a-eb95-8056-9c67-c0a2471ba755" class="">16. status.css</h2><p id="19bb773a-eb95-8007-bf3e-e16408afabaf" class="">: Styles the Service Status page using color-coded indicators for service operational status and visual cues for issue reporting.</p><p id="19bb773a-eb95-8015-8724-cfbc89f788a9" class="">Each section includes detailed information about the file&#x27;s purpose, structure, and key components.</p><hr id="19bb773a-eb95-808b-ae30-d48f7a44f63a"/><h2 id="19bb773a-eb95-801c-8791-ebae0b289516" class="">1. index.html</h2><p id="19bb773a-eb95-8052-ae8d-fa6d1edb50ab" class="">This is the <strong>landing page</strong> for our project, <strong>StudyBase</strong>, which includes a <strong>sign-in form</strong> using Bootstrap 5.3 for styling and layout. Here&#x27;s a breakdown of the key components:</p><h3 id="19bb773a-eb95-8081-bbc0-d6181fb8b94c" class=""><strong>Structure &amp; Features:</strong></h3><ol type="1" id="19bb773a-eb95-80e8-b2ee-c475940de973" class="numbered-list" start="1"><li><strong>HTML5 &amp; Bootstrap Integration:</strong><ul id="19bb773a-eb95-805f-b408-cc2287a72ee6" class="bulleted-list"><li style="list-style-type:disc">Uses Bootstrap 5.3 for responsiveness and UI elements.</li></ul><ul id="19bb773a-eb95-80d1-9115-c06aeb544600" class="bulleted-list"><li style="list-style-type:disc">Includes Bootstrap&#x27;s theme toggle feature (light, dark, and auto modes).</li></ul><ul id="19bb773a-eb95-807e-b65f-ee16f0467995" class="bulleted-list"><li style="list-style-type:disc">External CSS (<code>index.css</code>) and Bootstrap styles (<code>assets/dist/css/bootstrap.min.css</code>) are linked.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-804a-b9c7-d15982a2fa55" class="numbered-list" start="2"><li><strong>User Authentication Form:</strong><ul id="19bb773a-eb95-8099-8592-fb8f8f9a9b14" class="bulleted-list"><li style="list-style-type:disc">A <strong>sign-in form</strong> with:<ul id="19bb773a-eb95-80ea-a7f9-df732ec365dc" class="bulleted-list"><li style="list-style-type:circle"><strong>Email</strong> and <strong>password</strong> input fields (with floating labels).</li></ul><ul id="19bb773a-eb95-8074-af3b-e92e7287614d" class="bulleted-list"><li style="list-style-type:circle">A <strong>&quot;Remember me&quot;</strong> checkbox.</li></ul><ul id="19bb773a-eb95-8037-883b-cb6dd2d45044" class="bulleted-list"><li style="list-style-type:circle">A <strong>Sign in</strong> button (<code>#submit</code>).</li></ul><ul id="19bb773a-eb95-8055-bc69-e569b0fdc9a8" class="bulleted-list"><li style="list-style-type:circle">A <strong>Register</strong> button (<code>create-account.html</code>).</li></ul></li></ul><ul id="19bb773a-eb95-805c-8adb-d3354ec5b813" class="bulleted-list"><li style="list-style-type:disc">A <strong>hidden message div</strong> (<code>#signInMessage</code>) for displaying authentication errors.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8090-9e2a-e59b6c04525f" class="numbered-list" start="3"><li><strong>JavaScript Integrations:</strong><ul id="19bb773a-eb95-8004-8983-e24a1e609172" class="bulleted-list"><li style="list-style-type:disc"><code>login.js</code> handles sign-in logic.</li></ul><ul id="19bb773a-eb95-80d8-abf8-cf9a521d3be3" class="bulleted-list"><li style="list-style-type:disc"><code>firebaseauth.js</code> (though not explicitly linked here) to manage Firebase authentication.</li></ul><ul id="19bb773a-eb95-80cb-87d4-e9ff15ec2d43" class="bulleted-list"><li style="list-style-type:disc">Bootstrap’s JavaScript bundle (<code>bootstrap.bundle.min.js</code>) is included.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-801c-9719-c4536a41a853" class="numbered-list" start="4"><li><strong>Theme Toggle Feature:</strong><ul id="19bb773a-eb95-800c-aa36-f982fafc951c" class="bulleted-list"><li style="list-style-type:disc">Users can switch between light, dark, and auto themes.</li></ul><ul id="19bb773a-eb95-805c-b67b-dbaba6ed6b9e" class="bulleted-list"><li style="list-style-type:disc">Uses Bootstrap icons for visual cues (<code>#circle-half</code>, <code>#sun-fill</code>, <code>#moon-stars-fill</code>).</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80fd-9bae-ce325b5e0eea" class="numbered-list" start="5"><li><strong>Footer &amp; Branding:</strong><ul id="19bb773a-eb95-8005-8237-ce36b21fed30" class="bulleted-list"><li style="list-style-type:disc">Displays a copyright notice (<code>© 2025 Group 7</code>).</li></ul><ul id="19bb773a-eb95-8076-a383-da595f23a116" class="bulleted-list"><li style="list-style-type:disc">A <strong>&quot;Service Status&quot;</strong> button links to <code>status.html</code> (for checking system uptime or issues).</li></ul></li></ol><h3 id="19bb773a-eb95-80c4-95d5-ff8671f96c33" class=""><strong>Purpose:</strong></h3><p id="19bb773a-eb95-8014-8649-ce7a1d485443" class="">This page serves as the <strong>entry point for StudyBase</strong>, allowing users to log in or register while maintaining a clean, modern UI. The <strong>Firebase integration for</strong> user authentication is a key functionality.</p><hr id="19bb773a-eb95-8077-a23d-e1b0e69cd86d"/><h2 id="19bb773a-eb95-8038-bb40-f2e0e49fcdae" class="">2. index.css</h2><p id="19bb773a-eb95-8028-86b3-c6be7b571ce5" class="">This file, <strong>index.css</strong>, is a <strong>stylesheet</strong> that defines the styles for a <strong>sign-in form page</strong> and some additional UI components. Here&#x27;s a breakdown of what it does:</p><h3 id="19bb773a-eb95-80a5-aec3-e0da84499733" class=""><strong>1. General Page Styling</strong></h3><ul id="19bb773a-eb95-8019-b65d-ffc3f3d01915" class="bulleted-list"><li style="list-style-type:disc">Ensures <code>html</code> and <code>body</code> take up the full height of the viewport.</li></ul><h3 id="19bb773a-eb95-80b3-abce-dcb9ae617525" class=""><strong>2. Sign-in Form Styling (</strong><code><strong>.form-signin</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-806f-98d2-e050c1ff0fee" class="bulleted-list"><li style="list-style-type:disc">Sets a max width (<code>330px</code>) and padding for a centered form.</li></ul><ul id="19bb773a-eb95-8061-92ba-c068ff84cb03" class="bulleted-list"><li style="list-style-type:disc">Styles input fields (<code>email</code> and <code>password</code>) to have appropriate border-radius and spacing.</li></ul><ul id="19bb773a-eb95-8093-9da3-ee96b856938f" class="bulleted-list"><li style="list-style-type:disc">Ensures <code>.form-floating</code> elements maintain their stacking order when focused.</li></ul><h3 id="19bb773a-eb95-80ae-be39-ddf3175a66e4" class=""><strong>3. Placeholder Image (</strong><code><strong>.bd-placeholder-img</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80fa-956c-dc2a35cac0b9" class="bulleted-list"><li style="list-style-type:disc">Sets font size and disables text selection.</li></ul><ul id="19bb773a-eb95-80b7-9a82-f89dc1c084ed" class="bulleted-list"><li style="list-style-type:disc">A larger font size is applied for screens wider than <code>768px</code>.</li></ul><h3 id="19bb773a-eb95-80f5-a239-f9c406c9b9db" class=""><strong>4. UI Elements</strong></h3><ul id="19bb773a-eb95-80bc-a4d3-d445ae3ce0eb" class="bulleted-list"><li style="list-style-type:disc"><strong>Dividers (</strong><code><strong>.b-example-divider</strong></code><strong>)</strong><ul id="19bb773a-eb95-802d-9663-eeedc3f97c87" class="bulleted-list"><li style="list-style-type:circle">A thin horizontal separator with a slight shadow effect.</li></ul></li></ul><ul id="19bb773a-eb95-8076-8c2d-c356b6a2c4c8" class="bulleted-list"><li style="list-style-type:disc"><strong>Vertical Rule (</strong><code><strong>.b-example-vr</strong></code><strong>)</strong><ul id="19bb773a-eb95-804a-a158-f0ae80936171" class="bulleted-list"><li style="list-style-type:circle">A vertical divider taking full viewport height.</li></ul></li></ul><ul id="19bb773a-eb95-809d-9899-c6c241fcad7e" class="bulleted-list"><li style="list-style-type:disc"><strong>Icons (</strong><code><strong>.bi</strong></code><strong>)</strong><ul id="19bb773a-eb95-8020-91df-d94a72619693" class="bulleted-list"><li style="list-style-type:circle">Ensures Bootstrap icons align properly.</li></ul></li></ul><ul id="19bb773a-eb95-80e5-aea1-eb61c175a4fa" class="bulleted-list"><li style="list-style-type:disc"><strong>Navigation Scroller (</strong><code><strong>.nav-scroller</strong></code><strong>)</strong><ul id="19bb773a-eb95-80d9-86d5-d6d908b65967" class="bulleted-list"><li style="list-style-type:circle">Makes the navigation bar horizontally scrollable.</li></ul></li></ul><h3 id="19bb773a-eb95-80ac-9039-cdac42fbe2ac" class=""><strong>5. Custom Button Styling (</strong><code><strong>.btn-bd-primary</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-808f-a964-cd5a1d1b358c" class="bulleted-list"><li style="list-style-type:disc">Defines a <strong>primary button style</strong> with a <strong>violet background</strong>.</li></ul><ul id="19bb773a-eb95-80fb-9fa6-fc1ed3b79065" class="bulleted-list"><li style="list-style-type:disc">Uses CSS variables to control hover, active, and focus states.</li></ul><ul id="19bb773a-eb95-80df-9ca9-e4b719f1c453" class="bulleted-list"><li style="list-style-type:disc">Text color remains white across all states.</li></ul><h3 id="19bb773a-eb95-807d-b9bf-c0b38496530a" class=""><strong>6. Dark Mode Toggle (</strong><code><strong>.bd-mode-toggle</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80ce-acbe-e34c05ea0fad" class="bulleted-list"><li style="list-style-type:disc">Ensures the mode toggle has a high <code>z-index</code> (<code>1500</code>) so it stays above other elements.</li></ul><ul id="19bb773a-eb95-8072-9707-f2df6400d9e1" class="bulleted-list"><li style="list-style-type:disc">Displays the correct icon when active.</li></ul><h3 id="19bb773a-eb95-80ac-ac50-ca3111b10b13" class=""><strong>7. Error Messages (</strong><code><strong>.messageDiv</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-8079-bad3-d161bad14f73" class="bulleted-list"><li style="list-style-type:disc">Defines an error message container, which is <strong>hidden by default</strong> and appears in red.</li></ul><h3 id="19bb773a-eb95-80ac-9499-ea7ea251167e" class=""><strong>8. Status Button (</strong><code><strong>.status-button</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80bd-99ce-cb53713e79bc" class="bulleted-list"><li style="list-style-type:disc">A <strong>floating button</strong> positioned at the top-right for checking system status.</li></ul><ul id="19bb773a-eb95-8042-9789-f289f74f228d" class="bulleted-list"><li style="list-style-type:disc">Changes color when hovered.</li></ul><ul id="19bb773a-eb95-8092-b327-cc3652eaef99" class="bulleted-list"><li style="list-style-type:disc">Displays additional info (<code>Operational, click for detailed status</code>) when hovered.</li></ul><h3 id="19bb773a-eb95-8043-8f3b-e5e62df2b8fd" class=""><strong>Conclusion</strong></h3><p id="19bb773a-eb95-8016-939b-f0184be40d7c" class="">This <strong>index.css</strong> file is primarily used for a <strong>sign-in page</strong>, featuring <strong>form styling, navigation adjustments, UI elements, error messages, and a system status button</strong>.</p><hr id="19bb773a-eb95-806c-895f-fcb6b1b37af0"/><h2 id="19bb773a-eb95-808c-957b-c5682cdf2833" class="">3. create-account.html</h2><h3 id="19bb773a-eb95-80b3-bac0-fbd34e71680e" class=""><strong>Description:</strong></h3><p id="19bb773a-eb95-805f-b926-ec89da563753" class="">This file serves as the <strong>user registration page</strong> for the StudyBase web application. It provides a responsive <strong>sign-up form</strong> that allows new users to create an account. The page is built using <strong>HTML, Bootstrap, and Firebase Authentication</strong> for managing user sign-ups.</p><hr id="19bb773a-eb95-800c-bfa0-d73e562bb22c"/><h2 id="19bb773a-eb95-8005-ae8a-ebf10665f138" class=""><strong>Key Features</strong></h2><h3 id="19bb773a-eb95-80a0-bfba-d16becbb9aed" class=""><strong>1. Firebase Integration</strong></h3><ul id="19bb773a-eb95-80b2-8677-f0dd1fd5d088" class="bulleted-list"><li style="list-style-type:disc">The file imports Firebase and initializes it with the project&#x27;s <strong>Firebase configuration</strong>.</li></ul><ul id="19bb773a-eb95-8043-9cfa-d44a0fe7488b" class="bulleted-list"><li style="list-style-type:disc">This setup is crucial for handling <strong>user authentication</strong> (account creation and login).</li></ul><ul id="19bb773a-eb95-80f8-a5c2-daa4fe1015a8" class="bulleted-list"><li style="list-style-type:disc">The Firebase logic is handled in <code>firebaseauth.js</code>, which is imported as a separate module.</li></ul><h3 id="19bb773a-eb95-808a-ae3f-e255ac82b231" class=""><strong>2. Bootstrap UI &amp; Responsive Design</strong></h3><ul id="19bb773a-eb95-800e-a4b5-c2732e228ed7" class="bulleted-list"><li style="list-style-type:disc">Uses <strong>Bootstrap 5.3</strong> for styling and layout.</li></ul><ul id="19bb773a-eb95-8082-84bd-eb04f020baaa" class="bulleted-list"><li style="list-style-type:disc">Implements a <strong>dark/light/auto theme switcher</strong> via Bootstrap’s <code>data-bs-theme</code>.</li></ul><ul id="19bb773a-eb95-808d-b74c-e2865d545cf8" class="bulleted-list"><li style="list-style-type:disc">Ensures responsiveness for different devices.</li></ul><h3 id="19bb773a-eb95-804e-b0d8-f4ca2948d398" class=""><strong>3. Registration Form</strong></h3><p id="19bb773a-eb95-800a-a620-d19f8f2fa67a" class="">The form contains the following fields:</p><ul id="19bb773a-eb95-80ab-8c94-fa967aef7fc7" class="bulleted-list"><li style="list-style-type:disc"><strong>Username (Required)</strong></li></ul><ul id="19bb773a-eb95-80e5-b4cc-ccc35f636e9b" class="bulleted-list"><li style="list-style-type:disc"><strong>University Name (Optional)</strong></li></ul><ul id="19bb773a-eb95-80ed-9214-f84c849fc592" class="bulleted-list"><li style="list-style-type:disc"><strong>Email Address (Required)</strong></li></ul><ul id="19bb773a-eb95-80bb-ba0a-d3d907f58b9c" class="bulleted-list"><li style="list-style-type:disc"><strong>Password (Required)</strong></li></ul><p id="19bb773a-eb95-80c6-94e6-eaf2d88d39c3" class="">A <strong>&quot;Create Account&quot;</strong> button submits the form.</p><h3 id="19bb773a-eb95-8043-ad7d-d75515217e34" class=""><strong>4. Success Message</strong></h3><ul id="19bb773a-eb95-8083-abb0-fc4a1c4d231e" class="bulleted-list"><li style="list-style-type:disc">A hidden <code>&lt;div&gt;</code> (<code>id=&quot;successMessage&quot;</code>) is included to display a success message after registration.</li></ul><h3 id="19bb773a-eb95-80c9-bdfb-fd59ab226711" class=""><strong>5. Login Redirect</strong></h3><ul id="19bb773a-eb95-8041-b1cd-c0ce07731019" class="bulleted-list"><li style="list-style-type:disc">If the user already has an account, they can click <strong>&quot;Login here!&quot;</strong>, which redirects them to <code>index.html</code> (the login page).</li></ul><h3 id="19bb773a-eb95-80eb-931d-d879beeaf4fc" class=""><strong>6. Accessibility &amp; Best Practices</strong></h3><ul id="19bb773a-eb95-8086-a2d4-c77c8a4fb5d7" class="bulleted-list"><li style="list-style-type:disc">Uses <strong>form-floating</strong> Bootstrap components for a clean and accessible UI.</li></ul><ul id="19bb773a-eb95-80cf-ba44-e52311f911b7" class="bulleted-list"><li style="list-style-type:disc">Provides <strong>proper labels</strong> for inputs.</li></ul><ul id="19bb773a-eb95-8074-b34a-e84c10c91141" class="bulleted-list"><li style="list-style-type:disc">Uses <strong>defer</strong> for script loading to improve page performance.</li></ul><hr id="19bb773a-eb95-8033-aa03-f7948ffc86ae"/><h2 id="19bb773a-eb95-8037-8cc4-cf46679ef44e" class=""><strong>Dependencies</strong></h2><ol type="1" id="19bb773a-eb95-80ff-bdee-d28873c8055a" class="numbered-list" start="1"><li><strong>Firebase</strong> (for authentication)</li></ol><ol type="1" id="19bb773a-eb95-8002-8a71-de42c2760e7a" class="numbered-list" start="2"><li><strong>Bootstrap 5.3</strong> (for UI styling &amp; responsiveness)</li></ol><ol type="1" id="19bb773a-eb95-80be-923b-f7a296fdd9ae" class="numbered-list" start="3"><li><strong>firebaseauth.js</strong> (handles authentication logic)</li></ol><hr id="19bb773a-eb95-805d-a327-c97a0d6b1b16"/><h2 id="19bb773a-eb95-8095-91d2-c32bbcd3ce48" class="">4. create-account.css</h2><p id="19bb773a-eb95-80fb-adb0-fc1c261ebd79" class="">This <strong>CSS file</strong> is primarily used for styling a web page that includes a <strong>form, UI elements, buttons, navigation, and error handling</strong>. Below is a detailed breakdown of the styles included:</p><h3 id="19bb773a-eb95-8024-b184-ececaf3d6e80" class=""><strong>General Styling</strong></h3><ul id="19bb773a-eb95-8071-9e3d-dc45a74a3b43" class="bulleted-list"><li style="list-style-type:disc"><code><strong>html, body</strong></code>: Ensures the page takes up 100% of the height of the browser viewport.</li></ul><h3 id="19bb773a-eb95-80f3-b38b-d8756dfee17b" class=""><strong>Sign-in Form (</strong><code><strong>.form-signin</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-800d-bedf-fb622a2ac439" class="bulleted-list"><li style="list-style-type:disc">Defines the <strong>form’s max width (330px)</strong> and padding for spacing.</li></ul><ul id="19bb773a-eb95-80ab-bf32-fee5b4943276" class="bulleted-list"><li style="list-style-type:disc">Adjusts form fields (<code>email</code> and <code>password</code>) by:<ul id="19bb773a-eb95-806e-b94a-f30973c670b2" class="bulleted-list"><li style="list-style-type:circle"><strong>Removing border-radius</strong> on certain corners to create a seamless look when stacked.</li></ul><ul id="19bb773a-eb95-808f-b103-e67badd55d59" class="bulleted-list"><li style="list-style-type:circle"><strong>Margin adjustments</strong> for proper spacing between form elements.</li></ul></li></ul><h3 id="19bb773a-eb95-8036-ab53-c698b1599126" class=""><strong>Placeholder Image (</strong><code><strong>.bd-placeholder-img</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80b4-be5e-fa78e78a2039" class="bulleted-list"><li style="list-style-type:disc">Defines the font size and ensures <strong>text is centered</strong> in the placeholder image.</li></ul><ul id="19bb773a-eb95-800b-b68e-e5a579d90dd4" class="bulleted-list"><li style="list-style-type:disc"><strong>Prevents text selection</strong> for a smoother user interface.</li></ul><ul id="19bb773a-eb95-8066-98cd-f6dfd4c78b85" class="bulleted-list"><li style="list-style-type:disc"><strong>Responsive design</strong> with a media query, where the font size increases on larger screens (<code>min-width: 768px</code>).</li></ul><h3 id="19bb773a-eb95-80d7-b744-f2b0dd7d7c93" class=""><strong>UI Dividers (</strong><code><strong>.b-example-divider</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-8040-b894-e9bec734ac19" class="bulleted-list"><li style="list-style-type:disc">Creates a <strong>horizontal divider</strong> with a height of 3rem and a shadow effect to visually separate sections of the page.</li></ul><h3 id="19bb773a-eb95-8046-bc75-fc032634a576" class=""><strong>Vertical Divider (</strong><code><strong>.b-example-vr</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80d6-a4e1-eeb42bf23a6e" class="bulleted-list"><li style="list-style-type:disc">Defines a <strong>vertical line</strong> (<code>1.5rem wide</code>) with a height of 100% of the viewport.</li></ul><h3 id="19bb773a-eb95-80e3-9e93-f6012a2eb1d0" class=""><strong>Icons (</strong><code><strong>.bi</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-8093-bf8b-eff8f1b98f8c" class="bulleted-list"><li style="list-style-type:disc">Ensures <strong>Bootstrap icons align properly</strong> with other elements by adjusting the vertical alignment and fill color.</li></ul><h3 id="19bb773a-eb95-808e-8369-eee1c9309a81" class=""><strong>Navigation Scroller (</strong><code><strong>.nav-scroller</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-8088-9e26-e7d5332a9813" class="bulleted-list"><li style="list-style-type:disc">Styles the navigation bar to make it <strong>scrollable horizontally</strong> with <code>overflow-x: auto</code> and no vertical overflow.</li></ul><ul id="19bb773a-eb95-80cf-82fb-d8ba0b7ef954" class="bulleted-list"><li style="list-style-type:disc">Adds custom padding and adjusts the appearance of the navigation.</li></ul><h3 id="19bb773a-eb95-8035-aadb-dceb76b51d15" class=""><strong>Primary Button Styling (</strong><code><strong>.btn-bd-primary</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-80c9-98f5-eb75c07d729f" class="bulleted-list"><li style="list-style-type:disc">Uses <strong>CSS variables</strong> for defining the <strong>violet button</strong> appearance:<ul id="19bb773a-eb95-809f-8bec-f8a42e1e3b55" class="bulleted-list"><li style="list-style-type:circle"><strong>Default background color</strong> is violet (<code>#712cf9</code>).</li></ul><ul id="19bb773a-eb95-8051-b28d-d22d931c3a23" class="bulleted-list"><li style="list-style-type:circle"><strong>Hover</strong> and <strong>active states</strong> have different background colors.</li></ul><ul id="19bb773a-eb95-8083-92ff-dd75d117c3d4" class="bulleted-list"><li style="list-style-type:circle"><strong>Font weight</strong>, <strong>text color</strong>, and <strong>border colors</strong> are also controlled by variables.</li></ul></li></ul><h3 id="19bb773a-eb95-8085-8600-e9835f77b44d" class=""><strong>Dark Mode Toggle (</strong><code><strong>.bd-mode-toggle</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-8012-a0a4-c9834be7ab7d" class="bulleted-list"><li style="list-style-type:disc">Ensures the <strong>dark mode toggle</strong> has a high <code>z-index</code> (1500) so it stays visible over other elements.</li></ul><ul id="19bb773a-eb95-8081-87ed-d27b6ac9bdeb" class="bulleted-list"><li style="list-style-type:disc"><strong>Active state</strong> styles the toggle icon.</li></ul><h3 id="19bb773a-eb95-8044-bbd7-fb2973b41dcf" class=""><strong>Error Messages (</strong><code><strong>.messageDiv</strong></code><strong>)</strong></h3><ul id="19bb773a-eb95-801d-bdb0-c861ee444a16" class="bulleted-list"><li style="list-style-type:disc">Defines an element for <strong>error messages</strong>, which is <strong>hidden by default</strong> and shown when needed.</li></ul><ul id="19bb773a-eb95-8021-b860-fc8d24bbc32c" class="bulleted-list"><li style="list-style-type:disc"><strong>Red text color</strong> is used to indicate errors.</li></ul><h3 id="19bb773a-eb95-80a2-9393-d46b76cfaace" class=""><strong>Duplicate/Redundant Rules</strong></h3><p id="19bb773a-eb95-80ad-b16f-c0c54732c10d" class="">Some of the styles, particularly for <code><strong>btn-bd-primary</strong></code>, <code><strong>bd-placeholder-img</strong></code>, and <code><strong>.bd-mode-toggle</strong></code>, are <strong>repeated</strong> within the file. This redundancy should ideally be removed to keep the stylesheet clean and efficient. Specifically, the definitions of <code>.btn-bd-primary</code>, <code>.bd-placeholder-img</code>, and <code>.bd-mode-toggle</code> are duplicated multiple times, but they contain the same properties each time.</p><h3 id="19bb773a-eb95-80bb-9444-cb8b819af253" class=""><strong>Conclusion</strong></h3><p id="19bb773a-eb95-8040-a757-dc88b36af009" class="">This file is intended to style a <strong>sign-in page</strong>, with a <strong>primary focus on form styling, UI elements (e.g., buttons, dividers), navigation adjustments</strong>, and <strong>error handling</strong>. There are also <strong>duplicate styles</strong> that could be consolidated to improve readability and performance.</p><hr id="19bb773a-eb95-8092-bb85-e7138ed1ea73"/><h2 id="19bb773a-eb95-8071-8181-f8d5d913f587" class="">5. search-topic.html</h2><p id="19bb773a-eb95-803f-9362-cbada4419425" class="">The <code>search-topic.html</code> file is a key component of the application, designed to allow users to search for topics, courses, and quizzes while also viewing their search history. The layout is structured using <strong>Bootstrap 5</strong> for responsiveness and styling.</p><h3 id="19bb773a-eb95-8060-a75a-c3247cbe0ff7" class="">Key Features:</h3><ol type="1" id="19bb773a-eb95-80ee-aeb9-f0fd3d3ddd1b" class="numbered-list" start="1"><li><strong>Navbar</strong>:<ul id="19bb773a-eb95-807b-902f-dca3a056e2d0" class="bulleted-list"><li style="list-style-type:disc">Contains links to other sections of the platform, including:<ul id="19bb773a-eb95-8081-b515-dcfb3c73beb3" class="bulleted-list"><li style="list-style-type:circle"><em>Search Topic</em></li></ul><ul id="19bb773a-eb95-803d-bc74-d59fa002cc0a" class="bulleted-list"><li style="list-style-type:circle"><em>Search Course</em></li></ul><ul id="19bb773a-eb95-80ed-add9-f5a30dff5feb" class="bulleted-list"><li style="list-style-type:circle"><em>Generate Quiz</em></li></ul><ul id="19bb773a-eb95-8037-95b8-d77f63c2cb70" class="bulleted-list"><li style="list-style-type:circle"><em>History</em></li></ul><ul id="19bb773a-eb95-80ad-88b1-d9ea9bfc0593" class="bulleted-list"><li style="list-style-type:circle"><em>Account &amp; Settings</em></li></ul></li></ul><ul id="19bb773a-eb95-803c-82ba-ca442558df56" class="bulleted-list"><li style="list-style-type:disc">The logo and profile image are displayed, with a profile picture shown on the right side of the navbar.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8004-b979-c6662fe470f8" class="numbered-list" start="2"><li><strong>Search Functionality</strong>:<ul id="19bb773a-eb95-803f-b665-e685cc659bda" class="bulleted-list"><li style="list-style-type:disc">A search box allows users to input any topic or concept to search.</li></ul><ul id="19bb773a-eb95-8004-8554-e992dc4e12c4" class="bulleted-list"><li style="list-style-type:disc">Once the search button is clicked, the input value is processed to trigger search results from both <strong>Google</strong> and <strong>YouTube</strong>.</li></ul><ul id="19bb773a-eb95-80c2-9bfc-d6a9d6e48baf" class="bulleted-list"><li style="list-style-type:disc">The search history is stored in cookies, allowing users to view past searches. The history is updated and displayed dynamically on the page.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80fb-8d3c-f97ae63d9642" class="numbered-list" start="3"><li><strong>Results Display</strong>:<ul id="19bb773a-eb95-8025-95a9-d006e953a443" class="bulleted-list"><li style="list-style-type:disc">The search results are divided into two sections:<ul id="19bb773a-eb95-80ce-a2ca-fcc77a277369" class="bulleted-list"><li style="list-style-type:circle"><strong>Left Half</strong>: Displays Google search results.</li></ul><ul id="19bb773a-eb95-80b2-b684-fb39aabc409b" class="bulleted-list"><li style="list-style-type:circle"><strong>Right Half</strong>: Displays YouTube video search results.</li></ul></li></ul><ul id="19bb773a-eb95-80aa-8638-f42367c26c29" class="bulleted-list"><li style="list-style-type:disc">Both sections have &quot;Previous&quot; and &quot;Next&quot; buttons to navigate through the results, though these are initially hidden.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80ba-ac59-daeae85c69e9" class="numbered-list" start="4"><li><strong>Cookie Management</strong>:<ul id="19bb773a-eb95-8092-b698-fd3add9a6b69" class="bulleted-list"><li style="list-style-type:disc">The file utilizes cookies to save and display search history across sessions. The history is stored as a JSON object and persists for 30 days.</li></ul><ul id="19bb773a-eb95-807f-a49e-da32efcbb2b2" class="bulleted-list"><li style="list-style-type:disc">A function <code>getCookie()</code> is used to retrieve the stored history, and <code>setCookie()</code> is used to update the cookie.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8055-926c-c2254eec9f42" class="numbered-list" start="5"><li><strong>JavaScript</strong>:<ul id="19bb773a-eb95-8058-8323-d02bb0638380" class="bulleted-list"><li style="list-style-type:disc">The script handles:<ul id="19bb773a-eb95-8016-87b0-d08d0431080e" class="bulleted-list"><li style="list-style-type:circle">Retrieving search input when the search button is clicked.</li></ul><ul id="19bb773a-eb95-80d3-8544-cbaf2310326d" class="bulleted-list"><li style="list-style-type:circle">Managing search results and interacting with Google and YouTube APIs.</li></ul><ul id="19bb773a-eb95-8082-b0ff-fb2783950b01" class="bulleted-list"><li style="list-style-type:circle">Storing and displaying search history via cookies.</li></ul><ul id="19bb773a-eb95-8092-8be1-ee310174a018" class="bulleted-list"><li style="list-style-type:circle">Dynamically updating the history display on the page.</li></ul></li></ul><ul id="19bb773a-eb95-8027-8e20-d9bb469d6cb7" class="bulleted-list"><li style="list-style-type:disc">Event listeners are attached to elements such as the search button and back-to-login button for proper navigation and functionality.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8071-b290-e11598ea9d6e" class="numbered-list" start="6"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-80df-98d6-d6c554cd7557" class="bulleted-list"><li style="list-style-type:disc">Contains links to social media accounts (Instagram, Twitter, LinkedIn).</li></ul><ul id="19bb773a-eb95-80c4-b22c-ea6155404ef3" class="bulleted-list"><li style="list-style-type:disc">The footer has a dark theme with light text, consistent with the overall styling of the page.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8078-b077-d0941878155a" class="numbered-list" start="7"><li><strong>External Scripts</strong>:<ul id="19bb773a-eb95-80e2-9570-c08163f40659" class="bulleted-list"><li style="list-style-type:disc">Bootstrap JS for managing Bootstrap components.</li></ul><ul id="19bb773a-eb95-8014-805c-d1db766636d2" class="bulleted-list"><li style="list-style-type:disc">External JavaScript files (<code>google-search.js</code> and <code>youtube-search.js</code>) for handling the logic of fetching search results from Google and YouTube respectively.</li></ul></li></ol><h3 id="19bb773a-eb95-80cd-9799-f281cd6360c3" class="">File Breakdown:</h3><ul id="19bb773a-eb95-80d6-9669-ef32b30e08b0" class="bulleted-list"><li style="list-style-type:disc"><strong>HTML Structure</strong>:<ul id="19bb773a-eb95-803d-8161-ec77f0f65022" class="bulleted-list"><li style="list-style-type:circle">Main structure with Bootstrap classes to ensure the page is responsive.</li></ul><ul id="19bb773a-eb95-8027-9dfb-e1e2c1fce8a4" class="bulleted-list"><li style="list-style-type:circle">A <code>&lt;nav&gt;</code> element for navigation, a <code>&lt;div&gt;</code> for the search box, and sections to display results.</li></ul></li></ul><ul id="19bb773a-eb95-8036-9cf6-e16291470aee" class="bulleted-list"><li style="list-style-type:disc"><strong>CSS</strong>:<ul id="19bb773a-eb95-8027-8e8d-c9ec466d5425" class="bulleted-list"><li style="list-style-type:circle">The page uses an external <code>search-topic.css</code> file for custom styling.</li></ul><ul id="19bb773a-eb95-8049-884d-cf18326677dc" class="bulleted-list"><li style="list-style-type:circle">It ensures proper layout, padding, margins, and button styling.</li></ul></li></ul><h3 id="19bb773a-eb95-8009-9d69-ea412f11e444" class="">Summary:</h3><p id="19bb773a-eb95-809c-b9b9-ed11cb36e3a5" class="">This file serves as a central part of the search experience within the web application. It integrates multiple APIs (Google and YouTube) to provide users with topic-related search results while maintaining a clean, user-friendly interface with options for past search history and navigation.</p><hr id="19bb773a-eb95-800c-97d7-f076373830bc"/><h2 id="19bb773a-eb95-803f-a040-d56556624c4c" class="">6. search-topic.css</h2><p id="19bb773a-eb95-80ff-be19-d77e141a38c4" class="">This CSS file provides styles for various elements of a web project, including the layout and appearance of the footer, search results, video details, Google search results, and a YouTube video slider. Here&#x27;s a breakdown of the key components:</p><ol type="1" id="19bb773a-eb95-8010-a26a-d5af0566c709" class="numbered-list" start="1"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-80f9-b696-eb773cba3cff" class="bulleted-list"><li style="list-style-type:disc">The footer is fixed at the bottom of the page, with a dark background color (<code>#212529</code>) and white text.</li></ul><ul id="19bb773a-eb95-8015-a2e7-e421c699280d" class="bulleted-list"><li style="list-style-type:disc">It is styled to appear on all pages except the login and registration pages.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80ea-87fb-fbc1a9defbc4" class="numbered-list" start="2"><li><strong>Links</strong>:<ul id="19bb773a-eb95-80a0-8e73-c2f865b1b14c" class="bulleted-list"><li style="list-style-type:disc">Links with the class <code>.text-light</code> are styled to have no underline by default.</li></ul><ul id="19bb773a-eb95-80d5-be86-dcf729cee65f" class="bulleted-list"><li style="list-style-type:disc">On hover, the links are underlined to improve visibility.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8084-8865-e0fe890e727c" class="numbered-list" start="3"><li><strong>Profile Logo</strong>:<ul id="19bb773a-eb95-80aa-a64d-c1e232199179" class="bulleted-list"><li style="list-style-type:disc">The <code>.profile-logo</code> class is used for styling user profile images. It ensures the logo is circular, with a size of 35x35 pixels, and the image is cropped to fit the circular shape.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8063-87a7-e97229309377" class="numbered-list" start="4"><li><strong>Search Box</strong>:<ul id="19bb773a-eb95-8057-9ba8-c2fc795e0af3" class="bulleted-list"><li style="list-style-type:disc">The search box is centrally aligned with a maximum width of 600px.</li></ul><ul id="19bb773a-eb95-8055-ad42-cbb55b2cba14" class="bulleted-list"><li style="list-style-type:disc">The search result container (<code>#searchResult</code>) appears below the search box with a margin-top of 20px.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c1-bde1-d4260945d72a" class="numbered-list" start="5"><li><strong>Search Results</strong>:<ul id="19bb773a-eb95-80a7-87ca-c59ae1526a1f" class="bulleted-list"><li style="list-style-type:disc">The results are displayed in a flex container with two equal-width sections (<code>left-half</code> and <code>right-half</code>).</li></ul><ul id="19bb773a-eb95-80ad-90f2-dceea5d1b042" class="bulleted-list"><li style="list-style-type:disc">Each section is set to 48% width for a balanced layout.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-809c-bee2-ef1e8fb1a3c6" class="numbered-list" start="6"><li><strong>Video Details (YouTube)</strong>:<ul id="19bb773a-eb95-80ba-ae1b-e5cd7263619b" class="bulleted-list"><li style="list-style-type:disc">Video details are styled with margins around elements.</li></ul><ul id="19bb773a-eb95-8034-953a-dbbb90ecbafa" class="bulleted-list"><li style="list-style-type:disc">The video thumbnail image has a maximum width of 400px and is set to fit the container while maintaining its aspect ratio.</li></ul><ul id="19bb773a-eb95-8083-b992-f154abef3023" class="bulleted-list"><li style="list-style-type:disc">Video titles (<code>h3</code>) are styled to be left-aligned, with links sized at 1.5rem.</li></ul><ul id="19bb773a-eb95-807c-a3a4-da5043c3f4c0" class="bulleted-list"><li style="list-style-type:disc">Additional video information such as description, upload date, and view count is styled with smaller font sizes and spaced out for readability.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8071-b9da-c1588dab76c2" class="numbered-list" start="7"><li><strong>Google Search Results</strong>:<ul id="19bb773a-eb95-803b-995d-f89f1b0e6b36" class="bulleted-list"><li style="list-style-type:disc">Google search results are displayed left-aligned with specific styles for each result item (<code>.g-item</code>), including spacing between items, and links are styled in blue with underlining on hover.</li></ul><ul id="19bb773a-eb95-8087-bd6c-cd6600cf153c" class="bulleted-list"><li style="list-style-type:disc">Snippets for each result have a smaller font size and are colored slightly gray to differentiate from the main content.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c7-9bf1-cbc67ca4edab" class="numbered-list" start="8"><li><strong>YouTube Video Slider</strong>:<ul id="19bb773a-eb95-80bf-b714-dc50a661b278" class="bulleted-list"><li style="list-style-type:disc">The video slider (<code>#videoSlider</code>) displays videos horizontally in a scrollable container.</li></ul><ul id="19bb773a-eb95-80fb-a388-e084897c3157" class="bulleted-list"><li style="list-style-type:disc">It ensures smooth scrolling with a gap between video items and allows for overflow when the content exceeds the width.</li></ul></li></ol><p id="19bb773a-eb95-8055-8b93-f82aa8693f3e" class="">These styles aim to create a visually appealing and functional web interface for displaying user profiles, search results, video details, and search results from Google and YouTube.</p><hr id="19bb773a-eb95-8009-9332-c89138c0c6bc"/><h2 id="19bb773a-eb95-805d-ad6a-dace7c4d5dfb" class="">7. account.html</h2><p id="19bb773a-eb95-80b8-95dc-d8cd76c0fc74" class="">This HTML file represents our webpage titled &quot;Account &amp; Settings&quot; with a navigation bar, content section, and footer. Here&#x27;s a breakdown of the components:</p><ol type="1" id="19bb773a-eb95-806c-aac4-c38c84bf5853" class="numbered-list" start="1"><li><strong>Head Section</strong>:<ul id="19bb773a-eb95-804e-803a-ccf5aa18ee90" class="bulleted-list"><li style="list-style-type:disc">The document uses the UTF-8 character encoding and is set to be responsive with the viewport meta tag.</li></ul><ul id="19bb773a-eb95-80b6-9ca4-cad3a9b6c9d4" class="bulleted-list"><li style="list-style-type:disc">It includes links to external stylesheets: Bootstrap (for responsive design and UI components) and a custom <code>account.css</code> for additional styling.</li></ul><ul id="19bb773a-eb95-8023-9744-c15e38422e5a" class="bulleted-list"><li style="list-style-type:disc">A script for <code>youtube-search.js</code> is linked for handling YouTube search functionality.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80d2-994b-d041465fab71" class="numbered-list" start="2"><li><strong>Navbar</strong>:<ul id="19bb773a-eb95-8086-a799-c042cf2176a4" class="bulleted-list"><li style="list-style-type:disc">The navbar uses Bootstrap’s dark theme (<code>navbar-dark bg-dark</code>) and is responsive. On smaller screens, a hamburger menu appears, toggling the navigation links.</li></ul><ul id="19bb773a-eb95-8013-a934-f1f789644216" class="bulleted-list"><li style="list-style-type:disc">The brand name &quot;studybase&quot; appears on the left, and on the right, a profile logo (<code>user.jpg</code>) is displayed with a circular shape.</li></ul><ul id="19bb773a-eb95-8073-8377-dbb34fa0d56a" class="bulleted-list"><li style="list-style-type:disc">The navbar contains five links:<ul id="19bb773a-eb95-805e-85d4-c7abb7f1ea47" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Topic&quot; - Links to <code>search-topic.html</code></li></ul><ul id="19bb773a-eb95-80d3-a938-e44ff3c4895a" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Course&quot; - Links to <code>courses.html</code></li></ul><ul id="19bb773a-eb95-80dd-8ee9-cf3f0edbc519" class="bulleted-list"><li style="list-style-type:circle">&quot;Generate Quiz&quot; - Links to <code>quiz.html</code></li></ul><ul id="19bb773a-eb95-800a-8c22-e374e7c7a3b4" class="bulleted-list"><li style="list-style-type:circle">&quot;History&quot; - Links to <code>history.html</code></li></ul><ul id="19bb773a-eb95-8020-acad-f84ef5c8877d" class="bulleted-list"><li style="list-style-type:circle">&quot;Account &amp; Settings&quot; - This is the current page (<code>account.html</code>)</li></ul></li></ul></li></ol><ol type="1" id="19bb773a-eb95-80e0-9280-e03ada071955" class="numbered-list" start="3"><li><strong>Content Section</strong>:<ul id="19bb773a-eb95-806f-8c78-c9d51d46b6a7" class="bulleted-list"><li style="list-style-type:disc">The main content includes a heading &quot;Account &amp; Settings&quot; and an unordered list with the id <code>topicList</code> for dynamically displaying topics (presumably populated by JavaScript).</li></ul><ul id="19bb773a-eb95-8044-8253-dada9e16807a" class="bulleted-list"><li style="list-style-type:disc">The section is centered within the container and has some top margin for spacing.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8066-add5-e791d19004fc" class="numbered-list" start="4"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-80d8-a952-c79950a61d61" class="bulleted-list"><li style="list-style-type:disc">The footer is styled with a dark background (<code>bg-dark</code>) and light text (<code>text-light</code>), providing a copyright notice for &quot;Group 7&quot; in 2025.</li></ul><ul id="19bb773a-eb95-804c-9d9f-e9a5f025a2c1" class="bulleted-list"><li style="list-style-type:disc">The footer includes social media links (Instagram, Twitter, and LinkedIn) that are aligned horizontally with some margin (<code>me-3</code>) between them.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8030-ae77-c23ab158c617" class="numbered-list" start="5"><li><strong>Profile Logo</strong>:<ul id="19bb773a-eb95-80c6-94cf-e8bcc0af3b30" class="bulleted-list"><li style="list-style-type:disc">The profile logo (<code>user.jpg</code>) is displayed on the right side of the navbar, using the <code>.profile-logo</code> class for circular shape and consistent styling.</li></ul></li></ol><p id="19bb773a-eb95-80d1-b387-ef707b447fcf" class="">The layout is structured with the use of Bootstrap components, ensuring responsiveness and proper styling for various screen sizes. The page content itself is minimalistic, focusing on the account settings functionality.</p><hr id="19bb773a-eb95-80cd-9af7-ef6fa9115816"/><h2 id="19bb773a-eb95-80de-81c7-e1b9c3b2e679" class="">8. account.css</h2><p id="19bb773a-eb95-80ce-81cb-f8281220e047" class="">This CSS code provides styling for a fixed footer, profile logo, and link hover behavior. Here&#x27;s a detailed breakdown of each section:</p><ol type="1" id="19bb773a-eb95-80f4-9b75-d2096ceff818" class="numbered-list" start="1"><li><strong>Footer Styling</strong> (<code>.footer</code>):<ul id="19bb773a-eb95-8040-ac84-dabc5d49c9f2" class="bulleted-list"><li style="list-style-type:disc">The footer is positioned at the bottom of the page with <code>position: fixed;</code> and <code>bottom: 0;</code>, ensuring it stays at the bottom even when the page is scrolled.</li></ul><ul id="19bb773a-eb95-8086-a485-ed5115bad03d" class="bulleted-list"><li style="list-style-type:disc">The width is set to <code>100%</code>, so the footer spans across the entire width of the viewport.</li></ul><ul id="19bb773a-eb95-8037-b1e9-e46a198f1476" class="bulleted-list"><li style="list-style-type:disc">The background color is set to a dark shade (<code>#212529</code>), and the text color is white (<code>color: white;</code>) to create a contrast with the dark background.</li></ul><ul id="19bb773a-eb95-80cb-b44f-e24e3652b3b8" class="bulleted-list"><li style="list-style-type:disc">The text inside the footer is centered with <code>text-align: center;</code>.</li></ul><ul id="19bb773a-eb95-8047-8a83-e3a05c964d49" class="bulleted-list"><li style="list-style-type:disc">This footer style is likely to be used on all pages except login and registration pages, as mentioned in the comment.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8099-b481-edb776610fc9" class="numbered-list" start="2"><li><strong>Link Styling</strong> (<code>a.text-light</code>):<ul id="19bb773a-eb95-80a6-8711-f6c08583a7e2" class="bulleted-list"><li style="list-style-type:disc">Links with the <code>text-light</code> class have no underline by default (<code>text-decoration: none;</code>).</li></ul><ul id="19bb773a-eb95-806a-979e-ed02abfca897" class="bulleted-list"><li style="list-style-type:disc">On hover (<code>a.text-light:hover</code>), the links are underlined (<code>text-decoration: underline;</code>), providing a visual cue to users that the text is clickable.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c4-bc1f-d03d4511af0a" class="numbered-list" start="3"><li><strong>Profile Logo Styling</strong> (<code>.profile-logo</code>):<ul id="19bb773a-eb95-8075-be6f-c2d2594885fd" class="bulleted-list"><li style="list-style-type:disc">The profile logo is set to a square size of <code>35px</code> by <code>35px</code>.</li></ul><ul id="19bb773a-eb95-8013-9995-c35ac18dbe63" class="bulleted-list"><li style="list-style-type:disc">The <code>border-radius: 50%;</code> property makes the image circular.</li></ul><ul id="19bb773a-eb95-809f-a1e2-e70e63eba572" class="bulleted-list"><li style="list-style-type:disc">The <code>object-fit: cover;</code> property ensures that the image fits within the circular frame without distortion, cropping it if necessary.</li></ul></li></ol><p id="19bb773a-eb95-806f-b753-cfe2d4a9318f" class="">This CSS is intended to create a visually appealing footer and profile image while ensuring that the profile logo maintains its circular shape and that links are styled with an underline on hover for improved user interaction.</p><hr id="19bb773a-eb95-80ef-9220-d6071a5ddc78"/><h2 id="19bb773a-eb95-8032-b485-d23d85276a7d" class="">9. courses.html</h2><p id="19bb773a-eb95-8013-9b5b-cd28fc542e3d" class="">This HTML file represents the &quot;Search Course&quot; page, which is designed to allow users to search for courses. It includes a navigation bar, content section, and footer. Here&#x27;s a breakdown of the page and its intended purpose:</p><h3 id="19bb773a-eb95-80c5-8291-e2583e6d5d75" class="">Key Features:</h3><ol type="1" id="19bb773a-eb95-8006-8271-e9bf58ccc010" class="numbered-list" start="1"><li><strong>Navbar</strong>:<ul id="19bb773a-eb95-804a-93ca-ec912e9d40a7" class="bulleted-list"><li style="list-style-type:disc">The navigation bar features a dark theme (<code>navbar-dark bg-dark</code>) and includes links to other pages:<ul id="19bb773a-eb95-8001-bc3a-f33739b59cb5" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Topic&quot; (<code>search-topic.html</code>)</li></ul><ul id="19bb773a-eb95-8043-b358-c236db67080a" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Course&quot; (this page)</li></ul><ul id="19bb773a-eb95-805c-a1ec-deb1ac630331" class="bulleted-list"><li style="list-style-type:circle">&quot;Generate Quiz&quot; (<code>quiz.html</code>)</li></ul><ul id="19bb773a-eb95-8085-a14e-d71685902d9e" class="bulleted-list"><li style="list-style-type:circle">&quot;History&quot; (<code>history.html</code>)</li></ul><ul id="19bb773a-eb95-8095-96d2-ff232ccba932" class="bulleted-list"><li style="list-style-type:circle">&quot;Account &amp; Settings&quot; (<code>account.html</code>)</li></ul></li></ul><ul id="19bb773a-eb95-80fb-9004-f9ceafd415c8" class="bulleted-list"><li style="list-style-type:disc">The profile logo is displayed on the right side of the navbar.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8078-a9cb-ce9f5eace2a4" class="numbered-list" start="2"><li><strong>Content Section</strong>:<ul id="19bb773a-eb95-8097-8faa-c4ed1c28fe3f" class="bulleted-list"><li style="list-style-type:disc">The main heading of the page is &quot;Search Course&quot;.</li></ul><ul id="19bb773a-eb95-8022-a40a-e57d63bf62d3" class="bulleted-list"><li style="list-style-type:disc">An empty unordered list (<code>#topicList</code>) is included, which will likely be populated with search results or related content dynamically in the future.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-800e-ab06-e9ce0c31739d" class="numbered-list" start="3"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-8058-93ce-f6bc0fb05e53" class="bulleted-list"><li style="list-style-type:disc">The footer is fixed at the bottom of the page and contains copyright information for &quot;Group 7&quot; and social media links to Instagram, Twitter, and LinkedIn.</li></ul></li></ol><h3 id="19bb773a-eb95-80ba-bfe1-f862ef00c33c" class="">Future Plans:</h3><p id="19bb773a-eb95-8053-b7a0-e07813a0ee63" class="">This page is currently set up for the &quot;Search Course&quot; functionality, but it is noted that <strong>course and professor-related functions</strong> will be added later. These will  include features such as:</p><ul id="19bb773a-eb95-80a2-bb36-ca45934c515d" class="bulleted-list"><li style="list-style-type:disc">Searching for courses based on various filters or criteria.</li></ul><ul id="19bb773a-eb95-80b0-bada-de162c3c222a" class="bulleted-list"><li style="list-style-type:disc">Viewing course details, including professor information, course schedules, and enrollment options.</li></ul><p id="19bb773a-eb95-8049-ab06-e552faab8ab8" class="">Once these features are integrated, this page will serve as a comprehensive hub for course-related activities within the project.</p><hr id="19bb773a-eb95-80af-a538-e0b2018744f5"/><h2 id="19bb773a-eb95-8069-84e2-caa6ff0c2826" class="">10. courses.css</h2><p id="19bb773a-eb95-8040-88a5-cab65e2e1d75" class="">This CSS code provides styling for a fixed footer, profile logo, and link hover behavior. Here&#x27;s a detailed breakdown of each section:</p><ol type="1" id="19bb773a-eb95-800d-9903-ff3d424518cc" class="numbered-list" start="1"><li><strong>Footer Styling</strong> (<code>.footer</code>):<ul id="19bb773a-eb95-8072-a710-c51eb2690faa" class="bulleted-list"><li style="list-style-type:disc">The footer is positioned at the bottom of the page with <code>position: fixed;</code> and <code>bottom: 0;</code>, ensuring it stays at the bottom even when the page is scrolled.</li></ul><ul id="19bb773a-eb95-80c6-b228-c1a65cdbbe00" class="bulleted-list"><li style="list-style-type:disc">The width is set to <code>100%</code>, so the footer spans across the entire width of the viewport.</li></ul><ul id="19bb773a-eb95-80a3-9c0a-ca2616ac7bda" class="bulleted-list"><li style="list-style-type:disc">The background color is set to a dark shade (<code>#212529</code>), and the text color is white (<code>color: white;</code>) to create a contrast with the dark background.</li></ul><ul id="19bb773a-eb95-806b-8360-c809ba8152df" class="bulleted-list"><li style="list-style-type:disc">The text inside the footer is centered with <code>text-align: center;</code>.</li></ul><ul id="19bb773a-eb95-8082-8a6f-fc6bf80980b4" class="bulleted-list"><li style="list-style-type:disc">This footer style is likely to be used on all pages except login and registration pages, as mentioned in the comment.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80b0-87a4-e02aeac60f92" class="numbered-list" start="2"><li><strong>Link Styling</strong> (<code>a.text-light</code>):<ul id="19bb773a-eb95-80b9-b1f0-f92e483a2b12" class="bulleted-list"><li style="list-style-type:disc">Links with the <code>text-light</code> class have no underline by default (<code>text-decoration: none;</code>).</li></ul><ul id="19bb773a-eb95-80c5-90d2-c10456e5a532" class="bulleted-list"><li style="list-style-type:disc">On hover (<code>a.text-light:hover</code>), the links are underlined (<code>text-decoration: underline;</code>), providing a visual cue to users that the text is clickable.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8038-b71a-d8d542e5679a" class="numbered-list" start="3"><li><strong>Profile Logo Styling</strong> (<code>.profile-logo</code>):<ul id="19bb773a-eb95-80ac-becb-f756ec3e016b" class="bulleted-list"><li style="list-style-type:disc">The profile logo is set to a square size of <code>35px</code> by <code>35px</code>.</li></ul><ul id="19bb773a-eb95-80e2-85cb-e8af4278ddbc" class="bulleted-list"><li style="list-style-type:disc">The <code>border-radius: 50%;</code> property makes the image circular.</li></ul><ul id="19bb773a-eb95-8099-8913-c4b6b8399e27" class="bulleted-list"><li style="list-style-type:disc">The <code>object-fit: cover;</code> property ensures that the image fits within the circular frame without distortion, cropping it if necessary.</li></ul></li></ol><p id="19bb773a-eb95-808b-980d-e08d2628e3b2" class="">This CSS is intended to create a visually appealing footer and profile image while ensuring that the profile logo maintains its circular shape and that links are styled with an underline on hover for improved user interaction.</p><hr id="19bb773a-eb95-803a-a6e6-d22f53a1d0de"/><h2 id="19bb773a-eb95-80b9-a550-f8b82fb3c809" class="">11. quiz.html</h2><p id="19bb773a-eb95-80e7-9124-c3c6146228b3" class="">This HTML file represents the &quot;Generate Quiz&quot; page, which is designed to allow users to generate quizzes. The page includes a navigation bar, content section, and footer. Here&#x27;s a breakdown of the current features and future plans for the page:</p><h3 id="19bb773a-eb95-800d-8822-f6a3e52ad990" class="">Key Features:</h3><ol type="1" id="19bb773a-eb95-8078-be2d-f5e703e38d22" class="numbered-list" start="1"><li><strong>Navbar</strong>:<ul id="19bb773a-eb95-807b-af47-cd91baf4f478" class="bulleted-list"><li style="list-style-type:disc">The navigation bar is styled with a dark theme (<code>navbar-dark bg-dark</code>) and includes links to other pages:<ul id="19bb773a-eb95-8089-9f84-e629d2fb86cd" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Topic&quot; (<code>search-topic.html</code>)</li></ul><ul id="19bb773a-eb95-80ef-a053-f70c33a5dbfe" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Course&quot; (<code>courses.html</code>)</li></ul><ul id="19bb773a-eb95-808d-a14f-d3c6621b7f62" class="bulleted-list"><li style="list-style-type:circle">&quot;Generate Quiz&quot; (this page)</li></ul><ul id="19bb773a-eb95-8044-ad15-e062992d8bad" class="bulleted-list"><li style="list-style-type:circle">&quot;History&quot; (<code>history.html</code>)</li></ul><ul id="19bb773a-eb95-8052-813a-d94be1bf749b" class="bulleted-list"><li style="list-style-type:circle">&quot;Account &amp; Settings&quot; (<code>account.html</code>)</li></ul></li></ul><ul id="19bb773a-eb95-8058-bbf5-d7223ce2f369" class="bulleted-list"><li style="list-style-type:disc">A profile logo is displayed on the right side of the navbar, allowing users to access their account settings.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-803d-a457-ce0fd2468b9c" class="numbered-list" start="2"><li><strong>Content Section</strong>:<ul id="19bb773a-eb95-8088-ad3b-ff33264a6860" class="bulleted-list"><li style="list-style-type:disc">The main heading of the page is &quot;Quiz&quot;.</li></ul><ul id="19bb773a-eb95-8019-9893-fd5767539d90" class="bulleted-list"><li style="list-style-type:disc">There is an unordered list (<code>#topicList</code>) with a top margin (<code>mt-3</code>) that is intended to display dynamic quiz content or topics, though it is empty for now.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-809b-9d8d-f8f62c5383fc" class="numbered-list" start="3"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-80f2-adc3-e506ff0c58af" class="bulleted-list"><li style="list-style-type:disc">The footer is fixed at the bottom of the page and includes copyright information for &quot;Group 7&quot; and social media links to Instagram, Twitter, and LinkedIn.</li></ul></li></ol><h3 id="19bb773a-eb95-8093-9f51-e87369366e5d" class="">Future Plans:</h3><p id="19bb773a-eb95-80db-9606-d6c53648d223" class="">While the page currently serves as a placeholder for the quiz functionality, it is planned to <strong>house the quiz and flash card features</strong> in the future. These additions will include:</p><ul id="19bb773a-eb95-807f-bacd-e766a8f2ba13" class="bulleted-list"><li style="list-style-type:disc"><strong>Quiz Generation</strong>: Users will be able to create quizzes based on specific topics, select question types, and set the difficulty level.</li></ul><ul id="19bb773a-eb95-80c2-9a4a-f6f5cca3a7be" class="bulleted-list"><li style="list-style-type:disc"><strong>Flash Cards</strong>: A flash card feature will be implemented to help users study by showing questions on one side and answers on the reverse, supporting efficient learning.</li></ul><p id="19bb773a-eb95-80f2-9c2a-f19acbc7ef11" class="">Once the quiz and flash card functionalities are integrated, this page will become an interactive learning tool for users to generate quizzes and review material using flash cards.</p><hr id="19bb773a-eb95-80b6-bbea-d78d1afb0937"/><h2 id="19bb773a-eb95-8008-93d7-f212e318ef92" class="">12. quiz.css</h2><p id="19bb773a-eb95-802f-a690-db782ff61128" class="">This CSS code provides styling for a fixed footer, profile logo, and link hover behavior. Here&#x27;s a detailed breakdown of each section:</p><ol type="1" id="19bb773a-eb95-8073-9a11-ce4129798320" class="numbered-list" start="1"><li><strong>Footer Styling</strong> (<code>.footer</code>):<ul id="19bb773a-eb95-80db-81f2-da162607800b" class="bulleted-list"><li style="list-style-type:disc">The footer is positioned at the bottom of the page with <code>position: fixed;</code> and <code>bottom: 0;</code>, ensuring it stays at the bottom even when the page is scrolled.</li></ul><ul id="19bb773a-eb95-8080-b6f7-f66f1bf9ef64" class="bulleted-list"><li style="list-style-type:disc">The width is set to <code>100%</code>, so the footer spans across the entire width of the viewport.</li></ul><ul id="19bb773a-eb95-8088-a786-ddfe5cc74399" class="bulleted-list"><li style="list-style-type:disc">The background color is set to a dark shade (<code>#212529</code>), and the text color is white (<code>color: white;</code>) to create a contrast with the dark background.</li></ul><ul id="19bb773a-eb95-8079-ac6f-d710c3246b43" class="bulleted-list"><li style="list-style-type:disc">The text inside the footer is centered with <code>text-align: center;</code>.</li></ul><ul id="19bb773a-eb95-80f2-bb22-fe4a4ce8a5cc" class="bulleted-list"><li style="list-style-type:disc">This footer style is likely to be used on all pages except login and registration pages, as mentioned in the comment.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8060-ad0a-e88ad204c4e7" class="numbered-list" start="2"><li><strong>Link Styling</strong> (<code>a.text-light</code>):<ul id="19bb773a-eb95-8098-99cd-e1f911b2077a" class="bulleted-list"><li style="list-style-type:disc">Links with the <code>text-light</code> class have no underline by default (<code>text-decoration: none;</code>).</li></ul><ul id="19bb773a-eb95-80dd-9d22-f294b0e029c1" class="bulleted-list"><li style="list-style-type:disc">On hover (<code>a.text-light:hover</code>), the links are underlined (<code>text-decoration: underline;</code>), providing a visual cue to users that the text is clickable.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-808e-818e-c75af2097834" class="numbered-list" start="3"><li><strong>Profile Logo Styling</strong> (<code>.profile-logo</code>):<ul id="19bb773a-eb95-80da-92ef-c43d207e8fe9" class="bulleted-list"><li style="list-style-type:disc">The profile logo is set to a square size of <code>35px</code> by <code>35px</code>.</li></ul><ul id="19bb773a-eb95-8009-8e92-ce9b7db4b97c" class="bulleted-list"><li style="list-style-type:disc">The <code>border-radius: 50%;</code> property makes the image circular.</li></ul><ul id="19bb773a-eb95-804c-92b0-f0b0b6ae4aad" class="bulleted-list"><li style="list-style-type:disc">The <code>object-fit: cover;</code> property ensures that the image fits within the circular frame without distortion, cropping it if necessary.</li></ul></li></ol><p id="19bb773a-eb95-8097-8e07-d8626f79fd5d" class="">This CSS is intended to create a visually appealing footer and profile image while ensuring that the profile logo maintains its circular shape and that links are styled with an underline on hover for improved user interaction.</p><hr id="19bb773a-eb95-8067-a483-d92b299fef6d"/><h2 id="19bb773a-eb95-809f-9981-c0de58b30e8f" class="">13. history.html</h2><p id="19bb773a-eb95-8018-8174-df18e6012bf4" class="">This HTML file represents the &quot;History&quot; page, which is designed to display a user&#x27;s search history. It includes a navigation bar, content section, and footer, with functionality for showing previously searched topics. Here’s a breakdown of the page and its future plans:</p><h3 id="19bb773a-eb95-8015-9dbc-ea854925f29f" class="">Key Features:</h3><ol type="1" id="19bb773a-eb95-8077-8950-f18af76bb394" class="numbered-list" start="1"><li><strong>Navbar</strong>:<ul id="19bb773a-eb95-80b8-b33f-fa9031e53667" class="bulleted-list"><li style="list-style-type:disc">The navigation bar is styled with a dark theme (<code>navbar-dark bg-dark</code>) and includes links to other pages:<ul id="19bb773a-eb95-80df-a392-ccaaa611f291" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Topic&quot; (<code>search-topic.html</code>)</li></ul><ul id="19bb773a-eb95-800b-8a72-e83d2084bd99" class="bulleted-list"><li style="list-style-type:circle">&quot;Search Course&quot; (<code>courses.html</code>)</li></ul><ul id="19bb773a-eb95-8063-8c56-de00db3e5690" class="bulleted-list"><li style="list-style-type:circle">&quot;Generate Quiz&quot; (<code>quiz.html</code>)</li></ul><ul id="19bb773a-eb95-8078-85fe-db6b981bdb33" class="bulleted-list"><li style="list-style-type:circle">&quot;History&quot; (this page)</li></ul><ul id="19bb773a-eb95-80b2-a9c5-ccab77e5d163" class="bulleted-list"><li style="list-style-type:circle">&quot;Account &amp; Settings&quot; (<code>account.html</code>)</li></ul></li></ul><ul id="19bb773a-eb95-80d6-b94d-f11c1e4f9c61" class="bulleted-list"><li style="list-style-type:disc">A profile logo is displayed on the right side of the navbar.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8023-bff8-c0e3c746017c" class="numbered-list" start="2"><li><strong>Content Section</strong>:<ul id="19bb773a-eb95-8093-9548-f4df46fe8472" class="bulleted-list"><li style="list-style-type:disc">The main heading of the page is &quot;History&quot;.</li></ul><ul id="19bb773a-eb95-80dd-9e0e-ee390b17b761" class="bulleted-list"><li style="list-style-type:disc">The page dynamically displays the search history by retrieving the history from cookies. If no search history is found, it displays a message saying, &quot;No search history found.&quot;</li></ul><ul id="19bb773a-eb95-8089-9d85-fa141fd67e0a" class="bulleted-list"><li style="list-style-type:disc">The history is displayed as a list of topics in an unordered list (<code>#topicList</code>).</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8062-9b9b-d1b87403602b" class="numbered-list" start="3"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-8013-a83c-f54b047deb09" class="bulleted-list"><li style="list-style-type:disc">The footer is fixed at the bottom of the page and includes copyright information for &quot;Group 7&quot; and social media links to Instagram, Twitter, and LinkedIn.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8012-81f3-fcde56eff44e" class="numbered-list" start="4"><li><strong>Search History</strong>:<ul id="19bb773a-eb95-8042-bd6b-cbe0f08157db" class="bulleted-list"><li style="list-style-type:disc">The script retrieves search history stored in cookies and displays it dynamically on the page. If no history is present, a message indicating this is shown.</li></ul></li></ol><h3 id="19bb773a-eb95-80ef-896d-d7b6b1ab5f00" class="">Future Plans:</h3><p id="19bb773a-eb95-8075-9589-ce93cdb078fd" class="">This page will evolve to include features such as <strong>starred topics</strong> and <strong>quizzes</strong>, which will be displayed alongside the user&#x27;s search history. The upcoming features will include:</p><ul id="19bb773a-eb95-80c2-86fc-cb7b05392796" class="bulleted-list"><li style="list-style-type:disc"><strong>Starred Topics</strong>: Users will be able to mark topics as &quot;starred&quot;, keeping track of their favorite or most relevant searches.</li></ul><ul id="19bb773a-eb95-8036-a91a-c9719edbd240" class="bulleted-list"><li style="list-style-type:disc"><strong>Quizzes</strong>: Quizzes related to the search history will also be displayed here, allowing users to engage with their previous topics in a more interactive way.</li></ul><ul id="19bb773a-eb95-8020-b0fd-e4e7cb7c45e5" class="bulleted-list"><li style="list-style-type:disc"><strong>Shareable Links</strong>: Both the starred topics and quizzes will feature <strong>shareable links</strong>, allowing users to share their history and quizzes with others, enhancing collaboration and knowledge sharing.</li></ul><p id="19bb773a-eb95-80c5-b2fa-fe48ab0e8a25" class="">These additions will make the &quot;History&quot; page a valuable tool for users to revisit and share their favorite topics and quiz results.</p><hr id="19bb773a-eb95-8005-b2db-d3555bcbd41e"/><h2 id="19bb773a-eb95-8032-9e5a-ff16ca7d8d1d" class="">14. history.css</h2><p id="19bb773a-eb95-803c-af61-e3d13073517a" class="">This CSS code provides styling for a fixed footer, profile logo, and link hover behavior. Here&#x27;s a detailed breakdown of each section:</p><ol type="1" id="19bb773a-eb95-8071-ac68-dff1cd4d8c63" class="numbered-list" start="1"><li><strong>Footer Styling</strong> (<code>.footer</code>):<ul id="19bb773a-eb95-8013-b458-e6f91eae39bc" class="bulleted-list"><li style="list-style-type:disc">The footer is positioned at the bottom of the page with <code>position: fixed;</code> and <code>bottom: 0;</code>, ensuring it stays at the bottom even when the page is scrolled.</li></ul><ul id="19bb773a-eb95-802a-b895-dca0b39ae2fd" class="bulleted-list"><li style="list-style-type:disc">The width is set to <code>100%</code>, so the footer spans across the entire width of the viewport.</li></ul><ul id="19bb773a-eb95-8014-8466-d0b81963d989" class="bulleted-list"><li style="list-style-type:disc">The background color is set to a dark shade (<code>#212529</code>), and the text color is white (<code>color: white;</code>) to create a contrast with the dark background.</li></ul><ul id="19bb773a-eb95-80ee-b14b-e73a72c65f44" class="bulleted-list"><li style="list-style-type:disc">The text inside the footer is centered with <code>text-align: center;</code>.</li></ul><ul id="19bb773a-eb95-808f-bf20-f4a4e68f0fd4" class="bulleted-list"><li style="list-style-type:disc">This footer style is likely to be used on all pages except login and registration pages, as mentioned in the comment.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80e8-ade1-c784809d322c" class="numbered-list" start="2"><li><strong>Link Styling</strong> (<code>a.text-light</code>):<ul id="19bb773a-eb95-80c3-a919-edc480346afc" class="bulleted-list"><li style="list-style-type:disc">Links with the <code>text-light</code> class have no underline by default (<code>text-decoration: none;</code>).</li></ul><ul id="19bb773a-eb95-80cc-9509-e58cbf50c1d6" class="bulleted-list"><li style="list-style-type:disc">On hover (<code>a.text-light:hover</code>), the links are underlined (<code>text-decoration: underline;</code>), providing a visual cue to users that the text is clickable.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8072-9d92-e2a3110666bb" class="numbered-list" start="3"><li><strong>Profile Logo Styling</strong> (<code>.profile-logo</code>):<ul id="19bb773a-eb95-800c-871c-df23ebefe3ec" class="bulleted-list"><li style="list-style-type:disc">The profile logo is set to a square size of <code>35px</code> by <code>35px</code>.</li></ul><ul id="19bb773a-eb95-80be-b905-c17babcfe366" class="bulleted-list"><li style="list-style-type:disc">The <code>border-radius: 50%;</code> property makes the image circular.</li></ul><ul id="19bb773a-eb95-804a-947c-d5565ffe86e5" class="bulleted-list"><li style="list-style-type:disc">The <code>object-fit: cover;</code> property ensures that the image fits within the circular frame without distortion, cropping it if necessary.</li></ul></li></ol><p id="19bb773a-eb95-8045-bab6-cc4e5be399a8" class="">This CSS is intended to create a visually appealing footer and profile image while ensuring that the profile logo maintains its circular shape and that links are styled with an underline on hover for improved user interaction.</p><hr id="19bb773a-eb95-80b8-a1a8-d02a8678feb9"/><h2 id="19bb773a-eb95-80b3-b5a6-d99210c23ea2" class="">15. status.html</h2><p id="19bb773a-eb95-8006-b284-d442bd9c025a" class="">This HTML page represents a <strong>Service Status Page</strong> for the &quot;studybase&quot; platform, providing users with real-time information about the operational status of various services and allowing them to report any issues. Below is a breakdown of the functionality provided by this page:</p><h3 id="19bb773a-eb95-800a-b31d-c55ae84d2c82" class="">Key Features:</h3><ol type="1" id="19bb773a-eb95-802c-9e8e-c526d3943968" class="numbered-list" start="1"><li><strong>Header Section</strong>:<ul id="19bb773a-eb95-8034-b350-edaebfa04136" class="bulleted-list"><li style="list-style-type:disc">The page title is <strong>studybase</strong>, with a subtitle stating <strong>Service Status</strong>. This clearly identifies the page&#x27;s purpose — to provide users with the current status of the platform&#x27;s services.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8045-804c-ef2074a003de" class="numbered-list" start="2"><li><strong>Service Status Overview</strong>:<ul id="19bb773a-eb95-8018-83ec-e791effd8115" class="bulleted-list"><li style="list-style-type:disc">A section is dedicated to listing the <strong>current status of critical services</strong> that the platform relies on:<ul id="19bb773a-eb95-80f8-9d1c-dad6d15c19d1" class="bulleted-list"><li style="list-style-type:circle"><strong>Google Firebase</strong></li></ul><ul id="19bb773a-eb95-80d8-98dc-d34d58c20f82" class="bulleted-list"><li style="list-style-type:circle"><strong>Google API</strong></li></ul><ul id="19bb773a-eb95-80db-a31e-eac697fe9cb3" class="bulleted-list"><li style="list-style-type:circle"><strong>YouTube API</strong></li></ul><ul id="19bb773a-eb95-8088-91d3-d8f94fd34fcc" class="bulleted-list"><li style="list-style-type:circle"><strong>ChatGPT API</strong></li></ul><ul id="19bb773a-eb95-8044-9401-dd47eeea443a" class="bulleted-list"><li style="list-style-type:circle"><strong>Github Pages Hosting</strong></li></ul><ul id="19bb773a-eb95-803c-b106-eeb33570aa56" class="bulleted-list"><li style="list-style-type:circle"><strong>Firestore Database</strong></li></ul></li></ul><ul id="19bb773a-eb95-80c9-90c7-e0aa437258e3" class="bulleted-list"><li style="list-style-type:disc">Each service is represented by a <strong>status indicator</strong>:<ul id="19bb773a-eb95-8004-8a6b-ef4526391ec7" class="bulleted-list"><li style="list-style-type:circle">Initially, each service is shown as <strong>&quot;Operational&quot;</strong> with a green color indicating that the service is working properly.</li></ul></li></ul><ul id="19bb773a-eb95-80f4-a8a2-da230eeb002c" class="bulleted-list"><li style="list-style-type:disc">These status indicators can be dynamically updated based on the actual service statuses, providing users with a clear overview of any potential issues affecting the platform.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-805e-978f-ecdb6aa38d62" class="numbered-list" start="3"><li><strong>Recent Incidents</strong>:<ul id="19bb773a-eb95-8012-b8a3-e0317f88f56b" class="bulleted-list"><li style="list-style-type:disc">This section keeps track of <strong>recent incidents</strong> affecting the platform. At the moment, it reports that no incidents have been reported in the last 24 hours. This section helps users stay informed about any recent issues that may have impacted their experience on the platform.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-803e-80d1-f0253a90c1c7" class="numbered-list" start="4"><li><strong>Uptime History</strong>:<ul id="19bb773a-eb95-8066-afd9-e63d3a9d7bfb" class="bulleted-list"><li style="list-style-type:disc">A brief section shows that <strong>all services have been operational in the last 30 days</strong>, providing a history of the platform’s uptime. This helps users gauge the reliability and consistency of the services.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c2-b03e-ca2069be73f8" class="numbered-list" start="5"><li><strong>Fault/Outage Reporting</strong>:<ul id="19bb773a-eb95-8016-811d-c7076cdee5be" class="bulleted-list"><li style="list-style-type:disc">A <strong>&quot;Report an Issue&quot;</strong> button allows users to easily report any outages or faults they encounter. When clicked, the button opens a <strong>Google Forms link</strong> where users can provide detailed information about the issue they are experiencing.</li></ul><ul id="19bb773a-eb95-806a-bc32-de8590387c58" class="bulleted-list"><li style="list-style-type:disc">This ensures that users can quickly inform the support team of any problems, enabling faster resolutions.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c5-b431-f7c331f129db" class="numbered-list" start="6"><li><strong>Footer</strong>:<ul id="19bb773a-eb95-80d8-be6d-f386f785654f" class="bulleted-list"><li style="list-style-type:disc">The footer includes copyright information for <strong>Group 7</strong> and links to the platform&#x27;s social media profiles on <strong>Instagram</strong>, <strong>Twitter</strong>, and <strong>LinkedIn</strong>.</li></ul></li></ol><h3 id="19bb773a-eb95-805f-80e4-f95091475c5e" class="">Future Enhancements:</h3><ul id="19bb773a-eb95-8099-abc0-e49a9dd6c144" class="bulleted-list"><li style="list-style-type:disc">This page can be extended to provide more detailed insights into each service’s uptime, including historical performance, maintenance windows, or any ongoing incidents.</li></ul><ul id="19bb773a-eb95-80a8-b1fd-fc52f776f34b" class="bulleted-list"><li style="list-style-type:disc">The reporting functionality could be enhanced with features like <strong>incident tracking</strong> or an <strong>automated status checker</strong> to allow users to receive updates on resolved issues.</li></ul><p id="19bb773a-eb95-80fe-8f99-db3410de32eb" class="">Overall, this <strong>Service Status Page</strong> provides a valuable tool for users to monitor the health of the platform&#x27;s services and to quickly report any disruptions or outages, improving the overall user experience and communication between the platform and its users.</p><hr id="19bb773a-eb95-804e-ad1f-c780a3244f52"/><h2 id="19bb773a-eb95-8011-b445-fa555f1e0197" class="">16. status.css</h2><p id="19bb773a-eb95-8019-b362-d2a70f13958e" class="">This <strong>CSS</strong> code styles the <strong>Service Status Page</strong> and leverages colors to visually indicate the status of the various services. The color scheme is carefully chosen to provide clear and intuitive visual cues about the operational state of each service.</p><h3 id="19bb773a-eb95-802a-a588-d70ed7b083bf" class="">Color Usage for Status Reporting:</h3><ol type="1" id="19bb773a-eb95-80bc-9366-fe429a887e58" class="numbered-list" start="1"><li><strong>Operational Status</strong>:<ul id="19bb773a-eb95-809c-a956-ef25a9b5f94f" class="bulleted-list"><li style="list-style-type:disc"><strong>Green</strong> is used to indicate that a service is <strong>operational</strong>.<ul id="19bb773a-eb95-80b3-9c42-f58e33769843" class="bulleted-list"><li style="list-style-type:circle"><code>.status.ok</code>: The background color is set to a <strong>light green</strong> (<code>#d4edda</code>), with <strong>dark green</strong> text (<code>#0f5132</code>) to ensure good contrast and readability. This color choice represents <strong>success</strong> and indicates that everything is working as expected.</li></ul><ul id="19bb773a-eb95-803e-8b82-f1be13a6abc3" class="bulleted-list"><li style="list-style-type:circle">The border is also <strong>light green</strong> (<code>#badbcc</code>), reinforcing the positive status.</li></ul></li></ul></li></ol><ol type="1" id="19bb773a-eb95-80b3-9f2a-fb05b8be34a7" class="numbered-list" start="2"><li><strong>Issue/Outage Status</strong>:<ul id="19bb773a-eb95-806e-94fa-f40b1e9cea34" class="bulleted-list"><li style="list-style-type:disc"><strong>Red</strong> is used to indicate that a service has an <strong>issue</strong> or is experiencing an <strong>outage</strong>.<ul id="19bb773a-eb95-80b3-8474-e1ecd459d5d7" class="bulleted-list"><li style="list-style-type:circle"><code>.status.error</code>: The background color is set to a <strong>light red</strong> (<code>#f8d7da</code>), with <strong>dark red</strong> text (<code>#842029</code>) to indicate a problem. This color choice represents <strong>error</strong> or <strong>failure</strong>, signaling that something is wrong.</li></ul><ul id="19bb773a-eb95-80e8-8d57-e8cf3293f122" class="bulleted-list"><li style="list-style-type:circle">The border is a <strong>darker red</strong> (<code>#f5c2c7</code>), providing a subtle but noticeable contrast to the background.</li></ul></li></ul></li></ol><ol type="1" id="19bb773a-eb95-80aa-9355-d15ca8db538e" class="numbered-list" start="3"><li><strong>Service Boxes</strong>:<ul id="19bb773a-eb95-8051-b2a1-d5ee1f6ecdc6" class="bulleted-list"><li style="list-style-type:disc">The service boxes themselves are styled with a <strong>white background</strong>, giving them a clean and neutral look. These boxes use <strong>box shadows</strong> and <strong>rounded corners</strong> to make the content stand out visually.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8051-a2c9-df0a9366915a" class="numbered-list" start="4"><li><strong>Buttons and Hover Effects</strong>:<ul id="19bb773a-eb95-804b-80b0-c5327428d995" class="bulleted-list"><li style="list-style-type:disc">The <strong>&quot;Report an Issue&quot;</strong> button (<code>#report-btn</code>) is styled with a <strong>light gray background</strong> and changes to a <strong>dark red</strong> on hover (<code>rgb(200, 35, 51)</code>), creating a sense of urgency when the user wants to report an issue. This color change draws attention to the button when interacting with it.</li></ul></li></ol><h3 id="19bb773a-eb95-8069-8ace-dc845525d840" class="">Summary:</h3><ul id="19bb773a-eb95-809b-8c5e-c6caba51cc43" class="bulleted-list"><li style="list-style-type:disc"><strong>Green</strong> indicates that services are working well and operational.</li></ul><ul id="19bb773a-eb95-80c0-b0ee-c028cc498da7" class="bulleted-list"><li style="list-style-type:disc"><strong>Red</strong> highlights any issues or outages, signaling a need for attention.</li></ul><ul id="19bb773a-eb95-8087-93d8-c93b1e3916fb" class="bulleted-list"><li style="list-style-type:disc">These color choices help users quickly assess the health of services, improving user experience and accessibility.</li></ul><p id="19bb773a-eb95-8074-a8ca-ecabe1b3af91" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Backend (js)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="19bb773a-eb95-81ec-bcbd-d6f5cda49c71" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/command-line_gray.svg"/></div><h1 class="page-title">Backend (js)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesPerson"><path d="M10.9536 7.90088C12.217 7.90088 13.2559 6.79468 13.2559 5.38525C13.2559 4.01514 12.2114 2.92017 10.9536 2.92017C9.70142 2.92017 8.65137 4.02637 8.65698 5.39087C8.6626 6.79468 9.69019 7.90088 10.9536 7.90088ZM4.4231 8.03003C5.52368 8.03003 6.42212 7.05859 6.42212 5.83447C6.42212 4.63843 5.51245 3.68945 4.4231 3.68945C3.33374 3.68945 2.41846 4.64966 2.41846 5.84009C2.42407 7.05859 3.32251 8.03003 4.4231 8.03003ZM1.37964 13.168H5.49561C4.87231 12.292 5.43384 10.6074 6.78711 9.51807C6.18628 9.14746 5.37769 8.87231 4.4231 8.87231C1.95239 8.87231 0.262207 10.6917 0.262207 12.1628C0.262207 12.7974 0.548584 13.168 1.37964 13.168ZM7.50024 13.168H14.407C15.4009 13.168 15.7322 12.8423 15.7322 12.2864C15.7322 10.8489 13.8679 8.88354 10.9536 8.88354C8.04492 8.88354 6.17505 10.8489 6.17505 12.2864C6.17505 12.8423 6.50635 13.168 7.50024 13.168Z"></path></svg></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14GgWve3swXw4WQsvM_zZ-1-lHEyrdBjWZNZ5vRo49w=s100" class="icon user-icon"/>Rishab Yadav</span><span class="user"><img src="https://lh3.googleusercontent.com/a/ACg8ocKDyPwPFLtJFdnZv-2Nt_vl6-a-kQLUEggW6O85kCHxChD9slnm=s100" class="icon user-icon"/>Alex Attah</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>Tags</th><td><span class="selected-value select-value-color-default">Backend</span></td></tr></tbody></table></header><div class="page-body"><h1 id="19bb773a-eb95-80ca-ad26-f37e2f2cffcf" class="">Index</h1><ul id="19bb773a-eb95-8053-9f63-e8a6911ecf6b" class="bulleted-list"><li style="list-style-type:disc"><a href="https://www.notion.so#4">1. login.js</a> - Firebase Authentication integration</li></ul><ul id="19bb773a-eb95-8013-a841-e17706510fe1" class="bulleted-list"><li style="list-style-type:disc"><a href="https://www.notion.so#26">2. firebaseauth.js</a> - User registration and Firestore operations</li></ul><ul id="19bb773a-eb95-80a8-adc5-db30c40218ee" class="bulleted-list"><li style="list-style-type:disc"><a href="https://www.notion.so#49">3. youtube-search.js</a> - YouTube video search implementation</li></ul><ul id="19bb773a-eb95-8005-9cea-de6d5535ec1f" class="bulleted-list"><li style="list-style-type:disc"><a href="https://www.notion.so#78">4. status_test.js</a> - Service status monitoring</li></ul><h2 id="19bb773a-eb95-807e-9c80-e6bb113abf67" class="">1. login.js</h2><p id="19bb773a-eb95-80f1-9602-f6765a211758" class="">This is a <strong>JavaScript file</strong> that integrates <strong>Firebase Authentication</strong> into a web application. Here&#x27;s a breakdown of what it does:</p><h3 id="19bb773a-eb95-8030-9f32-f5d6bf073110" class=""><strong>1. Firebase Setup</strong></h3><ul id="19bb773a-eb95-802d-81ea-e2845b44098e" class="bulleted-list"><li style="list-style-type:disc">It imports Firebase SDK modules (<code>firebase-app.js</code> and <code>firebase-auth.js</code>) from Google&#x27;s CDN.</li></ul><ul id="19bb773a-eb95-803e-a71a-eb008173cee1" class="bulleted-list"><li style="list-style-type:disc">Defines <strong>Firebase configuration</strong> with keys like <code>apiKey</code>, <code>authDomain</code>, <code>projectId</code>, etc.</li></ul><ul id="19bb773a-eb95-80a1-b013-d678299c51ff" class="bulleted-list"><li style="list-style-type:disc">Initializes Firebase using <code>initializeApp(firebaseConfig)</code>.</li></ul><ul id="19bb773a-eb95-80ef-b9b1-c83e4621400e" class="bulleted-list"><li style="list-style-type:disc">Retrieves the authentication instance using <code>getAuth(app)</code>.</li></ul><h3 id="19bb773a-eb95-8040-8f62-df174541c267" class=""><strong>2. User Authentication (Sign-In)</strong></h3><ul id="19bb773a-eb95-80a4-a471-eda706e3b19a" class="bulleted-list"><li style="list-style-type:disc">It waits for the <strong>DOM to load</strong> (<code>DOMContentLoaded</code> event).</li></ul><ul id="19bb773a-eb95-80d7-bd47-e24d4b409dea" class="bulleted-list"><li style="list-style-type:disc">Selects the <strong>login form</strong> and listens for its <strong>submit event</strong>.</li></ul><ul id="19bb773a-eb95-8079-99ec-c72f775ffc3b" class="bulleted-list"><li style="list-style-type:disc">On form submission:<ul id="19bb773a-eb95-8098-a400-f3af224fa8c4" class="bulleted-list"><li style="list-style-type:circle">Prevents the default form submission behavior (<code>e.preventDefault()</code>).</li></ul><ul id="19bb773a-eb95-8097-8cd9-c303131e793b" class="bulleted-list"><li style="list-style-type:circle">Retrieves <strong>email</strong> and <strong>password</strong> entered by the user.</li></ul><ul id="19bb773a-eb95-8006-95d8-e08af56ccd19" class="bulleted-list"><li style="list-style-type:circle">Tries to sign in using <code>signInWithEmailAndPassword(auth, email, password)</code>.</li></ul><ul id="19bb773a-eb95-80a1-a88c-df0a38d8bfc8" class="bulleted-list"><li style="list-style-type:circle">If authentication succeeds, the user is redirected to <code>&quot;search-topic.html&quot;</code>.</li></ul><ul id="19bb773a-eb95-80bd-978a-f3b64ce7f344" class="bulleted-list"><li style="list-style-type:circle">If authentication fails, an <strong>error message</strong> is displayed in the <code>signInMessage</code> element.</li></ul></li></ul><h3 id="19bb773a-eb95-80d3-ae0e-e0bdf843d295" class=""><strong>3. Error Handling</strong></h3><ul id="19bb773a-eb95-800d-b116-db9ded62183b" class="bulleted-list"><li style="list-style-type:disc">If an error occurs during login, it:<ul id="19bb773a-eb95-80b9-aa31-e22c2357da48" class="bulleted-list"><li style="list-style-type:circle">Retrieves the <strong>error code</strong> and <strong>message</strong>.</li></ul><ul id="19bb773a-eb95-80db-8f3d-d3ae55326846" class="bulleted-list"><li style="list-style-type:circle">Displays the error message in the <code>signInMessage</code> element.</li></ul></li></ul><h3 id="19bb773a-eb95-80f2-833c-c2b51a9b83a5" class=""><strong>Purpose</strong></h3><p id="19bb773a-eb95-80a8-899e-faabdddbf225" class="">This script is designed to <strong>handle user login</strong> using Firebase Authentication in a web app. It securely verifies credentials and redirects users upon successful authentication while displaying errors if login fails.</p><h2 id="19bb773a-eb95-801c-98a4-e7712cf4966d" class="">2. firebaseauth.js</h2><p id="19bb773a-eb95-80d9-a09b-c3dd3a658dd4" class="">This JavaScript file handles Firebase authentication and Firestore database operations for user registration. Here&#x27;s a breakdown of what it does:</p><h3 id="19bb773a-eb95-8079-a7f1-e9551b2e9742" class=""><strong>Overview:</strong></h3><ul id="19bb773a-eb95-801e-b482-c04eeb4cdaba" class="bulleted-list"><li style="list-style-type:disc">It integrates Firebase authentication and Firestore database.</li></ul><ul id="19bb773a-eb95-80ec-a199-f6110b174b8e" class="bulleted-list"><li style="list-style-type:disc">It allows users to sign up using an email and password.</li></ul><ul id="19bb773a-eb95-802b-87dd-cbdb8e0f45db" class="bulleted-list"><li style="list-style-type:disc">It stores additional user details (username and university) in Firestore.</li></ul><ul id="19bb773a-eb95-8030-b4aa-ee7285a10e86" class="bulleted-list"><li style="list-style-type:disc">It provides real-time feedback (success or error messages).</li></ul><ul id="19bb773a-eb95-80f8-b643-c9ffe05c77d6" class="bulleted-list"><li style="list-style-type:disc">It redirects the user to a login page upon successful registration.</li></ul><h3 id="19bb773a-eb95-808a-a478-dcb86a659955" class=""><strong>Key Functionalities:</strong></h3><ol type="1" id="19bb773a-eb95-80a2-9468-eae0b3466554" class="numbered-list" start="1"><li><strong>Firebase Initialization:</strong><ul id="19bb773a-eb95-8066-9a32-ec3d5942ce41" class="bulleted-list"><li style="list-style-type:disc">It imports Firebase modules for authentication and Firestore.</li></ul><ul id="19bb773a-eb95-80a3-b91f-da24bbeb0c15" class="bulleted-list"><li style="list-style-type:disc">It initializes Firebase using a provided configuration.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8065-a465-f2cd3e1d6c34" class="numbered-list" start="2"><li><strong>Handling User Registration:</strong><ul id="19bb773a-eb95-8045-aac0-de439768d642" class="bulleted-list"><li style="list-style-type:disc">Listens for the <code>submit</code> event on a form (<code>registerForm</code>).</li></ul><ul id="19bb773a-eb95-803f-87f9-fb80a6b9b4b0" class="bulleted-list"><li style="list-style-type:disc">Prevents default form submission behavior.</li></ul><ul id="19bb773a-eb95-80e8-8ac8-cdd6485b60e2" class="bulleted-list"><li style="list-style-type:disc">Captures user inputs (username, email, university, and password).</li></ul><ul id="19bb773a-eb95-809f-ace1-ec79a687f8d0" class="bulleted-list"><li style="list-style-type:disc">Uses Firebase Authentication (<code>createUserWithEmailAndPassword()</code>) to create a new user.</li></ul><ul id="19bb773a-eb95-8045-9658-ee94e3230073" class="bulleted-list"><li style="list-style-type:disc">Stores the user’s details in Firestore (<code>setDoc()</code>).</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80f7-ba0a-eb8460f57f3b" class="numbered-list" start="3"><li><strong>User Feedback &amp; Redirection:</strong><ul id="19bb773a-eb95-804e-a045-dc5a45409b9c" class="bulleted-list"><li style="list-style-type:disc">Displays a success message when the account is created.</li></ul><ul id="19bb773a-eb95-802a-bd24-eba1836643bd" class="bulleted-list"><li style="list-style-type:disc">Redirects the user to the login page (<code>index.html</code>) after 1 second.</li></ul><ul id="19bb773a-eb95-8076-84fd-cf63bdea6d6a" class="bulleted-list"><li style="list-style-type:disc">Handles errors by displaying an error message in red.</li></ul></li></ol><p id="19bb773a-eb95-80e0-83c1-ce0056429c03" class="">This script ensures smooth user registration by managing authentication, data storage, and user feedback seamlessly. </p><h2 id="19bb773a-eb95-8042-8bd3-c8d9a9704c7c" class="">3. youtube-search.js</h2><p id="19bb773a-eb95-8012-a16f-ebd067b9c3d4" class="">This JavaScript code is a simple YouTube video search application using the <strong>YouTube Data API v3</strong>. It allows users to search for videos, view details of the first result, and navigate through search results using pagination.</p><h3 id="19bb773a-eb95-80e0-9066-f269262754df" class=""><strong>Key Features</strong></h3><ol type="1" id="19bb773a-eb95-807d-b52a-df9e85cb9552" class="numbered-list" start="1"><li><strong>Search for a YouTube Video</strong><ul id="19bb773a-eb95-8084-a8c5-cf0ee66b2a71" class="bulleted-list"><li style="list-style-type:disc">The function <code>searchYouTube(query, pageToken)</code> sends a request to the <strong>YouTube Search API</strong>.</li></ul><ul id="19bb773a-eb95-80db-9417-febb9e9f11fe" class="bulleted-list"><li style="list-style-type:disc">It fetches video results based on the user’s query.</li></ul><ul id="19bb773a-eb95-8031-b800-e8a92f6eef5a" class="bulleted-list"><li style="list-style-type:disc">It retrieves only <strong>one</strong> video per search (<code>maxResults=1</code>).</li></ul><ul id="19bb773a-eb95-805c-9422-e54d3eefbce6" class="bulleted-list"><li style="list-style-type:disc">If results exist, it extracts the <code>videoId</code> and fetches more details.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-801d-9ace-f122fdbb3b49" class="numbered-list" start="2"><li><strong>Fetch Video Details</strong><ul id="19bb773a-eb95-8072-96eb-f09ea7285cea" class="bulleted-list"><li style="list-style-type:disc"><code>getVideoDetails(videoId)</code> fetches details like title, views, likes, description, and creator using the <strong>YouTube Videos API</strong>.</li></ul><ul id="19bb773a-eb95-80dd-acde-e08871d1bf86" class="bulleted-list"><li style="list-style-type:disc">It then calls <code>displayResult(video)</code> to show the video on the webpage.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-803b-abc1-f9fc22dd8ed1" class="numbered-list" start="3"><li><strong>Display Video &amp; Details</strong><ul id="19bb773a-eb95-8067-9f7d-d8c6b67355b3" class="bulleted-list"><li style="list-style-type:disc"><code>displayResult(video)</code> dynamically generates and inserts an HTML block containing:<ul id="19bb773a-eb95-80b8-8db7-d18ca5510d2a" class="bulleted-list"><li style="list-style-type:circle">Embedded YouTube video (<code>iframe</code>)</li></ul><ul id="19bb773a-eb95-8055-af93-c0aa68a74293" class="bulleted-list"><li style="list-style-type:circle">Title (with a clickable YouTube link)</li></ul><ul id="19bb773a-eb95-8089-8cc9-e627c6b7d06a" class="bulleted-list"><li style="list-style-type:circle">Creator’s name</li></ul><ul id="19bb773a-eb95-8052-b6bc-d9187737b50b" class="bulleted-list"><li style="list-style-type:circle">View count</li></ul><ul id="19bb773a-eb95-804a-bdbf-c5f62c608601" class="bulleted-list"><li style="list-style-type:circle">Like count</li></ul><ul id="19bb773a-eb95-807c-a87f-c0a178add1c6" class="bulleted-list"><li style="list-style-type:circle">Shortened video description</li></ul></li></ul></li></ol><ol type="1" id="19bb773a-eb95-80c1-ad50-ee22f84c6875" class="numbered-list" start="4"><li><strong>Pagination (Next &amp; Previous Videos)</strong><ul id="19bb773a-eb95-8012-b4e4-e81450af4db9" class="bulleted-list"><li style="list-style-type:disc">The API response includes <code>nextPageToken</code> and <code>prevPageToken</code>, used for pagination.</li></ul><ul id="19bb773a-eb95-80ba-bf95-f23041a77e73" class="bulleted-list"><li style="list-style-type:disc"><code>updateNavigationButtons()</code> hides or shows the <strong>Next</strong> and <strong>Previous</strong> buttons accordingly.</li></ul><ul id="19bb773a-eb95-801b-bb4f-f9c8c7f855d3" class="bulleted-list"><li style="list-style-type:disc">Clicking <strong>Next</strong> or <strong>Previous</strong> calls <code>searchYouTube()</code> again with the respective page token.</li></ul></li></ol><h3 id="19bb773a-eb95-8057-ae8d-cceb1e18eb44" class=""><strong>Code Issues &amp; Improvements</strong></h3><ul id="19bb773a-eb95-8065-9761-cecbb950ae74" class="bulleted-list"><li style="list-style-type:disc">⚠ <strong>API Key Exposure</strong>: The API key is hardcoded, which is a security risk. Instead, it should be stored in an environment variable (<code>.env</code>) or a backend server.</li></ul><ul id="19bb773a-eb95-805a-98c0-ddcd39add4e0" class="bulleted-list"><li style="list-style-type:disc">⚠ <strong>Single Video Result</strong>: Currently, only one video is fetched per search. Increasing <code>maxResults</code> can provide more options.</li></ul><ul id="19bb773a-eb95-802a-9779-ff6d7ed1d982" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Basic Error Handling</strong>: Errors are logged to the console but could be handled better (e.g., displaying user-friendly messages).</li></ul><ul id="19bb773a-eb95-80f2-8a70-ded28b58ebb8" class="bulleted-list"><li style="list-style-type:disc">✅ <strong>Minimalistic UI</strong>: The interface is clean but could be enhanced with a search input box, thumbnails, and better styling.</li></ul><h2 id="19bb773a-eb95-80e1-ad26-efa6f830cc83" class="">4. app.js</h2><p id="19bb773a-eb95-80ab-b3df-f94dbe288b3a" class="">This file is a JavaScript script that powers a web-based search tool integrating both <strong>Google Custom Search</strong> and <strong>YouTube Search API</strong>. It allows users to input a search query and retrieve relevant results from Google and YouTube simultaneously.</p><h3 id="19bb773a-eb95-8076-9d8e-f2165aa14c26" class=""><strong>Key Features &amp; Functionality:</strong></h3><ol type="1" id="19bb773a-eb95-802e-9367-cb3438f466f1" class="numbered-list" start="1"><li><strong>Event Listener for Search Button:</strong><ul id="19bb773a-eb95-8045-babf-cba490ddb58d" class="bulleted-list"><li style="list-style-type:disc">Listens for clicks on a button with the ID <strong>searchBtn</strong>.</li></ul><ul id="19bb773a-eb95-80f5-867f-c57c44e89a87" class="bulleted-list"><li style="list-style-type:disc">Retrieves the search query from an input field (ID: <strong>searchInput</strong>).</li></ul><ul id="19bb773a-eb95-8082-842c-cb7549816f81" class="bulleted-list"><li style="list-style-type:disc">Clears previous search results and triggers both Google and YouTube searches.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8014-97e0-ee75ea6dba56" class="numbered-list" start="2"><li><strong>Google Custom Search Integration:</strong><ul id="19bb773a-eb95-8040-b43d-e9dd454d2510" class="bulleted-list"><li style="list-style-type:disc">Uses <strong>Google&#x27;s Custom Search API</strong> with a provided API key and search engine ID (<strong>GOOGLE_API_KEY</strong> and <strong>GOOGLE_CX</strong>).</li></ul><ul id="19bb773a-eb95-80e9-9070-fe43e6c64e0c" class="bulleted-list"><li style="list-style-type:disc">Sends an API request to <code>https://www.googleapis.com/customsearch/v1</code> with the search query.</li></ul><ul id="19bb773a-eb95-805d-8df6-fbb25daa74dd" class="bulleted-list"><li style="list-style-type:disc">If results are found, they are displayed as clickable links with snippets; otherwise, an error message is shown.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-804d-b7f8-cd8ccfc82b94" class="numbered-list" start="3"><li><strong>YouTube Search Integration:</strong><ul id="19bb773a-eb95-8073-914f-cd17686b560a" class="bulleted-list"><li style="list-style-type:disc">Queries <strong>YouTube Data API v3</strong> to search for videos using the <code>https://www.googleapis.com/youtube/v3/search</code> endpoint.</li></ul><ul id="19bb773a-eb95-807f-8ad2-c52c8b208359" class="bulleted-list"><li style="list-style-type:disc">Retrieves the most relevant video result (<strong>maxResults=1</strong>) and extracts the <code>videoId</code>.</li></ul><ul id="19bb773a-eb95-807c-83c5-ce5ad6d4099e" class="bulleted-list"><li style="list-style-type:disc">If a valid video is found, another request is made to fetch detailed video statistics.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-80ca-a6ae-e5d6494d83d9" class="numbered-list" start="4"><li><strong>Displaying YouTube Results:</strong><ul id="19bb773a-eb95-80bf-8ff9-c6d22923e229" class="bulleted-list"><li style="list-style-type:disc">Uses <code>https://www.googleapis.com/youtube/v3/videos</code> to fetch additional details like <strong>views, likes, creator, and description</strong>.</li></ul><ul id="19bb773a-eb95-80a6-98d0-cba1f61de039" class="bulleted-list"><li style="list-style-type:disc">Displays an embedded YouTube video player along with metadata (title, creator, views, and description).</li></ul></li></ol><ol type="1" id="19bb773a-eb95-804b-9fad-f5a9b587a9a5" class="numbered-list" start="5"><li><strong>Error Handling:</strong><ul id="19bb773a-eb95-806e-b769-c511b18bbafc" class="bulleted-list"><li style="list-style-type:disc">Catches errors during API requests and displays appropriate messages if no results are found or if the API call fails.</li></ul></li></ol><h3 id="19bb773a-eb95-80eb-8eb8-f96dbb2e0e96" class=""><strong>Security Issue:</strong></h3><ul id="19bb773a-eb95-80a6-91f9-e6f8b2174200" class="bulleted-list"><li style="list-style-type:disc">The <strong>API keys are hardcoded</strong>, making them vulnerable to unauthorized use. Ideally, they should be stored securely on a backend server or use environment variables.</li></ul><h2 id="19bb773a-eb95-8060-a6fb-c6b061f8b7e6" class="">5. status_test.js</h2><p id="19bb773a-eb95-8079-9329-e2822041d8b1" class="">This JavaScript file, <code>status_test.js</code>, is designed to check the operational status of three services: <strong>Firebase Authentication</strong>, <strong>Google Custom Search API</strong>, and <strong>YouTube Data API</strong>. It does this by attempting to authenticate a user with Firebase and sending test queries to Google&#x27;s and YouTube&#x27;s APIs. The results are displayed on a webpage by updating HTML elements with status messages.</p><h3 id="19bb773a-eb95-8097-82ae-f913981c5abb" class=""><strong>Key Functionalities:</strong></h3><ol type="1" id="19bb773a-eb95-80e4-b542-eb9c180ddab7" class="numbered-list" start="1"><li><strong>Firebase Authentication Status Check</strong><ul id="19bb773a-eb95-80c0-b62e-fab4a4d6b9fd" class="bulleted-list"><li style="list-style-type:disc">Uses Firebase&#x27;s <code>signInWithEmailAndPassword</code> method to attempt authentication with a predefined user.</li></ul><ul id="19bb773a-eb95-806a-992f-f36e11ade0f8" class="bulleted-list"><li style="list-style-type:disc">Updates an HTML element with either &quot;Operational&quot; (if authentication succeeds) or &quot;Service Down&quot; (if it fails).</li></ul></li></ol><ol type="1" id="19bb773a-eb95-8063-b437-f5560457dfbb" class="numbered-list" start="2"><li><strong>Google API Status Check</strong><ul id="19bb773a-eb95-804c-aaf9-c9b510ac15a6" class="bulleted-list"><li style="list-style-type:disc">Sends a test search query using Google’s Custom Search API.</li></ul><ul id="19bb773a-eb95-808c-a9bf-dd13a7afc265" class="bulleted-list"><li style="list-style-type:disc">If the response structure matches expectations, it marks the service as &quot;Operational&quot;; otherwise, it marks it as &quot;Service Down&quot;.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-800b-82ac-ddb83a1f82af" class="numbered-list" start="3"><li><strong>YouTube API Status Check</strong><ul id="19bb773a-eb95-80c8-810a-e1b863679916" class="bulleted-list"><li style="list-style-type:disc">Sends a test search request using the YouTube Data API (v3).</li></ul><ul id="19bb773a-eb95-809c-8283-cce62830edc5" class="bulleted-list"><li style="list-style-type:disc">Checks if the response is valid and updates the status accordingly.</li></ul></li></ol><ol type="1" id="19bb773a-eb95-804d-98a6-e0bff4ed136a" class="numbered-list" start="4"><li><strong>Event Listener for Automatic Checks</strong><ul id="19bb773a-eb95-806c-8a5a-eae83a9bf0f8" class="bulleted-list"><li style="list-style-type:disc">When the webpage loads (<code>DOMContentLoaded</code>), all three API status checks run automatically.</li></ul></li></ol><h3 id="19bb773a-eb95-80a7-8536-e16da5cf1214" class=""><strong>Potential Issues &amp; Considerations:</strong></h3><ul id="19bb773a-eb95-800f-8fa0-d693a66eb7de" class="bulleted-list"><li style="list-style-type:disc"><strong>Hardcoded API Keys &amp; Credentials</strong>: The file contains hardcoded Firebase credentials, Google API keys, and a test user&#x27;s login details, which is a major security risk. These should be stored securely (e.g., using environment variables or backend authentication).</li></ul><ul id="19bb773a-eb95-80ea-bd2c-e8ae65162ec6" class="bulleted-list"><li style="list-style-type:disc"><strong>Error Handling</strong>: While the file logs errors, it could benefit from better handling strategies, such as retry mechanisms or user notifications.</li></ul><ul id="19bb773a-eb95-80e5-be37-c1f4e4c3acd2" class="bulleted-list"><li style="list-style-type:disc"><strong>Rate Limits</strong>: Repeated API requests might hit Google’s and YouTube’s rate limits, causing temporary failures.</li></ul><h3 id="19bb773a-eb95-8004-94d3-c80c1eb6162f" class=""><strong>Use Case:</strong></h3><p id="19bb773a-eb95-80a7-a1d5-c65d3fae4e4d" class="">This script is useful for monitoring whether Firebase authentication, Google Search API, and YouTube API are operational in a web application. If any of these services are down, it provides a quick way to detect issues.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
