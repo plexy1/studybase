@@ -1,12 +1,22 @@
-
-    .footer {     /*  same footer on all pages except login and register.*/
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #212529;
-    color: white;
-    text-align: center;
+.footer {
+  width: 100%;
+  background-color: #212529;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: auto; /* Push footer to the bottom */
 }
+
+html, body {
+  height: 100%; /* Make sure html and body take full height */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure body is at least viewport height */
+}
+
     a.text-light {
       text-decoration: none;
     }
