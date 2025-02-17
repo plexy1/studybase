@@ -61,12 +61,12 @@
       if (query) {
         searchYouTube(query);
         searchGoogle(query);
-
+        searchGemini(query); 
 
         let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
         if (!history.includes(query)) {
         history.push(query);
-        setCookie("searchHistory", JSON.stringify(history), 30); // Stores history for 30 days
+        setCookie("searchHistory", JSON.stringify(history), 30); 
         }
 
         updateHistoryDisplay();
@@ -77,7 +77,7 @@
     let expires = "";
     if (days) {
     let date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
     expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + value + expires + "; path=/";
@@ -136,7 +136,7 @@
     </div>
     <div id="searchResult" class="result-container">
       <div class="left-half">
-        <div ></div>
+        <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
         <div class="mt-2 text-center">
           <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
           <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
@@ -161,7 +161,7 @@
           </div>
         </div>
 
-        
+
       </div>
     </div>
   </div>
@@ -181,16 +181,16 @@
   <script src="google-search.js"></script>
   <script>
     document.getElementById('searchBtn').addEventListener('click', (event) => {
-      // Prevent default action if needed
+     
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
       if (query) {
         searchYouTube(query);
         searchGoogle(query);
+        searchGemini(query); 
       }
     });
-    </script>
+  </script>
   <script src ="youtube-search.js"></script>
-
-</body>
+  <script src="test-gemini.js"></script> </body>
 </html>

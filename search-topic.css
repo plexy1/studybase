@@ -4,17 +4,17 @@
   color: white;
   text-align: center;
   padding: 10px 0;
-  margin-top: auto; /* Push footer to the bottom */
+  margin-top: auto;
 }
 
 html, body {
-  height: 100%; /* Make sure html and body take full height */
+  height: 100%; 
 }
 
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure body is at least viewport height */
+  min-height: 100vh; 
 }
 
     a.text-light {
@@ -23,14 +23,14 @@ body {
     a.text-light:hover {
       text-decoration: underline;
     }
-    /* Style for profile logo */
+   
     .profile-logo {
       width: 35px;
       height: 35px;
       border-radius: 50%;
       object-fit: cover;
     }
-    /* Style for the search box */
+    
     .search-box {
       max-width: 600px;
       margin: 0 auto;
@@ -38,7 +38,6 @@ body {
     #searchResult {
       margin-top: 20px;
     }
-    /* Container to hold search results */
     .result-container {
       display: flex;
       justify-content: space-between;
@@ -48,7 +47,6 @@ body {
     .right-half {
       width: 48%;
     }
-    /* Styling for video details (YouTube) */
     .video-details {
       margin-top: 20px;
     }
@@ -63,7 +61,7 @@ body {
       text-align: left;
     }
     .video-details h3 a {
-      font-size: 1.5rem; /* Adjust video link size here if needed */
+      font-size: 1.5rem; 
     }
     .video-details .video-info {
       text-align: left;
@@ -81,7 +79,7 @@ body {
       line-height: 1.2;
       margin: 5px 0;
     }
-    /* Additional styling for Google results */
+    
     #googleResults {
       text-align: left;
     }
@@ -103,7 +101,7 @@ body {
       font-size: 0.9rem;
       color: #555;
     }
-    /* Styling for YouTube slider */
+   
     #videoSlider {
       gap: 1rem;
       white-space: nowrap;
