@@ -107,8 +107,59 @@ async function checkYouTubeAPIStatus() {
     }
 }
 
+
+const GEMINI_API_KEY = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk'; 
+
+async function checkGeminiAPIStatus() {
+    const geminiAPIStatusElement = document.getElementById('gemini-api-status');
+    const promptText = 'Is Gemini API working?';
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: promptText
+                    }]
+                }]
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data && data.hasOwnProperty('candidates')) { 
+            geminiAPIStatusElement.textContent = 'Operational';
+            geminiAPIStatusElement.className = 'status ok';
+            geminiAPIStatusElement.classList.remove('error');
+            geminiAPIStatusElement.classList.add('ok');
+        } else {
+            geminiAPIStatusElement.textContent = 'Service Down';
+            geminiAPIStatusElement.className = 'status error';
+            geminiAPIStatusElement.classList.remove('ok');
+            geminiAPIStatusElement.classList.add('error');
+            console.error("Gemini API Test Failed: Unexpected response format", data);
+        }
+
+    } catch (error) {
+        console.error("Gemini API Test Failed:", error);
+        geminiAPIStatusElement.textContent = 'Service Down';
+        geminiAPIStatusElement.className = 'status error';
+        geminiAPIStatusElement.classList.remove('ok');
+        geminiAPIStatusElement.classList.add('error');
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     await checkFirebaseStatus();
     await checkGoogleAPIStatus();
     await checkYouTubeAPIStatus();
+    await checkGeminiAPIStatus(); 
 });
