@@ -61,6 +61,7 @@
 
   <div class="container text-center mt-5">
     <h1>Account & Settings</h1>
+    <button class="btn btn-danger mt-3" onclick="window.location.href='index.html'">Logout</button>
     <ul id="topicList" class="mt-3"></ul>
   </div>
   <footer class="footer bg-dark text-light py-3">
@@ -79,21 +80,21 @@
     const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
 
-    
+
     function enableDarkMode() {
       body.classList.add('dark-mode');
       darkModeToggle.checked = true;
       localStorage.setItem('darkMode', 'enabled');
     }
 
-    
+
     function disableDarkMode() {
       body.classList.remove('dark-mode');
       darkModeToggle.checked = false;
       localStorage.setItem('darkMode', null);
     }
 
-   
+
     function toggleDarkMode() {
       if (body.classList.contains('dark-mode')) {
         disableDarkMode();
@@ -102,10 +103,10 @@
       }
     }
 
-    
+
     darkModeToggle.addEventListener('change', toggleDarkMode);
 
-   
+
     if (localStorage.getItem('darkMode') === 'enabled') {
       enableDarkMode();
     } else {
