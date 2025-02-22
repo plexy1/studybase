@@ -1,21 +1,111 @@
-    .footer {     /*  same footer on all pages except login and register.*/
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #212529;
-    color: white;
-    text-align: center;
+.footer {     /*  same footer on all pages except login and register.*/
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #212529;
+  color: white;
+  text-align: center;
 }
-    a.text-light {
-      text-decoration: none;
-    }
-    a.text-light:hover {
-      text-decoration: underline;
-    }
-    /* Style for profile logo */
-    .profile-logo {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+  a.text-light {
+    text-decoration: none;
+  }
+  a.text-light:hover {
+    text-decoration: underline;
+  }
+  /* Style for profile logo */
+  .profile-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .navbar {
+  background-color: #212529 !important; 
+}
+
+.dark-mode .nav-link {
+  color: #f8f9fa !important; 
+}
+
+.dark-mode .nav-link:hover,
+.dark-mode .nav-link:focus {
+  color: rgba(255, 255, 255, 0.75) !important; 
+}
+
+.dark-mode .footer {
+  background-color: #212529 !important; 
+  color: #f8f9fa;
+}
+
+.dark-mode .search-box .form-control {
+  background-color: #343a40; 
+  color: #ffffff;
+  border-color: #495057;
+}
+
+.dark-mode .search-box .form-control::placeholder {
+  color: #adb5bd; 
+}
+
+.dark-mode .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.dark-mode .btn-primary:hover,
+.dark-mode .btn-primary:focus,
+.dark-mode .btn-primary:active,
+.dark-mode .btn-primary.active,
+.dark-mode .btn-primary.focus,
+.dark-mode .btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  color: #fff;
+}
+
+.dark-mode .result-container {
+  background-color: #1e1e1e; 
+  border: 1px solid #343a40;
+}
+
+.dark-mode .result-container h6 {
+  color: #ffffff;
+}
+
+.dark-mode .list-group-item {
+  background-color: #212529;
+  color: #ffffff;
+  border-color: #343a40;
+}
+
+.dark-mode .btn-outline-secondary {
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+
+.dark-mode .btn-outline-secondary:hover,
+.dark-mode .btn-outline-secondary:focus,
+.dark-mode .btn-outline-secondary:active,
+.dark-mode .btn-outline-secondary.active {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+
+.dark-mode .profile-logo {
+ 
+  filter: brightness(1.1) contrast(1.2);
+}
+
+.dark-mode #historyContainer li {
+    color: #ffffff; 
+}
