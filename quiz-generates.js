@@ -1,7 +1,7 @@
 async function genQuiz(query) {
   const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
 
-  const promptText = `Generate 5 very specific example test questions for the topic ${query}, for a university level student. Do this in the format of just the question do not put the number`;
+  const promptText = `Generate 5 very specific example test questions for the topic ${query}, for a university level student. Generate just the question without putting 1. infront of it`;
   
   const geminiResultDiv = document.getElementById('geminiResult');
   geminiResultDiv.innerHTML = '<p>Loading Questions...</p>';
@@ -73,43 +73,65 @@ async function genAns(query) {
   }
 }
 
+const storedAnswers = {};
+
 function formatQuestions(roadmapText) {
   const questions = roadmapText.split('\n').filter(Boolean);
-  let formattedRoadmap = '<div style="text-align: left;">';
+  let formattedRoadmap = '<div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">';
+
   let questionCounter = 1;
 
   questions.forEach((question) => {
-      if (question.trim()) {
-          const answerBoxId = `answer-box-${questionCounter}`;
-          formattedRoadmap += `
-              <div style="margin-bottom: 15px;">
-                  <b>QUESTION ${questionCounter}:</b> ${question}<br>
-                  <button onclick="showAnswer('${question}', '${answerBoxId}')" style="margin-top: 5px;">
-                      Show Answer
-                  </button>
-                  <div id="${answerBoxId}" style="display: none; margin-top: 5px;" class="answer-box"></div>
-              </div>
-          `;
-          questionCounter++;
-      }
+    if (question.trim()) {
+      const answerBoxId = `answer-box-${questionCounter}`;
+      const buttonId = `button-${questionCounter}`;
+
+      formattedRoadmap += `
+        <div style="width: 50%; border: 2px solid #ccc; padding: 15px; border-radius: 8px; background: #f0f0f0; min-width: 300px;">
+            <b>QUESTION ${questionCounter}:</b><br><br> ${question}<br><br>
+            <button id="${buttonId}" onclick="showAns('${question}', '${answerBoxId}', '${buttonId}')" style="margin-top: 5px;">
+                Show Answer
+            </button>
+            <div id="${answerBoxId}" style="display: none; margin-top: 5px; padding: 10px; border: 1px solid #ddd; background: #e0e0e0; border-radius: 5px;">
+            </div>
+        </div>
+      `;
+
+      questionCounter++;
+    }
   });
 
   formattedRoadmap += '</div>';
   return formattedRoadmap;
 }
 
-async function showAnswer(question, answerBoxId) {
+async function showAns(question, answerBoxId, buttonId) {
   const answerBox = document.getElementById(answerBoxId);
-  answerBox.innerHTML = '<p>Loading Answer...</p>';
-  answerBox.style.display = 'block';
+  const button = document.getElementById(buttonId);
 
-  try {
-      const answer = await genAns(question);
-      answerBox.innerHTML = `<i>${answer}</i>`;
+  if (answerBox.style.display === 'none' || answerBox.innerHTML === '') {
+    button.disabled = true;
+
+    if (!storedAnswers[question]) {
+      answerBox.innerHTML = '<p>Loading Answer...</p>';
+      
+      try {
+        const answer = await genAns(question);
+        storedAnswers[question] = `<i>${answer}</i>`;
+      } catch (error) {
+        console.error('Error displaying answer:', error);
+        storedAnswers[question] = '<p>Error Generating Answer.</p>';
+      }
+    }
+
+    answerBox.innerHTML = storedAnswers[question];
+    answerBox.style.display = 'block';
+    button.textContent = "Hide Answer";
+    button.disabled = false;
   } 
   
-  catch (error) {
-      console.error('Error displaying answer:', error);
-      answerBox.innerHTML = '<p>Error Generating Answer.</p>';
+  else {
+    answerBox.style.display = 'none';
+    button.textContent = "Show Answer";
   }
 }
