@@ -1,10 +1,10 @@
-async function searchGemini(query) {
+async function genQuiz(query) {
     const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
 
-    const promptText = `university level study roadmap for ${query}, topics only, numbered 1 to n`;
+    const promptText = `Generate 5 specific questions for the topic ${query}, for a university level student.`;
 
     const geminiResultDiv = document.getElementById('geminiResult');
-    geminiResultDiv.innerHTML = '<p>Loading Gemini Roadmap...</p>';
+    geminiResultDiv.innerHTML = '<p>Loading Questions...</p>';
 
     try {
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
@@ -26,13 +26,13 @@ async function searchGemini(query) {
       }
 
       const data = await response.json();
-      let roadmap = "No roadmap found.";
+      let roadmap = "No Questions Could Be Generated.";
 
       if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts.length > 0) {
         roadmap = data.candidates[0].content.parts[0].text;
       }
 
-      geminiResultDiv.innerHTML = formatRoadmap(roadmap);
+      geminiResultDiv.innerHTML = formatQuestions(roadmap);
 
 
     } catch (error) {
@@ -41,7 +41,7 @@ async function searchGemini(query) {
     }
   }
 
-  function formatRoadmap(roadmapText) {
+  function formatQuestions(roadmapText) {
     const points = roadmapText.split(/(\d+\.)/).filter(Boolean);
     let formattedRoadmap = '<ul style="text-align: left;">'; 
     for (let i = 0; i < points.length; i += 2) {
