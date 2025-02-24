@@ -1,7 +1,7 @@
 async function genQuiz(query) {
     const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
 
-    const promptText = `Generate 5 specific questions for the topic ${query}, for a university level student.`;
+    const promptText = `Generate 5 very specific example test questions for the topic ${query}, for a university level student. End each line with a question mark`;
 
     const geminiResultDiv = document.getElementById('geminiResult');
     geminiResultDiv.innerHTML = '<p>Loading Questions...</p>';
@@ -37,20 +37,103 @@ async function genQuiz(query) {
 
     } catch (error) {
       console.error('Gemini search error:', error);
-      geminiResultDiv.innerHTML = '<p>Error fetching Gemini roadmap.</p>';
+      geminiResultDiv.innerHTML = '<p>Error Generating Questions.</p>';
     }
   }
+  
+  async function genAns(query) {
+    const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
+    const promptText = `Generate a one sentence answer or numerical solution to ${query}.`;
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: promptText
+                    }]
+                }]
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        let answer = "No Answer Could Be Generated.";
+
+        if (data.candidates && data.candidates.length > 0 &&
+            data.candidates[0].content && data.candidates[0].content.parts &&
+            data.candidates[0].content.parts.length > 0) {
+            answer = data.candidates[0].content.parts[0].text;
+        }
+
+        return answer;
+
+    } catch (error) {
+        console.error('Gemini search error:', error);
+        return 'Error Generating Answer.';
+    }
+}
 
   function formatQuestions(roadmapText) {
-    const points = roadmapText.split(/(\d+\.)/).filter(Boolean);
-    let formattedRoadmap = '<ul style="text-align: left;">'; 
-    for (let i = 0; i < points.length; i += 2) {
-      const pointNumber = points[i];
-      const pointDescription = points[i + 1] ? points[i + 1].trim() : '';
-      if (pointDescription) {
-        formattedRoadmap += `<li><b>${pointNumber.trim()}</b> ${pointDescription}</li>`;
-      }
+    const points = roadmapText.split('\n').filter(Boolean);
+    let formattedRoadmap = '<div style="text-align: left;">'; 
+    let questionCounter = 1;
+
+    for (let i = 0; i < points.length; i++) {
+        const pointDescription = points[i];
+
+        if (pointDescription) {
+            const [topic, ...rest] = pointDescription.split("?"); // question title
+            const questionTitle = topic.trim();
+            const questionBody = rest.join("?").trim();
+
+            if (questionTitle) {
+                const answerBoxId = `answer-box-${questionCounter}`;
+
+                formattedRoadmap += `
+                    <div style="margin-bottom: 15px;">
+                        <b>QUESTION ${questionCounter}:</b> '${questionTitle}'<br>
+                        ${questionBody ? questionBody + "<br>" : ""}
+                        <button onclick="showAnswer('${questionBody}', '${answerBoxId}')" style="margin-top: 5px;">
+                            Show Answer
+                        </button>
+                        <div id="${answerBoxId}" style="display: none; margin-top: 5px;" class="answer-box">
+                        </div>
+                    </div>
+                `;
+
+                questionCounter++;
+            }
+        }
     }
-    formattedRoadmap += '</ul>';
+
+    formattedRoadmap += '</div>';
     return formattedRoadmap;
   }
+
+  async function showAnswer(roadmapText, answerBoxId) {
+      const answerBox = document.getElementById(answerBoxId);
+      answerBox.innerHTML = '<p>Loading Answer...</p>';
+      answerBox.style.display = 'block';
+
+      try {
+          const answer = await genAns(roadmapText);
+          answerBox.innerHTML = `<i>${answer}</i>`;
+      } catch (error) {
+          console.error('Error displaying answer:', error);
+          answerBox.innerHTML = '<p>Error Generating Answer.</p>';
+      }
+  }
+
+
+
+
+
+

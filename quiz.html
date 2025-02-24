@@ -113,19 +113,22 @@
       disableDarkMode();
     }
   </script>
-
+  
 <div class="container text-center mt-5">
-  <div class="search-box mt-4">
+  <div class="search-box mt-4 d-flex justify-content-center align-items-center">
     <input
       id="searchInput"
       type="text"
-      class="form-control"
-      placeholder="Enter Topic To Generate Quiz For: "
+      class="form-control w-50"
+      placeholder="Enter Topic To Generate Quiz For:"
+      style="max-width: 300px;"
     >
-    <button id="searchBtn" type="button" class="btn btn-primary mt-2 w-100">
+    <button id="searchBtn" type="button" class="btn btn-primary ms-2">
       Generate Quiz
     </button>
   </div>
+</div>
+
 
   <div id="searchResult" class="result-container">
       <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
