@@ -123,10 +123,27 @@
       placeholder="Enter Topic To Generate Quiz For: "
     >
     <button id="searchBtn" type="button" class="btn btn-primary mt-2 w-100">
-      Search
+      Generate Quiz
     </button>
   </div>
 
+  <div id="searchResult" class="result-container">
+      <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
+      <div class="mt-2 text-center">
+    </div>
+
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', (event) => {
+
+      event.preventDefault();
+      const input = document.getElementById('searchInput').value.trim();
+      if(input) {
+        searchGemini(input);
+      }
+    });
+  </script>
+
+<script src="generate-quiz-gemini.js"></script>
 
 
 
