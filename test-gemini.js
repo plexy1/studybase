@@ -1,5 +1,5 @@
 async function searchGemini(query) {
-    const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
+    const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
 
     const promptText = `university level study roadmap for ${query}, topics only, numbered 1 to n`;
 
@@ -7,7 +7,7 @@ async function searchGemini(query) {
     geminiResultDiv.innerHTML = '<p>Loading Gemini Roadmap...</p>';
 
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

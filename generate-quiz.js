@@ -1,5 +1,5 @@
 async function genQuiz(query) {
-  const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
+  const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
 
   const promptText = `Generate 5 very specific example test questions for the topic ${query}, for a university level student. Generate just the question without putting 1. infront of it`;
   
@@ -7,7 +7,7 @@ async function genQuiz(query) {
   geminiResultDiv.innerHTML = '<p>Loading Questions...</p>';
 
   try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'

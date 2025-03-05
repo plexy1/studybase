@@ -108,14 +108,14 @@ async function checkYouTubeAPIStatus() {
 }
 
 
-const GEMINI_API_KEY = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk'; 
+const GEMINI_API_KEY = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA'; 
 
 async function checkGeminiAPIStatus() {
     const geminiAPIStatusElement = document.getElementById('gemini-api-status');
     const promptText = 'Is Gemini API working?';
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
