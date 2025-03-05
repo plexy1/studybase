@@ -24,7 +24,7 @@
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
         aria-expanded="false"
-        aria-label="Toggle navigation" 
+        aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -60,7 +60,7 @@
     </div>
   </nav>
 
-  <div class="container text-center mt-5">
+  <div class="container text-center mt-5" style="margin-bottom: 20px;">
     <h1>Quiz</h1>
     <ul id="topicList" class="mt-3"></ul>
   </div>
@@ -80,21 +80,21 @@
     const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
 
-   
+
     function enableDarkMode() {
       body.classList.add('dark-mode');
       darkModeToggle.checked = true;
       localStorage.setItem('darkMode', 'enabled');
     }
 
-   
+
     function disableDarkMode() {
       body.classList.remove('dark-mode');
       darkModeToggle.checked = false;
       localStorage.setItem('darkMode', null);
     }
 
-   
+
     function toggleDarkMode() {
       if (body.classList.contains('dark-mode')) {
         disableDarkMode();
@@ -103,18 +103,18 @@
       }
     }
 
-   
+
     darkModeToggle.addEventListener('change', toggleDarkMode);
 
-   
+
     if (localStorage.getItem('darkMode') === 'enabled') {
       enableDarkMode();
     } else {
       disableDarkMode();
     }
   </script>
-  
-<div class="container text-center mt-5">
+
+<div class="container text-center mt-5" style="margin-bottom: 20px;">
   <div class="search-box mt-4 d-flex justify-content-center align-items-center">
     <input
       id="searchInput"
