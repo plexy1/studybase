@@ -1,4 +1,4 @@
-.footer {     /*  same footer on all pages except login and register.*/
+.footer {     
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -12,7 +12,7 @@
   a.text-light:hover {
     text-decoration: underline;
   }
-  /* Style for profile logo */
+  
   .profile-logo {
     width: 35px;
     height: 35px;
@@ -108,4 +108,34 @@ filter: brightness(1.1) contrast(1.2);
 
 .dark-mode #historyContainer li {
   color: #ffffff;
+}
+
+
+.col-md-4 {
+  padding: 15px; 
+}
+
+#courseList .list-group-item,
+#professorList .list-group-item {
+  cursor: pointer; 
+}
+
+#courseList .list-group-item.active,
+#professorList .list-group-item.active {
+  background-color: #007bff; 
+  color: white;
+}
+
+#reviewList {
+  padding: 10px;
+  border: 1px solid #ced4da; 
+  border-radius: 5px;
+  min-height: 200px;
+}
+
+.dark-mode #reviewList {
+  border-color: #343a40;
+}
+.dark-mode #reviewList p.text-muted {
+    color: white !important; /* or rgba(255, 255, 255, 0.6) or any light color */
 }
