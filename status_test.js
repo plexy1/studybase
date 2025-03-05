@@ -1,4 +1,3 @@
-// status_test.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
@@ -108,7 +107,7 @@ async function checkYouTubeAPIStatus() {
 }
 
 
-const GEMINI_API_KEY = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA'; 
+const GEMINI_API_KEY = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
 
 async function checkGeminiAPIStatus() {
     const geminiAPIStatusElement = document.getElementById('gemini-api-status');
@@ -134,7 +133,7 @@ async function checkGeminiAPIStatus() {
         }
 
         const data = await response.json();
-        if (data && data.hasOwnProperty('candidates')) { 
+        if (data && data.hasOwnProperty('candidates')) {
             geminiAPIStatusElement.textContent = 'Operational';
             geminiAPIStatusElement.className = 'status ok';
             geminiAPIStatusElement.classList.remove('error');
@@ -157,9 +156,94 @@ async function checkGeminiAPIStatus() {
 }
 
 
+
+async function genQuiz(query) {
+   const apiKey = GEMINI_API_KEY; 
+   const promptText = `Generate 1 very specific example test question for the topic ${query}, for a university level student.`;
+
+   try {
+       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({
+               contents: [{
+                   parts: [{ text: promptText }]
+               }]
+           })
+       });
+
+       if (!response.ok) {
+           throw new Error(`HTTP error! status: ${response.status}`);
+       }
+
+       const data = await response.json();
+       return data; 
+
+   } catch (error) {
+       console.error('Gemini search error in genQuiz status check:', error);
+       throw error;
+   }
+}
+
+async function genAns(query) {
+   const apiKey = GEMINI_API_KEY; 
+   const promptText = `Generate a one-sentence answer or numerical solution to: ${query}`;
+
+   try {
+       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({
+               contents: [{
+                   parts: [{ text: promptText }]
+               }]
+           })
+       });
+
+       if (!response.ok) {
+           throw new Error(`HTTP error! status: ${response.status}`);
+       }
+
+       const data = await response.json();
+       return data; 
+
+   } catch (error) {
+       console.error('Gemini search error in genAns status check:', error);
+       throw error; 
+   }
+}
+
+
+async function checkQuizAnswerAPIStatus() {
+    const quizAnswerAPIStatusElement = document.getElementById('future-test-1');
+    const testQuery = "photosynthesis";
+
+    try {
+        await genQuiz(testQuery); 
+        await genAns(testQuery);   
+        quizAnswerAPIStatusElement.textContent = 'Operational';
+        quizAnswerAPIStatusElement.className = 'status ok';
+        quizAnswerAPIStatusElement.classList.remove('error');
+        quizAnswerAPIStatusElement.classList.add('ok');
+
+    } catch (error) {
+        console.error("Quiz & Answer API Test Failed:", error);
+        quizAnswerAPIStatusElement.textContent = 'Service Down';
+        quizAnswerAPIStatusElement.className = 'status error';
+        quizAnswerAPIStatusElement.classList.remove('ok');
+        quizAnswerAPIStatusElement.classList.add('error');
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     await checkFirebaseStatus();
     await checkGoogleAPIStatus();
     await checkYouTubeAPIStatus();
-    await checkGeminiAPIStatus(); 
+    await checkGeminiAPIStatus();
+    await checkQuizAnswerAPIStatus(); 
 });
