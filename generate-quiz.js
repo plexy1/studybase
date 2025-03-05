@@ -7,7 +7,7 @@ async function genQuiz(query) {
   geminiResultDiv.innerHTML = '<p>Loading Questions...</p>';
 
   try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
@@ -39,11 +39,11 @@ async function genQuiz(query) {
 }
 
 async function genAns(query) {
-  const apiKey = 'AIzaSyCovPBpJ9ZcuPKxSvp-nUACQ7e2odcEbxk';
+  const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
   const promptText = `Generate a one-sentence answer or numerical solution to: ${query}`;
 
   try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
