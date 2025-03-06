@@ -115,6 +115,12 @@ filter: brightness(1.1) contrast(1.2);
   padding: 15px;
 }
 
+#courseList,
+#professorList { /* Applying styles to both courseList and professorList */
+  max-height: 500px; /* Set a maximum height for the lists */
+  overflow-y: auto;  /* Enable vertical scrolling when content overflows */
+}
+
 #courseList .list-group-item,
 #professorList .list-group-item {
   cursor: pointer;

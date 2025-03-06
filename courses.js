@@ -32,15 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     disableDarkMode();
   }
 
-  // Sample course, professor, and review data (replace with actual data fetching later)
-  const courses = [
-    { name: 'Electrical Circuits', id: 'EECS2200' },
-    { name: 'Software Development Project', id: 'EECS2311' },
-    { name: 'Experimental Electromagnetism', id: 'PHYS2211' },
-    { name: 'Calculus I', id: 'MATH1013' },
-    { name: 'Linear Algebra', id: 'MATH1025' }
-  ];
-
+  // Sample professor and review data (replace with actual data fetching later)
   const professors = {
     'EECS2200': [
       { name: 'Dr. Smith', id: 'prof1' },
@@ -74,33 +66,45 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
 
-  function displayCourses(searchQuery = '') { // Added searchQuery parameter with default empty string
+  function displayCourses(searchQuery = '') {
     const courseListUl = document.getElementById('courseList');
     courseListUl.innerHTML = '';
-    const filteredCourses = courses.filter(course => {
-      const searchText = searchQuery.toLowerCase();
-      return course.name.toLowerCase().includes(searchText) || course.id.toLowerCase().includes(searchText);
-    });
 
-    if (filteredCourses.length === 0 && searchQuery) { // If no courses found and search query is not empty
-        const li = document.createElement('li');
-        li.classList.add('list-group-item', 'disabled');
-        li.textContent = 'No courses found matching your search.';
-        courseListUl.appendChild(li);
-    } else {
-        filteredCourses.forEach(course => {
+    fetch('courses.txt') // Or 'courses.json' if you named it that
+      .then(response => response.json()) // Parse the JSON response
+      .then(courses => { // Now you have the courses data from the file
+        const filteredCourses = courses.filter(course => {
+          const searchText = searchQuery.toLowerCase();
+          return course.name.toLowerCase().includes(searchText) || course.id.toLowerCase().includes(searchText);
+        });
+
+        if (filteredCourses.length === 0 && searchQuery) {
+          const li = document.createElement('li');
+          li.classList.add('list-group-item', 'disabled');
+          li.textContent = 'No courses found matching your search.';
+          courseListUl.appendChild(li);
+        } else {
+          filteredCourses.forEach(course => {
             const li = document.createElement('li');
             li.classList.add('list-group-item', 'course-item');
             li.textContent = course.name;
             li.dataset.courseId = course.id;
             li.addEventListener('click', function() {
-                displayProfessors(this.dataset.courseId);
-                clearReviews();
-                highlightSelectedCourse(this);
+              displayProfessors(this.dataset.courseId);
+              clearReviews();
+              highlightSelectedCourse(this);
             });
             courseListUl.appendChild(li);
-        });
-    }
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error loading courses:', error);
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'disabled', 'text-danger');
+        li.textContent = 'Failed to load courses. Please check console for errors.';
+        courseListUl.appendChild(li);
+      });
   }
 
   function displayProfessors(courseId) {
