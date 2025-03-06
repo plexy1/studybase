@@ -11,7 +11,46 @@
   <link rel="stylesheet" href="dark-mode.css">
   <script src="youtube-search.js"></script>
   <link href="quiz.css" rel="stylesheet">
-
+  <style>
+    .difficulty-btn {
+      transition: all 0.2s ease;
+    }
+    .difficulty-btn.active {
+      transform: scale(1.05);
+      font-weight: bold;
+    }
+    .slider-container {
+      width: 100%;
+      max-width: 300px;
+      margin: 15px auto;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    .centered-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .input-group {
+      width: 250px;
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,7 +63,7 @@
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
         aria-expanded="false"
-        aria-label="Toggle navigation"
+        aria-label="Toggle navigation" 
       >
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -36,7 +75,6 @@
         <li class="nav-item">
           <a class="nav-link" href="courses.html">Search Course</a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="quiz.html">Generate Quiz</a>
         </li>
@@ -60,92 +98,157 @@
     </div>
   </nav>
 
-  <div class="container text-center mt-5" style="margin-bottom: 20px;">
-    <h1>Quiz</h1>
+  <div class="container text-center mt-5">
+    <h1>Quiz Generator</h1>
     <ul id="topicList" class="mt-3"></ul>
   </div>
-  <footer class="footer bg-dark text-light py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-      <p class="mb-0">&copy; 2025 Group 7</p>
-      <div>
-        <a href="#" class="text-light me-3">Instagram</a>
-        <a href="#" class="text-light me-3">Twitter</a>
-        <a href="#" class="text-light">LinkedIn</a>
+  
+  <div class="container mt-5 centered-content">
+    <!-- Search bar and education level dropdown -->
+    <div class="search-container mb-3">
+      <div class="input-group">
+        <input
+          id="searchInput"
+          type="text"
+          class="form-control"
+          placeholder="Enter Quiz Topic"
+          style="width: 250px;"
+        >
+      </div>
+      
+      <select id="educationLevel" class="form-select" style="width: 200px;">
+        <option selected value="highSchool">High School</option>
+        <option value="university12">Year 1-2 University</option>
+        <option value="university34">Year 3-4 University</option>
+        <option value="masters">Masters+</option>
+      </select>
+      
+      <button id="searchBtn" type="button" class="btn btn-primary">
+        Generate Quiz
+      </button>
+    </div>
+    
+    <!-- Question count slider -->
+    <div class="slider-container mt-4">
+      <label for="questionSlider" class="form-label d-block text-center mb-2">Number of Questions
+      <input 
+        type="range" 
+        class="form-range" 
+        min="1" 
+        max="8" 
+        step="1" 
+        id="questionSlider" 
+        value="4"
+      >
+      <div class="slider-labels">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
       </div>
     </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-
-
-    function enableDarkMode() {
-      body.classList.add('dark-mode');
-      darkModeToggle.checked = true;
-      localStorage.setItem('darkMode', 'enabled');
-    }
-
-
-    function disableDarkMode() {
-      body.classList.remove('dark-mode');
-      darkModeToggle.checked = false;
-      localStorage.setItem('darkMode', null);
-    }
-
-
-    function toggleDarkMode() {
-      if (body.classList.contains('dark-mode')) {
-        disableDarkMode();
-      } else {
-        enableDarkMode();
-      }
-    }
-
-
-    darkModeToggle.addEventListener('change', toggleDarkMode);
-
-
-    if (localStorage.getItem('darkMode') === 'enabled') {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
-  </script>
-
-<div class="container text-center mt-5" style="margin-bottom: 20px;">
-  <div class="search-box mt-4 d-flex justify-content-center align-items-center">
-    <input
-      id="searchInput"
-      type="text"
-      class="form-control w-50"
-      placeholder="Enter topic for quiz:"
-      style="max-width: 300px;"
-    >
-    <button id="searchBtn" type="button" class="btn btn-primary ms-2">
-      Generate Quiz
-    </button>
-  </div>
-</div>
-
-
-  <div id="searchResult" class="result-container mt-5">
-      <h6></h6><div id="geminiResult" class="mt-20px"></div></h6>
-      <div class="mt-2 text-center">
+    
+    <!-- Difficulty buttons -->
+    <div class="difficulty-container mt-3 mb-4">
+      <span class="me-2">Difficulty:</span>
+      <div class="btn-group" role="group" aria-label="Quiz difficulty">
+        <button type="button" class="btn btn-outline-success difficulty-btn active" data-difficulty="easy">Easy</button>
+        <button type="button" class="btn btn-outline-warning difficulty-btn" data-difficulty="medium">Medium</button>
+        <button type="button" class="btn btn-outline-danger difficulty-btn" data-difficulty="hard">Hard</button>
+      </div>
     </div>
+  </div>
+
+  <div id="searchResult" class="result-container mt-3">
+    <div id="geminiResult" class="mt-3 text-center"></div>
+  </div>
 
   <script>
+    const slider = document.getElementById('questionSlider');
+    const output = document.getElementById('questionValue');
+    slider.oninput = function() {
+      output.textContent = this.value;
+    }
+    
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    let selectedDifficulty = 'easy'; 
+    difficultyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        difficultyBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedDifficulty = btn.getAttribute('data-difficulty');
+      });
+    });
+    
     document.getElementById('searchBtn').addEventListener('click', (event) => {
-
       event.preventDefault();
       const input = document.getElementById('searchInput').value.trim();
+      const questionCount = document.getElementById('questionSlider').value;
+      const educationLevel = document.getElementById('educationLevel').value;
+      
       if(input) {
-        genQuiz(input);
+        genQuiz(input, questionCount, selectedDifficulty, educationLevel);
       }
     });
   </script>
 
+<footer class="footer bg-dark text-light py-3 mt-5">
+  <div class="container d-flex justify-content-between align-items-center">
+    <p class="mb-0">&copy; 2025 Group 7</p>
+    <div>
+      <a href="#" class="text-light me-3">Instagram</a>
+      <a href="#" class="text-light me-3">Twitter</a>
+      <a href="#" class="text-light">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const body = document.body;
+
+ 
+  function enableDarkMode() {
+    body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+    localStorage.setItem('darkMode', 'enabled');
+  }
+
+ 
+  function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    darkModeToggle.checked = false;
+    localStorage.setItem('darkMode', null);
+  }
+
+ 
+  function toggleDarkMode() {
+    if (body.classList.contains('dark-mode')) {
+      disableDarkMode();
+    } 
+    
+    else {
+      enableDarkMode();
+    }
+  }
+
+ 
+  darkModeToggle.addEventListener('change', toggleDarkMode);
+
+ 
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    enableDarkMode();
+  } 
+  
+  else {
+    disableDarkMode();
+  }
+</script>
 <script src="generate-quiz.js"></script>
   </body>
 </html>
