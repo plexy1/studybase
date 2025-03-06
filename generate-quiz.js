@@ -212,7 +212,7 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
 
       formattedRoadmap += `
         <div class="question-box">
-            <b>QUESTION ${questionCounter}:</b><br><br> ${question}<br><br>
+            <b>QUESTION ${questionCounter}</b><br><br> ${question}<br><br>
             <button id="${buttonId}" class="show-answer-button" onclick="showAns('${questionId}', '${answerBoxId}', '${buttonId}', '${difficulty}', '${educationLevel}')">
                 Show Answer
             </button>
