@@ -36,7 +36,7 @@ async function genQuiz(query, questionCount = 5, difficulty = 'medium', educatio
       difficultyLevel = 'intermediate level';
   }
 
-  const promptText = `Generate ${finalCount} specific test questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
+  const promptText = `Generate ${finalCount} specific test and numerical questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
   const loadingText = "Loading Questions...";
@@ -153,8 +153,7 @@ const storedAnswers = {};
 
 function formatQuestions(roadmapText, difficulty, educationLevel) {
   const questions = roadmapText.split('\n').filter(Boolean);
-  let formattedRoadmap = '<div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">';
-
+  
   let levelDisplay = '';
   switch(educationLevel) {
     case 'highSchool':
@@ -194,27 +193,30 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
       difficultyText = 'Medium';
   }
   
-  formattedRoadmap += `<div class="quiz-info mb-3">
-    <span class="badge bg-secondary">Level: ${levelDisplay}</span>
-    <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
-    <span class="badge bg-secondary ms-2">Questions: ${questions.length}</span>
-  </div>`;
+  let formattedRoadmap = `
+  <div class="quiz-container">
+    <div class="quiz-info mb-3">
+      <span class="badge bg-secondary">Level: ${levelDisplay}</span>
+      <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
+      <span class="badge bg-secondary ms-2">Questions: ${questions.length}</span>
+    </div>
+    <div class="question-grid">`;
 
   let questionCounter = 1;
 
   questions.forEach((question) => {
-    if (question.trim()) {
+    if (question.trim() && questionCounter <= 8) {
       const answerBoxId = `answer-box-${questionCounter}`;
       const buttonId = `button-${questionCounter}`;
       const questionId = `question-${Date.now()}-${questionCounter}`;
 
       formattedRoadmap += `
-        <div class="question-box" style="width: 80%; border-radius: 8px; min-width: 300px; max-width: 600px;">
+        <div class="question-box">
             <b>QUESTION ${questionCounter}:</b><br><br> ${question}<br><br>
             <button id="${buttonId}" class="show-answer-button" onclick="showAns('${questionId}', '${answerBoxId}', '${buttonId}', '${difficulty}', '${educationLevel}')">
                 Show Answer
             </button>
-            <div id="${answerBoxId}" class="answer-box" style="display: none; margin-top: 5px; border-radius: 5px;">
+            <div id="${answerBoxId}" class="answer-box" style="display: none;">
             </div>
         </div>
       `;
@@ -224,7 +226,7 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
     }
   });
 
-  formattedRoadmap += '</div>';
+  formattedRoadmap += '</div></div>';
   return formattedRoadmap;
 }
 
