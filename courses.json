@@ -1,320 +1,2702 @@
 [
-    { "name": "Electrical Circuits", "id": "EECS2200" },
-    { "name": "Software Development Project", "id": "EECS2311" },
-    { "name": "Experimental Electromagnetism", "id": "PHYS2211" },
-    { "name": "Calculus I", "id": "MATH1013" },
-    { "name": "Linear Algebra", "id": "MATH1025" },
-    { "name": "Introduction to Business", "id": "ADMS1000" },
-    { "name": "Exploring the Functions of Business", "id": "ADMS1010" },
-    { "name": "An Introduction to Accounting for Human Resource Professionals", "id": "ADMS1500" },
-    { "name": "Business Statistics", "id": "ADMS2320" },
-    { "name": "Introduction to Organizational Behaviour", "id": "ADMS2400" },
-    { "name": "Introduction to Financial Accounting", "id": "ADMS2500" },
-    { "name": "Introduction to Management Accounting", "id": "ADMS2510" },
-    { "name": "Management Information Systems", "id": "ADMS2511" },
-    { "name": "Introduction to Personal Finance", "id": "ADMS2541" },
-    { "name": "Elements of Law: Part One", "id": "ADMS2610" },
-    { "name": "Fundamentals of Emergency Management", "id": "ADMS2700" },
-    { "name": "Directed Reading", "id": "ADMS3000" },
-    { "name": "Internship Work Term", "id": "ADMS3010" },
-    { "name": "Gender Issues in Management", "id": "ADMS3120" },
-    { "name": "Decision Analysis", "id": "ADMS3300" },
-    { "name": "Introduction to Management Science", "id": "ADMS3330" },
-    { "name": "Operations Management", "id": "ADMS3351" },
-    { "name": "Equity, Diversity and Inclusion in the Workplace", "id": "ADMS3450" },
-    { "name": "Managerial Cost Accounting and Analysis", "id": "ADMS3510" },
-    { "name": "An Overview of Canadian Income Taxation", "id": "ADMS3520" },
-    { "name": "Finance", "id": "ADMS3530" },
-    { "name": "Personal Financial Planning", "id": "ADMS3541" },
-    { "name": "Intermediate Financial Accounting I", "id": "ADMS3585" },
-    { "name": "Intermediate Financial Accounting II", "id": "ADMS3595" },
-    { "name": "Business Ethics and Corporate Social Responsibility", "id": "ADMS3660" },
-    { "name": "Introduction to Real Estate", "id": "ADMS3810" },
-    { "name": "The Practice of General Management", "id": "ADMS3900" },
-    { "name": "Directed Reading", "id": "ADMS4000" },
-    { "name": "Marketing Strategy Development and Implementation", "id": "ADMS4250" },
-    { "name": "Brand Management", "id": "ADMS4285" },
-    { "name": "Organizational Communication", "id": "ADMS4481" },
-    { "name": "Ethics for Investment Managers", "id": "ADMS4502" },
-    { "name": "Advanced Financial Accounting", "id": "ADMS4520" },
-    { "name": "Financial Management", "id": "ADMS4540" },
-    { "name": "Auditing and Other Assurance Services", "id": "ADMS4551" },
-    { "name": "Auditing: Advanced Topics", "id": "ADMS4553" },
-    { "name": "Taxation Of Personal Income in Canada", "id": "ADMS4561" },
-    { "name": "Corporate Taxation in Canada", "id": "ADMS4562" },
-    { "name": "Management Planning and Control Systems", "id": "ADMS4570" },
-    { "name": "Comprehensive and Multi-subject Accounting Problems", "id": "ADMS4590" },
-    { "name": "Management Policy Part I", "id": "ADMS4900" },
-    { "name": "The Living and the Dead: The Anthropology of Im/mortality from", "id": "ANTH1130" },
-    { "name": "Race, Racism & Popular Culture", "id": "ANTH2020" },
-    { "name": "The Anthropology of Digital Media and Visual Representation", "id": "ANTH3040" },
-    { "name": "Directed Reading", "id": "ANTH4010" },
-    { "name": "Placement Option MA", "id": "ANTH5040" },
-    { "name": "Independent Directed Reading", "id": "ANTH5210" },
-    { "name": "Placement Option PhD", "id": "ANTH6040" },
-    { "name": "Independent Directed Reading", "id": "ANTH6210" },
-    { "name": "Introduction to Modern Standard Arabic", "id": "ARB1000" },
-    { "name": "Introduction to Modern Standard Arabic for Advanced Beginners", "id": "ARB1010" },
-    { "name": "Placement", "id": "ARTH5190" },
-    { "name": "Individualized Reading", "id": "ARTH5500A" },
-    { "name": "Individualized Reading", "id": "ARTH5500B" },
-    { "name": "Research Paper", "id": "ARTH6010" },
-    { "name": "Art History and Visual Culture Summer Institute", "id": "ARTH6020" },
-    { "name": "Research Practicum", "id": "BIOL1603" },
-    { "name": "Animals", "id": "BIOL2030" },
-    { "name": "Genetics", "id": "BIOL2040" },
-    { "name": "Statistics for Biologists", "id": "BIOL2060" },
-    { "name": "Research Methods in Cell and Molecular Biology", "id": "BIOL2070" },
-    { "name": "Research Practicum", "id": "BIOL2603" },
-    { "name": "Animal Physiology I", "id": "BIOL3060" },
-    { "name": "Animal Physiology II", "id": "BIOL3070" },
-    { "name": "Microbiology", "id": "BIOL3150" },
-    { "name": "Research Practicum", "id": "BIOL3603" },
-    { "name": "Biology Internship Work Term", "id": "BIOL3901" },
-    { "name": "Biology Internship Work Term", "id": "BIOL3902" },
-    { "name": "Biology Internship Work Term", "id": "BIOL3903" },
-    { "name": "Honours Thesis", "id": "BIOL4000" },
-    { "name": "Selected Readings in Biology", "id": "BIOL4200" },
-    { "name": "Research Practicum", "id": "BIOL4603" },
-    { "name": "Professional Work Placement / Placement en milieu de travail", "id": "BIOL4975" },
-    { "name": "Biophysics Internship Work Term", "id": "BPHS3900" },
-    { "name": "Biophysics Research Project", "id": "BPHS4310" },
-    { "name": "Internship", "id": "BUEC4500" },
-    { "name": "Stage professionnel", "id": "BUEC4500" },
-    { "name": "Capstone: Canadian Law in Practice", "id": "CCLW6610" },
-    { "name": "Canadian Criminal Law", "id": "CCLW6843" },
-    { "name": "Canadian Law of Evidence", "id": "CCLW6849" },
-    { "name": "Children's Literature & Film Adaptations", "id": "CCY3690" },
-    { "name": "Picturebooks in Children's Culture", "id": "CCY3691" },
-    { "name": "Childhood in Canadian Culture", "id": "CCY4140" },
-    { "name": "Children, Youth, and Digital Culture", "id": "CCY4141" },
-    { "name": "Research with Children and Young People: Honours Research Project", "id": "CCY4999" },
-    { "name": "Directed Reading in Critical Disability Studies", "id": "CDIS5000" },
-    { "name": "MA Major Research Paper", "id": "CDIS6001" },
-    { "name": "Professional Work Placement / Placement en milieu de travail", "id": "CDNS4975" },
-    { "name": "Chemical Structure", "id": "CHEM1000" },
-    { "name": "Chemical Dynamics", "id": "CHEM1001" },
-    { "name": "Chemistry and Materials Science for Engineers", "id": "CHEM1100" },
-    { "name": "Research Experience Term", "id": "CHEM2202" },
-    { "name": "Research Experience Term", "id": "CHEM3202" },
-    { "name": "Chemistry Internship Work Term", "id": "CHEM3901" },
-    { "name": "Chemistry Internship Work Term", "id": "CHEM3902" },
-    { "name": "Research Project", "id": "CHEM4000" },
-    { "name": "Research Experience Term", "id": "CHEM4202" },
-    { "name": "MSc Review Essay", "id": "CHEM6000" },
-    { "name": "MSc Research Evaluation", "id": "CHEM7000A" },
-    { "name": "MSc Research Evaluation", "id": "CHEM7000B" },
-    { "name": "PhD Research Evaluation", "id": "CHEM7001A" },
-    { "name": "PhD Research Evaluation", "id": "CHEM7001B" },
-    { "name": "PhD Research Evaluation", "id": "CHEM7001C" },
-    { "name": "PhD Research Evaluation", "id": "CHEM7001D" },
-    { "name": "Graduate Seminar Series in Civil Engineering", "id": "CIVL6000" },
-    { "name": "Doctor of Philosophy (PhD) in Civil Engineering Thesis", "id": "CIVL6001" },
-    { "name": "Master of Applied Science in Civil Engineering Thesis", "id": "CIVL6002" },
-    { "name": "Myth and Imagination in Ancient Greece and Rome", "id": "CLST1105" },
-    { "name": "Political Law", "id": "CLTC6810" },
-    { "name": "Communication, Presentation Skills and Voice", "id": "CLTR2420" },
-    { "name": "Music in Human Experience", "id": "CLTR2610" },
-    { "name": "Independent Studies in Culture & Expression", "id": "CLTR4000" },
-    { "name": "Field Placement", "id": "CMA4190" },
-    { "name": "Field Placements", "id": "CMCT6909" },
-    { "name": "Directed Readings (Master's Level)", "id": "CMCT6911" },
-    { "name": "Directed Readings (Ph.D. Level)", "id": "CMCT7011" },
-    { "name": "Introduction to Communication & Media", "id": "CMDS1000" },
-    { "name": "Mediations of Identity", "id": "CMDS4725" },
-    { "name": "Delay & Disruption in Construction Law", "id": "CNLW6503" },
-    { "name": "Apprendre en faisant / Less reading, more doing: Work placement/placement en milieu de travail I", "id": "COMS3800" },
-    { "name": "De la carte au territoire - From map to territory: Work placement/placement en milieu de travail II", "id": "COMS4800" },
-    { "name": "De la carte au territoire - From map to territory: Work placement/placement en milieu de travail III", "id": "COMS4805" },
-    { "name": "Co-op Work Term", "id": "COOP2001" },
-    { "name": "Professional Development for Co-Op Students", "id": "COOP2100" },
-    { "name": "EUC Co-op Work Term", "id": "COOP2109" },
-    { "name": "Lassonde Co-op Work-term", "id": "COOP2109" },
-    { "name": "Co-op Work Term", "id": "COOP3001" },
-    { "name": "Co-op Work Term", "id": "COOP3002" },
-    { "name": "Co-op Work Term", "id": "COOP3003" },
-    { "name": "Co-op Work Term", "id": "COOP3004" },
-    { "name": "Critical Reflection on Work Experience using Professional Portfolios", "id": "COOP3100" },
-    { "name": "EUC Co-op Work Term", "id": "COOP3109" },
-    { "name": "Lassonde Co-op Work-term", "id": "COOP3109" },
-    { "name": "Critical Thinking", "id": "CORE1711" },
-    { "name": "Introduction to Criminology", "id": "CRIM1650" },
-    { "name": "Criminal Justice Systems", "id": "CRIM2652" },
-    { "name": "Criminology Honours Seminar", "id": "CRIM4650" },
-    { "name": "Representing Crime", "id": "CRIM4654" },
-    { "name": "Introduction to Creative Writing", "id": "CWR2600" },
-    { "name": "Independent Studies", "id": "DANC4401" },
-    { "name": "Internship Work Term", "id": "DATT3929" },
-    { "name": "Fundamentals of Emergency Management", "id": "DEMS2700" },
-    { "name": "Directed Reading", "id": "DEMS5000" },
-    { "name": "Major Research Paper", "id": "DEMS6999" },
-    { "name": "Directed Reading", "id": "DIGM5990" },
-    { "name": "Web Development Basics", "id": "DIGT1302" },
-    { "name": "Security Fundamentals", "id": "DIGT2302" },
-    { "name": "Principles of Operating Systems", "id": "DIGT2307" },
-    { "name": "Professional Work Placement / Placement en milieu de travail", "id": "DRCA4975" },
-    { "name": "Principles of Risk Management and Insurance", "id": "ECON1280" },
-    { "name": "Operations Management", "id": "ECON3120" },
-    { "name": "Regional Economic Development", "id": "ECON4110" },
-    { "name": "Directed Readings", "id": "ECON5990M" },
-    { "name": "Reading & Research", "id": "ECON6990M" },
-    { "name": "Independent Reading Course", "id": "EDUC5900" },
-    { "name": "Student Initiated Collaborative Inquiry", "id": "EDUC5910" },
-    { "name": "Practicum Seminar", "id": "EDUC5915" },
-    { "name": "MRP/Thesis/Dissertation Research", "id": "EDUC6000" },
-    { "name": "Introduction to Computing: A Net-centric Approach", "id": "EECS1012" },
-    { "name": "Introduction to Computer Science and Programming", "id": "EECS1015" },
-    { "name": "Discrete Mathematics for Computer Science", "id": "EECS1019" },
-    { "name": "Object Oriented Programming from Sensors to Actuators", "id": "EECS1021" },
-    { "name": "Introduction to Object Oriented Programming", "id": "EECS1022" },
-    { "name": "Discrete Mathematics for Engineers", "id": "EECS1028" },
-    { "name": "Computer Use: Fundamentals", "id": "EECS1520" },
-    { "name": "Introduction to the Theory of Computation", "id": "EECS2001" },
-    { "name": "Computer Organization", "id": "EECS2021" },
-    { "name": "Advanced Object Oriented Programming", "id": "EECS2030" },
-    { "name": "Software Tools", "id": "EECS2031" },
-    { "name": "Introduction to Embedded Systems", "id": "EECS2032" },
-    { "name": "Fundamentals of Data Structures", "id": "EECS2101" },
-    { "name": "Electrical Circuits", "id": "EECS2200" },
-    { "name": "Design and Analysis of Algorithms", "id": "EECS3101" },
-    { "name": "Computer Network Protocols and Applications", "id": "EECS3214" },
-    { "name": "Operating System Fundamentals", "id": "EECS3221" },
-    { "name": "Software Design", "id": "EECS3311" },
-    { "name": "Introduction to Artificial Intelligence and Logic Programming", "id": "EECS3401" },
-    { "name": "Introduction to Database Systems", "id": "EECS3421" },
-    { "name": "Introduction to Computer Security", "id": "EECS3482" },
-    { "name": "Directed Studies", "id": "EECS4070" },
-    { "name": "Computer Science Project", "id": "EECS4080" },
-    { "name": "Compilers and Interpreters", "id": "EECS4302" },
-    { "name": "Software Engineering Requirements", "id": "EECS4312" },
-    { "name": "Building E-Commerce Systems", "id": "EECS4413" },
-    { "name": "Human-Computer Interaction", "id": "EECS4441" },
-    { "name": "Computer Security Project", "id": "EECS4480" },
-    { "name": "Human-Computer Interaction", "id": "EECS5351" },
-    { "name": "Directed Reading", "id": "EECS6002" },
-    { "name": "The Law and Economics of Electricity Markets", "id": "EIL7000" },
-    { "name": "An Introduction to Literary Study", "id": "EN1001" },
-    { "name": "Intertextualities", "id": "EN1002" },
-    { "name": "A Writer's Introduction to Literary Forms", "id": "EN1006" },
-    { "name": "Literature and Law", "id": "EN1101" },
-    { "name": "Writing: Process and Practice", "id": "EN1700" },
-    { "name": "Drama", "id": "EN2140" },
-    { "name": "Introduction to World Literature", "id": "EN2260" },
-    { "name": "Comedy", "id": "EN3191" },
-    { "name": "Shakespeare", "id": "EN3535" },
-    { "name": "Canadian Graphic Novel", "id": "EN4220" },
-    { "name": "Diaspora Literatures", "id": "EN4400" },
-    { "name": "Directed Reading", "id": "EN6010" },
-    { "name": "Directed Reading", "id": "EN6010A" },
-    { "name": "Eighteenth-Century Intellectual Texts", "id": "EN6320" },
-    { "name": "Renaissance Engineer 2: Engineering Design Principles", "id": "ENG1102" },
-    { "name": "Research Practicum", "id": "ENVB1603" },
-    { "name": "Research Practicum", "id": "ENVB2603" },
-    { "name": "Research Practicum", "id": "ENVB3603" },
-    { "name": "Honours Thesis", "id": "ENVB4000" },
-    { "name": "Selected Readings in Biology", "id": "ENVB4200" },
-    { "name": "Research Practicum", "id": "ENVB4603" },
-    { "name": "Introduction to Environmental Documentaries", "id": "ENVS1010" },
-    { "name": "Urban Gardening, Food, Justice and Sustainability", "id": "ENVS3301" },
-    { "name": "Directed Reading", "id": "ENVS3900" },
-    { "name": "Field Placement Course", "id": "ENVS4001" },
-    { "name": "Directed Study", "id": "ENVS4900" },
-    { "name": "Directed Study", "id": "ENVS4900Z" },
-    { "name": "MES Research Proposal", "id": "ENVS6102" },
-    { "name": "International Political Economy and Ecology Summer School", "id": "ENVS6275" },
-    { "name": "Individual Directed Study", "id": "ENVS6599" },
-    { "name": "Individual Directed Study", "id": "ENVS6599A" },
-    { "name": "Individual Directed Study", "id": "ENVS6599B" },
-    { "name": "Individual Directed Study", "id": "ENVS6599F" },
-    { "name": "Individual Directed Study", "id": "ENVS6599O" },
-    { "name": "Experiential Learning", "id": "ENVS6699" },
-    { "name": "MES Major Research", "id": "ENVS7899" },
-    { "name": "MES Thesis Research", "id": "ENVS7999" },
-    { "name": "Canadian Language and Culture", "id": "ESL1000" },
-    { "name": "Thinking about Contemporary Canada", "id": "ESL1450" },
-    { "name": "Directed Reading", "id": "ESS5010" },
-    { "name": "M.Sc. Research Evaluation", "id": "ESS6030A" },
-    { "name": "M.Sc. Research Evaluation", "id": "ESS6030B" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030A" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030B" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030C" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030D" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030E" },
-    { "name": "Ph.D. Research Evaluation", "id": "ESS7030F" },
-    { "name": "The Earth Environment", "id": "ESSE1012" },
-    { "name": "Exchange - Schulich Business Elective", "id": "EXCH4901" },
-    { "name": "Exchange - Schulich Business Elective", "id": "EXCH4902" },
-    { "name": "Exchange - Schulich Business Elective", "id": "EXCH4904" },
-    { "name": "Exchange - Schulich Business Elective", "id": "EXCH4910" },
-    { "name": "Exchange - Schulich Business Elective", "id": "EXCH4911" },
-    { "name": "Exchange - Globally Focused Elective", "id": "EXCH4921" },
-    { "name": "Exchange - Globally Focused Elective", "id": "EXCH4922" },
-    { "name": "Exchange - Non Business Elective", "id": "EXCH4941" },
-    { "name": "Exchange - Non Business Elective", "id": "EXCH4942" },
-    { "name": "Introduction to Governance and Accountability", "id": "FACC6000" },
-    { "name": "Corporate Responsibilty and Ethics", "id": "FACC6100" },
-    { "name": "Performance Measurement Systems", "id": "FACC6200" },
-    { "name": "Enterprise Risk Management", "id": "FACC6300" },
-    { "name": "Research Methods and Statistical Inference", "id": "FACC6400" },
-    { "name": "Corporate Governance", "id": "FACC6500" },
-    { "name": "Governance and Regulation of Anti-Money Laundering and Terrorist Financing", "id": "FACC6550" },
-    { "name": "Accountability Issues in the Public Sector", "id": "FACC6600" },
-    { "name": "Executive Compensation", "id": "FACC6700" },
-    { "name": "Synthesis of theory and practice, governance and accountability", "id": "FACC6800" },
-    { "name": "Financial Accountability Practicum", "id": "FACC6850" },
-    { "name": "Governance Over Internal Audit", "id": "FACC6865" },
-    { "name": "Advanced Techniques of Financial Analysis", "id": "FACC6870" },
-    { "name": "Information Technology Goverance", "id": "FACC6880" },
-    { "name": "Directed Readings", "id": "FACC6990" },
-    { "name": "Major Research Paper Option", "id": "FACC6999" },
-    { "name": "Field Placement", "id": "FILM5600" },
-    { "name": "Field Placement", "id": "FILM5600A" },
-    { "name": "Student Initiated Collaborative Inquiry", "id": "FILM5700" },
-    { "name": "Student Initiated Collaborative Inquiry", "id": "FILM5700A" },
-    { "name": "Independent Project", "id": "FILM5800" },
-    { "name": "Directed Reading", "id": "FILM5800A" },
-    { "name": "Basic French (CEFR A1)", "id": "FR0120" },
-    { "name": "Elementary French (CEFR A2)", "id": "FR0130" },
-    { "name": "French Language and Culture (CEFR B1)", "id": "FR1080" },
-    { "name": "Introduction à la linguistique générale et française", "id": "FRAN2600" },
-    { "name": "Français de spécialisation (L2) I", "id": "FRAN2805" },
-    { "name": "Français de spécialisation (L2) II", "id": "FRAN3805" },
-    { "name": "Français de spécialisation (L2) III", "id": "FRAN4805" },
-    { "name": "Professional Work Placement / Placement en milieu de travail", "id": "FRAN4975" },
-    { "name": "Fondements didactiques de l'enseignement de la littérature", "id": "FREN5248" },
-    { "name": "Cours de lecture dirigee", "id": "FREN5900" },
-    { "name": "Cours de lecture dirigée / Cours individuel (Directed reading)", "id": "FREN6900" },
-    { "name": "Field Placement Course", "id": "GEOG4001" },
-    { "name": "Directed Reading", "id": "GEOG4290" },
-    { "name": "M.A./M.Sc. Research Paper", "id": "GEOG6010" },
-    { "name": "M.A./M.Sc. Directed Reading Course", "id": "GEOG6050" },
-    { "name": "Ph.D. Directed Reading Course", "id": "GEOG6060" },
-    { "name": "Independent Study", "id": "GH4000" },
-    { "name": "Advanced Legal Research and Writing Skills", "id": "GNRL6101" },
-    { "name": "Introduction to Canadian Graduate Legal Studies (Online)", "id": "GNRL6249" },
-    { "name": "Major Research Paper", "id": "GNRL6317" },
-    { "name": "Significant Research Paper (Course-Based)", "id": "GNRL6817" },
-    { "name": "Independent Significant Research Paper", "id": "GNRL6848" },
-    { "name": "Introduction to Gender and Women's Studies", "id": "GWST1501" },
-    { "name": "Violence Against Women", "id": "GWST4502" },
-    { "name": "Directed Reading", "id": "GWST4801" },
-    { "name": "Professional Work Placement / Placement en milieu de travail", "id": "GWST4975" },
-    { "name": "Migration, Immigration and Beyond: Italians in North America", "id": "HIST1791" },
-    { "name": "United States History", "id": "HIST2600" },
-    { "name": "Introduction to the History of South Asia since 1700", "id": "HIST2795" },
-    { "name": "From the Defeat of Fascism to the Fall of Communism: Europe Since 1945", "id": "HIST3395" },
-    { "name": "Twentieth-Century Britain in Film and Culture", "id": "HIST3490" },
-    { "name": "Cultural Revolution: the 1960s in Canada", "id": "HIST4565" },
-    { "name": "Directed Readings", "id": "HIST5060" },
-    { "name": "Directed Readings", "id": "HIST6001" },
-    { "name": "Occupational Health and Safety", "id": "HLST3240" },
-    { "name": "Health Policy & Management Community Partner Field Project", "id": "HLST4900" },
-    { "name": "Directed Studies in Health Studies", "id": "HLTH5000" },
-    { "name": "Women and Human Rights", "id": "HREQ1700" },
-    { "name": "Justice for Children", "id": "HREQ1800" },
-    { "name": "Human Rights in the Age of Surveillance", "id": "HREQ2440" },
-    { "name": "Imperialism, Racism and the Global Economy", "id": "HREQ3010" },
-    { "name": "Democracy, Social Movements and Freedom of Assembly", "id": "HREQ4770" },
-    { "name": "Atrocity, Genocide and Crimes against Humanity", "id": "HREQ4820" },
-    { "name": "Human Resources Management", "id": "HRM2600" }
-]
+    {
+      "name": "Introduction to Business",
+      "id": "1000"
+    },
+    {
+      "name": "Exploring the Functions of Business",
+      "id": "1010"
+    },
+    {
+      "name": "An Introduction to Accounting for Human Resource Professionals",
+      "id": "1500"
+    },
+    {
+      "name": "Business Statistics",
+      "id": "2320"
+    },
+    {
+      "name": "Introduction to Organizational Behaviour",
+      "id": "2400"
+    },
+    {
+      "name": "Introduction to Financial Accounting",
+      "id": "2500"
+    },
+    {
+      "name": "Introduction to Management Accounting",
+      "id": "2510"
+    },
+    {
+      "name": "Management Information Systems",
+      "id": "2511"
+    },
+    {
+      "name": "Introduction to Personal Finance",
+      "id": "2541"
+    },
+    {
+      "name": "Elements of Law: Part One",
+      "id": "2610"
+    },
+    {
+      "name": "Fundamentals of Emergency Management",
+      "id": "2700"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3000"
+    },
+    {
+      "name": "Internship Work Term",
+      "id": "3010"
+    },
+    {
+      "name": "Gender Issues in Management",
+      "id": "3120"
+    },
+    {
+      "name": "Decision Analysis",
+      "id": "3300"
+    },
+    {
+      "name": "Introduction to Management Science",
+      "id": "3330"
+    },
+    {
+      "name": "Operations Management",
+      "id": "3351"
+    },
+    {
+      "name": "Equity, Diversity and Inclusion in the Workplace",
+      "id": "3450"
+    },
+    {
+      "name": "Managerial Cost Accounting and Analysis",
+      "id": "3510"
+    },
+    {
+      "name": "An Overview of Canadian Income Taxation",
+      "id": "3520"
+    },
+    {
+      "name": "Finance",
+      "id": "3530"
+    },
+    {
+      "name": "Personal Financial Planning",
+      "id": "3541"
+    },
+    {
+      "name": "Intermediate Financial Accounting I",
+      "id": "3585"
+    },
+    {
+      "name": "Intermediate Financial Accounting II",
+      "id": "3595"
+    },
+    {
+      "name": "Business Ethics and Corporate Social Responsibility",
+      "id": "3660"
+    },
+    {
+      "name": "Introduction to Real Estate",
+      "id": "3810"
+    },
+    {
+      "name": "The Practice of General Management",
+      "id": "3900"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4000"
+    },
+    {
+      "name": "Marketing Strategy Development and Implementation",
+      "id": "4250"
+    },
+    {
+      "name": "Brand Management",
+      "id": "4285"
+    },
+    {
+      "name": "Organizational Communication",
+      "id": "4481"
+    },
+    {
+      "name": "Ethics for Investment Managers",
+      "id": "4502"
+    },
+    {
+      "name": "Advanced Financial Accounting",
+      "id": "4520"
+    },
+    {
+      "name": "Financial Management",
+      "id": "4540"
+    },
+    {
+      "name": "Auditing and Other Assurance Services",
+      "id": "4551"
+    },
+    {
+      "name": "Auditing: Advanced Topics",
+      "id": "4553"
+    },
+    {
+      "name": "Taxation Of Personal Income in Canada",
+      "id": "4561"
+    },
+    {
+      "name": "Corporate Taxation in Canada",
+      "id": "4562"
+    },
+    {
+      "name": "Management Planning and Control Systems",
+      "id": "4570"
+    },
+    {
+      "name": "Comprehensive and Multi-subject Accounting Problems",
+      "id": "4590"
+    },
+    {
+      "name": "Management Policy Part I",
+      "id": "4900"
+    },
+    {
+      "name": "The Living and the Dead: The Anthropology of Im/mortality from",
+      "id": "1130"
+    },
+    {
+      "name": "Race, Racism & Popular Culture",
+      "id": "2020"
+    },
+    {
+      "name": "The Anthropology of Digital Media and Visual Representation",
+      "id": "3040"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4010"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4010"
+    },
+    {
+      "name": "Placement Option MA",
+      "id": "5040"
+    },
+    {
+      "name": "Independent Directed Reading",
+      "id": "5210"
+    },
+    {
+      "name": "Placement Option PhD",
+      "id": "6040"
+    },
+    {
+      "name": "Independent Directed Reading",
+      "id": "6210"
+    },
+    {
+      "name": "Introduction to Modern Standard Arabic",
+      "id": "1000"
+    },
+    {
+      "name": "Introduction to Modern Standard Arabic for Advanced Beginners",
+      "id": "1010"
+    },
+    {
+      "name": "Placement",
+      "id": "5190"
+    },
+    {
+      "name": "Individualized Reading",
+      "id": "5500A"
+    },
+    {
+      "name": "Individualized Reading",
+      "id": "5500B"
+    },
+    {
+      "name": "Research Paper",
+      "id": "6010"
+    },
+    {
+      "name": "Art History and Visual Culture Summer Institute",
+      "id": "6020"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "1603"
+    },
+    {
+      "name": "Animals",
+      "id": "2030"
+    },
+    {
+      "name": "Genetics",
+      "id": "2040"
+    },
+    {
+      "name": "Statistics for Biologists",
+      "id": "2060"
+    },
+    {
+      "name": "Research Methods in Cell and Molecular Biology",
+      "id": "2070"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "2603"
+    },
+    {
+      "name": "Animal Physiology I",
+      "id": "3060"
+    },
+    {
+      "name": "Animal Physiology II",
+      "id": "3070"
+    },
+    {
+      "name": "Microbiology",
+      "id": "3150"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "3603"
+    },
+    {
+      "name": "Biology Internship Work Term",
+      "id": "3901"
+    },
+    {
+      "name": "Biology Internship Work Term",
+      "id": "3902"
+    },
+    {
+      "name": "Biology Internship Work Term",
+      "id": "3903"
+    },
+    {
+      "name": "Honours Thesis",
+      "id": "4000"
+    },
+    {
+      "name": "Honours Thesis",
+      "id": "4000"
+    },
+    {
+      "name": "Selected Readings in Biology",
+      "id": "4200"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "4603"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Biophysics Internship Work Term",
+      "id": "3900"
+    },
+    {
+      "name": "Biophysics Research Project",
+      "id": "4310"
+    },
+    {
+      "name": "Internship",
+      "id": "4500"
+    },
+    {
+      "name": "Stage professionnel",
+      "id": "4500"
+    },
+    {
+      "name": "Capstone: Canadian Law in Practice",
+      "id": "6610"
+    },
+    {
+      "name": "Canadian Criminal Law",
+      "id": "6843"
+    },
+    {
+      "name": "Canadian Law of Evidence",
+      "id": "6849"
+    },
+    {
+      "name": "Children's Literature & Film Adaptations",
+      "id": "3690"
+    },
+    {
+      "name": "Picturebooks in Children's Culture",
+      "id": "3691"
+    },
+    {
+      "name": "Childhood in Canadian Culture",
+      "id": "4140"
+    },
+    {
+      "name": "Children, Youth, and Digital Culture",
+      "id": "4141"
+    },
+    {
+      "name": "Research with Children and Young People: Honours Research Project",
+      "id": "4999"
+    },
+    {
+      "name": "Directed Reading in Critical Disability Studies",
+      "id": "5000"
+    },
+    {
+      "name": "MA Major Research Paper",
+      "id": "6001"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Chemical Structure",
+      "id": "1000"
+    },
+    {
+      "name": "Chemical Dynamics",
+      "id": "1001"
+    },
+    {
+      "name": "Chemistry and Materials Science for Engineers",
+      "id": "1100"
+    },
+    {
+      "name": "Research Experience Term",
+      "id": "2202"
+    },
+    {
+      "name": "Research Experience Term",
+      "id": "3202"
+    },
+    {
+      "name": "Chemistry Internship Work Term",
+      "id": "3901"
+    },
+    {
+      "name": "Chemistry Internship Work Term",
+      "id": "3902"
+    },
+    {
+      "name": "Research Project",
+      "id": "4000"
+    },
+    {
+      "name": "Research Experience Term",
+      "id": "4202"
+    },
+    {
+      "name": "MSc Review Essay",
+      "id": "6000"
+    },
+    {
+      "name": "MSc Review Essay",
+      "id": "6000"
+    },
+    {
+      "name": "MSc Research Evaluation",
+      "id": "7000A"
+    },
+    {
+      "name": "MSc Research Evaluation",
+      "id": "7000B"
+    },
+    {
+      "name": "PhD Research Evaluation",
+      "id": "7001A"
+    },
+    {
+      "name": "PhD Research Evaluation",
+      "id": "7001B"
+    },
+    {
+      "name": "PhD Research Evaluation",
+      "id": "7001C"
+    },
+    {
+      "name": "PhD Research Evaluation",
+      "id": "7001D"
+    },
+    {
+      "name": "Graduate Seminar Series in Civil Engineering",
+      "id": "6000"
+    },
+    {
+      "name": "Doctor of Philosophy (PhD) in Civil Engineering Thesis",
+      "id": "6001"
+    },
+    {
+      "name": "Master of Applied Science in Civil Engineering Thesis",
+      "id": "6002"
+    },
+    {
+      "name": "Myth and Imagination in Ancient Greece and Rome",
+      "id": "1105"
+    },
+    {
+      "name": "Political Law",
+      "id": "6810"
+    },
+    {
+      "name": "Communication, Presentation Skills and Voice",
+      "id": "2420"
+    },
+    {
+      "name": "Music in Human Experience",
+      "id": "2610"
+    },
+    {
+      "name": "Independent Studies in Culture & Expression",
+      "id": "4000"
+    },
+    {
+      "name": "Field Placement",
+      "id": "4190"
+    },
+    {
+      "name": "Field Placements",
+      "id": "6909"
+    },
+    {
+      "name": "Directed Readings (Master's Level)",
+      "id": "6911"
+    },
+    {
+      "name": "Directed Readings (Ph.D. Level)",
+      "id": "7011"
+    },
+    {
+      "name": "Introduction to Communication & Media",
+      "id": "1000"
+    },
+    {
+      "name": "Mediations of Identity",
+      "id": "4725"
+    },
+    {
+      "name": "Delay & Disruption in Construction Law",
+      "id": "6503"
+    },
+    {
+      "name": "Apprendre en faisant / Less reading, more doing: Work placement/placement en milieu de travail I",
+      "id": "3800"
+    },
+    {
+      "name": "De la carte au territoire - From map to territory: Work placement/placement en milieu de travail II",
+      "id": "4800"
+    },
+    {
+      "name": "De la carte au territoire - From map to territory: Work placement/placement en milieu de travail III",
+      "id": "4805"
+    },
+    {
+      "name": "Co-op Work Term",
+      "id": "2001"
+    },
+    {
+      "name": "Professional Development for Co-Op Students",
+      "id": "2100"
+    },
+    {
+      "name": "EUC Co-op Work Term",
+      "id": "2109"
+    },
+    {
+      "name": "Lassonde Co-op Work-term",
+      "id": "2109"
+    },
+    {
+      "name": "Co-op Work Term",
+      "id": "3001"
+    },
+    {
+      "name": "Co-op Work Term",
+      "id": "3002"
+    },
+    {
+      "name": "Co-op Work Term",
+      "id": "3003"
+    },
+    {
+      "name": "Co-op Work Term",
+      "id": "3004"
+    },
+    {
+      "name": "Critical Reflection on Work Experience using Professional Portfolios",
+      "id": "3100"
+    },
+    {
+      "name": "EUC Co-op Work Term",
+      "id": "3109"
+    },
+    {
+      "name": "Lassonde Co-op Work-term",
+      "id": "3109"
+    },
+    {
+      "name": "Critical Thinking",
+      "id": "1711"
+    },
+    {
+      "name": "Introduction to Criminology",
+      "id": "1650"
+    },
+    {
+      "name": "Criminal Justice Systems",
+      "id": "2652"
+    },
+    {
+      "name": "Criminology Honours Seminar",
+      "id": "4650"
+    },
+    {
+      "name": "Representing Crime",
+      "id": "4654"
+    },
+    {
+      "name": "Introduction to Creative Writing",
+      "id": "2600"
+    },
+    {
+      "name": "Independent Studies",
+      "id": "4401"
+    },
+    {
+      "name": "Independent Studies",
+      "id": "4401"
+    },
+    {
+      "name": "Independent Studies",
+      "id": "4401"
+    },
+    {
+      "name": "Independent Studies",
+      "id": "4401"
+    },
+    {
+      "name": "Internship Work Term",
+      "id": "3929"
+    },
+    {
+      "name": "Fundamentals of Emergency Management",
+      "id": "2700"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5000"
+    },
+    {
+      "name": "Major Research Paper",
+      "id": "6999"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5990"
+    },
+    {
+      "name": "Web Development Basics",
+      "id": "1302"
+    },
+    {
+      "name": "Security Fundamentals",
+      "id": "2302"
+    },
+    {
+      "name": "Principles of Operating Systems",
+      "id": "2307"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Principles of Risk Management and Insurance",
+      "id": "1280"
+    },
+    {
+      "name": "Operations Management",
+      "id": "3120"
+    },
+    {
+      "name": "Regional Economic Development",
+      "id": "4110"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5990M"
+    },
+    {
+      "name": "Reading & Research",
+      "id": "6990M"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "5900"
+    },
+    {
+      "name": "Student Initiated Collaborative Inquiry",
+      "id": "5910"
+    },
+    {
+      "name": "Practicum Seminar",
+      "id": "5915"
+    },
+    {
+      "name": "MRP/Thesis/Dissertation Research",
+      "id": "6000"
+    },
+    {
+      "name": "Introduction to Computing: A Net-centric Approach",
+      "id": "1012"
+    },
+    {
+      "name": "Introduction to Computer Science and Programming",
+      "id": "1015"
+    },
+    {
+      "name": "Discrete Mathematics for Computer Science",
+      "id": "1019"
+    },
+    {
+      "name": "Object Oriented Programming from Sensors to Actuators",
+      "id": "1021"
+    },
+    {
+      "name": "Introduction to Object Oriented Programming",
+      "id": "1022"
+    },
+    {
+      "name": "Discrete Mathematics for Engineers",
+      "id": "1028"
+    },
+    {
+      "name": "Computer Use: Fundamentals",
+      "id": "1520"
+    },
+    {
+      "name": "Introduction to the Theory of Computation",
+      "id": "2001"
+    },
+    {
+      "name": "Computer Organization",
+      "id": "2021"
+    },
+    {
+      "name": "Advanced Object Oriented Programming",
+      "id": "2030"
+    },
+    {
+      "name": "Software Tools",
+      "id": "2031"
+    },
+    {
+      "name": "Introduction to Embedded Systems",
+      "id": "2032"
+    },
+    {
+      "name": "Fundamentals of Data Structures",
+      "id": "2101"
+    },
+    {
+      "name": "Electrical Circuits",
+      "id": "2200"
+    },
+    {
+      "name": "Design and Analysis of Algorithms",
+      "id": "3101"
+    },
+    {
+      "name": "Computer Network Protocols and Applications",
+      "id": "3214"
+    },
+    {
+      "name": "Operating System Fundamentals",
+      "id": "3221"
+    },
+    {
+      "name": "Software Design",
+      "id": "3311"
+    },
+    {
+      "name": "Introduction to Artificial Intelligence and Logic Programming",
+      "id": "3401"
+    },
+    {
+      "name": "Introduction to Database Systems",
+      "id": "3421"
+    },
+    {
+      "name": "Introduction to Computer Security",
+      "id": "3482"
+    },
+    {
+      "name": "Directed Studies",
+      "id": "4070"
+    },
+    {
+      "name": "Computer Science Project",
+      "id": "4080"
+    },
+    {
+      "name": "Compilers and Interpreters",
+      "id": "4302"
+    },
+    {
+      "name": "Software Engineering Requirements",
+      "id": "4312"
+    },
+    {
+      "name": "Building E-Commerce Systems",
+      "id": "4413"
+    },
+    {
+      "name": "Human-Computer Interaction",
+      "id": "4441"
+    },
+    {
+      "name": "Computer Security Project",
+      "id": "4480"
+    },
+    {
+      "name": "Human-Computer Interaction",
+      "id": "5351"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6002"
+    },
+    {
+      "name": "The Law and Economics of Electricity Markets",
+      "id": "7000"
+    },
+    {
+      "name": "An Introduction to Literary Study",
+      "id": "1001"
+    },
+    {
+      "name": "Intertextualities",
+      "id": "1002"
+    },
+    {
+      "name": "A Writer's Introduction to Literary Forms",
+      "id": "1006"
+    },
+    {
+      "name": "Literature and Law",
+      "id": "1101"
+    },
+    {
+      "name": "Writing: Process and Practice",
+      "id": "1700"
+    },
+    {
+      "name": "Drama",
+      "id": "2140"
+    },
+    {
+      "name": "Introduction to World Literature",
+      "id": "2260"
+    },
+    {
+      "name": "Comedy",
+      "id": "3191"
+    },
+    {
+      "name": "Shakespeare",
+      "id": "3535"
+    },
+    {
+      "name": "Canadian Graphic Novel",
+      "id": "4220"
+    },
+    {
+      "name": "Diaspora Literatures",
+      "id": "4400"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6010"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6010"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6010A"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6010A"
+    },
+    {
+      "name": "Eighteenth-Century Intellectual Texts",
+      "id": "6320"
+    },
+    {
+      "name": "Renaissance Engineer 2: Engineering Design Principles",
+      "id": "1102"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "1603"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "2603"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "3603"
+    },
+    {
+      "name": "Honours Thesis",
+      "id": "4000"
+    },
+    {
+      "name": "Honours Thesis",
+      "id": "4000"
+    },
+    {
+      "name": "Selected Readings in Biology",
+      "id": "4200"
+    },
+    {
+      "name": "Research Practicum",
+      "id": "4603"
+    },
+    {
+      "name": "Introduction to Environmental Documentaries",
+      "id": "1010"
+    },
+    {
+      "name": "Urban Gardening, Food, Justice and Sustainability",
+      "id": "3301"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3900"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3900"
+    },
+    {
+      "name": "Field Placement Course",
+      "id": "4001"
+    },
+    {
+      "name": "Field Placement Course",
+      "id": "4001"
+    },
+    {
+      "name": "Directed Study",
+      "id": "4900"
+    },
+    {
+      "name": "Directed Study",
+      "id": "4900"
+    },
+    {
+      "name": "Directed Study",
+      "id": "4900Z"
+    },
+    {
+      "name": "Directed Study",
+      "id": "4900Z"
+    },
+    {
+      "name": "MES Research Proposal",
+      "id": "6102"
+    },
+    {
+      "name": "International Political Economy and Ecology Summer School",
+      "id": "6275"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599A"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599B"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599F"
+    },
+    {
+      "name": "Individual Directed Study",
+      "id": "6599O"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699F"
+    },
+    {
+      "name": "Experiential Learning",
+      "id": "6699O"
+    },
+    {
+      "name": "MES Major Research",
+      "id": "7899"
+    },
+    {
+      "name": "MES Major Research",
+      "id": "7899"
+    },
+    {
+      "name": "MES Major Research",
+      "id": "7899"
+    },
+    {
+      "name": "MES Thesis Research",
+      "id": "7999"
+    },
+    {
+      "name": "Canadian Language and Culture",
+      "id": "1000"
+    },
+    {
+      "name": "Thinking about Contemporary Canada",
+      "id": "1450"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5010"
+    },
+    {
+      "name": "M.Sc. Research Evaluation",
+      "id": "6030A"
+    },
+    {
+      "name": "M.Sc. Research Evaluation",
+      "id": "6030B"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030A"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030B"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030C"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030D"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030E"
+    },
+    {
+      "name": "Ph.D. Research Evaluation",
+      "id": "7030F"
+    },
+    {
+      "name": "The Earth Environment",
+      "id": "1012"
+    },
+    {
+      "name": "Exchange - Schulich Business Elective",
+      "id": "4901"
+    },
+    {
+      "name": "Exchange - Schulich Business Elective",
+      "id": "4902"
+    },
+    {
+      "name": "Exchange - Schulich Business Elective",
+      "id": "4904"
+    },
+    {
+      "name": "Exchange - Schulich Business Elective",
+      "id": "4910"
+    },
+    {
+      "name": "Exchange - Schulich Business Elective",
+      "id": "4911"
+    },
+    {
+      "name": "Exchange - Globally Focused Elective",
+      "id": "4921"
+    },
+    {
+      "name": "Exchange - Globally Focused Elective",
+      "id": "4922"
+    },
+    {
+      "name": "Exchange - Non Business Elective",
+      "id": "4941"
+    },
+    {
+      "name": "Exchange - Non Business Elective",
+      "id": "4942"
+    },
+    {
+      "name": "Introduction to Governance and Accountability",
+      "id": "6000"
+    },
+    {
+      "name": "Corporate Responsibilty and Ethics",
+      "id": "6100"
+    },
+    {
+      "name": "Performance Measurement Systems",
+      "id": "6200"
+    },
+    {
+      "name": "Enterprise Risk Management",
+      "id": "6300"
+    },
+    {
+      "name": "Research Methods and Statistical Inference",
+      "id": "6400"
+    },
+    {
+      "name": "Corporate Governance",
+      "id": "6500"
+    },
+    {
+      "name": "Governance and Regulation of Anti-Money Laundering and Terrorist Financing",
+      "id": "6550"
+    },
+    {
+      "name": "Accountability Issues in the Public Sector",
+      "id": "6600"
+    },
+    {
+      "name": "Executive Compensation",
+      "id": "6700"
+    },
+    {
+      "name": "Synthesis of theory and practice, governance and accountability",
+      "id": "6800"
+    },
+    {
+      "name": "Financial Accountability Practicum",
+      "id": "6850"
+    },
+    {
+      "name": "Governance Over Internal Audit",
+      "id": "6865"
+    },
+    {
+      "name": "Advanced Techniques of Financial Analysis",
+      "id": "6870"
+    },
+    {
+      "name": "Information Technology Goverance",
+      "id": "6880"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6990"
+    },
+    {
+      "name": "Major Research Paper Option",
+      "id": "6999"
+    },
+    {
+      "name": "Field Placement",
+      "id": "5600"
+    },
+    {
+      "name": "Field Placement",
+      "id": "5600A"
+    },
+    {
+      "name": "Student Initiated Collaborative Inquiry",
+      "id": "5700"
+    },
+    {
+      "name": "Student Initiated Collaborative Inquiry",
+      "id": "5700A"
+    },
+    {
+      "name": "Independent Project",
+      "id": "5800"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5800A"
+    },
+    {
+      "name": "Basic French (CEFR A1)",
+      "id": "0120"
+    },
+    {
+      "name": "Elementary French (CEFR A2)",
+      "id": "0130"
+    },
+    {
+      "name": "French Language and Culture (CEFR B1)",
+      "id": "1080"
+    },
+    {
+      "name": "Introduction à la linguistique générale et française",
+      "id": "2600"
+    },
+    {
+      "name": "Français de spécialisation (L2) I",
+      "id": "2805"
+    },
+    {
+      "name": "Français de spécialisation (L2) II",
+      "id": "3805"
+    },
+    {
+      "name": "Français de spécialisation (L2) III",
+      "id": "4805"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Fondements didactiques de l'enseignement de la littérature",
+      "id": "5248"
+    },
+    {
+      "name": "Cours de lecture dirigee",
+      "id": "5900"
+    },
+    {
+      "name": "Cours de lecture dirigée / Cours individuel (Directed reading)",
+      "id": "6900"
+    },
+    {
+      "name": "Field Placement Course",
+      "id": "4001"
+    },
+    {
+      "name": "Field Placement Course",
+      "id": "4001"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4290"
+    },
+    {
+      "name": "M.A./M.Sc. Research Paper",
+      "id": "6010"
+    },
+    {
+      "name": "M.A./M.Sc. Directed Reading Course",
+      "id": "6050"
+    },
+    {
+      "name": "Ph.D. Directed Reading Course",
+      "id": "6060"
+    },
+    {
+      "name": "Independent Study",
+      "id": "4000"
+    },
+    {
+      "name": "Independent Study",
+      "id": "4000"
+    },
+    {
+      "name": "Advanced Legal Research and Writing Skills",
+      "id": "6101"
+    },
+    {
+      "name": "Introduction to Canadian Graduate Legal Studies (Online)",
+      "id": "6249"
+    },
+    {
+      "name": "Major Research Paper",
+      "id": "6317"
+    },
+    {
+      "name": "Significant Research Paper (Course-Based)",
+      "id": "6817"
+    },
+    {
+      "name": "Independent Significant Research Paper",
+      "id": "6848"
+    },
+    {
+      "name": "Introduction to Gender and Women's Studies",
+      "id": "1501"
+    },
+    {
+      "name": "Violence Against Women",
+      "id": "4502"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4801"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4801"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4801"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4801"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Migration, Immigration and Beyond: Italians in North America",
+      "id": "1791"
+    },
+    {
+      "name": "United States History",
+      "id": "2600"
+    },
+    {
+      "name": "Introduction to the History of South Asia since 1700",
+      "id": "2795"
+    },
+    {
+      "name": "From the Defeat of Fascism to the Fall of Communism: Europe Since 1945",
+      "id": "3395"
+    },
+    {
+      "name": "Twentieth-Century Britain in Film and Culture",
+      "id": "3490"
+    },
+    {
+      "name": "Cultural Revolution: the 1960s in Canada",
+      "id": "4565"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5060"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6001"
+    },
+    {
+      "name": "Occupational Health and Safety",
+      "id": "3240"
+    },
+    {
+      "name": "Health Policy & Management Community Partner Field Project",
+      "id": "4900"
+    },
+    {
+      "name": "Directed Studies in Health Studies",
+      "id": "5000"
+    },
+    {
+      "name": "Women and Human Rights",
+      "id": "1700"
+    },
+    {
+      "name": "Justice for Children",
+      "id": "1800"
+    },
+    {
+      "name": "Human Rights in the Age of Surveillance",
+      "id": "2440"
+    },
+    {
+      "name": "Imperialism, Racism and the Global Economy",
+      "id": "3010"
+    },
+    {
+      "name": "Democracy, Social Movements and Freedom of Assembly",
+      "id": "4770"
+    },
+    {
+      "name": "Atrocity, Genocide and Crimes against Humanity",
+      "id": "4820"
+    },
+    {
+      "name": "Human Resources Management",
+      "id": "2600"
+    },
+    {
+      "name": "Human Resources Management",
+      "id": "2600"
+    },
+    {
+      "name": "Occupational Health and Safety",
+      "id": "3400"
+    },
+    {
+      "name": "Training and Development",
+      "id": "3410"
+    },
+    {
+      "name": "Human Resources Planning",
+      "id": "3430"
+    },
+    {
+      "name": "Equity, Diversity and Inclusion in the Workplace",
+      "id": "3450"
+    },
+    {
+      "name": "Recruitment, Selection and Performance Appraisal of Personnel",
+      "id": "3470"
+    },
+    {
+      "name": "Human Resources Management Internship Work Term",
+      "id": "3495"
+    },
+    {
+      "name": "Strategic Human Resources Management",
+      "id": "4410"
+    },
+    {
+      "name": "Organizational Communication",
+      "id": "4481"
+    },
+    {
+      "name": "Major Research Paper",
+      "id": "6000"
+    },
+    {
+      "name": "Current readings in Human Resources Management",
+      "id": "6050"
+    },
+    {
+      "name": "Strategic Compensation",
+      "id": "6300"
+    },
+    {
+      "name": "Organizational Change & Development",
+      "id": "6400"
+    },
+    {
+      "name": "Human Resources Management Effectiveness",
+      "id": "6500"
+    },
+    {
+      "name": "Workplace Citizenship: Lessons from Labour Relations",
+      "id": "6700"
+    },
+    {
+      "name": "Myth and Imagination in Ancient Greece and Rome",
+      "id": "1105"
+    },
+    {
+      "name": "Gods and Humans",
+      "id": "1165"
+    },
+    {
+      "name": "Canadian Language and Culture",
+      "id": "1220"
+    },
+    {
+      "name": "Writing: Process and Practice",
+      "id": "1700"
+    },
+    {
+      "name": "Thinking about Contemporary Canada",
+      "id": "1745"
+    },
+    {
+      "name": "Stories in Diverse Media",
+      "id": "1780"
+    },
+    {
+      "name": "Law and Morality in Literature and Culture",
+      "id": "1825"
+    },
+    {
+      "name": "Arts and Culture in South Asia",
+      "id": "1846"
+    },
+    {
+      "name": "Introduction to World Religions",
+      "id": "1865"
+    },
+    {
+      "name": "Animals and the Imagination",
+      "id": "1915"
+    },
+    {
+      "name": "Communication, Presentation Skills and Voice",
+      "id": "2220"
+    },
+    {
+      "name": "Music in Human Experience",
+      "id": "2230"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3000"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3000"
+    },
+    {
+      "name": "Comedy",
+      "id": "3013"
+    },
+    {
+      "name": "Children's Literature & Film Adaptations",
+      "id": "3690"
+    },
+    {
+      "name": "Picturebooks in Children's Culture",
+      "id": "3691"
+    },
+    {
+      "name": "Torah and Tradition: Jewish Religious Expressions from Antiquity to the Present",
+      "id": "3831"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4000"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4000"
+    },
+    {
+      "name": "Childhood in Canadian Culture",
+      "id": "4140"
+    },
+    {
+      "name": "Children, Youth, and Digital Culture",
+      "id": "4141"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5000"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5000"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6000"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6000"
+    },
+    {
+      "name": "Work Placement in the Global Context",
+      "id": "4100"
+    },
+    {
+      "name": "Professional Internship",
+      "id": "4300"
+    },
+    {
+      "name": "Stage pratique professionnel",
+      "id": "4300"
+    },
+    {
+      "name": "Introduction to Indigenous Studies",
+      "id": "1050"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5010"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5020"
+    },
+    {
+      "name": "Practicum",
+      "id": "5030"
+    },
+    {
+      "name": "Elementary Italian",
+      "id": "1000"
+    },
+    {
+      "name": "Migration, Immigration and Beyond: Italians in North America",
+      "id": "1791"
+    },
+    {
+      "name": "Introduction to Information Technologies",
+      "id": "1000"
+    },
+    {
+      "name": "Information and Organizations",
+      "id": "1010"
+    },
+    {
+      "name": "Object-Based Programming",
+      "id": "1620"
+    },
+    {
+      "name": "System Administration",
+      "id": "2210"
+    },
+    {
+      "name": "Scripting Languages",
+      "id": "2220"
+    },
+    {
+      "name": "Introduction to Analytical Programming",
+      "id": "2600"
+    },
+    {
+      "name": "Object-Oriented Programming",
+      "id": "2610"
+    },
+    {
+      "name": "Introduction to Data Structures",
+      "id": "2620"
+    },
+    {
+      "name": "Web Technologies",
+      "id": "3020"
+    },
+    {
+      "name": "Systems Architecture",
+      "id": "3030"
+    },
+    {
+      "name": "Introduction to Data Analytics",
+      "id": "3040"
+    },
+    {
+      "name": "Information Technology Risk Management",
+      "id": "3500"
+    },
+    {
+      "name": "Information Technology Project Management",
+      "id": "3505"
+    },
+    {
+      "name": "Internship Term",
+      "id": "3900"
+    },
+    {
+      "name": "Independent Research Project in Information Technology",
+      "id": "4000"
+    },
+    {
+      "name": "Enterprise Resource Planning Systems Configuration",
+      "id": "4050"
+    },
+    {
+      "name": "Business Integration Technologies",
+      "id": "4101"
+    },
+    {
+      "name": "Data Warehousing and Business Intelligence",
+      "id": "4230"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6002"
+    },
+    {
+      "name": "Cyber Threat Intelligence and Adversarial Risk Analysis",
+      "id": "6340"
+    },
+    {
+      "name": "Torah and Tradition: Jewish Religious Expressions from Antiquity to the Present",
+      "id": "3831"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4200"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4200"
+    },
+    {
+      "name": "Master's Practica",
+      "id": "5400"
+    },
+    {
+      "name": "Master's Practica",
+      "id": "5410"
+    },
+    {
+      "name": "Non-thesis Master's Practica",
+      "id": "5410"
+    },
+    {
+      "name": "Readings in Special Topics",
+      "id": "6220"
+    },
+    {
+      "name": "Integrated Physical Activity for Life I: Physical Fitness, Mental Health, Physical Literacy",
+      "id": "1900"
+    },
+    {
+      "name": "Independent Studies in Kinesiology and Health Science",
+      "id": "4060"
+    },
+    {
+      "name": "Independent Studies in Kinesiology and Health Science",
+      "id": "4060"
+    },
+    {
+      "name": "Independent Studies in Kinesiology and Health Science",
+      "id": "4060A"
+    },
+    {
+      "name": "Honours Thesis",
+      "id": "4100"
+    },
+    {
+      "name": "Experiential Field Placement in Athletic Therapy",
+      "id": "4592A"
+    },
+    {
+      "name": "Elementary Modern Standard Korean",
+      "id": "1000"
+    },
+    {
+      "name": "Independent Study",
+      "id": "6900"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6040"
+    },
+    {
+      "name": "Biotechnology and Issues in Health Law",
+      "id": "6868"
+    },
+    {
+      "name": "Introduction to Linguistics",
+      "id": "1603"
+    },
+    {
+      "name": "Introduction à la linguistique générale et française",
+      "id": "2600"
+    },
+    {
+      "name": "Introduction to Linguistics",
+      "id": "1000"
+    },
+    {
+      "name": "Applied Calculus I",
+      "id": "1013"
+    },
+    {
+      "name": "Applied Calculus II",
+      "id": "1014"
+    },
+    {
+      "name": "Discrete Mathematics for Computer Science",
+      "id": "1019"
+    },
+    {
+      "name": "Linear Algebra I",
+      "id": "1021"
+    },
+    {
+      "name": "Applied Linear Algebra",
+      "id": "1025"
+    },
+    {
+      "name": "Discrete Mathematics for Engineers",
+      "id": "1028"
+    },
+    {
+      "name": "Introduction to Logic for Computer Science",
+      "id": "1090"
+    },
+    {
+      "name": "Introduction to Statistics I",
+      "id": "1131"
+    },
+    {
+      "name": "Introduction to Sets and Logic",
+      "id": "1190"
+    },
+    {
+      "name": "Problems, Conjectures and Proofs",
+      "id": "1200"
+    },
+    {
+      "name": "Principles of Risk Management and Insurance",
+      "id": "1280"
+    },
+    {
+      "name": "Differential Calculus with Applications",
+      "id": "1300"
+    },
+    {
+      "name": "Integral Calculus with Applications",
+      "id": "1310"
+    },
+    {
+      "name": "Mathematics I for the Biological and Health Sciences",
+      "id": "1506"
+    },
+    {
+      "name": "Mathematics II for the Biological and Health Sciences",
+      "id": "1507"
+    },
+    {
+      "name": "Fundamentals of Mathematics",
+      "id": "1510"
+    },
+    {
+      "name": "Introduction to Calculus, with Vectors",
+      "id": "1520"
+    },
+    {
+      "name": "Business Mathematics I",
+      "id": "1581"
+    },
+    {
+      "name": "Elementary Probability",
+      "id": "2030"
+    },
+    {
+      "name": "Introduction to Applied Statistics",
+      "id": "2565"
+    },
+    {
+      "name": "Regression Analysis",
+      "id": "3330"
+    },
+    {
+      "name": "Mathematic and Statistics Internship Work Term",
+      "id": "3901"
+    },
+    {
+      "name": "Mathematic and Statistics Internship Work Term",
+      "id": "3902"
+    },
+    {
+      "name": "Mathematic and Statistics Internship Work Term",
+      "id": "3903"
+    },
+    {
+      "name": "Individual Project",
+      "id": "4000"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "4300"
+    },
+    {
+      "name": "Survey Paper",
+      "id": "6001"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6002"
+    },
+    {
+      "name": "Mathematics Seminar",
+      "id": "6004"
+    },
+    {
+      "name": "Graduate Seminar",
+      "id": "6000"
+    },
+    {
+      "name": "Directed Study: Manufacturing",
+      "id": "6900B"
+    },
+    {
+      "name": "Directed Study: Microfluidics and Micro-Electro-Mechanical Systems (MEMS)",
+      "id": "6900J"
+    },
+    {
+      "name": "Directed Study: Other areas in Mechanical Engineering",
+      "id": "6900K"
+    },
+    {
+      "name": "MSc Thesis",
+      "id": "9001"
+    },
+    {
+      "name": "Ph.D. Dissertation",
+      "id": "9002"
+    },
+    {
+      "name": "Work Placement",
+      "id": "4850"
+    },
+    {
+      "name": "Guided Study: Management: Selected Problems in Management",
+      "id": "4900"
+    },
+    {
+      "name": "Critical Thinking",
+      "id": "1711"
+    },
+    {
+      "name": "Modes of Reasoning: Reasoning About Social Issues",
+      "id": "1730"
+    },
+    {
+      "name": "Modes of Reasoning: Reasoning About Morality and Values",
+      "id": "1760"
+    },
+    {
+      "name": "Modes of Reasoning: Techniques of Persuasion",
+      "id": "1770"
+    },
+    {
+      "name": "Understanding Artificial Intelligence",
+      "id": "1506"
+    },
+    {
+      "name": "Extraterrestrial Life: A Modern Discussion to include Historical, Religious and Cultural Aspects",
+      "id": "1525"
+    },
+    {
+      "name": "Understanding Food",
+      "id": "1560"
+    },
+    {
+      "name": "Introduction to Forensic Science",
+      "id": "1575"
+    },
+    {
+      "name": "Human Development",
+      "id": "1675"
+    },
+    {
+      "name": "Astronomy",
+      "id": "1740"
+    },
+    {
+      "name": "History of Astronomy",
+      "id": "1745"
+    },
+    {
+      "name": "Weather and Climate",
+      "id": "1780"
+    },
+    {
+      "name": "Science, Technology and the Environment",
+      "id": "1840"
+    },
+    {
+      "name": "Understanding Colour",
+      "id": "1870"
+    },
+    {
+      "name": "Pathophysiology, Pharmacology and Knowledge Integration II",
+      "id": "2536"
+    },
+    {
+      "name": "Health of Families and Social Groups",
+      "id": "2546"
+    },
+    {
+      "name": "Practicum for HH/NURS 2546 6.00",
+      "id": "2546P"
+    },
+    {
+      "name": "Mental Health Across the Lifespan",
+      "id": "2547"
+    },
+    {
+      "name": "Practicum for HH/NURS 2547 6.00",
+      "id": "2547P"
+    },
+    {
+      "name": "Trends and Contemporary Issues for the Aging Adult in Canada",
+      "id": "3000"
+    },
+    {
+      "name": "Nursing in the Context of Global and Environmental Health",
+      "id": "3512"
+    },
+    {
+      "name": "Leadership, Change and Innovation",
+      "id": "3514"
+    },
+    {
+      "name": "Nurses' Experience in Health Care Environments",
+      "id": "3710"
+    },
+    {
+      "name": "Pharmacological and Non-pharmacological Practices",
+      "id": "3901"
+    },
+    {
+      "name": "Integrated Practicum",
+      "id": "4527"
+    },
+    {
+      "name": "Nursing Knowledge and Transition",
+      "id": "4528"
+    },
+    {
+      "name": "Integrated Practicum",
+      "id": "4529"
+    },
+    {
+      "name": "Professional Scholarship: Capstone Project",
+      "id": "4531"
+    },
+    {
+      "name": "Professional Scholarship: Stream Capstone Project",
+      "id": "4532"
+    },
+    {
+      "name": "Stream Integrated Practicum",
+      "id": "4533"
+    },
+    {
+      "name": "Human Experience of Chronic Health Challenges",
+      "id": "4610"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4800"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4800"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5000"
+    },
+    {
+      "name": "Advanced Perspectives in Womens Health: Critical Feminist Analyses",
+      "id": "5120"
+    },
+    {
+      "name": "Sexual and Gender Diversity: Implications for Education, Policy and Practice in the Health Professions",
+      "id": "5175"
+    },
+    {
+      "name": "Qualitative Research Methods in Nursing Science",
+      "id": "5200"
+    },
+    {
+      "name": "Culture of Aging, Praxis, Policy, and Discourse",
+      "id": "5570"
+    },
+    {
+      "name": "Pathophysiology for Nurse Practitioners",
+      "id": "5810"
+    },
+    {
+      "name": "Primary Health Care Nurse Practitioner Roles and Responsibilities",
+      "id": "5820"
+    },
+    {
+      "name": "Integrative Practicum in Primary Health Care\"",
+      "id": "5870"
+    },
+    {
+      "name": "Nurse Practitioner Research Development and Knowledge Mobilization",
+      "id": "5880"
+    },
+    {
+      "name": "Expressions of Nursing Scholarship",
+      "id": "6300"
+    },
+    {
+      "name": "Independent Directed Reading",
+      "id": "8000"
+    },
+    {
+      "name": "University of Toronto",
+      "id": "8000"
+    },
+    {
+      "name": "University of Toronto",
+      "id": "8001"
+    },
+    {
+      "name": "Trent University",
+      "id": "8005"
+    },
+    {
+      "name": "Brock University",
+      "id": "8010"
+    },
+    {
+      "name": "Toronto Metropolitan University",
+      "id": "8015"
+    },
+    {
+      "name": "Carleton University",
+      "id": "8020"
+    },
+    {
+      "name": "OCAD University",
+      "id": "8025"
+    },
+    {
+      "name": "University of Guelph",
+      "id": "8030"
+    },
+    {
+      "name": "Laurentian University",
+      "id": "8035"
+    },
+    {
+      "name": "McMaster University",
+      "id": "8040"
+    },
+    {
+      "name": "Lakehead University",
+      "id": "8045"
+    },
+    {
+      "name": "University of Ottawa",
+      "id": "8050"
+    },
+    {
+      "name": "University of Ontario Institute of Technology",
+      "id": "8055"
+    },
+    {
+      "name": "Queens University",
+      "id": "8060"
+    },
+    {
+      "name": "Queens University",
+      "id": "8061"
+    },
+    {
+      "name": "University of Waterloo",
+      "id": "8070"
+    },
+    {
+      "name": "University of Waterloo",
+      "id": "8071"
+    },
+    {
+      "name": "University of Western Ontario",
+      "id": "8080"
+    },
+    {
+      "name": "Wilfrid Laurier University",
+      "id": "8085"
+    },
+    {
+      "name": "University of Windsor",
+      "id": "8090"
+    },
+    {
+      "name": "Financial Statement Analysis and Valuation",
+      "id": "5530"
+    },
+    {
+      "name": "Issues in the Practice of Assurance",
+      "id": "5550"
+    },
+    {
+      "name": "Taxation and Financial Decision-Making in Canada",
+      "id": "5560"
+    },
+    {
+      "name": "Performance Management Systems",
+      "id": "5570"
+    },
+    {
+      "name": "Integrative Analysis in Accounting",
+      "id": "5590"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6010"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6010"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "6010A"
+    },
+    {
+      "name": "Electricity, Magnetism and Optics for Engineers",
+      "id": "1801"
+    },
+    {
+      "name": "Electricity and Magnetism",
+      "id": "2020"
+    },
+    {
+      "name": "Physics Internship Work Term",
+      "id": "3900"
+    },
+    {
+      "name": "Physics or Astronomy Project",
+      "id": "4310"
+    },
+    {
+      "name": "Physics Research",
+      "id": "5400"
+    },
+    {
+      "name": "Astronomical Research",
+      "id": "5490"
+    },
+    {
+      "name": "Advanced Topics in Solid State Physics: Solid Mechanics",
+      "id": "6100"
+    },
+    {
+      "name": "Advanced Topics in Quantum Electronics - Reading Course",
+      "id": "6110"
+    },
+    {
+      "name": "Selected Topics in Applied Optical Physics",
+      "id": "6170"
+    },
+    {
+      "name": "Introduction to Politics: Exploring the Democratic Experience",
+      "id": "1000"
+    },
+    {
+      "name": "Perspectives on Politics: Classics of Political Thought",
+      "id": "2000"
+    },
+    {
+      "name": "Supervised Reading and Research",
+      "id": "3990"
+    },
+    {
+      "name": "Supervised Reading and Research",
+      "id": "3990"
+    },
+    {
+      "name": "Politics, Law and the Courts",
+      "id": "4130"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Supervised Reading and Research",
+      "id": "4990"
+    },
+    {
+      "name": "Supervised Reading and Research",
+      "id": "4990"
+    },
+    {
+      "name": "International Political Economy and Ecology Summer School",
+      "id": "6282"
+    },
+    {
+      "name": "Reading Course",
+      "id": "6990"
+    },
+    {
+      "name": "Reading Course",
+      "id": "6990A"
+    },
+    {
+      "name": "M.A. Major Research Paper",
+      "id": "6999"
+    },
+    {
+      "name": "Public Management",
+      "id": "6000"
+    },
+    {
+      "name": "Public Finance and Accounting",
+      "id": "6020"
+    },
+    {
+      "name": "Equity, Policy, Law and Planning",
+      "id": "6130"
+    },
+    {
+      "name": "Internship/Co-Op",
+      "id": "6900"
+    },
+    {
+      "name": "Independent Readings and Research",
+      "id": "6990"
+    },
+    {
+      "name": "Introduction to Politics: Exploring the Democratic Experience",
+      "id": "1000"
+    },
+    {
+      "name": "Directed Reading/Special Study",
+      "id": "4000"
+    },
+    {
+      "name": "Sociology of Law",
+      "id": "4070"
+    },
+    {
+      "name": "Regional Economic Development",
+      "id": "4110"
+    },
+    {
+      "name": "Politics, Law and the Courts",
+      "id": "4130"
+    },
+    {
+      "name": "Introduction to Psychology",
+      "id": "1010"
+    },
+    {
+      "name": "Individual Research Project",
+      "id": "3902"
+    },
+    {
+      "name": "Individual Research Project",
+      "id": "3903"
+    },
+    {
+      "name": "Behaviour Modification and Behaviour Therapy",
+      "id": "4030"
+    },
+    {
+      "name": "Critical Thinking in Psychology",
+      "id": "4180"
+    },
+    {
+      "name": "Individual Research Project",
+      "id": "4902"
+    },
+    {
+      "name": "Individual Research Project",
+      "id": "4903"
+    },
+    {
+      "name": "Clinical Practicum II",
+      "id": "6440P"
+    },
+    {
+      "name": "Clinical Practicum III (Optional)",
+      "id": "6460P"
+    },
+    {
+      "name": "Clinical Practicum III (Optional)",
+      "id": "6460P"
+    },
+    {
+      "name": "Readings",
+      "id": "6710"
+    },
+    {
+      "name": "Readings",
+      "id": "6710"
+    },
+    {
+      "name": "Readings",
+      "id": "6710A"
+    },
+    {
+      "name": "Readings",
+      "id": "6710B"
+    },
+    {
+      "name": "Applied Practicum I",
+      "id": "6810A"
+    },
+    {
+      "name": "Applied Practicum I",
+      "id": "6810A"
+    },
+    {
+      "name": "Applied Practicum II",
+      "id": "6810B"
+    },
+    {
+      "name": "Applied Practicum II",
+      "id": "6810B"
+    },
+    {
+      "name": "Applied Practicum III",
+      "id": "6810C"
+    },
+    {
+      "name": "Applied Practicum III",
+      "id": "6810C"
+    },
+    {
+      "name": "Research Practicum I",
+      "id": "6820A"
+    },
+    {
+      "name": "Research Practicum I",
+      "id": "6820A"
+    },
+    {
+      "name": "Research Practicum II",
+      "id": "6820B"
+    },
+    {
+      "name": "Research Practicum II",
+      "id": "6820B"
+    },
+    {
+      "name": "Research Practicum III",
+      "id": "6820C"
+    },
+    {
+      "name": "Research Practicum III",
+      "id": "6820C"
+    },
+    {
+      "name": "Research Practicum IV",
+      "id": "6820D"
+    },
+    {
+      "name": "Research Practicum IV",
+      "id": "6820D"
+    },
+    {
+      "name": "Clinical Internship",
+      "id": "6840"
+    },
+    {
+      "name": "Clinical Internship II",
+      "id": "6840B"
+    },
+    {
+      "name": "Myth and Imagination in Ancient Greece and Rome",
+      "id": "1105"
+    },
+    {
+      "name": "Gods and Humans",
+      "id": "1165"
+    },
+    {
+      "name": "Introduction to World Religions",
+      "id": "1865"
+    },
+    {
+      "name": "Torah and Tradition: Jewish Religious Expressions from Antiquity to the Present",
+      "id": "3831"
+    },
+    {
+      "name": "Continuous Disclosure",
+      "id": "6742"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "5900"
+    },
+    {
+      "name": "Introduction to Sociology",
+      "id": "1010"
+    },
+    {
+      "name": "Sociological Theory",
+      "id": "2040"
+    },
+    {
+      "name": "Social Interaction and Community",
+      "id": "2060"
+    },
+    {
+      "name": "Sociology of Health and Health Care",
+      "id": "3820"
+    },
+    {
+      "name": "Sociology of the Body",
+      "id": "4070"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "5900"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "5900"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "6900"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "6900"
+    },
+    {
+      "name": "Independent Reading Course",
+      "id": "6900A"
+    },
+    {
+      "name": "Introduction to Social Science",
+      "id": "1000"
+    },
+    {
+      "name": "Self, Culture and Society: Critical Perspectives",
+      "id": "1140"
+    },
+    {
+      "name": "Introduction to Linguistics",
+      "id": "1603"
+    },
+    {
+      "name": "Introduction to Criminology",
+      "id": "1650"
+    },
+    {
+      "name": "Women and Human Rights",
+      "id": "1700"
+    },
+    {
+      "name": "Justice for Children",
+      "id": "1800"
+    },
+    {
+      "name": "Interdisciplinary Approaches to Social Inquiry",
+      "id": "2000"
+    },
+    {
+      "name": "Intermediate Business and Society",
+      "id": "2340"
+    },
+    {
+      "name": "Law and Society",
+      "id": "2350"
+    },
+    {
+      "name": "Criminal Justice Systems",
+      "id": "2652"
+    },
+    {
+      "name": "Corporate Social Responsibility",
+      "id": "3040"
+    },
+    {
+      "name": "The Social Economy and Alternative Development",
+      "id": "3041"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3099"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "3099"
+    },
+    {
+      "name": "The Global Information Society",
+      "id": "3500"
+    },
+    {
+      "name": "Hip Hop and the City",
+      "id": "3755"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4099"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "4099"
+    },
+    {
+      "name": "Law and Society Honours Seminar",
+      "id": "4350"
+    },
+    {
+      "name": "Criminology Honours Seminar",
+      "id": "4650"
+    },
+    {
+      "name": "Representing Crime",
+      "id": "4654"
+    },
+    {
+      "name": "Professional Work Placement / Placement en milieu de travail",
+      "id": "4975"
+    },
+    {
+      "name": "Integrated Social Work Practice",
+      "id": "3060"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5970"
+    },
+    {
+      "name": "Directed Readings",
+      "id": "5970B"
+    },
+    {
+      "name": "Elementary Spanish",
+      "id": "1000"
+    },
+    {
+      "name": "The Global Information Society",
+      "id": "3500"
+    },
+    {
+      "name": "Introduction to Sexuality Studies",
+      "id": "1600"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "3901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "3901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "3901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "3901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "4901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "4901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "4901"
+    },
+    {
+      "name": "Directed Readings/Travaux Individuels",
+      "id": "4901"
+    },
+    {
+      "name": "Innovation, Creativity and Entrepreneurship",
+      "id": "2500"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "2000"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "2000"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "3000"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "3000"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "4000"
+    },
+    {
+      "name": "Independent Production Practicum",
+      "id": "4000"
+    },
+    {
+      "name": "Independent Study I",
+      "id": "4300"
+    },
+    {
+      "name": "Independent Study I",
+      "id": "4300"
+    },
+    {
+      "name": "Independent Study II",
+      "id": "4301"
+    },
+    {
+      "name": "Independent Study II",
+      "id": "4301"
+    },
+    {
+      "name": "Theatre & Performance Studies Internship",
+      "id": "5051"
+    },
+    {
+      "name": "Independent Studies [rubric]",
+      "id": "6500"
+    },
+    {
+      "name": "Independent Studies [rubric]",
+      "id": "6500A"
+    },
+    {
+      "name": "Onsite Professional Internship/Stage professionnel en entreprise",
+      "id": "3900"
+    },
+    {
+      "name": "Online Professional Internship/Stage professionnel à distance",
+      "id": "4900"
+    },
+    {
+      "name": "Reading Course/Travail Individuel",
+      "id": "5900"
+    },
+    {
+      "name": "Advanced Taxation of Corporations and Shareholders",
+      "id": "6736"
+    },
+    {
+      "name": "Contemporary Visual Arts Summer Institute",
+      "id": "6020"
+    },
+    {
+      "name": "Contemporary Visual Arts Summer Institute",
+      "id": "6030"
+    },
+    {
+      "name": "Directed Reading",
+      "id": "6300"
+    },
+    {
+      "name": "A Writer's Introduction to Literary Forms",
+      "id": "1006"
+    },
+    {
+      "name": "Writing: Process and Practice",
+      "id": "1700"
+    }
+  ]
