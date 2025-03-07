@@ -36,7 +36,7 @@ async function genQuiz(query, questionCount = 5, difficulty = 'medium', educatio
       difficultyLevel = 'intermediate level';
   }
 
-  const promptText = `Generate ${finalCount} specific test and numerical questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
+  const promptText = `Generate ${finalCount} specific tests and numerical questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
   const loadingText = "Loading Questions...";
