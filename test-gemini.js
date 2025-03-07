@@ -1,7 +1,7 @@
 async function searchGemini(query) {
   const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA'; 
 
-  const promptText = `university level study roadmap for ${query}, topics only, numbered 1 to n, do not give any prequel to the answer start with topics straight up`;
+  const promptText = `university level study roadmap for ${query}, topics only, numbered 1 to n, do not give any prequel to the answer start with topics straight up, do no include * in output`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
   geminiResultDiv.innerHTML = '<p>Loading Gemini Roadmap...</p>';
