@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rate Course Experience</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="dark-mode.css">
+  <link href="courses.css" rel="stylesheet" />
+  <style>
+    /* Container for the form is left-aligned and sizable */
+    .form-container {
+      max-width: 600px;
+      margin-left: 0;
+      margin-right: auto;
+    }
+    /* Ensure form labels align left */
+    .form-container .form-label {
+      text-align: left;
+    }
+    /* Make form controls larger for better readability */
+    .form-container .form-control,
+    .form-container .form-select,
+    .form-container textarea {
+      font-size: 1.1rem;
+      padding: 0.75rem;
+    }
+    /* Style for the cancel button inside the form */
+    .btn-cancel {
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+    }
+    /* Floating submit button fixed to the right side of the page */
+    .floating-submit {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+      font-size: 1.2rem;
+      padding: 0.75rem 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">studybase</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account & Settings</a>
+          </li>
+        </ul>
+      </div>
+      <div class="form-check form-switch ms-auto">
+        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
+        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
+      </div>
+      <img src="user.jpg" alt="Profile" class="profile-logo ms-5">
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Rate Course Experience</h1>
+    <form id="ratingForm" class="form-container">
+      <!-- Single input with datalist for course selection -->
+      <div class="mb-3">
+        <label for="courseInput" class="form-label">Course</label>
+        <input list="courseOptions" class="form-control" id="courseInput" placeholder="Type to search and select a course" required>
+        <datalist id="courseOptions">
+          <!-- Options will be populated dynamically from courses.json -->
+        </datalist>
+      </div>
+      <div class="mb-3">
+        <label for="yourMajor" class="form-label">Your Major</label>
+        <input type="text" class="form-control" id="yourMajor" placeholder="Enter your major" required>
+      </div>
+      <div class="mb-3">
+        <label for="semester" class="form-label">Semester</label>
+        <select class="form-select" id="semester" required>
+          <option value="" disabled selected>Select Semester</option>
+          <option value="Fall">Fall</option>
+          <option value="Winter">Winter</option>
+          <option value="Summer">Summer (SU)</option>
+          <option value="Summer">Summer(S1)</option>
+          <option value="Summer">Summer(S2)</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="year" class="form-label">Year</label>
+        <input type="number" class="form-control" id="year" placeholder="e.g., 2025" required>
+      </div>
+      <div class="mb-3">
+        <label for="professorName" class="form-label">Professor</label>
+        <input type="text" class="form-control" id="professorName" placeholder="Enter professor's name" required>
+      </div>
+      <div class="mb-3">
+        <label for="reviewText" class="form-label">Review</label>
+        <textarea class="form-control" id="reviewText" rows="4" placeholder="Write your review here..." required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="starRating" class="form-label">Rating</label>
+        <select class="form-select" id="starRating" required>
+          <option value="" disabled selected>Select Rating</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <!-- Anonymity Feature: Checkbox -->
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="anonymousCheckbox">
+        <label class="form-check-label" for="anonymousCheckbox">Submit Anonymously</label>
+      </div>
+      <!-- Cancel button remains in the form -->
+      <div>
+        <button type="button" class="btn btn-secondary btn-cancel" id="cancelButton">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Floating submit button fixed to the right side of the page -->
+  <button type="submit" form="ratingForm" class="btn btn-primary btn-submit floating-submit">Submit Review</button>
+
+  <footer class="footer bg-dark text-light py-3 mt-5">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="rate-course-experience.js"></script>
+</body>
+</html>
