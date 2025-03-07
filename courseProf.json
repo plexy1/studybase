@@ -59,9 +59,15 @@
     {"prof": "Avraham Kleiman", "id": "ADMS3660"},
     {"prof": "Anton Petrenko", "id": "ADMS3660"},
     {"prof": "John Glen", "id": "ADMS3810"},
-    {"prof": "Sophia Kusyk", "id": "ADMS3900"},
-    {"prof": "Sophia Kusyk", "id": "ADMS3660"},
-    {"prof": "Sophia Kusyk", "id": "ADMS3660"},
-    {"prof": "Sophia Kusyk", "id": "ADMS3660"},
-    {"prof": "Sophia Kusyk", "id": "ADMS3660"}
+    {"prof": "David Weitzner", "id": "ADMS3900"},
+    {"prof": "Dirk Becker", "id": "ADMS3900"},
+    {"prof": "Jury Kopach", "id": "ADMS4000"},
+    {"prof": "Alexander Rusetski", "id": "ADMS4250"},
+    {"prof": "Jelena Zikic", "id": "ADMS4481"},
+    {"prof": "Jury Kopach", "id": "ADMS4502"},
+    {"prof": "Li Zhi MA", "id": "ADMS4520"},
+    {"prof": "Mohafiqul Kader", "id": "ADMS4540"},
+    {"prof": "Anh Nguyen", "id": "ADMS4540"},
+    {"prof": "Sandra Iacobelli", "id": "ADMS4551"},
+    {"prof": "Bartosz Amerski", "id": "ADMS4551"}
 ]
