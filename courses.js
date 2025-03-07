@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const courseListUl = document.getElementById('courseList');
     courseListUl.innerHTML = '';
 
-    fetch('courses.txt') // Or 'courses.json' if you named it that
+    fetch('courses.json') // Or 'courses.json' if you named it that
       .then(response => response.json()) // Parse the JSON response
       .then(courses => { // Now you have the courses data from the file
         const filteredCourses = courses.filter(course => {
