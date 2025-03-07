@@ -4,7 +4,7 @@ import { getFirestore, collection, query, where, getDocs } from "https://www.gst
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw", 
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
     authDomain: "studybase-data.firebaseapp.com",
     projectId: "studybase-data",
     storageBucket: "studybase-data.firebasestorage.app",
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const darkModeToggle = document.getElementById('darkModeToggle');
   const body = document.body;
   const courseDropdown = document.getElementById('courseDropdown');
+  const courseSearchInput = document.getElementById('courseSearch'); // Get search input
 
   function enableDarkMode() {
     body.classList.add('dark-mode');
@@ -54,17 +55,21 @@ document.addEventListener('DOMContentLoaded', function() {
     ]
   };
 
-  // Populate the dropdown with courses from courses.json
-  function populateCoursesDropdown() {
+  // Populate the dropdown with courses from courses.json, now with search term
+  function populateCoursesDropdown(searchTerm = '') {
     fetch('courses.json')
       .then(response => response.json())
       .then(courses => {
         courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
-        courses.forEach(course => {
+        const filteredCourses = courses.filter(course => {
+          const searchTextLower = searchTerm.toLowerCase();
+          // Filter courses based on whether the course name or id includes the search term
+          return course.name.toLowerCase().includes(searchTextLower) || course.id.toLowerCase().includes(searchTextLower);
+        });
+        filteredCourses.forEach(course => {
           const option = document.createElement('option');
-          // Assuming each course has a "name" property
           option.value = course.name;
-          option.textContent = course.name;
+          option.textContent = `${course.name} (${course.id})`; // Display course name and code
           courseDropdown.appendChild(option);
         });
       })
@@ -72,6 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error loading courses:', error);
       });
   }
+
+  // Add event listener to the search input
+  courseSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value;
+    populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
+  });
 
   // When a course is selected, update the reviews box with reviews from Firebase
   courseDropdown.addEventListener('change', function(e) {
@@ -175,6 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Initial population of the courses dropdown
+  // Initial population of the courses dropdown (without search term initially)
   populateCoursesDropdown();
 });
