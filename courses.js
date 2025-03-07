@@ -1,21 +1,33 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw", 
+    authDomain: "studybase-data.firebaseapp.com",
+    projectId: "studybase-data",
+    storageBucket: "studybase-data.firebasestorage.app",
+    messagingSenderId: "471482464641",
+    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+  };
+  const appFirebase = initializeApp(firebaseConfig);
+  const db = getFirestore(appFirebase);
 
   const darkModeToggle = document.getElementById('darkModeToggle');
   const body = document.body;
-  const courseSearchInput = document.getElementById('courseSearch'); // Get the search input
+  const courseDropdown = document.getElementById('courseDropdown');
 
   function enableDarkMode() {
     body.classList.add('dark-mode');
     darkModeToggle.checked = true;
     localStorage.setItem('darkMode', 'enabled');
   }
-
   function disableDarkMode() {
     body.classList.remove('dark-mode');
     darkModeToggle.checked = false;
     localStorage.setItem('darkMode', null);
   }
-
   function toggleDarkMode() {
     if (body.classList.contains('dark-mode')) {
       disableDarkMode();
@@ -23,16 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
       enableDarkMode();
     }
   }
-
   darkModeToggle.addEventListener('change', toggleDarkMode);
-
   if (localStorage.getItem('darkMode') === 'enabled') {
     enableDarkMode();
   } else {
     disableDarkMode();
   }
 
-  // Sample professor and review data (replace with actual data fetching later)
+  // Sample professor data (static)
   const professors = {
     'EECS2200': [
       { name: 'Dr. Smith', id: 'prof1' },
@@ -41,72 +51,73 @@ document.addEventListener('DOMContentLoaded', function() {
     'EECS2311': [
       { name: 'Dr. Hadi Hemmati', id: 'prof3' },
       { name: 'Professor Brown', id: 'prof4' }
-    ],
-
+    ]
   };
 
-  const reviews = {
-    'prof1': [
-      { text: 'Dr. Smith is a great lecturer. Very clear and engaging.' },
-      { text: 'Highly recommend Dr. Smith for EECS2200. He explains concepts well.' }
-    ],
-    'prof2': [
-      { text: 'Professor Jones is knowledgeable but sometimes hard to follow.' },
-      { text: 'Good professor, but could improve communication.' }
-    ],
-    'prof3': [
-      { text: 'Dr. Hadi Hemmati is excellent at explaining complex topics.' },
-      { text: 'Best professor for EECS2311! Very helpful and approachable.' }
-    ],
-    'prof4': [
-      { text: 'Professor Brown is decent, but the course material is challenging.' },
-      { text: 'Average professor, nothing special.' }
-    ],
-
-  };
-
-
-  function displayCourses(searchQuery = '') {
-    const courseListUl = document.getElementById('courseList');
-    courseListUl.innerHTML = '';
-
-    fetch('courses.json') // Or 'courses.json' if you named it that
-      .then(response => response.json()) // Parse the JSON response
-      .then(courses => { // Now you have the courses data from the file
-        const filteredCourses = courses.filter(course => {
-          const searchText = searchQuery.toLowerCase();
-          return course.name.toLowerCase().includes(searchText) || course.id.toLowerCase().includes(searchText);
+  // Populate the dropdown with courses from courses.json
+  function populateCoursesDropdown() {
+    fetch('courses.json')
+      .then(response => response.json())
+      .then(courses => {
+        courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
+        courses.forEach(course => {
+          const option = document.createElement('option');
+          // Assuming each course has a "name" property
+          option.value = course.name;
+          option.textContent = course.name;
+          courseDropdown.appendChild(option);
         });
-
-        if (filteredCourses.length === 0 && searchQuery) {
-          const li = document.createElement('li');
-          li.classList.add('list-group-item', 'disabled');
-          li.textContent = 'No courses found matching your search.';
-          courseListUl.appendChild(li);
-        } else {
-          filteredCourses.forEach(course => {
-            const li = document.createElement('li');
-            li.classList.add('list-group-item', 'course-item');
-            li.textContent = course.name;
-            li.dataset.courseId = course.id;
-            li.addEventListener('click', function() {
-              displayProfessors(this.dataset.courseId);
-              clearReviews();
-              highlightSelectedCourse(this);
-            });
-            courseListUl.appendChild(li);
-          });
-        }
       })
       .catch(error => {
         console.error('Error loading courses:', error);
-        const li = document.createElement('li');
-        li.classList.add('list-group-item', 'disabled', 'text-danger');
-        li.textContent = 'Failed to load courses. Please check console for errors.';
-        courseListUl.appendChild(li);
       });
   }
 
+  // When a course is selected, update the reviews box with reviews from Firebase
+  courseDropdown.addEventListener('change', function(e) {
+    const selectedCourse = e.target.value;
+    if (selectedCourse) {
+      updateCourseReviews(selectedCourse);
+      // (Optionally, you could also update professors if needed)
+    } else {
+      document.getElementById("courseReviewBox").innerHTML = "<p class='text-muted'>Select a course to see reviews.</p>";
+    }
+  });
+
+  // Fetch and update the "Course Reviews" box with reviews from Firebase
+  async function updateCourseReviews(courseName) {
+    const courseReviewBox = document.getElementById("courseReviewBox");
+    courseReviewBox.innerHTML = "<p>Loading course reviews...</p>";
+    try {
+      const q = query(
+        collection(db, "reviews"),
+        where("course", "==", courseName)
+      );
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        courseReviewBox.innerHTML = "<p>No reviews found for this course.</p>";
+      } else {
+        let html = "";
+        querySnapshot.forEach(doc => {
+          const review = doc.data();
+          html += `
+            <div class="review-item mb-3">
+              <h6>${review.professorName} - ${review.starRating} Stars</h6>
+              <p>${review.reviewText}</p>
+              <small>${review.anonymous ? "Anonymous" : review.yourMajor}</small>
+              <hr/>
+            </div>
+          `;
+        });
+        courseReviewBox.innerHTML = html;
+      }
+    } catch (err) {
+      console.error("Error fetching course reviews:", err);
+      courseReviewBox.innerHTML = "<p>Error loading reviews.</p>";
+    }
+  }
+
+  // (Optional) Display professors for a selected course using static data
   function displayProfessors(courseId) {
     const professorListUl = document.getElementById('professorList');
     professorListUl.innerHTML = '';
@@ -118,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
         li.textContent = professor.name;
         li.dataset.professorId = professor.id;
         li.addEventListener('click', function() {
-          displayReviews(this.dataset.professorId);
           highlightSelectedProfessor(this);
+          // Optionally: update a professor reviews box here if desired.
         });
         professorListUl.appendChild(li);
       });
@@ -131,41 +142,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function displayReviews(professorId) {
+  // Optional: Clear professor reviews box (if used)
+  function clearProfessorReviews() {
     const reviewListDiv = document.getElementById('reviewList');
-    reviewListDiv.innerHTML = '';
-
-    // Re-create and append "from RateMyProf" text
-    const rateMyProfSmall = document.createElement('small');
-    rateMyProfSmall.classList.add('rate-my-prof'); // Removed 'text-muted' class here
-    rateMyProfSmall.textContent = 'from RateMyProf';
-    reviewListDiv.appendChild(rateMyProfSmall);
-
-    const profReviews = reviews[professorId];
-    if (profReviews) {
-      profReviews.forEach(review => {
-        const p = document.createElement('p');
-        p.textContent = review.text;
-        reviewListDiv.appendChild(p);
-      });
-    } else {
-      const p = document.createElement('p');
-      p.classList.add('text-muted');
-      p.textContent = 'No reviews available for this professor.';
-      reviewListDiv.appendChild(p);
-    }
+    reviewListDiv.innerHTML = '<p class="text-muted">Select a professor to see reviews</p>' +
+                                '<small class="text-muted rate-my-prof">from RateMyProf</small>';
   }
 
-  function clearReviews() {
-    const reviewListDiv = document.getElementById('reviewList');
-    reviewListDiv.innerHTML = '<p class="text-muted">Select a professor to see reviews</p>';
-    // We should also re-add the "from RateMyProf" text here to keep it consistent if reviews are cleared without selecting a professor again.
-    const rateMyProfSmall = document.createElement('small');
-    rateMyProfSmall.classList.add('rate-my-prof'); // Removed 'text-muted' class here
-    rateMyProfSmall.textContent = 'from RateMyProf';
-    reviewListDiv.appendChild(rateMyProfSmall);
-  }
-
+  // Optional: Highlighting functions (if you want to highlight selections)
   let selectedCourseItem = null;
   function highlightSelectedCourse(courseItem) {
     if (selectedCourseItem) {
@@ -184,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
     professorItem.classList.add('active');
     selectedProfessorItem = professorItem;
   }
-
   function clearProfessorHighlight() {
     if (selectedProfessorItem) {
       selectedProfessorItem.classList.remove('active');
@@ -192,12 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-
-  displayCourses(); // Initial display of all courses
-
-  // Event listener for the search input
-  courseSearchInput.addEventListener('input', function(e) {
-    const searchQuery = e.target.value;
-    displayCourses(searchQuery); // Call displayCourses with the search query
-  });
+  // Initial population of the courses dropdown
+  populateCoursesDropdown();
 });
