@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Search Course</title>
-  <link
+  <link 
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
   <link href="courses.css" rel="stylesheet" />
-  <link rel="stylesheet" href="dark-mode.css">
-  <script src="youtube-search.js"></script>
+  <link rel="stylesheet" href="dark-mode.css" />
+  <style>
+    /* Force columns to align at the top */
+    .row.align-top {
+      align-items: flex-start;
+    }
 
+    /* Example dark-mode styling for form controls */
+    .dark-mode .form-control,
+    .dark-mode .form-select {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    .dark-mode .form-select:focus,
+    .dark-mode .form-control:focus {
+      background-color: #444;
+      color: #fff;
+      border-color: #666;
+      box-shadow: none;
+    }
+  </style>
+  <script src="youtube-search.js"></script>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -27,27 +47,26 @@
         aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="search-topic.html">Search Topic</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="courses.html">Search Course</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="quiz.html">Generate Quiz</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="history.html">History</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="account.html">Account</a>
-        </li>
-      </ul>
-    </div>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account & Settings</a>
+          </li>
+        </ul>
+      </div>
       <div class="form-check form-switch ms-auto">
         <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
         <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
@@ -61,32 +80,52 @@
   </nav>
 
   <div class="container mt-5">
-    <h1 class="text-center">Search Course</h1>
-    <div class="row mt-3">
-      <div class="col-md-4">
-        <h2>Courses (SU term) </h2>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="courseSearch" placeholder="Search course Name/ID/Department">
-        </div>
-        <ul id="courseList" class="list-group">
-          </ul>
+    <h1 class="text-center mb-4">Search Course</h1>
+    <!-- Use align-top to ensure columns are top-aligned -->
+    <div class="row align-top">
+      <!-- Left column: Courses -->
+      <div class="col-md-4 mb-4">
+        <h2 class="mb-3">Courses (SU term)</h2>
+        <select id="courseDropdown" class="form-select">
+          <option value="" disabled selected>Select a Course</option>
+          <!-- Populated dynamically from courses.json -->
+        </select>
       </div>
-      <div class="col-md-4">
-        <h2>Professors</h2>
+
+      <!-- Middle column: Professors -->
+      <div class="col-md-4 mb-4">
+        <h2 class="mb-3">Professors</h2>
         <ul id="professorList" class="list-group">
           <li class="list-group-item disabled">Select a course to see professors</li>
-          </ul>
+        </ul>
       </div>
-      <div class="col-md-4">
-        <h2>Professor Reviews</h2>
-        <div id="reviewList">
+
+      <!-- Right column: Professor Reviews + Course Reviews -->
+      <div class="col-md-4 mb-4">
+        <h2 class="mb-3">Professor Reviews</h2>
+        <div id="reviewList" class="mb-4">
           <p class="text-muted">Select a professor to see reviews</p>
-          <small class="text-muted rate-my-prof">from RateMyProf</small>  </div>
+          <small class="text-muted rate-my-prof">from RateMyProf</small>
+        </div>
+
+        <h3>Course Reviews</h3>
+        <div id="courseReviewBox">
+          <p class="text-muted">Select a course to see reviews.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rate Course Experience button row -->
+    <div class="row">
+      <div class="col text-center">
+        <a href="rate-course-experience.html" class="btn btn-primary">
+          Rate Course Experience
+        </a>
       </div>
     </div>
   </div>
 
-  <footer class="footer bg-dark text-light py-3">
+  <footer class="footer bg-dark text-light py-3 mt-5">
     <div class="container d-flex justify-content-between align-items-center">
       <p class="mb-0">&copy; 2025 Group 7</p>
       <div>
@@ -97,7 +136,10 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="courses.js"></script>
-  </body>
-  </html>
+  <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <!-- IMPORTANT: Load courses.js as a module so it can import Firebase -->
+  <script type="module" src="courses.js"></script>
+</body>
+</html>
