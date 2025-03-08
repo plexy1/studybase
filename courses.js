@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const body = document.body;
   const courseDropdown = document.getElementById('courseDropdown');
   const courseSearchInput = document.getElementById('courseSearch'); // Get search input
+  const professorListUl = document.getElementById('professorList'); // Professor list
+
+  let courseProfessors = {}; // To store professors data from courseProf.json
 
   function enableDarkMode() {
     body.classList.add('dark-mode');
@@ -43,17 +46,22 @@ document.addEventListener('DOMContentLoaded', function() {
     disableDarkMode();
   }
 
-  // Sample professor data (static)
-  const professors = {
-    'EECS2200': [
-      { name: 'Dr. Smith', id: 'prof1' },
-      { name: 'Professor Jones', id: 'prof2' }
-    ],
-    'EECS2311': [
-      { name: 'Dr. Hadi Hemmati', id: 'prof3' },
-      { name: 'Professor Brown', id: 'prof4' }
-    ]
-  };
+  // Load professor data from courseProf.json
+  fetch('courseProf.json')
+    .then(response => response.json())
+    .then(professorsData => {
+      // Structure professor data into a more accessible format (by course ID)
+      professorsData.forEach(item => {
+        if (!courseProfessors[item.id]) {
+          courseProfessors[item.id] = [];
+        }
+        courseProfessors[item.id].push(item.prof);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading professor data:', error);
+    });
+
 
   // Populate the dropdown with courses from courses.json, now with search term
   function populateCoursesDropdown(searchTerm = '') {
@@ -68,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         filteredCourses.forEach(course => {
           const option = document.createElement('option');
-          option.value = course.name;
+          option.value = course.id; // Set value to course ID for easier professor lookup
           option.textContent = `${course.name} (${course.id})`; // Display course name and code
           courseDropdown.appendChild(option);
         });
@@ -84,18 +92,40 @@ document.addEventListener('DOMContentLoaded', function() {
     populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
   });
 
-  // When a course is selected, update the reviews box with reviews from Firebase
+  // Function to display professors for a selected course
+  function updateProfessorsList(courseId) {
+    professorListUl.innerHTML = ''; // Clear previous list
+    if (courseProfessors[courseId]) {
+      courseProfessors[courseId].forEach(professorName => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'professor-item');
+        li.textContent = professorName;
+        professorListUl.appendChild(li);
+      });
+    } else {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item', 'disabled');
+      li.textContent = 'No professors available for this course.';
+      professorListUl.appendChild(li);
+    }
+  }
+
+
+  // When a course is selected, update the reviews box and professor list
   courseDropdown.addEventListener('change', function(e) {
-    const selectedCourse = e.target.value;
-    if (selectedCourse) {
-      updateCourseReviews(selectedCourse);
-      // (Optionally, you could also update professors if needed)
+    const selectedCourseId = e.target.value; // Now course ID is the value
+    const selectedCourseName = courseDropdown.options[courseDropdown.selectedIndex].text; // Get displayed course name (for reviews)
+
+    if (selectedCourseId) {
+      updateCourseReviews(selectedCourseName); // Use displayed course name for reviews
+      updateProfessorsList(selectedCourseId); // Update professor list using course ID
     } else {
       document.getElementById("courseReviewBox").innerHTML = "<p class='text-muted'>Select a course to see reviews.</p>";
+      professorListUl.innerHTML = '<li class="list-group-item disabled">Select a course to see professors</li>'; // Reset professor list
     }
   });
 
-  // Fetch and update the "Course Reviews" box with reviews from Firebase
+  // Fetch and update the "Course Reviews" box with reviews from Firebase (no changes here)
   async function updateCourseReviews(courseName) {
     const courseReviewBox = document.getElementById("courseReviewBox");
     courseReviewBox.innerHTML = "<p>Loading course reviews...</p>";
@@ -128,39 +158,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // (Optional) Display professors for a selected course using static data
-  function displayProfessors(courseId) {
-    const professorListUl = document.getElementById('professorList');
-    professorListUl.innerHTML = '';
-    const profsForCourse = professors[courseId];
-    if (profsForCourse) {
-      profsForCourse.forEach(professor => {
-        const li = document.createElement('li');
-        li.classList.add('list-group-item', 'professor-item');
-        li.textContent = professor.name;
-        li.dataset.professorId = professor.id;
-        li.addEventListener('click', function() {
-          highlightSelectedProfessor(this);
-          // Optionally: update a professor reviews box here if desired.
-        });
-        professorListUl.appendChild(li);
-      });
-    } else {
-      const li = document.createElement('li');
-      li.classList.add('list-group-item', 'disabled');
-      li.textContent = 'No professors available for this course.';
-      professorListUl.appendChild(li);
-    }
-  }
 
-  // Optional: Clear professor reviews box (if used)
+  // Optional: Clear professor reviews box (if used) (no changes here)
   function clearProfessorReviews() {
     const reviewListDiv = document.getElementById('reviewList');
     reviewListDiv.innerHTML = '<p class="text-muted">Select a professor to see reviews</p>' +
                                 '<small class="text-muted rate-my-prof">from RateMyProf</small>';
   }
 
-  // Optional: Highlighting functions (if you want to highlight selections)
+  // Optional: Highlighting functions (if you want to highlight selections) (no changes here)
   let selectedCourseItem = null;
   function highlightSelectedCourse(courseItem) {
     if (selectedCourseItem) {
