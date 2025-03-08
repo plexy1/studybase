@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const body = document.body;
   const courseDropdown = document.getElementById('courseDropdown');
   const courseSearchInput = document.getElementById('courseSearch'); // Get search input
-  const professorListUl = document.getElementById('professorList'); // Professor list
-
-  let courseProfessors = {}; // To store professors data from courseProf.json
+  const professorListUl = document.getElementById('professorList'); // Get professor list
 
   function enableDarkMode() {
     body.classList.add('dark-mode');
@@ -46,24 +44,28 @@ document.addEventListener('DOMContentLoaded', function() {
     disableDarkMode();
   }
 
-  // Load professor data from courseProf.json
-  fetch('courseProf.json')
-    .then(response => response.json())
-    .then(professorsData => {
-      // Structure professor data into a more accessible format (by course ID)
-      professorsData.forEach(item => {
-        if (!courseProfessors[item.id]) {
-          courseProfessors[item.id] = [];
-        }
-        courseProfessors[item.id].push(item.prof);
+  let courseProfessorsMap = {}; // Store professors data here
+
+  // Function to process courseProf.json and create a map
+  function initializeProfessorData() {
+    fetch('courseProf.json')
+      .then(response => response.json())
+      .then(courseProfData => {
+        courseProfData.forEach(item => {
+          const courseId = item.id;
+          const professorName = item.prof;
+          if (!courseProfessorsMap[courseId]) {
+            courseProfessorsMap[courseId] = [];
+          }
+          courseProfessorsMap[courseId].push(professorName);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading course professors:', error);
       });
-    })
-    .catch(error => {
-      console.error('Error loading professor data:', error);
-    });
+  }
 
-
-  // Populate the dropdown with courses from courses.json, now with search term
+  // Populate the dropdown with courses from courses.json
   function populateCoursesDropdown(searchTerm = '') {
     fetch('courses.json')
       .then(response => response.json())
@@ -71,13 +73,12 @@ document.addEventListener('DOMContentLoaded', function() {
         courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
         const filteredCourses = courses.filter(course => {
           const searchTextLower = searchTerm.toLowerCase();
-          // Filter courses based on whether the course name or id includes the search term
           return course.name.toLowerCase().includes(searchTextLower) || course.id.toLowerCase().includes(searchTextLower);
         });
         filteredCourses.forEach(course => {
           const option = document.createElement('option');
-          option.value = course.id; // Set value to course ID for easier professor lookup
-          option.textContent = `${course.name} (${course.id})`; // Display course name and code
+          option.value = course.id; // Use course ID as value
+          option.textContent = `${course.name} (${course.id})`;
           courseDropdown.appendChild(option);
         });
       })
@@ -86,20 +87,21 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 
-  // Add event listener to the search input
-  courseSearchInput.addEventListener('input', function(e) {
-    const searchTerm = e.target.value;
-    populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
-  });
-
-  // Function to display professors for a selected course
-  function updateProfessorsList(courseId) {
-    professorListUl.innerHTML = ''; // Clear previous list
-    if (courseProfessors[courseId]) {
-      courseProfessors[courseId].forEach(professorName => {
+  // Display professors for a selected course from courseProf.json data
+  function displayProfessors(courseId) {
+    professorListUl.innerHTML = ''; // Clear previous professors
+    const profNames = courseProfessorsMap[courseId];
+    if (profNames && profNames.length > 0) {
+      profNames.forEach(professorName => {
         const li = document.createElement('li');
         li.classList.add('list-group-item', 'professor-item');
         li.textContent = professorName;
+        // You can add professorId as dataset if you have it in courseProf.json
+        // li.dataset.professorId = professor.id;
+        li.addEventListener('click', function() {
+          highlightSelectedProfessor(this);
+          // Optionally: update a professor reviews box here if desired.
+        });
         professorListUl.appendChild(li);
       });
     } else {
@@ -111,17 +113,18 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 
-  // When a course is selected, update the reviews box and professor list
+  // When a course is selected, update professors and course reviews
   courseDropdown.addEventListener('change', function(e) {
-    const selectedCourseId = e.target.value; // Now course ID is the value
-    const selectedCourseName = courseDropdown.options[courseDropdown.selectedIndex].text; // Get displayed course name (for reviews)
-
+    const selectedCourseId = e.target.value; // Value is now course ID
     if (selectedCourseId) {
-      updateCourseReviews(selectedCourseName); // Use displayed course name for reviews
-      updateProfessorsList(selectedCourseId); // Update professor list using course ID
+      displayProfessors(selectedCourseId); // Display professors for the selected course
+      // Extract course name from the selected option's text
+      const selectedCourseText = courseDropdown.options[courseDropdown.selectedIndex].text;
+      const courseName = selectedCourseText.split(' (')[0]; // Split by ' (' and take the first part
+      updateCourseReviews(courseName); // Pass just the course name for reviews
     } else {
+      professorListUl.innerHTML = '<li class="list-group-item disabled">Select a course to see professors</li>';
       document.getElementById("courseReviewBox").innerHTML = "<p class='text-muted'>Select a course to see reviews.</p>";
-      professorListUl.innerHTML = '<li class="list-group-item disabled">Select a course to see professors</li>'; // Reset professor list
     }
   });
 
@@ -158,15 +161,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-
-  // Optional: Clear professor reviews box (if used) (no changes here)
+  // Optional: Clear professor reviews box (if used) - No changes here
   function clearProfessorReviews() {
     const reviewListDiv = document.getElementById('reviewList');
     reviewListDiv.innerHTML = '<p class="text-muted">Select a professor to see reviews</p>' +
                                 '<small class="text-muted rate-my-prof">from RateMyProf</small>';
   }
 
-  // Optional: Highlighting functions (if you want to highlight selections) (no changes here)
+  // Optional: Highlighting functions (if you want to highlight selections) - No changes here
   let selectedCourseItem = null;
   function highlightSelectedCourse(courseItem) {
     if (selectedCourseItem) {
@@ -192,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Initial population of the courses dropdown (without search term initially)
+  // Initialize professor data and then populate courses dropdown
+  initializeProfessorData();
   populateCoursesDropdown();
 });
