@@ -197,4 +197,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize professor data and then populate courses dropdown
   initializeProfessorData();
   populateCoursesDropdown();
+
+  // FIX: Add event listener to course search input
+  courseSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value;
+    populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
+  });
 });
