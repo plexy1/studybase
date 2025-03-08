@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getFirestore, addDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 // Firebase configuration (Keep your Firebase config)
 const firebaseConfig = {
@@ -14,6 +14,32 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+
+// Function to save searched topic in Firestore
+async function saveSearchTopic(topic) {
+  try {
+    await addDoc(collection(db, "searchHistory"), {
+      topic,
+      timestamp: new Date()
+    });
+  } catch (error) {
+    console.error("Error saving search history:", error);
+  }
+}
+
+// Function to fetch search history
+async function getSearchHistory() {
+  const querySnapshot = await getDocs(collection(db, "searchHistory"));
+  let history = [];
+  querySnapshot.forEach((doc) => {
+    history.push(doc.data().topic);
+  });
+  return history;
+}
+
+export { saveSearchTopic, getSearchHistory };
+
 
 // Handle review form submission
 document.addEventListener("DOMContentLoaded", () => {

@@ -75,20 +75,22 @@
       }
       return null;
     }
+    import { getSearchHistory } from "./firebaseauth.js"; // Import Firestore function
 
-    document.addEventListener('DOMContentLoaded', function() {
-      let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
+    document.addEventListener('DOMContentLoaded', async function() {
       const topicList = document.getElementById('topicList');
-
       topicList.innerHTML = '';
+
+      let history = await getSearchHistory(); // Fetch history from Firestore
+
       if (history.length === 0) {
-        topicList.innerHTML = "<p class='text'>No search history found.</p>";
+      topicList.innerHTML = "<p class='text'>No search history found.</p>";
       } else {
         history.forEach(topic => {
-          const li = document.createElement('li');
-          li.textContent = topic;
-          li.classList.add("list-group-item");
-          topicList.appendChild(li);
+        const li = document.createElement('li');
+        li.textContent = topic;
+        li.classList.add("list-group-item");
+        topicList.appendChild(li);
         });
       }
     });

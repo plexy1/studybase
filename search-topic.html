@@ -161,7 +161,9 @@
   <script src="google-search.js"></script>
   <script src="generate-roadmap.js"></script>
   <script>
-    document.getElementById('searchBtn').addEventListener('click', function(event) {
+    import {saveSearchTopic} from "./firebaseauth.js"; // Import Firestore function
+
+    document.getElementById('searchBtn').addEventListener('click', async function(event) {
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
       if (query) {
@@ -169,11 +171,8 @@
         searchGoogle(query);
         searchGemini(query);
 
-        let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
-        if (!history.includes(query)) {
-          history.push(query);
-          setCookie("searchHistory", JSON.stringify(history), 30);
-        }
+        // Save the topic to Firestore
+        await saveSearchTopic(query);
 
         updateHistoryDisplay();
       }
