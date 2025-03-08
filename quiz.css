@@ -114,11 +114,13 @@ body.dark-mode {
   border: 2px solid #ccc;
   padding: 15px;
   background: #f0f0f0;
-  height: 100%;
   display: flex;
   flex-direction: column;
   border-radius: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
+  height: auto;
+  min-height: 150px;
+  width: 100%;
 }
 
 .question-box:hover {
@@ -139,6 +141,7 @@ body.dark-mode {
   background: #e0e0e0;
   margin-top: 10px;
   border-radius: 5px;
+  height: auto;
 }
 
 .dark-mode .answer-box {
@@ -156,7 +159,8 @@ body.dark-mode {
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease, opacity 0.2s ease; 
   margin-top: auto;
-  opacity: 1; 
+  opacity: 1;
+  width: 100%;
 }
 
 .show-answer-button:hover,
@@ -170,12 +174,6 @@ body.dark-mode {
   background-color: #004080;
   transform: scale(0.98); 
   opacity: 0.9;
-}
-
-.show-answer-button:not(:hover):not(:focus):not(:active) {
-  background-color: #007bff; 
-  transform: scale(1);      
-  opacity: 1;           
 }
 
 .dark-mode .show-answer-button {
@@ -192,12 +190,6 @@ body.dark-mode {
 .dark-mode .show-answer-button:active {
   background-color: #004080;
   opacity: 0.9;
-}
-
-.dark-mode .show-answer-button:not(:hover):not(:focus):not(:active) {
-  background-color: #007bff; 
-  opacity: 1;
-  transform: scale(1);
 }
 
 .loading-container {
@@ -261,29 +253,67 @@ body {
   width: 100%;
 }
 
+/* Updated question grid layout for 2 columns x 4 rows */
 .question-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, auto);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   width: 100%;
   margin-bottom: 60px;
 }
 
-@media (max-width: 1200px) {
-  .question-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
+/* Responsive grid adjustments */
 @media (max-width: 900px) {
-  .question-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
   .question-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.difficulty-btn {
+  transition: all 0.2s ease;
+}
+
+.difficulty-btn.active {
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+.slider-container {
+  width: 100%;
+  max-width: 300px;
+  margin: 15px auto;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.dark-mode .slider-labels {
+  color: #aaa;
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.input-group {
+  width: 250px;
 }
