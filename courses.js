@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initialize Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
     authDomain: "studybase-data.firebaseapp.com",
     projectId: "studybase-data",
     storageBucket: "studybase-data.firebasestorage.app",
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const professorListUl = document.getElementById('professorList');
 
   let courseProfData = []; // To store data from courseProf.json
+  const courseSearchInput = document.getElementById('courseSearch'); // Get search input
 
   // Dark mode functions
   function enableDarkMode() {
@@ -57,14 +59,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Populate the dropdown with courses from courses.json
-  function populateCoursesDropdown() {
+  // Populate the dropdown with courses from courses.json, now with search term
+  function populateCoursesDropdown(searchTerm = '') {
     fetch('courses.json')
       .then(response => response.json())
       .then(courses => {
         courseDropdown.innerHTML = '<option value="">-- Select Course --</option>';
-        courses.forEach(course => {
+        const filteredCourses = courses.filter(course => {
+          const searchTextLower = searchTerm.toLowerCase();
+          // Filter courses based on whether the course name or id includes the search term
+          return course.name.toLowerCase().includes(searchTextLower) || course.id.toLowerCase().includes(searchTextLower);
+        });
+        filteredCourses.forEach(course => {
           const option = document.createElement('option');
+          option.value = course.name;
+          option.textContent = `${course.name} (${course.id})`; // Display course name and code
           option.value = course.id; // Use course ID for matching with courseProf.json
           option.textContent = course.name;
           courseDropdown.appendChild(option);
@@ -74,6 +83,18 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error loading courses:', error);
       });
   }
+
+  // Add event listener to the search input
+  courseSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value;
+    populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
+  });
+
+  // Add event listener to the search input
+  courseSearchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value;
+    populateCoursesDropdown(searchTerm); // Repopulate dropdown with search term
+  });
 
   // When a course is selected, update the professors list and reviews box
   courseDropdown.addEventListener('change', function (e) {
@@ -155,4 +176,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initial setup
   loadCourseProfData(); // Load courseProf.json
   populateCoursesDropdown(); // Populate the courses dropdown
+  function clearProfessorHighlight() {
+    if (selectedProfessorItem) {
+      selectedProfessorItem.classList.remove('active');
+      selectedProfessorItem = null;
+    }
+  }
+
+  // Initial population of the courses dropdown (without search term initially)
+  populateCoursesDropdown();
 });
