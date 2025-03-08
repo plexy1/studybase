@@ -1,0 +1,51 @@
+<!DOCTYPE html> // this is a test file to test an implementation method for the real history
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Test</title>
+</head>
+<body>
+    <h1>Search History Test</h1>
+    <input type="text" id="searchInput" placeholder="Enter a topic">
+    <button id="searchBtn">Search</button>
+    
+    <h2>History</h2>
+    <ul id="historyList"></ul>
+
+    <script> // this is a test file to test an implementation method for the real history
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchInput");
+            const searchBtn = document.getElementById("searchBtn");
+            const historyList = document.getElementById("historyList");
+
+
+            // displays it. might use in real history file
+            function updateHistoryDisplay() {
+                historyList.innerHTML = "";
+                const history = JSON.parse(sessionStorage.getItem("searchHistory")) || [];
+
+                history.forEach(topic => {
+                    const li = document.createElement("li");
+                    li.textContent = topic;
+                    historyList.appendChild(li);
+                });
+            }
+
+            // button to add a random topic
+            searchBtn.addEventListener("click", function () {
+                const query = searchInput.value.trim();
+                if (!query) return;
+
+                let history = JSON.parse(sessionStorage.getItem("searchHistory")) || [];
+                history.push(query);
+                sessionStorage.setItem("searchHistory", JSON.stringify(history));
+
+                updateHistoryDisplay();
+                searchInput.value = "";
+            });
+
+            updateHistoryDisplay();
+        });
+    </script>
+</body>
+</html>

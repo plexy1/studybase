@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rate Course Experience</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="dark-mode.css">
+  <link href="courses.css" rel="stylesheet" />
+  <style>
+    /* Container for the form is left-aligned and sizable */
+    .form-container {
+      max-width: 600px;
+      margin-left: 0;
+      margin-right: auto;
+    }
+    /* Ensure form labels align left */
+    .form-container .form-label {
+      text-align: left;
+    }
+    /* Make form controls larger for better readability */
+    .form-container .form-control,
+    .form-container .form-select,
+    .form-container textarea {
+      font-size: 1.1rem;
+      padding: 0.75rem;
+    }
+    /* Style for the cancel button inside the form */
+    .btn-cancel {
+      font-size: 1.2rem; /* Increased font-size to match submit button */
+      padding: 0.75rem 1.5rem;
+    }
+    /* Remove floating submit button styles */
+    .floating-submit {
+      /* No longer floating */
+    }
+    /* Style for the submit button at the bottom of the form */
+    .btn-form-submit {
+      font-size: 1.2rem;
+      padding: 0.75rem 1.5rem;
+      margin-bottom: 150px; /* Add bottom margin of 40px */
+    }
+    /* Dark mode text color for search input */
+    .dark-mode #courseSearchRate {
+      color: white; /* White text in dark mode */
+    }
+    /* Light mode text color for search input (explicitly set for clarity) */
+    #courseSearchRate {
+      color: black; /* Black text in light mode */
+    }
+    /* Sticky Footer Styles */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Ensure body is at least full viewport height */
+    }
+    .footer {
+      margin-top: auto; /* Push footer to the bottom */
+    }
+    /* Style for buttons to be in the same line and same size */
+    .text-center {
+      display: flex; /* Enable flexbox for the container */
+      justify-content: center; /* Center buttons horizontally */
+      align-items: center; /* Align buttons in the center */
+    }
+    .text-center button { /* Style buttons within text-center to have same width */
+      margin: 0 5px; /* Add horizontal margin to separate buttons */
+    }
+    /* Add margin below the main container to create space above the footer */
+    .container.mt-5 {
+      margin-bottom: 100px; /* Adjust this value to increase or decrease the gap */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">studybase</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account & Settings</a>
+          </li>
+        </ul>
+      </div>
+      <div class="form-check form-switch ms-auto">
+        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
+        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
+      </div>
+      <img src="user.jpg" alt="Profile" class="profile-logo ms-5">
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Rate Course Experience</h1>
+    <form id="ratingForm" class="form-container">
+      <div class="mb-3">
+        <label for="courseInput" class="form-label">Course</label>
+        <input type="text" id="courseSearchRate" class="form-control mb-2" placeholder="Search courses by name or code...">
+        <select id="courseInput" class="form-select">
+          <option value="" disabled selected>Select a Course</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="yourMajor" class="form-label">Your Major</label>
+        <input type="text" class="form-control" id="yourMajor" placeholder="Enter your major" required>
+      </div>
+      <div class="mb-3">
+        <label for="semester" class="form-label">Semester</label>
+        <select class="form-select" id="semester" required>
+          <option value="" disabled selected>Select Semester</option>
+          <option value="Fall">Fall</option>
+          <option value="Winter">Winter</option>
+          <option value="Summer">Summer (SU)</option>
+          <option value="Summer">Summer(S1)</option>
+          <option value="Summer">Summer(S2)</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="year" class="form-label">Year</label>
+        <input type="number" class="form-control" id="year" placeholder="e.g., 2025" required>
+      </div>
+      <div class="mb-3">
+        <label for="professorName" class="form-label">Professor</label>
+        <input type="text" class="form-control" id="professorName" placeholder="Enter professor's name" required>
+      </div>
+      <div class="mb-3">
+        <label for="reviewText" class="form-label">Review</label>
+        <textarea class="form-control" id="reviewText" rows="4" placeholder="Write your review here..." required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="starRating" class="form-label">Rating</label>
+        <select class="form-select" id="starRating" required>
+          <option value="" disabled selected>Select Rating</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="anonymousCheckbox">
+        <label class="form-check-label" for="anonymousCheckbox">Submit Anonymously</label>
+      </div>
+      <div class="text-center">  <button type="submit" class="btn btn-primary btn-form-submit">Submit Review</button>
+        <button type="button" class="btn btn-secondary btn-cancel" id="cancelButton">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="footer bg-dark text-light py-3 mt-5">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script type="module" src="rate-course-experience.js"></script>
+</body>
+</html>

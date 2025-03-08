@@ -1,0 +1,171 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #212529;
+  color: white;
+  text-align: center;
+}
+  a.text-light {
+    text-decoration: none;
+  }
+  a.text-light:hover {
+    text-decoration: underline;
+  }
+
+  .profile-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+body.dark-mode {
+background-color: #121212;
+color: #ffffff;
+}
+
+.dark-mode .navbar {
+background-color: #212529 !important;
+}
+
+.dark-mode .nav-link {
+color: #f8f9fa !important;
+}
+
+.dark-mode .nav-link:hover,
+.dark-mode .nav-link:focus {
+color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.dark-mode .footer {
+background-color: #212529 !important;
+color: #f8f9fa;
+}
+
+.dark-mode .search-box .form-control {
+background-color: #343a40;
+color: #ffffff;
+border-color: #495057;
+}
+
+.dark-mode .search-box .form-control::placeholder {
+color: #adb5bd;
+}
+
+.dark-mode .btn-primary {
+background-color: #007bff;
+border-color: #007bff;
+color: #fff;
+}
+
+.dark-mode .btn-primary:hover,
+.dark-mode .btn-primary:focus,
+.dark-mode .btn-primary:active,
+.dark-mode .btn-primary.active,
+.dark-mode .btn-primary.focus,
+.dark-mode .btn-primary:not(:disabled):not(.disabled):active {
+background-color: #0056b3;
+border-color: #0056b3;
+color: #fff;
+}
+
+.dark-mode .result-container {
+background-color: #1e1e1e;
+border: 1px solid #343a40;
+}
+
+.dark-mode .result-container h6 {
+color: #ffffff;
+}
+
+.dark-mode .list-group-item {
+background-color: #212529;
+color: #ffffff;
+border-color: #343a40;
+}
+
+.dark-mode .btn-outline-secondary {
+  color: #f8f9fa;
+  border-color: #6c757d;
+}
+
+.dark-mode .btn-outline-secondary:hover,
+.dark-mode .btn-outline-secondary:focus,
+.dark-mode .btn-outline-secondary:active,
+.dark-mode .btn-outline-secondary.active {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+
+.dark-mode .profile-logo {
+
+filter: brightness(1.1) contrast(1.2);
+}
+
+
+.dark-mode #historyContainer li {
+  color: #ffffff;
+}
+
+
+.col-md-4 {
+  padding: 15px;
+}
+
+#courseList,
+#professorList { /* Applying styles to both courseList and professorList */
+  max-height: 500px; /* Set a maximum height for the lists */
+  overflow-y: auto;  /* Enable vertical scrolling when content overflows */
+}
+
+#courseList .list-group-item,
+#professorList .list-group-item {
+  cursor: pointer;
+}
+
+#courseList .list-group-item.active,
+#professorList .list-group-item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+#reviewList {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  min-height: 200px;
+  position: relative; /* Added relative positioning */
+}
+
+.dark-mode #reviewList {
+  border-color: #343a40;
+}
+.dark-mode #reviewList p.text-muted {
+    color: white !important;
+}
+
+.rate-my-prof {         /* CSS for "from RateMyProf" text */
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  font-size: 0.8em;
+  color: black; /* Default color for light mode: Black */
+}
+
+.dark-mode .rate-my-prof {
+    color: white; /* Color for dark mode: White */
+}
+#courseSearch {
+  color: black;
+}
+
+#courseSearch::placeholder {
+  color: black; /* Default color for light mode: Black */
+}
+
+.dark-mode #courseSearch::placeholder {
+  color: white; /* Color for dark mode: White */
+}

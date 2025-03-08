@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Topic</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link href="search-topic.css" rel="stylesheet">
+  <style>
+    /* Custom styling for the slider container */
+    .slider-container {
+      width: 25%; /* Make slider a quarter of the original size */
+      margin: 0 auto; /* Center the slider */
+      padding: 10px;
+    }
+    
+    .slider-labels {
+      display: flex;
+      justify-content: space-between; /* Equal spacing between labels */
+      width: 100%;
+      margin-top: 5px;
+    }
+    
+    .slider-labels span {
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">studybase</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account</a>
+          </li>
+        </ul>
+      </div>
+      <div class="form-check form-switch ms-auto">
+        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
+        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
+      </div>
+      <img
+        src="user.jpg"
+        alt="Profile"
+        class="profile-logo ms-5"
+      />
+    </div>
+  </nav>
+
+  <div class="container text-center mt-5">
+    <h1>Search Topic</h1>
+    <div class="search-box mt-4 d-flex">
+      <input
+        id="searchInput"
+        type="text"
+        class="form-control me-2"
+        placeholder="Search any topic or concept"
+      >
+      <!-- Education level dropdown next to search bar -->
+      <select id="educationLevel" class="form-select" style="width: 200px;">
+        <option selected value="highSchool">High School</option>
+        <option value="university12">Year 1-2 University</option>
+        <option value="university34">Year 3-4 University</option>
+        <option value="masters">Masters+</option>
+      </select>
+    </div>
+    
+    <!-- Question count slider underneath search bar and dropdown -->
+    <div class="slider-container mt-4">
+      <label for="questionSlider" class="form-label d-block text-center mb-2">Roadmap Steps</label>
+      <input 
+        type="range" 
+        class="form-range" 
+        min="1" 
+        max="4" 
+        step="1" 
+        id="questionSlider" 
+        value="2"
+      >
+      <div class="slider-labels">
+        <span>5</span>
+        <span>10</span>
+        <span>15</span>
+        <span>20</span>
+      </div>
+    </div>
+    <button id="searchBtn" type="button" class="btn btn-primary mt-4 w-50">
+      Search
+    </button>
+    
+    <div id="searchResult" class="result-container">
+      <div class="left-half">
+        <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
+        <div class="mt-2 text-center">
+          <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
+          <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
+        </div>
+      </div>
+      <div class="right-half">
+        <div class="youtube-results-container mt-4">
+          <div class="d-flex flex-column align-items-center">
+            <div id="videoSlider" class="d-flex overflow-hidden">
+            </div>
+            <div class="mt-2">
+              <button id="prevVideos" class="btn btn-outline-secondary me-2" style="display: none;">◀ Previous</button>
+              <button id="nextVideos" class="btn btn-outline-secondary" style="display: none;">Next ▶</button>
+            </div>
+          </div>
+          <div class="google-results-container mt-4 mb-5">
+            <div id="googleResults"></div>
+            <div class="mt-2 text-center">
+              <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
+              <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer bg-dark text-light py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="google-search.js"></script>
+  <script src="generate-roadmap.js"></script>
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', async function(event) {
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        searchYouTube(query);
+        searchGoogle(query);
+        searchGemini(query);
+
+       // Save the topic to Firestore
+       await saveSearchTopic(query);
+
+        updateHistoryDisplay();
+      }
+    });
+
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function updateHistoryDisplay() {
+      let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
+      const historyContainer = document.getElementById('historyContainer');
+
+      if (historyContainer) {
+        historyContainer.innerHTML = '';
+        history.forEach(topic => {
+          const li = document.createElement('li');
+          li.textContent = topic;
+          historyContainer.appendChild(li);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateHistoryDisplay);
+  </script>
+
+  <script src="youtube-search.js"></script>
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Function to enable dark mode
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    // Function to disable dark mode
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      darkModeToggle.checked = false;
+      localStorage.setItem('darkMode', null);
+    }
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+      if (body.classList.contains('dark-mode')) {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    }
+
+    // Event listener for the dark mode toggle
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+
+    // Check localStorage for dark mode preference on page load
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  </script>
+</body>
+</html>
