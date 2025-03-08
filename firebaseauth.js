@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getFirestore, addDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 // Firebase configuration (Keep your Firebase config)
 const firebaseConfig = {
@@ -13,79 +14,51 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-
-// Function to save searched topic in Firestore
-async function saveSearchTopic(topic) {
-  try {
-    await addDoc(collection(db, "searchHistory"), {
-      topic,
-      timestamp: new Date()
-    });
-  } catch (error) {
-    console.error("Error saving search history:", error);
-  }
-}
-
-// Function to fetch search history
-async function getSearchHistory() {
-  const querySnapshot = await getDocs(collection(db, "searchHistory"));
-  let history = [];
-  querySnapshot.forEach((doc) => {
-    history.push(doc.data().topic);
-  });
-  return history;
-}
-
-export { saveSearchTopic, getSearchHistory };
-
-
-// Handle review form submission
+// Handle form submission
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("reviewForm");
-  const successMessageDiv = document.getElementById("successMessage"); // A div in your HTML to show success/error messages
+  const form = document.getElementById("registerForm");
+  const successMessageDiv = document.getElementById("successMessage"); // Get the success message div
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Retrieve review form input values
-    const course = document.getElementById("courseInput").value;
-    const yourMajor = document.getElementById("yourMajor").value;
-    const semester = document.getElementById("semester").value;
-    const year = document.getElementById("year").value;
-    const professorName = document.getElementById("professorName").value;
-    const reviewText = document.getElementById("reviewText").value;
-    const starRating = document.getElementById("starRating").value;
-    const anonymous = document.getElementById("anonymousCheckbox").checked;
+    // Get user input
+    const username = document.getElementById("floatingUsername").value;
+    const email = document.getElementById("floatingEmail").value;
+    const university = document.getElementById("floatingUniversity").value;
+    const password = document.getElementById("floatingPassword").value;
 
     try {
-      // Save review details in the "reviews" collection
-      await addDoc(collection(db, "reviews"), {
-        course,
-        yourMajor,
-        semester,
-        year,
-        professorName,
-        reviewText,
-        starRating,
-        anonymous,
-        timestamp: new Date()  // Optional: add a timestamp
+      // Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save user details in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        email: email,
+        university: university,
       });
 
       // Display success message
-      successMessageDiv.textContent = "Review submitted successfully! Redirecting...";
-      successMessageDiv.style.display = "block";
-      successMessageDiv.style.color = "green";
+      successMessageDiv.textContent = "Account created successfully! Redirecting...";
+      successMessageDiv.style.display = "block"; // Make the message visible
+      successMessageDiv.style.color = "green";   // Set text color to green
+
 
       setTimeout(() => {
-        window.location.href = "courses.html"; // Redirect or clear the form as needed
+        window.location.href = "index.html"; // Redirect to login page after 1 second
       }, 1000);
+
+
     } catch (error) {
-      console.error("Error submitting review:", error);
-      successMessageDiv.textContent = "Error submitting review: " + error.message;
+      console.error("Error signing up:", error);
+      successMessageDiv.textContent = "Error creating account: " + error.message; // Display error in successMessageDiv
       successMessageDiv.style.display = "block";
-      successMessageDiv.style.color = "red";
+      successMessageDiv.style.color = "red"; // Change color to red for error
     }
   });
 });
