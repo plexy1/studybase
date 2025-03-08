@@ -36,7 +36,7 @@ async function genQuiz(query, questionCount = 5, difficulty = 'medium', educatio
       difficultyLevel = 'intermediate level';
   }
 
-  const promptText = `Generate ${finalCount} specific tests and numerical questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
+  const promptText = `Generate ${finalCount} specific numerical if its a math related subject or other questions if not about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. Each question should be tailored to this education level and difficulty. Generate just the question without putting any numbers in front of it.`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
   const loadingText = "Loading Questions...";
@@ -152,7 +152,45 @@ async function genAns(query, difficulty, educationLevel) {
 const storedAnswers = {};
 
 function formatQuestions(roadmapText, difficulty, educationLevel) {
-  const questions = roadmapText.split('\n').filter(Boolean);
+  // Split by pattern that looks for question boundaries
+  const questionMatches = roadmapText.match(/[^\n]+(\n|$)/g);
+  const questions = [];
+  
+  // Process the matches to handle cases where questions end with numbers
+  if (questionMatches) {
+    let currentQuestion = "";
+    
+    for (let i = 0; i < questionMatches.length; i++) {
+      const line = questionMatches[i].trim();
+      
+      // Skip empty lines
+      if (!line) continue;
+      
+      // Check if this is a new numbered question
+      const startsWithNumber = /^\d+[\.\)]/.test(line);
+      
+      if (startsWithNumber && currentQuestion) {
+        // If we already have a question in progress and find a new one, save the old one
+        questions.push(currentQuestion);
+        currentQuestion = line;
+      } else {
+        // Otherwise add to existing question or start a new one
+        if (currentQuestion) {
+          currentQuestion += " " + line;
+        } else {
+          currentQuestion = line;
+        }
+      }
+    }
+    
+    if (currentQuestion) {
+      questions.push(currentQuestion);
+    }
+  }
+
+    if (questions.length === 0) {
+    questions.push(...roadmapText.split('\n').filter(Boolean));
+  }
   
   let levelDisplay = '';
   switch(educationLevel) {
@@ -198,21 +236,21 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
     <div class="quiz-info mb-3">
       <span class="badge bg-secondary">Level: ${levelDisplay}</span>
       <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
-      <span class="badge bg-secondary ms-2">Questions: ${questions.length}</span>
+      <span class="badge bg-secondary ms-2">Questions: ${Math.min(questions.length, 8)}</span>
     </div>
     <div class="question-grid">`;
 
-  let questionCounter = 1;
-
-  questions.forEach((question) => {
-    if (question.trim() && questionCounter <= 8) {
-      const answerBoxId = `answer-box-${questionCounter}`;
-      const buttonId = `button-${questionCounter}`;
-      const questionId = `question-${Date.now()}-${questionCounter}`;
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    if (question.trim()) {
+      const answerBoxId = `answer-box-${i+1}`;
+      const buttonId = `button-${i+1}`;
+      const questionId = `question-${Date.now()}-${i+1}`;
+      const cleanQuestion = question.replace(/^\d+[\.\)]\s*/, '');
 
       formattedRoadmap += `
         <div class="question-box">
-            <b>QUESTION ${questionCounter}</b><br><br> ${question}<br><br>
+            <b>QUESTION ${i+1}</b><br><br> ${cleanQuestion}<br><br>
             <button id="${buttonId}" class="show-answer-button" onclick="showAns('${questionId}', '${answerBoxId}', '${buttonId}', '${difficulty}', '${educationLevel}')">
                 Show Answer
             </button>
@@ -220,11 +258,9 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
             </div>
         </div>
       `;
-      storedAnswers[questionId] = { question: question, answer: null };
-
-      questionCounter++;
+      storedAnswers[questionId] = { question: cleanQuestion, answer: null };
     }
-  });
+  }
 
   formattedRoadmap += '</div></div>';
   return formattedRoadmap;

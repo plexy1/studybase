@@ -66,7 +66,15 @@
   </div>
 
   <script>
-
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
     import { getSearchHistory } from "./firebaseauth.js"; // Import Firestore function
 
     document.addEventListener('DOMContentLoaded', async function() {
