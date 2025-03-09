@@ -16,16 +16,27 @@
       margin: 0 auto; /* Center the slider */
       padding: 10px;
     }
-    
+
     .slider-labels {
       display: flex;
       justify-content: space-between; /* Equal spacing between labels */
       width: 100%;
       margin-top: 5px;
     }
-    
+
     .slider-labels span {
       font-size: 0.8rem;
+    }
+    /* Style for save status message */
+    .save-message {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    .save-message.success {
+        color: green;
+    }
+    .save-message.error {
+        color: red;
     }
   </style>
 </head>
@@ -76,6 +87,10 @@
   </nav>
 
   <div class="container text-center mt-5">
+
+    <div id="userDisplay" class="mb-3">
+    </div>
+
     <h1>Search Topic</h1>
     <div class="search-box mt-4 d-flex">
       <input
@@ -84,7 +99,6 @@
         class="form-control me-2"
         placeholder="Search any topic or concept"
       >
-      <!-- Education level dropdown next to search bar -->
       <select id="educationLevel" class="form-select" style="width: 200px;">
         <option selected value="highSchool">High School</option>
         <option value="university12">Year 1-2 University</option>
@@ -92,17 +106,16 @@
         <option value="masters">Masters+</option>
       </select>
     </div>
-    
-    <!-- Question count slider underneath search bar and dropdown -->
+
     <div class="slider-container mt-4">
       <label for="questionSlider" class="form-label d-block text-center mb-2">Roadmap Steps</label>
-      <input 
-        type="range" 
-        class="form-range" 
-        min="1" 
-        max="4" 
-        step="1" 
-        id="questionSlider" 
+      <input
+        type="range"
+        class="form-range"
+        min="1"
+        max="4"
+        step="1"
+        id="questionSlider"
         value="2"
       >
       <div class="slider-labels">
@@ -112,10 +125,18 @@
         <span>20</span>
       </div>
     </div>
-    <button id="searchBtn" type="button" class="btn btn-primary mt-4 w-50">
-      Search
-    </button>
-    
+    <div class="d-flex justify-content-center mt-4">
+        <button id="searchBtn" type="button" class="btn btn-primary w-25 me-2">
+          Search
+        </button>
+        <button id="saveSearchBtn" type="button" class="btn btn-secondary w-25">
+          Save Search
+        </button>
+    </div>
+
+    <div id="saveStatusMessage" class="save-message text-center" style="display: none;"></div>
+
+
     <div id="searchResult" class="result-container">
       <div class="left-half">
         <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
@@ -169,8 +190,8 @@
         searchGoogle(query);
         searchGemini(query);
 
-       // Save the topic to Firestore
-       await saveSearchTopic(query);
+       // Save the topic to Firestore - assuming you have this function defined elsewhere
+       // await saveSearchTopic(query);
 
         updateHistoryDisplay();
       }
@@ -252,5 +273,39 @@
       disableDarkMode();
     }
   </script>
+
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+  // Firebase configuration (You should use your actual config here, but for now using the one from your provided files)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+    authDomain: "studybase-data.firebaseapp.com",
+    projectId: "studybase-data",
+    storageBucket: "studybase-data.firebasestorage.app",
+    messagingSenderId: "471482464641",
+    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+  };
+
+  // Initialize Firebase app
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const userDisplay = document.getElementById('userDisplay');
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, display their email
+      userDisplay.textContent = `Logged in as: ${user.email}`;
+      userDisplay.style.color = 'green'; // Style it to indicate logged-in state
+    } else {
+      // User is signed out, display demonstration mode message
+      userDisplay.textContent = "Testing/Demonstration Mode";
+      userDisplay.style.color = 'grey'; // Style it to indicate demo mode
+    }
+  });
+</script>
+<script type="module" src="save-search.js"></script>
 </body>
 </html>

@@ -9,7 +9,6 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="dark-mode.css">
-  <script src="youtube-search.js"></script>
   <link href="history.css" rel="stylesheet">
 </head>
 <body>
@@ -40,7 +39,7 @@
           <a class="nav-link" href="quiz.html">Generate Quiz</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="history.html">History</a>
+          <a class="nav-link active" href="history.html">History</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="account.html">Account</a>
@@ -60,41 +59,17 @@
   </nav>
 
   <div class="container text-center mt-5">
-    <h1>History</h1>
-    <ul id="topicList" class="mt-3 list-group">
-    </ul>
+
+    <div id="userDisplay" class="mb-3">
+    </div>
+
+    <h1>Search History</h1>
+    <div id="searchHistoryTiles" class="row mt-3">
+        </div>
+    <div id="noHistoryMessage" style="display:none;">
+        <p class='text'>No search history found.</p>
+    </div>
   </div>
-
-  <script>
-    function getCookie(name) {
-      let nameEQ = name + "=";
-      let ca = document.cookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-      }
-      return null;
-    }
-    import { getSearchHistory } from "./firebaseauth.js"; // Import Firestore function
-
-    document.addEventListener('DOMContentLoaded', async function() {
-      const topicList = document.getElementById('topicList');
-      topicList.innerHTML = '';
-
-      let history = await getSearchHistory(); // Fetch history from Firestore
-
-      if (history.length === 0) {
-      topicList.innerHTML = "<p class='text'>No search history found.</p>";
-      } else {
-        history.forEach(topic => {
-        const li = document.createElement('li');
-        li.textContent = topic;
-        li.classList.add("list-group-item");
-        topicList.appendChild(li);
-        });
-      }
-    });
-  </script>
 
   <footer class="footer bg-dark text-light py-3">
     <div class="container d-flex justify-content-between align-items-center">
@@ -146,5 +121,119 @@
     }
   </script>
 
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  import { getFirestore, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+    authDomain: "studybase-data.firebaseapp.com",
+    projectId: "studybase-data",
+    storageBucket: "studybase-data.firebasestorage.app",
+    messagingSenderId: "471482464641",
+    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const userDisplay = document.getElementById('userDisplay');
+  const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+  const noHistoryMessage = document.getElementById('noHistoryMessage');
+
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, display their email
+      userDisplay.textContent = `Logged in as: ${user.email}`;
+      userDisplay.style.color = 'green';
+      loadSavedSearches(user); // Load saved searches for logged-in user
+    } else {
+      // User is signed out, display demonstration mode message
+      userDisplay.textContent = "Testing/Demonstration Mode";
+      userDisplay.style.color = 'grey';
+      searchHistoryTiles.innerHTML = ''; // Clear any tiles if logged out
+      noHistoryMessage.style.display = 'block'; // Show no history message
+    }
+  });
+
+
+  async function loadSavedSearches(user) {
+    searchHistoryTiles.innerHTML = ''; // Clear existing tiles
+    noHistoryMessage.style.display = 'none'; // Hide no history message initially
+
+    if (!user) {
+        console.log("No user logged in to fetch history.");
+        noHistoryMessage.style.display = 'block'; // Show no history message if no user
+        return;
+    }
+
+    const savedSearchesRef = collection(db, 'savedSearches');
+    const q = query(savedSearchesRef, where("userId", "==", user.uid), orderBy("timestamp", "desc")); //Order by timestamp, newest first
+
+
+    try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            noHistoryMessage.style.display = 'block'; // Show message if no history found
+        } else {
+            querySnapshot.forEach((doc) => {
+                const searchData = doc.data();
+                const tile = createSearchTile(searchData);
+                searchHistoryTiles.appendChild(tile);
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching saved searches:", error);
+        searchHistoryTiles.innerHTML = `<p class="text-danger">Error loading search history.</p>`; // Display error message in tiles area
+    }
+  }
+
+
+  function createSearchTile(searchData) {
+    const tile = document.createElement('div');
+    tile.className = 'col-md-4 col-sm-6 mb-4'; // Bootstrap grid classes for tile layout
+
+    const card = document.createElement('div');
+    card.className = 'card h-100'; // Bootstrap card class, h-100 for equal height tiles
+    tile.appendChild(card);
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body d-flex flex-column'; // flex-column to align content
+    card.appendChild(cardBody);
+
+    const title = document.createElement('h5');
+    title.className = 'card-title';
+    title.textContent = searchData.query;
+    cardBody.appendChild(title);
+
+    const educationLevel = document.createElement('p');
+    educationLevel.className = 'card-text';
+    educationLevel.textContent = `Education Level: ${searchData.educationLevel}`;
+    cardBody.appendChild(educationLevel);
+
+    const roadmapSteps = document.createElement('p');
+    roadmapSteps.className = 'card-text';
+    roadmapSteps.textContent = `Roadmap Steps: ${searchData.roadmapSteps}`;
+    cardBody.appendChild(roadmapSteps);
+
+    const timestamp = document.createElement('p');
+    timestamp.className = 'card-text mt-auto text-muted'; // mt-auto pushes timestamp to the bottom
+    // Format timestamp - using toLocaleDateString for a readable date format
+    const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date(); // Handle cases where timestamp might be null
+    timestamp.textContent = `Saved on: ${date.toLocaleDateString()}`;
+    cardBody.appendChild(timestamp);
+
+
+    return tile;
+  }
+
+
+</script>
 </body>
 </html>
