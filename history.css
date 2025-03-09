@@ -76,6 +76,7 @@ body.dark-mode {
     border: 1px solid #dee2e6; /* Light border for tiles */
     border-radius: 0.5rem;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Soft shadow */
+    position: relative; /* Required for absolute positioning of dropdown button */
 }
 
 .card-body {
@@ -108,4 +109,16 @@ body.dark-mode {
 }
 .dark-mode .card-text.text-muted {
     color: #adb5bd; /* Lighter text for muted text in dark mode */
+}
+
+/* Delete Status Message Style */
+.delete-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+.delete-message.success {
+    color: green;
+}
+.delete-message.error {
+    color: red;
 }

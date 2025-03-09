@@ -58,7 +58,7 @@
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="search-topic.html">Search Topic</a>
+            <a class="nav-link active" href="search-topic.html">Search Topic</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="courses.html">Search Course</a>
@@ -88,11 +88,7 @@
 
   <div class="container text-center mt-5">
 
-    <div id="userDisplay" class="mb-3">
-    </div>
-
-    <h1>Search Topic</h1>
-    <div class="search-box mt-4 d-flex">
+    <h1 id="greetingDisplay"></h1> <div class="search-box mt-4 d-flex">
       <input
         id="searchInput"
         type="text"
@@ -292,19 +288,60 @@
   // Initialize Firebase app
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const userDisplay = document.getElementById('userDisplay');
+  const greetingDisplay = document.getElementById('greetingDisplay');
+  const searchInput = document.getElementById('searchInput');
+  const educationLevelDropdown = document.getElementById('educationLevel');
+  const roadmapStepsSlider = document.getElementById('questionSlider');
 
   onAuthStateChanged(auth, (user) => {
+    let greeting = getGreeting();
+    let userName = user ? user.email.split('@')[0] : "User"; // Use email prefix as username, or "User" if no user
+
     if (user) {
-      // User is signed in, display their email
-      userDisplay.textContent = `Logged in as: ${user.email}`;
-      userDisplay.style.color = 'green'; // Style it to indicate logged-in state
+      greetingDisplay.textContent = `${greeting}, ${userName} Search a topic`;
+      greetingDisplay.style.color = 'black'; // Or your desired logged-in color
     } else {
-      // User is signed out, display demonstration mode message
-      userDisplay.textContent = "Testing/Demonstration Mode";
-      userDisplay.style.color = 'grey'; // Style it to indicate demo mode
+      greetingDisplay.textContent = "Testing/Demonstration Mode - Search a topic";
+      greetingDisplay.style.color = 'grey'; // Or your desired demo mode color
     }
   });
+
+  function getGreeting() {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good morning";
+    } else if (currentHour < 18) {
+      return "Good afternoon";
+    } else if (currentHour < 22) {
+        return "Good evening";
+    }
+     else {
+      return "Good night";
+    }
+  }
+
+  // Function to pre-fill search parameters from URL
+  function prefillSearchParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParam = urlParams.get('query');
+    const educationLevelParam = urlParams.get('educationLevel');
+    const roadmapStepsParam = urlParams.get('roadmapSteps');
+
+    if (queryParam) {
+      searchInput.value = decodeURIComponent(queryParam);
+    }
+    if (educationLevelParam) {
+      educationLevelDropdown.value = decodeURIComponent(educationLevelParam);
+    }
+    if (roadmapStepsParam) {
+      roadmapStepsSlider.value = decodeURIComponent(roadmapStepsParam);
+    }
+  }
+
+  // Call prefill function on page load
+  document.addEventListener('DOMContentLoaded', prefillSearchParameters);
+
+
 </script>
 <script type="module" src="save-search.js"></script>
 </body>
