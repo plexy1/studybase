@@ -3,7 +3,6 @@ import { getAuth, onAuthStateChanged, signOut, updatePassword, reauthenticateWit
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 
-// Firebase configuration and initialization
 const firebaseConfig = {
   apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
   authDomain: "studybase-data.firebaseapp.com",
@@ -18,7 +17,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Elements
 const accountNameElement = document.getElementById("accountName");
 const profileNameElement = document.getElementById("profileName");
 const dateCreatedElement = document.getElementById("dateCreated");
@@ -30,125 +28,94 @@ const profileImageElement = document.getElementById("profileImage");
 const logoutButton = document.querySelector(".btn-danger");
 const accountTab = document.querySelector('.nav-link[href="account.html"]');
 const darkModeToggle = document.getElementById('darkModeToggle');
-const darkModePreference = document.getElementById('darkModePreference');
-const emailNotifications = document.getElementById('emailNotifications');
-const quizReminders = document.getElementById('quizReminders');
-const newFeatures = document.getElementById('newFeatures');
-const anonymousMode = document.getElementById('anonymousMode');
-const savePreferencesBtn = document.getElementById('savePreferencesBtn');
 const changeNameForm = document.getElementById("changeNameForm");
 const changeUniversityForm = document.getElementById("changeUniversityForm");
 const changePasswordForm = document.getElementById("changePasswordForm");
 const changePhotoForm = document.getElementById("changePhotoForm");
 
-// User Authentication Status
+function initializePlaceholders() {
+  if (accountNameElement) accountNameElement.textContent = "Not available";
+  if (profileNameElement) profileNameElement.textContent = "Not available";
+  if (dateCreatedElement) dateCreatedElement.textContent = "Not available";
+  if (universityElement) universityElement.textContent = "Not available";
+  if (emailElement) emailElement.textContent = "Not available";
+  if (profileEmailElement) profileEmailElement.textContent = "Not available";
+  if (lastLoginElement) lastLoginElement.textContent = "Not available";
+}
+
+initializePlaceholders();
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
+      if (emailElement) emailElement.textContent = user.email || "Not available";
+      if (profileEmailElement) profileEmailElement.textContent = user.email || "Not available";
+
+      if (user.metadata) {
+        const creationTime = new Date(user.metadata.creationTime);
+        if (dateCreatedElement) {
+          dateCreatedElement.textContent = creationTime.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          });
+        }
+
+        const lastSignInTime = new Date(user.metadata.lastSignInTime);
+        if (lastLoginElement) {
+          lastLoginElement.textContent = lastSignInTime.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }) + " at " + lastSignInTime.toLocaleTimeString("en-US", {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        }
+      }
+
       const userDoc = await getDoc(doc(db, "users", user.uid));
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
 
         const username = userData.username || "Not set";
-        accountNameElement.textContent = username;
-        profileNameElement.textContent = username;
-        universityElement.textContent = userData.university || "Not set";
-        emailElement.textContent = user.email;
-        profileEmailElement.textContent = user.email;
+        if (accountNameElement) accountNameElement.textContent = username;
+        if (profileNameElement) profileNameElement.textContent = username;
+        if (universityElement) universityElement.textContent = userData.university || "Not set";
 
         if (userData.photoURL) {
-          profileImageElement.src = userData.photoURL;
           document.querySelectorAll('img[alt="Profile"]').forEach(img => {
             img.src = userData.photoURL;
           });
+          if (profileImageElement) profileImageElement.src = userData.photoURL;
         }
 
         if (accountTab) {
           accountTab.textContent = username;
         }
-
-        const creationTime = new Date(user.metadata.creationTime);
-        dateCreatedElement.textContent = creationTime.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        });
-
-        const lastSignInTime = new Date(user.metadata.lastSignInTime);
-        lastLoginElement.textContent = lastSignInTime.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }) + " at " + lastSignInTime.toLocaleTimeString("en-US", {
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-
-        loadUserPreferences(userData);
-      } else {
+      }
+      else {
         console.log("No user document found");
-        setDefaultValues();
+        if (accountNameElement && !accountNameElement.textContent)
+          accountNameElement.textContent = "Not set";
+        if (profileNameElement && !profileNameElement.textContent)
+          profileNameElement.textContent = "Not set";
+        if (universityElement && !universityElement.textContent)
+          universityElement.textContent = "Not set";
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
-      setDefaultValues();
+      if (user.email) {
+        if (emailElement) emailElement.textContent = user.email;
+        if (profileEmailElement) profileEmailElement.textContent = user.email;
+      }
+
+      showAlert('Error loading profile data. Some information may be incomplete.', 'warning');
     }
-  } else {
-    window.location.href = "index.html";
-  }
+  } 
 });
 
-// Load user preferences from Firestore
-function loadUserPreferences(userData) {
-  if (userData.preferences) {
-    if (userData.preferences.hasOwnProperty('darkMode')) {
-      darkModePreference.checked = userData.preferences.darkMode;
-      darkModeToggle.checked = userData.preferences.darkMode;
-
-      if (userData.preferences.darkMode) {
-        document.body.classList.add('dark-mode');
-      } else {
-        document.body.classList.remove('dark-mode');
-      }
-    }
-
-    if (userData.preferences.hasOwnProperty('anonymousMode')) {
-      anonymousMode.checked = userData.preferences.anonymousMode;
-    }
-  }
-
-  if (userData.notifications) {
-    if (userData.notifications.hasOwnProperty('email')) {
-      emailNotifications.checked = userData.notifications.email;
-    }
-
-    if (userData.notifications.hasOwnProperty('quizReminders')) {
-      quizReminders.checked = userData.notifications.quizReminders;
-    }
-
-    if (userData.notifications.hasOwnProperty('newFeatures')) {
-      newFeatures.checked = userData.notifications.newFeatures;
-    }
-  }
-}
-
-// Set default values when no user data is found
-function setDefaultValues() {
-  accountNameElement.textContent = "Data not available";
-  profileNameElement.textContent = "Data not available";
-  dateCreatedElement.textContent = "Data not available";
-  universityElement.textContent = "Data not available";
-  emailElement.textContent = "Data not available";
-  profileEmailElement.textContent = "Data not available";
-  lastLoginElement.textContent = "Data not available";
-
-  if (accountTab) {
-    accountTab.textContent = "Account";
-  }
-}
-
-// Handle Name Change
 if (changeNameForm) {
   changeNameForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -158,14 +125,15 @@ if (changeNameForm) {
       const user = auth.currentUser;
       if (user) {
         await updateUserProfile(user.uid, { username: newName });
-        accountNameElement.textContent = newName;
-        profileNameElement.textContent = newName;
+        if (accountNameElement) accountNameElement.textContent = newName;
+        if (profileNameElement) profileNameElement.textContent = newName;
 
         if (accountTab) {
           accountTab.textContent = newName;
         }
+
         const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
-        modal.hide();
+        if (modal) modal.hide();
         showAlert('Name updated successfully!', 'success');
       }
     } catch (error) {
@@ -185,9 +153,9 @@ if (changeUniversityForm) {
       const user = auth.currentUser;
       if (user) {
         await updateUserProfile(user.uid, { university: newUniversity });
-        universityElement.textContent = newUniversity;
+        if (universityElement) universityElement.textContent = newUniversity;
         const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
-        modal.hide();
+        if (modal) modal.hide();
         showAlert('University updated successfully!', 'success');
       }
     } catch (error) {
@@ -217,7 +185,7 @@ if (changePasswordForm) {
         await reauthenticateWithCredential(user, credential);
         await updatePassword(user, newPassword);
         const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-        modal.hide();
+        if (modal) modal.hide();
         changePasswordForm.reset();
         showAlert('Password updated successfully!', 'success');
       }
@@ -232,51 +200,6 @@ if (changePasswordForm) {
   });
 }
 
-// Handle Profile Photo Change
-if (changePhotoForm) {
-  changePhotoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const photoFile = document.getElementById("newPhoto").files[0];
-
-    if (!photoFile) {
-      showAlert('Please select a file', 'warning');
-      return;
-    }
-
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const storageRef = ref(storage, `profile_photos/${user.uid}`);
-        const snapshot = await uploadBytes(storageRef, photoFile);
-        const photoURL = await getDownloadURL(snapshot.ref);
-        await updateUserProfile(user.uid, { photoURL });
-        document.querySelectorAll('img[alt="Profile"]').forEach(img => {
-          img.src = photoURL;
-        });
-
-        const profileImageElement = document.getElementById("profileImage");
-        if (profileImageElement) {
-          profileImageElement.src = photoURL;
-        }
-        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-        modal.hide();
-        changePhotoForm.reset();
-
-        showAlert('Profile photo updated successfully!', 'success');
-      }
-    } catch (error) {
-      console.error("Error updating photo:", error);
-      showAlert('Failed to update profile photo: ' + error.message, 'danger');
-    }
-  });
-}
-
-// Utility Function for User Profile Update
-async function updateUserProfile(userId, data) {
-  const userRef = doc(db, "users", userId);
-  await updateDoc(userRef, data);
-}
-
 // Handle Logout
 if (logoutButton) {
   logoutButton.addEventListener("click", async () => {
@@ -289,46 +212,3 @@ if (logoutButton) {
     }
   });
 }
-
-// Handle Preferences Save
-if (savePreferencesBtn) {
-  savePreferencesBtn.addEventListener('click', async () => {
-    const user = auth.currentUser;
-    const newPreferences = {
-      darkMode: darkModePreference.checked,
-      anonymousMode: anonymousMode.checked
-    };
-
-    const newNotifications = {
-      email: emailNotifications.checked,
-      quizReminders: quizReminders.checked,
-      newFeatures: newFeatures.checked
-    };
-
-    try {
-      await updateUserProfile(user.uid, {
-        preferences: newPreferences,
-        notifications: newNotifications
-      });
-
-      showAlert('Preferences saved successfully!', 'success');
-    } catch (error) {
-      console.error("Error saving preferences:", error);
-      showAlert('Failed to save preferences: ' + error.message, 'danger');
-    }
-  });
-}
-
-// Utility function to display alerts
-function showAlert(message, type) {
-  const alertElement = document.createElement('div');
-  alertElement.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show');
-  alertElement.setAttribute('role', 'alert');
-  alertElement.innerHTML = message;
-  document.body.appendChild(alertElement);
-
-  setTimeout(() => {
-    alertElement.remove();
-  }, 3000);
-}
-
