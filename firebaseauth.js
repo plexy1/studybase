@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged, signOut, updatePassword, reauthenticateWit
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 
+// Firebase configuration and initialization
 const firebaseConfig = {
   apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
   authDomain: "studybase-data.firebaseapp.com",
@@ -16,6 +17,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+// Elements
 const accountNameElement = document.getElementById("accountName");
 const profileNameElement = document.getElementById("profileName");
 const dateCreatedElement = document.getElementById("dateCreated");
@@ -38,6 +41,7 @@ const changeUniversityForm = document.getElementById("changeUniversityForm");
 const changePasswordForm = document.getElementById("changePasswordForm");
 const changePhotoForm = document.getElementById("changePhotoForm");
 
+// User Authentication Status
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
@@ -63,6 +67,7 @@ onAuthStateChanged(auth, async (user) => {
         if (accountTab) {
           accountTab.textContent = username;
         }
+
         const creationTime = new Date(user.metadata.creationTime);
         dateCreatedElement.textContent = creationTime.toLocaleDateString("en-US", {
           year: "numeric",
@@ -94,6 +99,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// Load user preferences from Firestore
 function loadUserPreferences(userData) {
   if (userData.preferences) {
     if (userData.preferences.hasOwnProperty('darkMode')) {
@@ -127,6 +133,7 @@ function loadUserPreferences(userData) {
   }
 }
 
+// Set default values when no user data is found
 function setDefaultValues() {
   accountNameElement.textContent = "Data not available";
   profileNameElement.textContent = "Data not available";
@@ -140,6 +147,8 @@ function setDefaultValues() {
     accountTab.textContent = "Account";
   }
 }
+
+// Handle Name Change
 if (changeNameForm) {
   changeNameForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -166,6 +175,7 @@ if (changeNameForm) {
   });
 }
 
+// Handle University Change
 if (changeUniversityForm) {
   changeUniversityForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -187,12 +197,14 @@ if (changeUniversityForm) {
   });
 }
 
+// Handle Password Change
 if (changePasswordForm) {
   changePasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const currentPassword = document.getElementById("currentPassword").value;
     const newPassword = document.getElementById("newPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
+
     if (newPassword !== confirmPassword) {
       showAlert('New passwords do not match!', 'danger');
       return;
@@ -220,6 +232,7 @@ if (changePasswordForm) {
   });
 }
 
+// Handle Profile Photo Change
 if (changePhotoForm) {
   changePhotoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -237,8 +250,7 @@ if (changePhotoForm) {
         const snapshot = await uploadBytes(storageRef, photoFile);
         const photoURL = await getDownloadURL(snapshot.ref);
         await updateUserProfile(user.uid, { photoURL });
-        const profileImages = document.querySelectorAll('img[alt="Profile"]');
-        profileImages.forEach(img => {
+        document.querySelectorAll('img[alt="Profile"]').forEach(img => {
           img.src = photoURL;
         });
 
@@ -259,11 +271,13 @@ if (changePhotoForm) {
   });
 }
 
+// Utility Function for User Profile Update
 async function updateUserProfile(userId, data) {
   const userRef = doc(db, "users", userId);
   await updateDoc(userRef, data);
 }
 
+// Handle Logout
 if (logoutButton) {
   logoutButton.addEventListener("click", async () => {
     try {
@@ -276,32 +290,28 @@ if (logoutButton) {
   });
 }
 
+// Handle Preferences Save
 if (savePreferencesBtn) {
   savePreferencesBtn.addEventListener('click', async () => {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const preferencesData = {
-          preferences: {
-            darkMode: darkModePreference.checked,
-            anonymousMode: anonymousMode.checked
-          },
-          notifications: {
-            email: emailNotifications.checked,
-            quizReminders: quizReminders.checked,
-            newFeatures: newFeatures.checked
-          }
-        };
-        await updateUserProfile(user.uid, preferencesData);
-        if (darkModePreference.checked) {
-          enableDarkMode();
-        } else {
-          disableDarkMode();
-        }
-        darkModeToggle.checked = darkModePreference.checked;
+    const user = auth.currentUser;
+    const newPreferences = {
+      darkMode: darkModePreference.checked,
+      anonymousMode: anonymousMode.checked
+    };
 
-        showAlert('Preferences saved successfully!', 'success');
-      }
+    const newNotifications = {
+      email: emailNotifications.checked,
+      quizReminders: quizReminders.checked,
+      newFeatures: newFeatures.checked
+    };
+
+    try {
+      await updateUserProfile(user.uid, {
+        preferences: newPreferences,
+        notifications: newNotifications
+      });
+
+      showAlert('Preferences saved successfully!', 'success');
     } catch (error) {
       console.error("Error saving preferences:", error);
       showAlert('Failed to save preferences: ' + error.message, 'danger');
@@ -309,27 +319,16 @@ if (savePreferencesBtn) {
   });
 }
 
-if (darkModeToggle) {
-  darkModeToggle.addEventListener('change', () => {
-    if (darkModeToggle.checked) {
-      enableDarkMode();
-      if (darkModePreference) {
-        darkModePreference.checked = true;
-      }
-    } else {
-      disableDarkMode();
-      if (darkModePreference) {
-        darkModePreference.checked = false;
-      }
-    }
-  });
-}
-function enableDarkMode() {
-  document.body.classList.add('dark-mode');
-  localStorage.setItem('darkMode', 'enabled');
+// Utility function to display alerts
+function showAlert(message, type) {
+  const alertElement = document.createElement('div');
+  alertElement.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show');
+  alertElement.setAttribute('role', 'alert');
+  alertElement.innerHTML = message;
+  document.body.appendChild(alertElement);
+
+  setTimeout(() => {
+    alertElement.remove();
+  }, 3000);
 }
 
-function disableDarkMode() {
-  document.body.classList.remove('dark-mode');
-  localStorage.setItem('darkMode', null);
-}

@@ -9,7 +9,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link href="account.css" rel="stylesheet" />
   <link rel="stylesheet" href="dark-mode.css">
-  <script src="youtube-search.js"></script>
+  <script src="firebaseauth.js"></script> <!-- Include Firebase Auth Script -->
 </head>
 
 <body>
@@ -44,7 +44,8 @@
         <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
       </div>
       <!-- Top Right Profile Image -->
-      <img id="profileImage" src="user.jpg" alt="Profile" class="profile-logo ms-3" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+      <img id="profileImage" src="user.jpg" alt="Profile" class="profile-logo ms-3"
+        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
     </div>
   </nav>
 
@@ -61,34 +62,9 @@
             <p class="mb-2"><span class="badge bg-primary">Student</span></p>
             <hr>
             <div class="d-grid">
-              <!-- <button class="btn btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#changePhotoModal">
-                <i class="fas fa-camera me-2"></i>Change Photo
-              </button> -->
-              <button class="btn btn-danger">
+              <button class="btn btn-danger" id="logoutBtn">
                 <i class="fas fa-sign-out-alt me-2"></i>Logout
               </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card mt-4 shadow-sm">
-          <div class="card-header bg-dark text-white">
-            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Activity Summary</h5>
-          </div>
-          <div class="card-body">
-            <div class="row text-center">
-              <div class="col-4">
-                <h3>0</h3>
-                <small class="text-muted">Searches</small>
-              </div>
-              <div class="col-4">
-                <h3>0</h3>
-                <small class="text-muted">Quizzes</small>
-              </div>
-              <div class="col-4">
-                <h3>0</h3>
-                <small class="text-muted">Courses Reviewed</small>
-              </div>
             </div>
           </div>
         </div>
@@ -127,48 +103,6 @@
                 <i class="fas fa-key me-2"></i>Change Password
               </button>
             </div>
-          </div>
-        </div>
-
-        <div class="card mt-4 shadow-sm">
-          <div class="card-header bg-dark text-white">
-            <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Preferences</h5>
-          </div>
-          <div class="card-body">
-            <h6 class="mb-3 border-bottom pb-2">Display Settings</h6>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="darkModePreference">
-              <label class="form-check-label" for="darkModePreference">Dark Mode</label>
-              <small class="text-muted d-block mt-1">Enable dark theme across the application</small>
-            </div>
-
-            <h6 class="mb-3 border-bottom pb-2 mt-4">Notification Settings</h6>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="emailNotifications" checked>
-              <label class="form-check-label" for="emailNotifications">Email Notifications</label>
-              <small class="text-muted d-block mt-1">Receive updates and reminders via email</small>
-            </div>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="quizReminders" checked>
-              <label class="form-check-label" for="quizReminders">Course Reviews</label>
-              <small class="text-muted d-block mt-1">Get notified about users viewing your reviews</small>
-            </div>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="newFeatures" checked>
-              <label class="form-check-label" for="newFeatures">New Features Updates</label>
-              <small class="text-muted d-block mt-1">Stay informed about new platform features</small>
-            </div>
-
-            <h6 class="mb-3 border-bottom pb-2 mt-4">Privacy Settings</h6>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="anonymousMode">
-              <label class="form-check-label" for="anonymousMode">Anonymous Mode</label>
-              <small class="text-muted d-block mt-1">Hide your activity from other users</small>
-            </div>
-
-            <button class="btn btn-outline-secondary mt-3" id="savePreferencesBtn">
-              <i class="fas fa-save me-2"></i>Save Preferences
-            </button>
           </div>
         </div>
       </div>
@@ -257,7 +191,7 @@
     </div>
   </div>
 
-    <!-- Change Photo Modal -->
+  <!-- Change Photo Modal
   <div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -280,84 +214,81 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
-<!-- Firebase & Bootstrap JS -->
-<script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Firebase Initialization -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-  
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
-    authDomain: "studybase-data.firebaseapp.com",
-    projectId: "studybase-data",
-    storageBucket: "studybase-data.firebasestorage.app",
-    messagingSenderId: "471482464641",
-    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-  };
-  
-  const app = initializeApp(firebaseConfig);
-</script>
-
-<!-- Dark Mode Toggle -->
-<script>
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const body = document.body;
-
-  // Function to enable dark mode
-  function enableDarkMode() {
-    body.classList.add('dark-mode');
-    darkModeToggle.checked = true;
-    localStorage.setItem('darkMode', 'enabled');
-  }
-
-  // Function to disable dark mode
-  function disableDarkMode() {
-    body.classList.remove('dark-mode');
-    darkModeToggle.checked = false;
-    localStorage.setItem('darkMode', null);
-  }
-
-  // Function to toggle dark mode
-  function toggleDarkMode() {
-    if (body.classList.contains('dark-mode')) {
-      disableDarkMode();
-    } else {
-      enableDarkMode();
-    }
-  }
-
-  // Event listener for the dark mode toggle
-  darkModeToggle.addEventListener('change', toggleDarkMode);
-
-  // Check localStorage for dark mode preference on page load
-  if (localStorage.getItem('darkMode') === 'enabled') {
-    enableDarkMode();
-  } else {
-    disableDarkMode();
-  }
-</script>
-
-<!-- Import and run auth script -->
-<script type="module" src="firebaseauth.js"></script>
-
-<!-- Footer Section -->
-<footer class="footer bg-dark text-light py-3">
-  <div class="container d-flex justify-content-between align-items-center">
-    <p class="mb-0">&copy; 2025 Group 7</p>
-    <div>
-      <a href="#" class="text-light me-3">Instagram</a>
-      <a href="#" class="text-light me-3">Twitter</a>
-      <a href="#" class="text-light">LinkedIn</a>
+  <footer class="footer bg-dark text-light py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <p class="mb-0">&copy; 2025 Group 7</p>
+      <div>
+        <a href="#" class="text-light me-3">Instagram</a>
+        <a href="#" class="text-light me-3">Twitter</a>
+        <a href="#" class="text-light">LinkedIn</a>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Function to enable dark mode
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    // Function to disable dark mode
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      darkModeToggle.checked = false;
+      localStorage.setItem('darkMode', null);
+    }
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+      if (body.classList.contains('dark-mode')) {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    }
+
+    // Event listener for the dark mode toggle
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+
+    // Check localStorage for dark mode preference on page load
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      enableDarkMode(); Q
+    } else {
+      disableDarkMode();
+    }
+  </script>
+
+  <script>
+    window.onload = function () {
+      const user = firebase.auth().currentUser;
+
+      if (user) {
+        document.getElementById("profileName").textContent = user.displayName || "No Name";
+        document.getElementById("profileEmail").textContent = user.email || "No Email";
+        document.getElementById("accountName").textContent = user.displayName || "No Name";
+        document.getElementById("email").textContent = user.email || "No Email";
+      }
+      else {
+        window.location.replace("login.html");
+      }
+
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+        firebase.auth().signOut().then(() => {
+          window.location.replace("login.html");
+        }).catch((error) => {
+          alert("Logout failed: " + error.message);
+        });
+      });
+    }
+  </script>
 </body>
+
 </html>
