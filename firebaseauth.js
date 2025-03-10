@@ -15,7 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 const accountNameElement = document.getElementById("accountName");
 const profileNameElement = document.getElementById("profileName");
 const dateCreatedElement = document.getElementById("dateCreated");
@@ -120,18 +119,23 @@ function loadUserPreferences(userData) {
 }
 
 function setDefaultValues() {
-  accountNameElement.textContent = "Data not available";
-  profileNameElement.textContent = "Data not available";
-  dateCreatedElement.textContent = "Data not available";
-  universityElement.textContent = "Data not available";
-  emailElement.textContent = "Data not available";
-  profileEmailElement.textContent = "Data not available";
-  lastLoginElement.textContent = "Data not available";
-
-  if (accountTab) {
-    accountTab.textContent = "Account";
-  }
+  const user = auth.currentUser;
+  
+  accountNameElement.textContent = user ? user.email.split('@')[0] : "User";
+  profileNameElement.textContent = user ? user.email.split('@')[0] : "User";
+  dateCreatedElement.textContent = user ? new Date(user.metadata.creationTime).toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric"
+  }) : "Data not available";
+  universityElement.textContent = "Not set";
+  emailElement.textContent = user ? user.email : "Data not available";
+  profileEmailElement.textContent = user ? user.email : "Data not available";
+  lastLoginElement.textContent = user ? new Date(user.metadata.lastSignInTime).toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric"
+  }) + " at " + new Date(user.metadata.lastSignInTime).toLocaleTimeString("en-US", {
+    hour: '2-digit', minute: '2-digit'
+  }) : "Data not available";
 }
+
 if (changeNameForm) {
   changeNameForm.addEventListener("submit", async (e) => {
     e.preventDefault();
