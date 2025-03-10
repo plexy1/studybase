@@ -120,25 +120,19 @@ function loadUserPreferences(userData) {
 
 function setDefaultValues() {
   const user = auth.currentUser;
-  const username = user ? user.email.split('@')[0] : "User";
+  const username = user.email.split('@')[0];
   
   accountNameElement.textContent = username;
   profileNameElement.textContent = username;
-  dateCreatedElement.textContent = user ? new Date(user.metadata.creationTime).toLocaleDateString("en-US", {
-    year: "numeric", month: "long", day: "numeric"
-  }) : new Date().toLocaleDateString("en-US", {
+  dateCreatedElement.textContent = new Date(user.metadata.creationTime).toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric"
   });
   universityElement.textContent = "Not set";
-  emailElement.textContent = user ? user.email : "user@example.com";
-  profileEmailElement.textContent = user ? user.email : "user@example.com";
-  lastLoginElement.textContent = user ? new Date(user.metadata.lastSignInTime).toLocaleDateString("en-US", {
+  emailElement.textContent = user.email;
+  profileEmailElement.textContent = user.email;
+  lastLoginElement.textContent = new Date(user.metadata.lastSignInTime).toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric"
   }) + " at " + new Date(user.metadata.lastSignInTime).toLocaleTimeString("en-US", {
-    hour: '2-digit', minute: '2-digit'
-  }) : new Date().toLocaleDateString("en-US", {
-    year: "numeric", month: "long", day: "numeric"
-  }) + " at " + new Date().toLocaleTimeString("en-US", {
     hour: '2-digit', minute: '2-digit'
   });
   
