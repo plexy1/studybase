@@ -5,25 +5,38 @@
   background-color: #212529;
   color: white;
   text-align: center;
+  transition: background-color 0.3s, color 0.3s;
 }
-  a.text-light {
-    text-decoration: none;
-  }
-  a.text-light:hover {
-    text-decoration: underline;
-  }
-  /* Style for profile logo */
-  .profile-logo {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
 
+a.text-light {
+  text-decoration: none;
+  transition: text-decoration 0.3s;
+}
+
+a.text-light:hover {
+  text-decoration: underline;
+}
+
+/* Style for profile logo */
+.profile-logo {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: filter 0.3s;
+}
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
 
 body.dark-mode {
   background-color: #121212;
   color: #ffffff;
+}
+
+.navbar, .nav-link {
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .dark-mode .navbar {
@@ -44,6 +57,9 @@ body.dark-mode {
   color: #f8f9fa;
 }
 
+.btn-primary {
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
 
 .dark-mode .btn-primary {
   background-color: #007bff;
@@ -62,63 +78,94 @@ body.dark-mode {
   color: #fff;
 }
 
-
 .dark-mode .profile-logo {
   filter: brightness(1.1) contrast(1.2);
 }
 
 .dark-mode #topicList li {
-    color: #ffffff;
+  color: #ffffff;
+  transition: color 0.3s;
 }
 
-/* Tile Styles */
+/* Tile Styles with Transitions */
 .card {
-    border: 1px solid #dee2e6; /* Light border for tiles */
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Soft shadow */
-    position: relative; /* Required for absolute positioning of dropdown button */
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s;
 }
 
 .card-body {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s;
 }
 
 .card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s;
 }
 
 .card-text {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
 }
 
 .card-text.text-muted {
-    font-size: 0.875rem;
+  font-size: 0.875rem;
+  transition: color 0.3s;
 }
 
 .dark-mode .card {
-    background-color: #343a40; /* Dark background for tiles in dark mode */
-    border-color: #495057;
-    color: #ffffff;
-}
-.dark-mode .card-text {
-    color: #ffffff;
-}
-.dark-mode .card-text.text-muted {
-    color: #adb5bd; /* Lighter text for muted text in dark mode */
+  background-color: #343a40;
+  border-color: #495057;
+  color: #ffffff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
 }
 
-/* Delete Status Message Style */
+.dark-mode .card-text {
+  color: #ffffff;
+}
+
+.dark-mode .card-text.text-muted {
+  color: #adb5bd !important;
+}
+
+/* Delete Status Message Style with Transitions */
 .delete-message {
-    margin-top: 10px;
-    font-weight: bold;
+  margin-top: 10px;
+  font-weight: bold;
+  transition: color 0.3s;
 }
+
 .delete-message.success {
-    color: green;
+  color: green;
 }
+
 .delete-message.error {
-    color: red;
+  color: red;
+}
+
+.dark-mode .delete-message.success {
+  color: #4caf50;
+}
+
+.dark-mode .delete-message.error {
+  color: #f44336;
+}
+
+/* Fix for loading text and other potentially problematic elements */
+.text-muted, .text-secondary, .loading, [class*="loading"] {
+  transition: color 0.3s;
+}
+
+.dark-mode .text-muted, 
+.dark-mode .text-secondary,
+.dark-mode .loading, 
+.dark-mode [class*="loading"] {
+  color: #adb5bd !important;
 }

@@ -1,171 +1,239 @@
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #212529;
-  color: white;
+/* Base Styles with Transitions */
+.footer {   
+  position: fixed;   
+  bottom: 0;   
+  width: 100%;   
+  background-color: #212529;   
+  color: white;   
   text-align: center;
-}
-  a.text-light {
-    text-decoration: none;
-  }
-  a.text-light:hover {
-    text-decoration: underline;
-  }
+  transition: background-color 0.3s, color 0.3s;
+}   
 
-  .profile-logo {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+a.text-light {     
+  text-decoration: none;
+  transition: color 0.3s, text-decoration 0.3s;
+}   
 
-body.dark-mode {
-background-color: #121212;
-color: #ffffff;
-}
+a.text-light:hover {     
+  text-decoration: underline;   
+}    
 
-.dark-mode .navbar {
-background-color: #212529 !important;
-}
+.profile-logo {     
+  width: 35px;     
+  height: 35px;     
+  border-radius: 50%;     
+  object-fit: cover;
+  transition: filter 0.3s;
+}    
 
-.dark-mode .nav-link {
-color: #f8f9fa !important;
-}
+body {     
+  transition: background-color 0.3s, color 0.3s;   
+}  
 
-.dark-mode .nav-link:hover,
-.dark-mode .nav-link:focus {
-color: rgba(255, 255, 255, 0.75) !important;
-}
+body.dark-mode { 
+  background-color: #121212; 
+  color: #ffffff; 
+}  
 
-.dark-mode .footer {
-background-color: #212529 !important;
-color: #f8f9fa;
+/* Navbar Transitions */
+.navbar {
+  transition: background-color 0.3s;
 }
 
-.dark-mode .search-box .form-control {
-background-color: #343a40;
-color: #ffffff;
-border-color: #495057;
+.nav-link {
+  transition: color 0.3s;
 }
 
-.dark-mode .search-box .form-control::placeholder {
-color: #adb5bd;
+.dark-mode .navbar { 
+  background-color: #212529 !important; 
+}  
+
+.dark-mode .nav-link { 
+  color: #f8f9fa !important; 
+}  
+
+.dark-mode .nav-link:hover, 
+.dark-mode .nav-link:focus { 
+  color: rgba(255, 255, 255, 0.75) !important; 
+}  
+
+.dark-mode .footer { 
+  background-color: #212529 !important; 
+  color: #f8f9fa; 
+}  
+
+/* Form Controls with Transitions */
+.form-control, 
+.search-box .form-control {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-.dark-mode .btn-primary {
-background-color: #007bff;
-border-color: #007bff;
-color: #fff;
+.dark-mode .search-box .form-control { 
+  background-color: #343a40; 
+  color: #ffffff; 
+  border-color: #495057; 
+}  
+
+.dark-mode .search-box .form-control::placeholder { 
+  color: #adb5bd; 
+  transition: color 0.3s;
+}  
+
+/* Button Transitions */
+.btn-primary, 
+.btn-outline-secondary {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-.dark-mode .btn-primary:hover,
-.dark-mode .btn-primary:focus,
-.dark-mode .btn-primary:active,
-.dark-mode .btn-primary.active,
-.dark-mode .btn-primary.focus,
-.dark-mode .btn-primary:not(:disabled):not(.disabled):active {
-background-color: #0056b3;
-border-color: #0056b3;
-color: #fff;
+.dark-mode .btn-primary { 
+  background-color: #007bff; 
+  border-color: #007bff; 
+  color: #fff; 
+}  
+
+.dark-mode .btn-primary:hover, 
+.dark-mode .btn-primary:focus, 
+.dark-mode .btn-primary:active, 
+.dark-mode .btn-primary.active, 
+.dark-mode .btn-primary.focus, 
+.dark-mode .btn-primary:not(:disabled):not(.disabled):active { 
+  background-color: #0056b3; 
+  border-color: #0056b3; 
+  color: #fff; 
+}  
+
+/* Container Transitions */
+.result-container, 
+.list-group-item,
+#reviewList {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-.dark-mode .result-container {
-background-color: #1e1e1e;
-border: 1px solid #343a40;
+.dark-mode .result-container { 
+  background-color: #1e1e1e; 
+  border: 1px solid #343a40; 
+}  
+
+.dark-mode .result-container h6 { 
+  color: #ffffff; 
+  transition: color 0.3s;
+}  
+
+.dark-mode .list-group-item { 
+  background-color: #212529; 
+  color: #ffffff; 
+  border-color: #343a40; 
+}  
+
+.dark-mode .btn-outline-secondary {   
+  color: #f8f9fa;   
+  border-color: #6c757d; 
+}  
+
+.dark-mode .btn-outline-secondary:hover, 
+.dark-mode .btn-outline-secondary:focus, 
+.dark-mode .btn-outline-secondary:active, 
+.dark-mode .btn-outline-secondary.active {   
+  color: #fff;   
+  background-color: #6c757d;   
+  border-color: #6c757d; 
+}   
+
+.dark-mode .profile-logo {  
+  filter: brightness(1.1) contrast(1.2); 
+}   
+
+.dark-mode #historyContainer li {   
+  color: #ffffff; 
+  transition: color 0.3s;
+}   
+
+/* Course and Professor List Styles */
+.col-md-4 {   
+  padding: 15px; 
+}  
+
+#courseList, 
+#professorList { 
+  max-height: 500px;
+  overflow-y: auto;
+  transition: border-color 0.3s;
+}  
+
+#courseList .list-group-item, 
+#professorList .list-group-item {   
+  cursor: pointer; 
+}  
+
+#courseList .list-group-item.active, 
+#professorList .list-group-item.active {   
+  background-color: #007bff;   
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}  
+
+#reviewList {   
+  padding: 10px;   
+  border: 1px solid #ced4da;   
+  border-radius: 5px;   
+  min-height: 200px;   
+  position: relative;
+}  
+
+.dark-mode #reviewList {   
+  border-color: #343a40; 
+} 
+
+.dark-mode #reviewList p.text-muted {     
+  color: white !important;
+  transition: color 0.3s;
+}  
+
+/* RateMyProf Styling with Transitions */
+.rate-my-prof {
+  position: absolute;   
+  bottom: 5px;   
+  right: 10px;   
+  font-size: 0.8em;   
+  color: black;
+  transition: color 0.3s;
+}  
+
+.dark-mode .rate-my-prof {     
+  color: white;
+} 
+
+/* Search Field Transitions */
+#courseSearch {   
+  color: black;
+  transition: color 0.3s, background-color 0.3s;
+}  
+
+#courseSearch::placeholder {   
+  color: black;
+  transition: color 0.3s;
+}  
+
+.dark-mode #courseSearch {
+  color: white;
+  background-color: #343a40;
 }
 
-.dark-mode .result-container h6 {
-color: #ffffff;
-}
-
-.dark-mode .list-group-item {
-background-color: #212529;
-color: #ffffff;
-border-color: #343a40;
-}
-
-.dark-mode .btn-outline-secondary {
-  color: #f8f9fa;
-  border-color: #6c757d;
-}
-
-.dark-mode .btn-outline-secondary:hover,
-.dark-mode .btn-outline-secondary:focus,
-.dark-mode .btn-outline-secondary:active,
-.dark-mode .btn-outline-secondary.active {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-
-.dark-mode .profile-logo {
-
-filter: brightness(1.1) contrast(1.2);
-}
-
-
-.dark-mode #historyContainer li {
-  color: #ffffff;
-}
-
-
-.col-md-4 {
-  padding: 15px;
-}
-
-#courseList,
-#professorList { /* Applying styles to both courseList and professorList */
-  max-height: 500px; /* Set a maximum height for the lists */
-  overflow-y: auto;  /* Enable vertical scrolling when content overflows */
-}
-
-#courseList .list-group-item,
-#professorList .list-group-item {
-  cursor: pointer;
-}
-
-#courseList .list-group-item.active,
-#professorList .list-group-item.active {
-  background-color: #007bff;
+.dark-mode #courseSearch::placeholder {   
   color: white;
 }
 
-#reviewList {
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  min-height: 200px;
-  position: relative; /* Added relative positioning */
+/* Fix for loading text */
+.loading, 
+[class*="loading"],
+.text-muted,
+.text-secondary {
+  transition: color 0.3s;
 }
 
-.dark-mode #reviewList {
-  border-color: #343a40;
-}
-.dark-mode #reviewList p.text-muted {
-    color: white !important;
-}
-
-.rate-my-prof {         /* CSS for "from RateMyProf" text */
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  font-size: 0.8em;
-  color: black; /* Default color for light mode: Black */
-}
-
-.dark-mode .rate-my-prof {
-    color: white; /* Color for dark mode: White */
-}
-#courseSearch {
-  color: black;
-}
-
-#courseSearch::placeholder {
-  color: black; /* Default color for light mode: Black */
-}
-
-.dark-mode #courseSearch::placeholder {
-  color: white; /* Color for dark mode: White */
+.dark-mode .loading,
+.dark-mode [class*="loading"],
+.dark-mode .text-muted,
+.dark-mode .text-secondary {
+  color: #ffffff !important;
 }

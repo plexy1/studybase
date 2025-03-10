@@ -359,6 +359,10 @@ body.dark-mode .roadmap-tile {
     font-style: italic;
 }
 
+body {
+    transition: background-color 0.3s, color 0.3s;
+  }
+
 /* Dark mode adjustments */
 body.dark-mode .roadmap-title {
     color: #0d6efd;

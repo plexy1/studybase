@@ -43,18 +43,8 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">studybase</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <a class="navbar-brand">studybase</a>
+
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -65,6 +55,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="communities.html">Communities</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="history.html">History</a>
@@ -166,11 +159,6 @@
   <footer class="footer bg-dark text-light py-3">
     <div class="container d-flex justify-content-between align-items-center">
       <p class="mb-0">&copy; 2025 Group 7</p>
-      <div>
-        <a href="#" class="text-light me-3">Instagram</a>
-        <a href="#" class="text-light me-3">Twitter</a>
-        <a href="#" class="text-light">LinkedIn</a>
-      </div>
     </div>
   </footer>
 
@@ -295,12 +283,13 @@
 
   onAuthStateChanged(auth, (user) => {
     let greeting = getGreeting();
-    let userName = user ? user.email.split('@')[0] : "User"; // Use email prefix as username, or "User" if no user
 
     if (user) {
-      greetingDisplay.textContent = `${greeting}, ${userName} Search a topic`;
+      greetingDisplay.textContent = `${greeting}, ${user.accountName} Search a topic`;
       greetingDisplay.style.color = 'black'; // Or your desired logged-in color
-    } else {
+    } 
+    
+    else {
       greetingDisplay.textContent = "Testing/Demonstration Mode - Search a topic";
       greetingDisplay.style.color = 'grey'; // Or your desired demo mode color
     }
