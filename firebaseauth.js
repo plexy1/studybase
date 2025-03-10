@@ -303,6 +303,53 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Add this to your firebaseauth.js file, inside the "DOMContentLoaded" event listener
+
+// Change photo form
+const changePhotoForm = document.getElementById("changePhotoForm");
+if (changePhotoForm) {
+  changePhotoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const photoFile = document.getElementById("newPhoto").files[0];
+    
+    if (!photoFile) {
+      alert("Please select a file to upload");
+      return;
+    }
+    
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const storage = getStorage();        
+        const storageRef = ref(storage, `profile_images/${user.uid}/${Date.now()}_${photoFile.name}`);
+        const snapshot = await uploadBytes(storageRef, photoFile);
+        
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        
+        await updateUserProfile(user.uid, { photoURL: downloadURL });
+        
+        const profileImages = document.querySelectorAll('img[alt="Profile"]');
+        profileImages.forEach(img => {
+          img.src = downloadURL;
+        });
+        
+        const profileImageElement = document.getElementById("profileImage");
+        if (profileImageElement) {
+          profileImageElement.src = downloadURL;
+        }
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+        if (modal) modal.hide();
+        
+        changePhotoForm.reset();
+      }
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+      alert("Failed to upload photo: " + error.message);
+    }
+  });
+}
+
   // Logout button
   const logoutButton = document.querySelector(".btn-danger");
   if (logoutButton) {
