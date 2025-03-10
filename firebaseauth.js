@@ -120,20 +120,31 @@ function loadUserPreferences(userData) {
 
 function setDefaultValues() {
   const user = auth.currentUser;
+  const username = user ? user.email.split('@')[0] : "User";
   
-  accountNameElement.textContent = user ? user.email.split('@')[0] : "User";
-  profileNameElement.textContent = user ? user.email.split('@')[0] : "User";
+  accountNameElement.textContent = username;
+  profileNameElement.textContent = username;
   dateCreatedElement.textContent = user ? new Date(user.metadata.creationTime).toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric"
-  }) : "Data not available";
+  }) : new Date().toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric"
+  });
   universityElement.textContent = "Not set";
-  emailElement.textContent = user ? user.email : "Data not available";
-  profileEmailElement.textContent = user ? user.email : "Data not available";
+  emailElement.textContent = user ? user.email : "user@example.com";
+  profileEmailElement.textContent = user ? user.email : "user@example.com";
   lastLoginElement.textContent = user ? new Date(user.metadata.lastSignInTime).toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric"
   }) + " at " + new Date(user.metadata.lastSignInTime).toLocaleTimeString("en-US", {
     hour: '2-digit', minute: '2-digit'
-  }) : "Data not available";
+  }) : new Date().toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric"
+  }) + " at " + new Date().toLocaleTimeString("en-US", {
+    hour: '2-digit', minute: '2-digit'
+  });
+  
+  if (accountTab) {
+    accountTab.textContent = username;
+  }
 }
 
 if (changeNameForm) {
