@@ -42,17 +42,17 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
       const userDoc = await getDoc(doc(db, "users", user.uid));
-      
+
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        
+
         const username = userData.username || "Not set";
         accountNameElement.textContent = username;
         profileNameElement.textContent = username;
         universityElement.textContent = userData.university || "Not set";
         emailElement.textContent = user.email;
         profileEmailElement.textContent = user.email;
-        
+
         if (userData.photoURL) {
           profileImageElement.src = userData.photoURL;
           document.querySelectorAll('img[alt="Profile"]').forEach(img => {
@@ -69,7 +69,7 @@ onAuthStateChanged(auth, async (user) => {
           month: "long",
           day: "numeric"
         });
-        
+
         const lastSignInTime = new Date(user.metadata.lastSignInTime);
         lastLoginElement.textContent = lastSignInTime.toLocaleDateString("en-US", {
           year: "numeric",
@@ -79,7 +79,7 @@ onAuthStateChanged(auth, async (user) => {
           hour: '2-digit',
           minute: '2-digit'
         });
-        
+
         loadUserPreferences(userData);
       } else {
         console.log("No user document found");
@@ -99,14 +99,14 @@ function loadUserPreferences(userData) {
     if (userData.preferences.hasOwnProperty('darkMode')) {
       darkModePreference.checked = userData.preferences.darkMode;
       darkModeToggle.checked = userData.preferences.darkMode;
-      
+
       if (userData.preferences.darkMode) {
         document.body.classList.add('dark-mode');
       } else {
         document.body.classList.remove('dark-mode');
       }
     }
-    
+
     if (userData.preferences.hasOwnProperty('anonymousMode')) {
       anonymousMode.checked = userData.preferences.anonymousMode;
     }
@@ -116,11 +116,11 @@ function loadUserPreferences(userData) {
     if (userData.notifications.hasOwnProperty('email')) {
       emailNotifications.checked = userData.notifications.email;
     }
-    
+
     if (userData.notifications.hasOwnProperty('quizReminders')) {
       quizReminders.checked = userData.notifications.quizReminders;
     }
-    
+
     if (userData.notifications.hasOwnProperty('newFeatures')) {
       newFeatures.checked = userData.notifications.newFeatures;
     }
@@ -144,7 +144,7 @@ if (changeNameForm) {
   changeNameForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const newName = document.getElementById("newName").value;
-    
+
     try {
       const user = auth.currentUser;
       if (user) {
@@ -170,7 +170,7 @@ if (changeUniversityForm) {
   changeUniversityForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const newUniversity = document.getElementById("newUniversity").value;
-    
+
     try {
       const user = auth.currentUser;
       if (user) {
@@ -197,7 +197,7 @@ if (changePasswordForm) {
       showAlert('New passwords do not match!', 'danger');
       return;
     }
-    
+
     try {
       const user = auth.currentUser;
       if (user) {
@@ -224,12 +224,12 @@ if (changePhotoForm) {
   changePhotoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const photoFile = document.getElementById("newPhoto").files[0];
-    
+
     if (!photoFile) {
       showAlert('Please select a file', 'warning');
       return;
     }
-    
+
     try {
       const user = auth.currentUser;
       if (user) {
@@ -237,13 +237,19 @@ if (changePhotoForm) {
         const snapshot = await uploadBytes(storageRef, photoFile);
         const photoURL = await getDownloadURL(snapshot.ref);
         await updateUserProfile(user.uid, { photoURL });
-        document.querySelectorAll('img[alt="Profile"]').forEach(img => {
+        const profileImages = document.querySelectorAll('img[alt="Profile"]');
+        profileImages.forEach(img => {
           img.src = photoURL;
         });
+
+        const profileImageElement = document.getElementById("profileImage");
+        if (profileImageElement) {
+          profileImageElement.src = photoURL;
+        }
         const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
         modal.hide();
         changePhotoForm.reset();
-        
+
         showAlert('Profile photo updated successfully!', 'success');
       }
     } catch (error) {
@@ -293,7 +299,7 @@ if (savePreferencesBtn) {
           disableDarkMode();
         }
         darkModeToggle.checked = darkModePreference.checked;
-        
+
         showAlert('Preferences saved successfully!', 'success');
       }
     } catch (error) {
