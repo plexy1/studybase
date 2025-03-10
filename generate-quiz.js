@@ -152,29 +152,24 @@ async function genAns(query, difficulty, educationLevel) {
 const storedAnswers = {};
 
 function formatQuestions(roadmapText, difficulty, educationLevel) {
-  // Split by pattern that looks for question boundaries
   const questionMatches = roadmapText.match(/[^\n]+(\n|$)/g);
   const questions = [];
   
-  // Process the matches to handle cases where questions end with numbers
   if (questionMatches) {
     let currentQuestion = "";
     
     for (let i = 0; i < questionMatches.length; i++) {
       const line = questionMatches[i].trim();
       
-      // Skip empty lines
       if (!line) continue;
-      
-      // Check if this is a new numbered question
       const startsWithNumber = /^\d+[\.\)]/.test(line);
       
       if (startsWithNumber && currentQuestion) {
-        // If we already have a question in progress and find a new one, save the old one
         questions.push(currentQuestion);
         currentQuestion = line;
-      } else {
-        // Otherwise add to existing question or start a new one
+      } 
+      
+      else {
         if (currentQuestion) {
           currentQuestion += " " + line;
         } else {
