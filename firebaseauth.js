@@ -132,7 +132,6 @@ onAuthStateChanged(auth, async (user) => {
       setDefaultValues();
     }
   } else {
-    // Not redirecting on registration page
     if (!window.location.href.includes("create-account.html")) {
       window.location.href = "index.html";
     }
@@ -303,52 +302,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Add this to your firebaseauth.js file, inside the "DOMContentLoaded" event listener
-
-// Change photo form
-const changePhotoForm = document.getElementById("changePhotoForm");
-if (changePhotoForm) {
-  changePhotoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const photoFile = document.getElementById("newPhoto").files[0];
-    
-    if (!photoFile) {
-      alert("Please select a file to upload");
-      return;
-    }
-    
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const storage = getStorage();        
-        const storageRef = ref(storage, `profile_images/${user.uid}/${Date.now()}_${photoFile.name}`);
-        const snapshot = await uploadBytes(storageRef, photoFile);
-        
-        const downloadURL = await getDownloadURL(snapshot.ref);
-        
-        await updateUserProfile(user.uid, { photoURL: downloadURL });
-        
-        const profileImages = document.querySelectorAll('img[alt="Profile"]');
-        profileImages.forEach(img => {
-          img.src = downloadURL;
-        });
-        
-        const profileImageElement = document.getElementById("profileImage");
-        if (profileImageElement) {
-          profileImageElement.src = downloadURL;
+  document.addEventListener("DOMContentLoaded", () => {
+    const changePhotoForm = document.getElementById("changePhotoForm");
+    if (changePhotoForm) {
+      changePhotoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("newPhoto");
+        const file = fileInput.files[0];
+  
+        if (!file) {
+          console.error("No file selected");
+          return;
         }
+  
+        try {
+          const user = auth.currentUser;
+          if (user) {
+            const storage = getStorage();
+            const storageRef = ref(storage, `profile_photos/user.jpg`);
+            await uploadBytes(storageRef, file);
+            const timestamp = new Date().getTime();
+            const photoURL = await getDownloadURL(storageRef);
+            const cacheBusterURL = `${photoURL}?t=${timestamp}`;
+            await updateUserProfile(user.uid, { photoURL: cacheBusterURL });
+
+            const profileImageElement = document.getElementById("profileImage");
+            if (profileImageElement) {
+              profileImageElement.src = cacheBusterURL;
+            }
+            document.querySelectorAll('img[alt="Profile"]').forEach(img => {
+              img.src = cacheBusterURL;
+            });
+  
+            const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+            if (modal) modal.hide();
+          }
+        } 
         
-        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-        if (modal) modal.hide();
-        
-        changePhotoForm.reset();
-      }
-    } catch (error) {
-      console.error("Error uploading photo:", error);
-      alert("Failed to upload photo: " + error.message);
+        catch (error) {
+          console.error("Error updating profile photo:", error);
+        }
+      });
     }
   });
-}
+  
 
   // Logout button
   const logoutButton = document.querySelector(".btn-danger");
