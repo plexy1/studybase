@@ -25,14 +25,6 @@ const profileEmailElement = document.getElementById("profileEmail");
 const lastLoginElement = document.getElementById("lastLogin");
 const profileImageElement = document.getElementById("profileImage");
 const logoutButton = document.querySelector(".btn-danger");
-const accountTab = document.querySelector('.nav-link[href="account.html"]');
-const darkModeToggle = document.getElementById('darkModeToggle');
-const darkModePreference = document.getElementById('darkModePreference');
-const emailNotifications = document.getElementById('emailNotifications');
-const quizReminders = document.getElementById('quizReminders');
-const newFeatures = document.getElementById('newFeatures');
-const anonymousMode = document.getElementById('anonymousMode');
-const savePreferencesBtn = document.getElementById('savePreferencesBtn');
 const changeNameForm = document.getElementById("changeNameForm");
 const changeUniversityForm = document.getElementById("changeUniversityForm");
 const changePasswordForm = document.getElementById("changePasswordForm");
@@ -157,11 +149,9 @@ if (changeNameForm) {
         }
         const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
         modal.hide();
-        showAlert('Name updated successfully!', 'success');
       }
     } catch (error) {
       console.error("Error updating name:", error);
-      showAlert('Failed to update name: ' + error.message, 'danger');
     }
   });
 }
@@ -178,11 +168,9 @@ if (changeUniversityForm) {
         universityElement.textContent = newUniversity;
         const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
         modal.hide();
-        showAlert('University updated successfully!', 'success');
       }
     } catch (error) {
       console.error("Error updating university:", error);
-      showAlert('Failed to update university: ' + error.message, 'danger');
     }
   });
 }
@@ -194,7 +182,6 @@ if (changePasswordForm) {
     const newPassword = document.getElementById("newPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
     if (newPassword !== confirmPassword) {
-      showAlert('New passwords do not match!', 'danger');
       return;
     }
     
@@ -207,47 +194,11 @@ if (changePasswordForm) {
         const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
         modal.hide();
         changePasswordForm.reset();
-        showAlert('Password updated successfully!', 'success');
       }
     } catch (error) {
       console.error("Error updating password:", error);
       if (error.code === 'auth/wrong-password') {
-        showAlert('Current password is incorrect', 'danger');
-      } else {
-        showAlert('Failed to update password: ' + error.message, 'danger');
-      }
-    }
-  });
-}
-
-if (changePhotoForm) {
-  changePhotoForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const photoFile = document.getElementById("newPhoto").files[0];
-    
-    if (!photoFile) {
-      showAlert('Please select a file', 'warning');
-      return;
-    }
-    
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const storageRef = ref(storage, `profile_photos/${user.uid}`);
-        const snapshot = await uploadBytes(storageRef, photoFile);
-        const photoURL = await getDownloadURL(storageRef);
-        await updateUserProfile(user.uid, { photoURL });
-        document.querySelectorAll('img[alt="Profile"]').forEach(img => {
-          img.src = photoURL;
-        });
-        const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-        modal.hide();
-        changePhotoForm.reset();
-        showAlert('Profile photo updated successfully!', 'success');
-      }
-    } catch (error) {
-      console.error("Error updating photo:", error);
-      showAlert('Failed to update profile photo: ' + error.message, 'danger');
+      } 
     }
   });
 }
@@ -264,7 +215,6 @@ if (logoutButton) {
       window.location.href = "index.html";
     } catch (error) {
       console.error("Error signing out:", error);
-      showAlert('Failed to log out: ' + error.message, 'danger');
     }
   });
 }
@@ -292,12 +242,9 @@ if (savePreferencesBtn) {
           disableDarkMode();
         }
         darkModeToggle.checked = darkModePreference.checked;
-        
-        showAlert('Preferences saved successfully!', 'success');
-      }
+              }
     } catch (error) {
       console.error("Error saving preferences:", error);
-      showAlert('Failed to save preferences: ' + error.message, 'danger');
     }
   });
 }
