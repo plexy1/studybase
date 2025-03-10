@@ -1,60 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale.0" />
   <title>History</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="dark-mode.css">
   <link href="history.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"> </head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand" href="#">studybase</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="search-topic.html">Search Topic</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="courses.html">Search Course</a>
-        </li>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="quiz.html">Generate Quiz</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="history.html">History</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="account.html">Account</a>
-        </li>
-      </ul>
-    </div>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="account.html">Account</a>
+          </li>
+        </ul>
+      </div>
       <div class="form-check form-switch ms-auto">
         <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
         <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
       </div>
-      <img
-        src="user.jpg"
-        alt="Profile"
-        class="profile-logo ms-5"
-      />
+      <img src="user.jpg" alt="Profile" class="profile-logo ms-5" />
     </div>
   </nav>
 
@@ -68,9 +57,9 @@
     <button id="deleteAllHistoryBtn" class="btn btn-danger mb-3">Delete All History</button>
 
     <div id="searchHistoryTiles" class="row mt-3">
-        </div>
+    </div>
     <div id="noHistoryMessage" style="display:none;">
-        <p class='text'>No search history found.</p>
+      <p class='text'>No search history found.</p>
     </div>
     <div id="deleteStatusMessage" class="delete-message text-center mt-3" style="display: none;"></div>
 
@@ -126,229 +115,270 @@
     }
   </script>
 
-<script type="module">
-  // Import Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-  import { getFirestore, collection, query, where, getDocs, orderBy, deleteDoc, doc, getDocsFromCache, writeBatch } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, orderBy, deleteDoc, doc, getDocsFromCache, writeBatch } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
-  // Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
-    authDomain: "studybase-data.firebaseapp.com",
-    projectId: "studybase-data",
-    storageBucket: "studybase-data.firebasestorage.app",
-    messagingSenderId: "471482464641",
-    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-  };
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+      authDomain: "studybase-data.firebaseapp.com",
+      projectId: "studybase-data",
+      storageBucket: "studybase-data.firebasestorage.app",
+      messagingSenderId: "471482464641",
+      appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  console.log("Firestore DB instance:", db); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
-  console.log("Type of db.batch:", typeof db.batch); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
-
-
-  const userDisplay = document.getElementById('userDisplay');
-  const searchHistoryTiles = document.getElementById('searchHistoryTiles');
-  const noHistoryMessage = document.getElementById('noHistoryMessage');
-  const deleteStatusMessage = document.getElementById('deleteStatusMessage');
-  const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn'); // Get delete all button
+    console.log("Firestore DB instance:", db); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
+    console.log("Type of db.batch:", typeof db.batch); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
 
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, display their email
-      userDisplay.textContent = `Logged in as: ${user.email}`;
-      userDisplay.style.color = 'green';
-      loadSavedSearches(user); // Load saved searches for logged-in user
-      deleteAllHistoryBtn.style.display = 'block'; // Show delete all button for logged-in users
-    } else {
-      // User is signed out, display demonstration mode message
-      userDisplay.textContent = "Testing/Demonstration Mode";
-      userDisplay.style.color = 'grey';
-      searchHistoryTiles.innerHTML = ''; // Clear any tiles if logged out
-      noHistoryMessage.style.display = 'block'; // Show no history message
-      deleteAllHistoryBtn.style.display = 'none'; // Hide delete all button in demo mode
-    }
-  });
+    const userDisplay = document.getElementById('userDisplay');
+    const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+    const noHistoryMessage = document.getElementById('noHistoryMessage');
+    const deleteStatusMessage = document.getElementById('deleteStatusMessage');
+    const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn'); // Get delete all button
 
 
-  async function loadSavedSearches(user) {
-    searchHistoryTiles.innerHTML = ''; // Clear existing tiles
-    noHistoryMessage.style.display = 'none'; // Hide no history message initially
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, display their email
+        userDisplay.textContent = `Logged in as: ${user.email}`;
+        userDisplay.style.color = 'green';
+        loadSavedSearches(user); // Load saved searches for logged-in user
+        deleteAllHistoryBtn.style.display = 'block'; // Show delete all button for logged-in users
+      } else {
+        // User is signed out, display demonstration mode message
+        userDisplay.textContent = "Testing/Demonstration Mode";
+        userDisplay.style.color = 'grey';
+        searchHistoryTiles.innerHTML = ''; // Clear any tiles if logged out
+        noHistoryMessage.style.display = 'block'; // Show no history message
+        deleteAllHistoryBtn.style.display = 'none'; // Hide delete all button in demo mode
+      }
+    });
 
-    if (!user) {
+
+    async function loadSavedSearches(user) {
+      searchHistoryTiles.innerHTML = ''; // Clear existing tiles
+      noHistoryMessage.style.display = 'none'; // Hide no history message initially
+
+      if (!user) {
         console.log("No user logged in to fetch history.");
         noHistoryMessage.style.display = 'block'; // Show no history message if no user
-        return;
-    }
-
-    const savedSearchesRef = collection(db, 'savedSearches');
-    const q = query(savedSearchesRef, where("userId", "==", user.uid), orderBy("timestamp", "desc")); //Order by timestamp, newest first
-
-
-    try {
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            noHistoryMessage.style.display = 'block'; // Show message if no history found
-        } else {
-            querySnapshot.forEach((doc) => {
-                const searchData = doc.data();
-                const tile = createSearchTile(doc.id, searchData); // Pass doc.id to createSearchTile
-                searchHistoryTiles.appendChild(tile);
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching saved searches:", error);
-        searchHistoryTiles.innerHTML = `<p class="text-danger">Error loading search history.</p>`; // Display error message in tiles area
-    }
-  }
-
-
-  function createSearchTile(docId, searchData) { // docId is now the first parameter
-    const tile = document.createElement('div');
-    tile.className = 'col-md-4 col-sm-6 mb-4'; // Bootstrap grid classes for tile layout
-
-    // Make the entire tile a clickable link/button (using <a> tag)
-    const tileLink = document.createElement('a');
-    tileLink.href = `search-topic.html?query=${encodeURIComponent(searchData.query)}&educationLevel=${encodeURIComponent(searchData.educationLevel)}&roadmapSteps=${encodeURIComponent(searchData.roadmapSteps)}`; // Construct URL with parameters
-    tileLink.className = 'card h-100 text-decoration-none text-dark'; // card class and remove link styling, default text color
-    tile.appendChild(tileLink);
-
-
-    const card = tileLink; // Now card is tileLink, so content goes inside the link
-
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body d-flex flex-column'; // flex-column to align content
-    card.appendChild(cardBody);
-
-    // Dropdown Menu Button (3 dots) - Top Right
-    const menuButton = document.createElement('button');
-    menuButton.className = 'btn btn-sm btn-light dropdown-toggle position-absolute top-0 end-0 m-2'; //position-absolute for placing on top right
-    menuButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>'; // Bootstrap 3 dots icon
-    menuButton.setAttribute('data-bs-toggle', 'dropdown');
-    menuButton.setAttribute('aria-expanded', 'false');
-    card.appendChild(menuButton);
-
-
-    const dropdownMenu = document.createElement('ul');
-    dropdownMenu.className = 'dropdown-menu';
-    dropdownMenu.setAttribute('aria-labelledby', 'dropdownMenuButton');
-    card.appendChild(dropdownMenu);
-
-    const deleteItem = document.createElement('li');
-    const deleteButton = document.createElement('a');
-    deleteButton.className = 'dropdown-item';
-    deleteButton.href = '#';
-    deleteButton.textContent = 'Delete Search';
-    deleteButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Prevent default link behavior
-      deleteSearch(docId, tile); // Call delete function with docId and tile
-    });
-    deleteItem.appendChild(deleteButton);
-    dropdownMenu.appendChild(deleteItem);
-
-    const shareItem = document.createElement('li');
-    const shareButton = document.createElement('a');
-    shareButton.className = 'dropdown-item';
-    shareButton.href = '#';
-    shareButton.textContent = 'Share Search (Placeholder)'; // Placeholder text for now
-    shareButton.appendChild(shareItem);
-    dropdownMenu.appendChild(shareItem);
-
-
-    const title = document.createElement('h5');
-    title.className = 'card-title';
-    title.textContent = searchData.query;
-    cardBody.appendChild(title);
-
-    const educationLevel = document.createElement('p');
-    educationLevel.className = 'card-text';
-    educationLevel.textContent = `Education Level: ${searchData.educationLevel}`;
-    cardBody.appendChild(educationLevel);
-
-    const roadmapSteps = document.createElement('p');
-    roadmapSteps.className = 'card-text';
-    roadmapSteps.textContent = `Roadmap Steps: ${searchData.roadmapSteps}`;
-    cardBody.appendChild(roadmapSteps);
-
-    const timestamp = document.createElement('p');
-    timestamp.className = 'card-text mt-auto text-muted'; // mt-auto pushes timestamp to the bottom
-    // Format timestamp - using toLocaleDateString for a readable date format
-    const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date(); // Handle cases where timestamp might be null
-    timestamp.textContent = `Saved on: ${date.toLocaleDateString()}`;
-    cardBody.appendChild(timestamp);
-
-
-    return tile;
-  }
-
-  async function deleteSearch(docId, tileElement) {
-    try {
-      await deleteDoc(doc(db, 'savedSearches', docId));
-      // Remove the tile from the UI
-      tileElement.remove();
-      displayDeleteStatus("Search deleted successfully!", true);
-      // Check if history is now empty and show "No history" message
-      if (searchHistoryTiles.querySelectorAll('.col-md-4').length === 0) {
-        noHistoryMessage.style.display = 'block';
-      }
-
-    } catch (error) {
-      console.error("Error deleting search:", error);
-      displayDeleteStatus("Error deleting search.", false);
-    }
-  }
-
-  function displayDeleteStatus(message, success) {
-    deleteStatusMessage.textContent = message;
-    deleteStatusMessage.style.display = 'block';
-    deleteStatusMessage.classList.remove(success ? 'error' : 'success');
-    deleteStatusMessage.classList.add(success ? 'success' : 'error');
-
-    // Hide message after 3 seconds
-    setTimeout(() => {
-      deleteStatusMessage.style.display = 'none';
-    }, 3000);
-  }
-
-  async function deleteAllSearches() {
-    if (confirm("Are you sure you want to delete all search history? This action cannot be undone.")) {
-      const user = auth.currentUser;
-      if (!user) {
-        displayDeleteStatus("No user logged in.", false);
         return;
       }
 
       const savedSearchesRef = collection(db, 'savedSearches');
-      const q = query(savedSearchesRef, where("userId", "==", user.uid));
+      const q = query(savedSearchesRef, where("userId", "==", user.uid), orderBy("timestamp", "desc")); //Order by timestamp, newest first
+
 
       try {
         const querySnapshot = await getDocs(q);
-        const batch = writeBatch(db); // CHANGED to writeBatch(db)
-
-        querySnapshot.forEach(docSnapshot => {
-          batch.delete(doc(db, 'savedSearches', docSnapshot.id)); // Add each delete operation to the batch
-        });
-
-        await batch.commit(); // Commit the batch delete
-        searchHistoryTiles.innerHTML = ''; // Clear tiles from UI
-        noHistoryMessage.style.display = 'block'; // Show "No history" message
-        displayDeleteStatus("All search history deleted successfully!", true);
+        if (querySnapshot.empty) {
+          noHistoryMessage.style.display = 'block'; // Show message if no history found
+        } else {
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            const tile = createSearchTile(doc.id, searchData); // Pass doc.id to createSearchTile
+            searchHistoryTiles.appendChild(tile);
+          });
+        }
       } catch (error) {
-        console.error("Error deleting all searches:", error);
-        displayDeleteStatus("Error deleting all history.", false);
+        console.error("Error fetching saved searches:", error);
+        searchHistoryTiles.innerHTML = `<p class="text-danger">Error loading search history.</p>`; // Display error message in tiles area
       }
     }
-  }
-
-  // Event listener for the Delete All button
-  deleteAllHistoryBtn.addEventListener('click', deleteAllSearches);
 
 
-</script>
+    function createSearchTile(docId, searchData) { // docId is now the first parameter
+      const tile = document.createElement('div');
+      tile.className = 'col-md-4 col-sm-6 mb-4'; // Bootstrap grid classes for tile layout
+
+      // Make the entire tile a clickable link/button (using <a> tag)
+      const tileLink = document.createElement('a');
+      tileLink.href = `search-topic.html?query=${encodeURIComponent(searchData.query)}&educationLevel=${encodeURIComponent(searchData.educationLevel)}&roadmapSteps=${encodeURIComponent(searchData.roadmapSteps)}`; // Construct URL with parameters
+      tileLink.className = 'card h-100 text-decoration-none text-dark'; // card class and remove link styling, default text color
+      tile.appendChild(tileLink);
+
+
+      const card = tileLink; // Now card is tileLink, so content goes inside the link
+
+      const cardBody = document.createElement('div');
+      cardBody.className = 'card-body d-flex flex-column'; // flex-column to align content
+      card.appendChild(cardBody);
+
+      // Dropdown Menu Button (3 dots) - Top Right
+      const menuButton = document.createElement('button');
+      menuButton.className = 'btn btn-sm btn-light dropdown-toggle position-absolute top-0 end-0 m-2'; //position-absolute for placing on top right
+      menuButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>'; // Bootstrap 3 dots icon
+      menuButton.setAttribute('data-bs-toggle', 'dropdown');
+      menuButton.setAttribute('aria-expanded', 'false');
+      card.appendChild(menuButton);
+
+
+      const dropdownMenu = document.createElement('ul');
+      dropdownMenu.className = 'dropdown-menu';
+      dropdownMenu.setAttribute('aria-labelledby', 'dropdownMenuButton');
+      card.appendChild(dropdownMenu);
+
+      const deleteItem = document.createElement('li');
+      const deleteButton = document.createElement('a');
+      deleteButton.className = 'dropdown-item';
+      deleteButton.href = '#';
+      deleteButton.textContent = 'Delete Search';
+      deleteButton.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        deleteSearch(docId, tile); // Call delete function with docId and tile
+      });
+      deleteItem.appendChild(deleteButton);
+      dropdownMenu.appendChild(deleteItem);
+
+      const shareItem = document.createElement('li');
+      const shareButton = document.createElement('a');
+      shareButton.className = 'dropdown-item';
+      shareButton.href = '#';
+      shareButton.textContent = 'Share Search (Placeholder)'; // Placeholder text for now
+      shareButton.appendChild(shareItem);
+      dropdownMenu.appendChild(shareItem);
+
+
+      const title = document.createElement('h5');
+      title.className = 'card-title';
+      title.textContent = searchData.query;
+      cardBody.appendChild(title);
+
+      const educationLevel = document.createElement('p');
+      educationLevel.className = 'card-text';
+
+      if (searchData.educationLevel == "highSchool") {
+        educationLevel.textContent = `Education Level: High School`;
+      }
+
+      else if (searchData.educationLevel == "university12") {
+        educationLevel.textContent = `Education Level: Year 1-2 University`;
+      }
+
+      else if (searchData.educationLevel == "university34") {
+        educationLevel.textContent = `Education Level: Year 3-4 University`;
+      }
+
+      else if (searchData.educationLevel == "masters") {
+        educationLevel.textContent = `Education Level: Masters+`;
+      }
+
+      else {
+        educationLevel.textContent = `Education Level: ${searchData.educationLevel}`;
+      }
+
+      cardBody.appendChild(educationLevel);
+
+      const roadmapSteps = document.createElement('p');
+      roadmapSteps.className = 'card-text';
+
+      if (searchData.roadmapSteps == 1) {
+        roadmapSteps.textContent = `Roadmap Steps: 5`;
+      } 
+      
+      else if (searchData.roadmapSteps == 2) {
+        roadmapSteps.textContent = `Roadmap Steps: 10`;
+      } 
+      
+      else if (searchData.roadmapSteps == 3) {
+        roadmapSteps.textContent = `Roadmap Steps: 15`;
+      } 
+      
+      else if (searchData.roadmapSteps == 4) {
+        roadmapSteps.textContent = `Roadmap Steps: 20`;
+      } 
+      
+      else {
+        roadmapSteps.textContent = `Roadmap Steps: ${searchData.roadmapSteps}`;
+      }
+
+      cardBody.appendChild(roadmapSteps);
+
+      const timestamp = document.createElement('p');
+      timestamp.className = 'card-text mt-auto text-muted'; // mt-auto pushes timestamp to the bottom
+      // Format timestamp - using toLocaleDateString for a readable date format
+      const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date(); // Handle cases where timestamp might be null
+      timestamp.textContent = `Saved on: ${date.toLocaleDateString()}`;
+      cardBody.appendChild(timestamp);
+
+
+      return tile;
+    }
+
+    async function deleteSearch(docId, tileElement) {
+      try {
+        await deleteDoc(doc(db, 'savedSearches', docId));
+        // Remove the tile from the UI
+        tileElement.remove();
+        displayDeleteStatus("Search deleted successfully!", true);
+        // Check if history is now empty and show "No history" message
+        if (searchHistoryTiles.querySelectorAll('.col-md-4').length === 0) {
+          noHistoryMessage.style.display = 'block';
+        }
+
+      } catch (error) {
+        console.error("Error deleting search:", error);
+        displayDeleteStatus("Error deleting search.", false);
+      }
+    }
+
+    function displayDeleteStatus(message, success) {
+      deleteStatusMessage.textContent = message;
+      deleteStatusMessage.style.display = 'block';
+      deleteStatusMessage.classList.remove(success ? 'error' : 'success');
+      deleteStatusMessage.classList.add(success ? 'success' : 'error');
+
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        deleteStatusMessage.style.display = 'none';
+      }, 3000);
+    }
+
+    async function deleteAllSearches() {
+      if (confirm("Are you sure you want to delete all search history? This action cannot be undone.")) {
+        const user = auth.currentUser;
+        if (!user) {
+          displayDeleteStatus("No user logged in.", false);
+          return;
+        }
+
+        const savedSearchesRef = collection(db, 'savedSearches');
+        const q = query(savedSearchesRef, where("userId", "==", user.uid));
+
+        try {
+          const querySnapshot = await getDocs(q);
+          const batch = writeBatch(db); // CHANGED to writeBatch(db)
+
+          querySnapshot.forEach(docSnapshot => {
+            batch.delete(doc(db, 'savedSearches', docSnapshot.id)); // Add each delete operation to the batch
+          });
+
+          await batch.commit(); // Commit the batch delete
+          searchHistoryTiles.innerHTML = ''; // Clear tiles from UI
+          noHistoryMessage.style.display = 'block'; // Show "No history" message
+          displayDeleteStatus("All search history deleted successfully!", true);
+        } catch (error) {
+          console.error("Error deleting all searches:", error);
+          displayDeleteStatus("Error deleting all history.", false);
+        }
+      }
+    }
+
+    // Event listener for the Delete All button
+    deleteAllHistoryBtn.addEventListener('click', deleteAllSearches);
+
+
+  </script>
 </body>
+
 </html>
