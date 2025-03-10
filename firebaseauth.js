@@ -235,7 +235,7 @@ if (changePhotoForm) {
       if (user) {
         const storageRef = ref(storage, `profile_photos/${user.uid}`);
         const snapshot = await uploadBytes(storageRef, photoFile);
-        const photoURL = await getDownloadURL(storageRef);
+        const photoURL = await getDownloadURL(snapshot.ref);
         await updateUserProfile(user.uid, { photoURL });
         document.querySelectorAll('img[alt="Profile"]').forEach(img => {
           img.src = photoURL;
@@ -243,6 +243,7 @@ if (changePhotoForm) {
         const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
         modal.hide();
         changePhotoForm.reset();
+        
         showAlert('Profile photo updated successfully!', 'success');
       }
     } catch (error) {
