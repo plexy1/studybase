@@ -346,7 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
-
   // Logout button
   const logoutButton = document.querySelector(".btn-danger");
   if (logoutButton) {
