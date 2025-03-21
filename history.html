@@ -1,100 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="auto">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale.0" />
-  <title>History</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History | studybase</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="dark-mode.css">
-  <link href="generalUI.css" rel="stylesheet">
-  <link href="history.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <link href="history.css" rel="stylesheet" />
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar">
     <div class="container">
       <a class="navbar-brand">studybase</a>
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="search-topic.html">Search Topic</a></li>
-          <li class="nav-item"><a class="nav-link" href="quiz.html">Study Tools</a></li>
-          <li class="nav-item"><a class="nav-link" href="communities.html">Communities</a></li>
-          <li class="nav-item"><a class="nav-link" href="courses.html">Search Course</a></li>
-          <li class="nav-item"><a class="nav-link" href="history.html">History</a></li>
-          <li class="nav-item"><a class="nav-link" href="account.html">Account</a></li>
-        </ul>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html" class="active">History</a>
+        <a href="account.html">Account</a>
       </div>
-      <div class="form-check form-switch ms-auto">
-        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
-        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
       </div>
-      <img src="user.jpg" alt="Profile" class="profile-logo ms-5"/>
     </div>
   </nav>
 
-  <div class="container text-center mt-5">
-
-    <div id="userDisplay" class="mb-3">
+  <div class="container main-content">
+    <div class="history-header">
+      <h2>Search History</h2>
+      <div id="userDisplay" class="user-status"></div>
     </div>
 
-    <h1>Search History</h1>
-
-    <button id="deleteAllHistoryBtn" class="btn btn-danger mb-3">Delete All History</button>
-
-    <div id="searchHistoryTiles" class="row mt-3">
+    <div class="history-actions">
+      <button id="deleteAllHistoryBtn" class="action-btn danger-btn">
+        <i class="fas fa-trash-alt"></i> Delete All History
+      </button>
     </div>
-    <div id="noHistoryMessage" style="display:none;">
-      <p class='text'>No search history found.</p>
-    </div>
-    <div id="deleteStatusMessage" class="delete-message text-center mt-3" style="display: none;"></div>
 
+    <div id="searchHistoryTiles" class="history-tiles">
+      <!-- Search history tiles will be loaded here -->
+    </div>
+
+    <div id="noHistoryMessage" class="empty-state" style="display:none;">
+      <i class="fas fa-history empty-icon"></i>
+      <p>No search history found</p>
+    </div>
+
+    <div id="deleteStatusMessage" class="status-message" style="display: none;"></div>
   </div>
 
-  <footer class="footer bg-dark text-light py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-      <p class="mb-0">&copy; 2025 Group 7</p>
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-
-    // Function to enable dark mode
-    function enableDarkMode() {
-      body.classList.add('dark-mode');
-      darkModeToggle.checked = true;
-      localStorage.setItem('darkMode', 'enabled');
-    }
-
-    // Function to disable dark mode
-    function disableDarkMode() {
-      body.classList.remove('dark-mode');
-      darkModeToggle.checked = false;
-      localStorage.setItem('darkMode', null);
-    }
-
-    // Function to toggle dark mode
-    function toggleDarkMode() {
-      if (body.classList.contains('dark-mode')) {
-        disableDarkMode();
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
       } else {
-        enableDarkMode();
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
       }
-    }
-
-    // Event listener for the dark mode toggle
-    darkModeToggle.addEventListener('change', toggleDarkMode);
-
-    // Check localStorage for dark mode preference on page load
-    if (localStorage.getItem('darkMode') === 'enabled') {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
   </script>
 
   <script type="module">
@@ -118,34 +125,30 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    console.log("Firestore DB instance:", db); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
-    console.log("Type of db.batch:", typeof db.batch); // DEBUGGING LINE - PLEASE PROVIDE OUTPUT
-
-
     const userDisplay = document.getElementById('userDisplay');
     const searchHistoryTiles = document.getElementById('searchHistoryTiles');
     const noHistoryMessage = document.getElementById('noHistoryMessage');
     const deleteStatusMessage = document.getElementById('deleteStatusMessage');
-    const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn'); // Get delete all button
-
+    const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn');
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, display their email
-        userDisplay.textContent = `Logged in as: ${user.email}`;
-        userDisplay.style.color = 'green';
+        userDisplay.textContent = `${user.email}`;
+        userDisplay.classList.add('logged-in');
+        userDisplay.classList.remove('demo-mode');
         loadSavedSearches(user); // Load saved searches for logged-in user
-        deleteAllHistoryBtn.style.display = 'block'; // Show delete all button for logged-in users
+        deleteAllHistoryBtn.style.display = 'flex'; // Show delete all button for logged-in users
       } else {
         // User is signed out, display demonstration mode message
         userDisplay.textContent = "Testing/Demonstration Mode";
-        userDisplay.style.color = 'grey';
+        userDisplay.classList.add('demo-mode');
+        userDisplay.classList.remove('logged-in');
         searchHistoryTiles.innerHTML = ''; // Clear any tiles if logged out
-        noHistoryMessage.style.display = 'block'; // Show no history message
+        noHistoryMessage.style.display = 'flex'; // Show no history message
         deleteAllHistoryBtn.style.display = 'none'; // Hide delete all button in demo mode
       }
     });
-
 
     async function loadSavedSearches(user) {
       searchHistoryTiles.innerHTML = ''; // Clear existing tiles
@@ -153,18 +156,17 @@
 
       if (!user) {
         console.log("No user logged in to fetch history.");
-        noHistoryMessage.style.display = 'block'; // Show no history message if no user
+        noHistoryMessage.style.display = 'flex'; // Show no history message if no user
         return;
       }
 
       const savedSearchesRef = collection(db, 'savedSearches');
       const q = query(savedSearchesRef, where("userId", "==", user.uid), orderBy("timestamp", "desc")); //Order by timestamp, newest first
 
-
       try {
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
-          noHistoryMessage.style.display = 'block'; // Show message if no history found
+          noHistoryMessage.style.display = 'flex'; // Show message if no history found
         } else {
           querySnapshot.forEach((doc) => {
             const searchData = doc.data();
@@ -174,125 +176,131 @@
         }
       } catch (error) {
         console.error("Error fetching saved searches:", error);
-        searchHistoryTiles.innerHTML = `<p class="text-danger">Error loading search history.</p>`; // Display error message in tiles area
+        searchHistoryTiles.innerHTML = `<p class="error-message">Error loading search history.</p>`; // Display error message in tiles area
       }
     }
 
-
-    function createSearchTile(docId, searchData) { // docId is now the first parameter
+    function createSearchTile(docId, searchData) {
       const tile = document.createElement('div');
-      tile.className = 'col-md-4 col-sm-6 mb-4'; // Bootstrap grid classes for tile layout
+      tile.className = 'history-tile';
 
-      // Make the entire tile a clickable link/button (using <a> tag)
-      const tileLink = document.createElement('a');
-      tileLink.href = `search-topic.html?query=${encodeURIComponent(searchData.query)}&educationLevel=${encodeURIComponent(searchData.educationLevel)}&roadmapSteps=${encodeURIComponent(searchData.roadmapSteps)}`; // Construct URL with parameters
-      tileLink.className = 'card h-100 text-decoration-none text-dark'; // card class and remove link styling, default text color
-      tile.appendChild(tileLink);
+      // Create card container
+      const card = document.createElement('div');
+      card.className = 'history-card';
+      tile.appendChild(card);
 
+      // Card content
+      const cardContent = document.createElement('div');
+      cardContent.className = 'history-card-content';
+      card.appendChild(cardContent);
 
-      const card = tileLink; // Now card is tileLink, so content goes inside the link
-
-      const cardBody = document.createElement('div');
-      cardBody.className = 'card-body d-flex flex-column'; // flex-column to align content
-      card.appendChild(cardBody);
-
-      // Dropdown Menu Button (3 dots) - Top Right
-      const menuButton = document.createElement('button');
-      menuButton.className = 'btn btn-sm btn-light dropdown-toggle position-absolute top-0 end-0 m-2'; //position-absolute for placing on top right
-      menuButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>'; // Bootstrap 3 dots icon
-      menuButton.setAttribute('data-bs-toggle', 'dropdown');
-      menuButton.setAttribute('aria-expanded', 'false');
-      card.appendChild(menuButton);
-
-
-      const dropdownMenu = document.createElement('ul');
-      dropdownMenu.className = 'dropdown-menu';
-      dropdownMenu.setAttribute('aria-labelledby', 'dropdownMenuButton');
-      card.appendChild(dropdownMenu);
-
-      const deleteItem = document.createElement('li');
-      const deleteButton = document.createElement('a');
-      deleteButton.className = 'dropdown-item';
-      deleteButton.href = '#';
-      deleteButton.textContent = 'Delete Search';
-      deleteButton.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default link behavior
-        deleteSearch(docId, tile); // Call delete function with docId and tile
-      });
-      deleteItem.appendChild(deleteButton);
-      dropdownMenu.appendChild(deleteItem);
-
-      const shareItem = document.createElement('li');
-      const shareButton = document.createElement('a');
-      shareButton.className = 'dropdown-item';
-      shareButton.href = '#';
-      shareButton.textContent = 'Share Search (Placeholder)'; // Placeholder text for now
-      shareButton.appendChild(shareItem);
-      dropdownMenu.appendChild(shareItem);
-
-
-      const title = document.createElement('h5');
-      title.className = 'card-title';
+      // Title with search query
+      const title = document.createElement('h3');
+      title.className = 'history-card-title';
       title.textContent = searchData.query;
-      cardBody.appendChild(title);
+      cardContent.appendChild(title);
 
-      const educationLevel = document.createElement('p');
-      educationLevel.className = 'card-text';
-
+      // Education level
+      const educationLevel = document.createElement('div');
+      educationLevel.className = 'history-card-detail';
+      
+      const educationIcon = document.createElement('i');
+      educationIcon.className = 'fas fa-graduation-cap detail-icon';
+      educationLevel.appendChild(educationIcon);
+      
+      const educationText = document.createElement('span');
+      
       if (searchData.educationLevel == "highSchool") {
-        educationLevel.textContent = `Education Level: High School`;
+        educationText.textContent = 'High School';
+      } else if (searchData.educationLevel == "university12") {
+        educationText.textContent = 'Year 1-2 University';
+      } else if (searchData.educationLevel == "university34") {
+        educationText.textContent = 'Year 3-4 University';
+      } else if (searchData.educationLevel == "masters") {
+        educationText.textContent = 'Masters+';
+      } else {
+        educationText.textContent = searchData.educationLevel;
       }
+      
+      educationLevel.appendChild(educationText);
+      cardContent.appendChild(educationLevel);
 
-      else if (searchData.educationLevel == "university12") {
-        educationLevel.textContent = `Education Level: Year 1-2 University`;
-      }
-
-      else if (searchData.educationLevel == "university34") {
-        educationLevel.textContent = `Education Level: Year 3-4 University`;
-      }
-
-      else if (searchData.educationLevel == "masters") {
-        educationLevel.textContent = `Education Level: Masters+`;
-      }
-
-      else {
-        educationLevel.textContent = `Education Level: ${searchData.educationLevel}`;
-      }
-
-      cardBody.appendChild(educationLevel);
-
-      const roadmapSteps = document.createElement('p');
-      roadmapSteps.className = 'card-text';
-
+      // Roadmap steps
+      const roadmapSteps = document.createElement('div');
+      roadmapSteps.className = 'history-card-detail';
+      
+      const stepsIcon = document.createElement('i');
+      stepsIcon.className = 'fas fa-map-signs detail-icon';
+      roadmapSteps.appendChild(stepsIcon);
+      
+      const stepsText = document.createElement('span');
+      
       if (searchData.roadmapSteps == 1) {
-        roadmapSteps.textContent = `Roadmap Steps: 5`;
-      } 
-      
-      else if (searchData.roadmapSteps == 2) {
-        roadmapSteps.textContent = `Roadmap Steps: 10`;
-      } 
-      
-      else if (searchData.roadmapSteps == 3) {
-        roadmapSteps.textContent = `Roadmap Steps: 15`;
-      } 
-      
-      else if (searchData.roadmapSteps == 4) {
-        roadmapSteps.textContent = `Roadmap Steps: 20`;
-      } 
-      
-      else {
-        roadmapSteps.textContent = `Roadmap Steps: ${searchData.roadmapSteps}`;
+        stepsText.textContent = '5 Steps';
+      } else if (searchData.roadmapSteps == 2) {
+        stepsText.textContent = '10 Steps';
+      } else if (searchData.roadmapSteps == 3) {
+        stepsText.textContent = '15 Steps';
+      } else if (searchData.roadmapSteps == 4) {
+        stepsText.textContent = '20 Steps';
+      } else {
+        stepsText.textContent = `${searchData.roadmapSteps} Steps`;
       }
+      
+      roadmapSteps.appendChild(stepsText);
+      cardContent.appendChild(roadmapSteps);
 
-      cardBody.appendChild(roadmapSteps);
+      // Timestamp
+      const timestamp = document.createElement('div');
+      timestamp.className = 'history-card-timestamp';
+      const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date();
+      
+      const dateString = date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+      
+      const timeString = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+      
+      timestamp.textContent = `${dateString} at ${timeString}`;
+      cardContent.appendChild(timestamp);
 
-      const timestamp = document.createElement('p');
-      timestamp.className = 'card-text mt-auto text-muted'; // mt-auto pushes timestamp to the bottom
-      // Format timestamp - using toLocaleDateString for a readable date format
-      const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date(); // Handle cases where timestamp might be null
-      timestamp.textContent = `Saved on: ${date.toLocaleDateString()}`;
-      cardBody.appendChild(timestamp);
+      // Action buttons
+      const actionButtons = document.createElement('div');
+      actionButtons.className = 'history-card-actions';
 
+      // Open search button
+      const openSearchBtn = document.createElement('button');
+      openSearchBtn.className = 'card-btn primary-btn';
+      openSearchBtn.innerHTML = '<i class="fas fa-external-link-alt"></i>';
+      openSearchBtn.title = 'Open Search';
+      openSearchBtn.addEventListener('click', () => {
+        window.location.href = `search-topic.html?query=${encodeURIComponent(searchData.query)}&educationLevel=${encodeURIComponent(searchData.educationLevel)}&roadmapSteps=${encodeURIComponent(searchData.roadmapSteps)}`;
+      });
+      actionButtons.appendChild(openSearchBtn);
+
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'card-btn danger-btn';
+      deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteBtn.title = 'Delete Search';
+      deleteBtn.addEventListener('click', () => {
+        deleteSearch(docId, tile);
+      });
+      actionButtons.appendChild(deleteBtn);
+
+      // Share button (placeholder)
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'card-btn secondary-btn';
+      shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
+      shareBtn.title = 'Share Search (Placeholder)';
+      actionButtons.appendChild(shareBtn);
+
+      card.appendChild(actionButtons);
 
       return tile;
     }
@@ -304,10 +312,9 @@
         tileElement.remove();
         displayDeleteStatus("Search deleted successfully!", true);
         // Check if history is now empty and show "No history" message
-        if (searchHistoryTiles.querySelectorAll('.col-md-4').length === 0) {
-          noHistoryMessage.style.display = 'block';
+        if (searchHistoryTiles.children.length === 0) {
+          noHistoryMessage.style.display = 'flex';
         }
-
       } catch (error) {
         console.error("Error deleting search:", error);
         displayDeleteStatus("Error deleting search.", false);
@@ -317,8 +324,12 @@
     function displayDeleteStatus(message, success) {
       deleteStatusMessage.textContent = message;
       deleteStatusMessage.style.display = 'block';
-      deleteStatusMessage.classList.remove(success ? 'error' : 'success');
-      deleteStatusMessage.classList.add(success ? 'success' : 'error');
+      deleteStatusMessage.className = 'status-message';
+      if (success) {
+        deleteStatusMessage.classList.add('success');
+      } else {
+        deleteStatusMessage.classList.add('error');
+      }
 
       // Hide message after 3 seconds
       setTimeout(() => {
@@ -339,15 +350,15 @@
 
         try {
           const querySnapshot = await getDocs(q);
-          const batch = writeBatch(db); // CHANGED to writeBatch(db)
+          const batch = writeBatch(db);
 
           querySnapshot.forEach(docSnapshot => {
-            batch.delete(doc(db, 'savedSearches', docSnapshot.id)); // Add each delete operation to the batch
+            batch.delete(doc(db, 'savedSearches', docSnapshot.id));
           });
 
-          await batch.commit(); // Commit the batch delete
-          searchHistoryTiles.innerHTML = ''; // Clear tiles from UI
-          noHistoryMessage.style.display = 'block'; // Show "No history" message
+          await batch.commit();
+          searchHistoryTiles.innerHTML = '';
+          noHistoryMessage.style.display = 'flex';
           displayDeleteStatus("All search history deleted successfully!", true);
         } catch (error) {
           console.error("Error deleting all searches:", error);
@@ -358,8 +369,6 @@
 
     // Event listener for the Delete All button
     deleteAllHistoryBtn.addEventListener('click', deleteAllSearches);
-
-
   </script>
 </body>
 
