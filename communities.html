@@ -1,116 +1,197 @@
+
 <!DOCTYPE html>
- <html lang="en" data-bs-theme="auto">
- <head>
-     <meta charset="UTF-8" />
-     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-     <title>studybase - Communities</title>
-     <link
-             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-             rel="stylesheet"
-     />
-     <link href="generalUI.css" rel="stylesheet">
-     <link href="communities.css" rel="stylesheet">
-     <script type="module">
-         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>studybase - Communities</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="communities.css" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 
-         const firebaseConfig = {
-             apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
-             authDomain: "studybase-data.firebaseapp.com",
-             projectId: "studybase-data",
-             storageBucket: "studybase-data.firebasestorage.app",
-             messagingSenderId: "471482464641",
-             appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-         };
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+            authDomain: "studybase-data.firebaseapp.com",
+            projectId: "studybase-data",
+            storageBucket: "studybase-data.firebasestorage.app",
+            messagingSenderId: "471482464641",
+            appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+        };
 
-         const app = initializeApp(firebaseConfig);
-     </script>
-     <script type="module" src="communities.js" defer></script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- </head>
- <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand">studybase</a>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="search-topic.html">Search Topic</a></li>
-                <li class="nav-item"><a class="nav-link" href="quiz.html">Study Tools</a></li>
-                <li class="nav-item"><a class="nav-link" href="communities.html">Communities</a></li>
-                <li class="nav-item"><a class="nav-link" href="courses.html">Search Course</a></li>
-                <li class="nav-item"><a class="nav-link" href="history.html">History</a></li>
-                <li class="nav-item"><a class="nav-link" href="account.html">Account</a></li>
-              </ul>
+        const app = initializeApp(firebaseConfig);
+    </script>
+    <script type="module" src="communities.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand">studybase</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="search-topic.html">Search Topic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="courses.html">Search Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quiz.html">Generate Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="communities.html">Communities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="account.html">Account</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="form-check form-switch me-3">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        <label class="form-check-label" for="darkModeToggle">
+                            <i class="fas fa-moon"></i>
+                        </label>
+                    </div>
+                    <div class="dropdown">
+                        <img src="user.jpg" alt="Profile" class="profile-logo" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><span class="dropdown-item-text" id="profileName">Loading...</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="account.html"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#" id="logoutButton"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-check form-switch ms-auto">
-          <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
-          <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
-        </div>
-        <img src="user.jpg" alt="Profile" class="profile-logo ms-5"/>
-      </div>
     </nav>
 
- <div class="container mt-4">
-     <header class="d-flex justify-content-between align-items-center py-3">
-         <h3 class="mb-0">Community Chat</h3>
-         <div>
-             <span id="usernameDisplay"></span>
-             <button class="btn btn-sm btn-outline-secondary" id="logoutButton">Logout</button>
-         </div>
-     </header>
+    <div class="container">
+        <!-- Chat interface -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>
+                    <i class="fas fa-comments me-2"></i>
+                    Community Chat
+                    <span class="badge bg-primary ms-2" id="onlineCounter">
+                        <span class="online-indicator"></span>
+                        0 online
+                    </span>
+                </h2>
+                <div>
+                    <span id="usernameDisplay" class="fw-bold"></span>
+                </div>
+            </div>
+            <div id="messageContainer" class="message-area">
+                <!-- Messages will be inserted here by JS -->
+            </div>
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <!-- Reply indicator will appear here when replying -->
+                    <div id="replyIndicator" class="reply-indicator" style="display: none;">
+                        <div class="reply-indicator-text">
+                            Replying to <span id="replyToName" class="reply-indicator-name"></span>
+                        </div>
+                        <button class="cancel-reply" id="cancelReply">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
+                </div>
+                <div class="input-actions">
+                    <button class="input-action" id="emojiButton" title="Add emoji">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    <button id="sendButton" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-     <main class="chat-container">
-         <div id="messageContainer" class="message-area">
-             </div>
-         <div class="input-area">
-             <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
-             <button id="sendButton" class="btn btn-primary">Send</button>
-         </div>
-     </main>
- </div>
+        <!-- Community guidelines card -->
+        <div class="community-guidelines">
+            <h3><i class="fas fa-info-circle me-2"></i>Community Guidelines</h3>
+            <ul class="guidelines-list">
+                <li>Be respectful and supportive to other students</li>
+                <li>Share valuable study resources and insights</li>
+                <li>Ask questions about course content</li>
+                <li>Keep discussions on-topic and academic</li>
+                <li>Avoid sharing assessment answers or violating academic integrity</li>
+            </ul>
+        </div>
+    </div>
 
- <footer class="footer bg-dark text-light py-3">
-     <div class="container d-flex justify-content-between align-items-center">
-         <p class="mb-0">&copy; 2025 Group 7</p>
-     </div>
- </footer>
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+        </div>
+    </footer>
 
- <script>
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
+    <!-- Templates for dynamic content (hidden) -->
+    <template id="messageTemplate">
+        <div class="message">
+            <div class="message-header">
+                <img class="message-avatar" src="user.jpg" alt="User">
+                <span class="message-sender"></span>
+                <div class="user-metadata">
+                    <span class="university"></span>
+                    <span class="major"></span>
+                </div>
+            </div>
+            <div class="reply-to" style="display: none;">
+                Replying to <span class="reply-sender"></span>: <span class="reply-preview"></span>
+            </div>
+            <div class="message-body"></div>
+            <div class="message-reactions"></div>
+            <div class="message-footer">
+                <span class="message-time"></span>
+                <div class="message-actions">
+                    <button class="action-button reaction-button" data-action="react">
+                        <i class="far fa-smile"></i> React
+                    </button>
+                    <button class="action-button reply-button" data-action="reply">
+                        <i class="fas fa-reply"></i> Reply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
 
-    // Function to enable dark mode
-    function enableDarkMode() {
-      body.classList.add('dark-mode');
-      darkModeToggle.checked = true;
-      localStorage.setItem('darkMode', 'enabled');
-    }
+    <template id="reactionTemplate">
+        <div class="reaction">
+            <span class="reaction-emoji"></span>
+            <span class="reaction-count">1</span>
+        </div>
+    </template>
 
-    // Function to disable dark mode
-    function disableDarkMode() {
-      body.classList.remove('dark-mode');
-      darkModeToggle.checked = false;
-      localStorage.setItem('darkMode', null);
-    }
+    <template id="typingIndicatorTemplate">
+        <div class="typing-indicator">
+            <span class="typing-username"></span> is typing
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </template>
 
-    // Function to toggle dark mode
-    function toggleDarkMode() {
-      if (body.classList.contains('dark-mode')) {
-        disableDarkMode();
-      } else {
-        enableDarkMode();
-      }
-    }
+    <template id="systemMessageTemplate">
+        <div class="system-message"></div>
+    </template>
+</body>
+</html>
 
-    // Event listener for the dark mode toggle
-    darkModeToggle.addEventListener('change', toggleDarkMode);
 
-    // Check localStorage for dark mode preference on page load
-    if (localStorage.getItem('darkMode') === 'enabled') {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
-  </script>
 
- </body>
- </html>
