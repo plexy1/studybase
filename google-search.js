@@ -5,8 +5,7 @@ const CX = "231b4ea4797884527";
 
 
 function searchGoogle(query) {
-  // We append “basics filetype:pdf” to the user’s query
-  const searchQuery = `${query} basics filetype:pdf`;
+  const searchQuery = `${query} basics`;
 
   const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${CX}&q=${encodeURIComponent(searchQuery)}`;
 
