@@ -1,4 +1,4 @@
-[ 
+[
     {
         "name": "Introduction to Business",
         "id": "ADMS 1000"
@@ -180,10 +180,6 @@
         "id": "ANTH 4010"
     },
     {
-        "name": "Directed Reading",
-        "id": "ANTH 4010"
-    },
-    {
         "name": "Placement Option MA",
         "id": "ANTH 5040"
     },
@@ -210,14 +206,6 @@
     {
         "name": "Placement",
         "id": "ARTH 5190"
-    },
-    {
-        "name": "Individualized Reading",
-        "id": "ARTH 5500A"
-    },
-    {
-        "name": "Individualized Reading",
-        "id": "ARTH 5500B"
     },
     {
         "name": "Research Paper",
@@ -268,22 +256,6 @@
         "id": "BIOL 3603"
     },
     {
-        "name": "Biology Internship Work Term",
-        "id": "BIOL 3901"
-    },
-    {
-        "name": "Biology Internship Work Term",
-        "id": "BIOL 3902"
-    },
-    {
-        "name": "Biology Internship Work Term",
-        "id": "BIOL 3903"
-    },
-    {
-        "name": "Honours Thesis",
-        "id": "BIOL 4000"
-    },
-    {
         "name": "Honours Thesis",
         "id": "BIOL 4000"
     },
@@ -309,10 +281,6 @@
     },
     {
         "name": "Internship",
-        "id": "BUEC 4500"
-    },
-    {
-        "name": "Stage professionnel",
         "id": "BUEC 4500"
     },
     {
@@ -376,14 +344,6 @@
         "id": "CHEM 2202"
     },
     {
-        "name": "Research Experience Term",
-        "id": "CHEM 3202"
-    },
-    {
-        "name": "Chemistry Internship Work Term",
-        "id": "CHEM 3901"
-    },
-    {
         "name": "Chemistry Internship Work Term",
         "id": "CHEM 3902"
     },
@@ -400,32 +360,8 @@
         "id": "CHEM 6000"
     },
     {
-        "name": "MSc Review Essay",
-        "id": "CHEM 6000"
-    },
-    {
         "name": "MSc Research Evaluation",
-        "id": "CHEM 7000A"
-    },
-    {
-        "name": "MSc Research Evaluation",
-        "id": "CHEM 7000B"
-    },
-    {
-        "name": "PhD Research Evaluation",
-        "id": "CHEM 7001A"
-    },
-    {
-        "name": "PhD Research Evaluation",
-        "id": "CHEM 7001B"
-    },
-    {
-        "name": "PhD Research Evaluation",
-        "id": "CHEM 7001C"
-    },
-    {
-        "name": "PhD Research Evaluation",
-        "id": "CHEM 7001D"
+        "id": "CHEM 7000"
     },
     {
         "name": "Graduate Seminar Series in Civil Engineering",
@@ -500,50 +436,6 @@
         "id": "COMS 4805"
     },
     {
-        "name": "Co-op Work Term",
-        "id": "COOP 2001"
-    },
-    {
-        "name": "Professional Development for Co-Op Students",
-        "id": "COOP 2100"
-    },
-    {
-        "name": "EUC Co-op Work Term",
-        "id": "COOP 2109"
-    },
-    {
-        "name": "Lassonde Co-op Work-term",
-        "id": "COOP 2109"
-    },
-    {
-        "name": "Co-op Work Term",
-        "id": "COOP 3001"
-    },
-    {
-        "name": "Co-op Work Term",
-        "id": "COOP 3002"
-    },
-    {
-        "name": "Co-op Work Term",
-        "id": "COOP 3003"
-    },
-    {
-        "name": "Co-op Work Term",
-        "id": "COOP 3004"
-    },
-    {
-        "name": "Critical Reflection on Work Experience using Professional Portfolios",
-        "id": "COOP 3100"
-    },
-    {
-        "name": "EUC Co-op Work Term",
-        "id": "COOP 3109"
-    },
-    {
-        "name": "Lassonde Co-op Work-term",
-        "id": "COOP 3109"
-    },
-    {
         "name": "Critical Thinking",
         "id": "CORE 1711"
     },
@@ -566,18 +458,6 @@
     {
         "name": "Introduction to Creative Writing",
         "id": "CWR 2600"
-    },
-    {
-        "name": "Independent Studies",
-        "id": "DANC 4401"
-    },
-    {
-        "name": "Independent Studies",
-        "id": "DANC 4401"
-    },
-    {
-        "name": "Independent Studies",
-        "id": "DANC 4401"
     },
     {
         "name": "Independent Studies",
@@ -828,18 +708,6 @@
         "id": "EN 6010"
     },
     {
-        "name": "Directed Reading",
-        "id": "EN 6010"
-    },
-    {
-        "name": "Directed Reading",
-        "id": "EN 6010A"
-    },
-    {
-        "name": "Directed Reading",
-        "id": "EN 6010A"
-    },
-    {
         "name": "Eighteenth-Century Intellectual Texts",
         "id": "EN 6320"
     },
@@ -858,10 +726,6 @@
     {
         "name": "Research Practicum",
         "id": "ENVB 3603"
-    },
-    {
-        "name": "Honours Thesis",
-        "id": "ENVB 4000"
     },
     {
         "name": "Honours Thesis",
@@ -888,32 +752,12 @@
         "id": "ENVS 3900"
     },
     {
-        "name": "Directed Reading",
-        "id": "ENVS 3900"
-    },
-    {
-        "name": "Field Placement Course",
-        "id": "ENVS 4001"
-    },
-    {
         "name": "Field Placement Course",
         "id": "ENVS 4001"
     },
     {
         "name": "Directed Study",
         "id": "ENVS 4900"
-    },
-    {
-        "name": "Directed Study",
-        "id": "ENVS 4900"
-    },
-    {
-        "name": "Directed Study",
-        "id": "ENVS 4900Z"
-    },
-    {
-        "name": "Directed Study",
-        "id": "ENVS 4900Z"
     },
     {
         "name": "MES Research Proposal",
@@ -928,56 +772,8 @@
         "id": "ENVS 6599"
     },
     {
-        "name": "Individual Directed Study",
-        "id": "ENVS 6599"
-    },
-    {
-        "name": "Individual Directed Study",
-        "id": "ENVS 6599A"
-    },
-    {
-        "name": "Individual Directed Study",
-        "id": "ENVS 6599B"
-    },
-    {
-        "name": "Individual Directed Study",
-        "id": "ENVS 6599F"
-    },
-    {
-        "name": "Individual Directed Study",
-        "id": "ENVS 6599O"
-    },
-    {
         "name": "Experiential Learning",
         "id": "ENVS 6699"
-    },
-    {
-        "name": "Experiential Learning",
-        "id": "ENVS 6699"
-    },
-    {
-        "name": "Experiential Learning",
-        "id": "ENVS 6699"
-    },
-    {
-        "name": "Experiential Learning",
-        "id": "ENVS 6699"
-    },
-    {
-        "name": "Experiential Learning",
-        "id": "ENVS 6699F"
-    },
-    {
-        "name": "Experiential Learning",
-        "id": "ENVS 6699O"
-    },
-    {
-        "name": "MES Major Research",
-        "id": "ENVS 7899"
-    },
-    {
-        "name": "MES Major Research",
-        "id": "ENVS 7899"
     },
     {
         "name": "MES Major Research",
@@ -1004,32 +800,8 @@
         "id": "ESS 6030A"
     },
     {
-        "name": "M.Sc. Research Evaluation",
-        "id": "ESS 6030B"
-    },
-    {
         "name": "Ph.D. Research Evaluation",
         "id": "ESS 7030A"
-    },
-    {
-        "name": "Ph.D. Research Evaluation",
-        "id": "ESS 7030B"
-    },
-    {
-        "name": "Ph.D. Research Evaluation",
-        "id": "ESS 7030C"
-    },
-    {
-        "name": "Ph.D. Research Evaluation",
-        "id": "ESS 7030D"
-    },
-    {
-        "name": "Ph.D. Research Evaluation",
-        "id": "ESS 7030E"
-    },
-    {
-        "name": "Ph.D. Research Evaluation",
-        "id": "ESS 7030F"
     },
     {
         "name": "The Earth Environment",
@@ -1140,24 +912,12 @@
         "id": "FILM 5600"
     },
     {
-        "name": "Field Placement",
-        "id": "FILM 5600A"
-    },
-    {
         "name": "Student Initiated Collaborative Inquiry",
         "id": "FILM 5700"
     },
     {
-        "name": "Student Initiated Collaborative Inquiry",
-        "id": "FILM 5700A"
-    },
-    {
         "name": "Independent Project",
         "id": "FILM 5800"
-    },
-    {
-        "name": "Directed Reading",
-        "id": "FILM 5800A"
     },
     {
         "name": "Basic French (CEFR A1)",
@@ -1208,10 +968,6 @@
         "id": "GEOG 4001"
     },
     {
-        "name": "Field Placement Course",
-        "id": "GEOG 4001"
-    },
-    {
         "name": "Directed Reading",
         "id": "GEOG 4290"
     },
@@ -1226,10 +982,6 @@
     {
         "name": "Ph.D. Directed Reading Course",
         "id": "GEOG 6060"
-    },
-    {
-        "name": "Independent Study",
-        "id": "GH 4000"
     },
     {
         "name": "Independent Study",
@@ -1344,10 +1096,6 @@
         "id": "HRM 2600"
     },
     {
-        "name": "Human Resources Management",
-        "id": "HRM 2600"
-    },
-    {
         "name": "Occupational Health and Safety",
         "id": "HRM 3400"
     },
@@ -1456,10 +1204,6 @@
         "id": "HUMA 3000"
     },
     {
-        "name": "Directed Reading",
-        "id": "HUMA 3000"
-    },
-    {
         "name": "Comedy",
         "id": "HUMA 3013"
     },
@@ -1480,10 +1224,6 @@
         "id": "HUMA 4000"
     },
     {
-        "name": "Directed Reading",
-        "id": "HUMA 4000"
-    },
-    {
         "name": "Childhood in Canadian Culture",
         "id": "HUMA 4140"
     },
@@ -1497,14 +1237,6 @@
     },
     {
         "name": "Directed Reading",
-        "id": "HUMA 5000"
-    },
-    {
-        "name": "Directed Reading",
-        "id": "HUMA 6000"
-    },
-    {
-        "name": "Directed Reading",
         "id": "HUMA 6000"
     },
     {
@@ -1513,10 +1245,6 @@
     },
     {
         "name": "Professional Internship",
-        "id": "ILST 4300"
-    },
-    {
-        "name": "Stage pratique professionnel",
         "id": "ILST 4300"
     },
     {
@@ -1632,19 +1360,11 @@
         "id": "JWST 4200"
     },
     {
-        "name": "Directed Reading",
-        "id": "JWST 4200"
-    },
-    {
         "name": "Master's Practica",
         "id": "KAHS 5400"
     },
     {
         "name": "Master's Practica",
-        "id": "KAHS 5410"
-    },
-    {
-        "name": "Non-thesis Master's Practica",
         "id": "KAHS 5410"
     },
     {
@@ -1658,14 +1378,6 @@
     {
         "name": "Independent Studies in Kinesiology and Health Science",
         "id": "KINE 4060"
-    },
-    {
-        "name": "Independent Studies in Kinesiology and Health Science",
-        "id": "KINE 4060"
-    },
-    {
-        "name": "Independent Studies in Kinesiology and Health Science",
-        "id": "KINE 4060A"
     },
     {
         "name": "Honours Thesis",
@@ -1828,14 +1540,6 @@
         "id": "MECH 6900B"
     },
     {
-        "name": "Directed Study: Microfluidics and Micro-Electro-Mechanical Systems (MEMS)",
-        "id": "MECH 6900J"
-    },
-    {
-        "name": "Directed Study: Other areas in Mechanical Engineering",
-        "id": "MECH 6900K"
-    },
-    {
         "name": "MSc Thesis",
         "id": "MECH 9001"
     },
@@ -1916,16 +1620,8 @@
         "id": "NURS 2546"
     },
     {
-        "name": "Practicum for HH/NURS 2546 6.00",
-        "id": "NURS 2546P"
-    },
-    {
         "name": "Mental Health Across the Lifespan",
         "id": "NURS 2547"
-    },
-    {
-        "name": "Practicum for HH/NURS 2547 6.00",
-        "id": "NURS 2547P"
     },
     {
         "name": "Trends and Contemporary Issues for the Aging Adult in Canada",
@@ -1981,14 +1677,10 @@
     },
     {
         "name": "Directed Reading",
-        "id": "NURS 4800"
-    },
-    {
-        "name": "Directed Reading",
         "id": "NURS 5000"
     },
     {
-        "name": "Advanced Perspectives in Women\u0092s Health: Critical Feminist Analyses",
+        "name": "Advanced Perspectives in Womens Health: Critical Feminist Analyses",
         "id": "NURS 5120"
     },
     {
@@ -2028,86 +1720,6 @@
         "id": "NURS 8000"
     },
     {
-        "name": "University of Toronto",
-        "id": "OVGS 8000"
-    },
-    {
-        "name": "University of Toronto",
-        "id": "OVGS 8001"
-    },
-    {
-        "name": "Trent University",
-        "id": "OVGS 8005"
-    },
-    {
-        "name": "Brock University",
-        "id": "OVGS 8010"
-    },
-    {
-        "name": "Toronto Metropolitan University",
-        "id": "OVGS 8015"
-    },
-    {
-        "name": "Carleton University",
-        "id": "OVGS 8020"
-    },
-    {
-        "name": "OCAD University",
-        "id": "OVGS 8025"
-    },
-    {
-        "name": "University of Guelph",
-        "id": "OVGS 8030"
-    },
-    {
-        "name": "Laurentian University",
-        "id": "OVGS 8035"
-    },
-    {
-        "name": "McMaster University",
-        "id": "OVGS 8040"
-    },
-    {
-        "name": "Lakehead University",
-        "id": "OVGS 8045"
-    },
-    {
-        "name": "University of Ottawa",
-        "id": "OVGS 8050"
-    },
-    {
-        "name": "University of Ontario Institute of Technology",
-        "id": "OVGS 8055"
-    },
-    {
-        "name": "Queens University",
-        "id": "OVGS 8060"
-    },
-    {
-        "name": "Queens University",
-        "id": "OVGS 8061"
-    },
-    {
-        "name": "University of Waterloo",
-        "id": "OVGS 8070"
-    },
-    {
-        "name": "University of Waterloo",
-        "id": "OVGS 8071"
-    },
-    {
-        "name": "University of Western Ontario",
-        "id": "OVGS 8080"
-    },
-    {
-        "name": "Wilfrid Laurier University",
-        "id": "OVGS 8085"
-    },
-    {
-        "name": "University of Windsor",
-        "id": "OVGS 8090"
-    },
-    {
         "name": "Financial Statement Analysis and Valuation",
         "id": "PACC 5530"
     },
@@ -2130,14 +1742,6 @@
     {
         "name": "Directed Readings",
         "id": "PHIL 6010"
-    },
-    {
-        "name": "Directed Readings",
-        "id": "PHIL 6010"
-    },
-    {
-        "name": "Directed Readings",
-        "id": "PHIL 6010A"
     },
     {
         "name": "Electricity, Magnetism and Optics for Engineers",
@@ -2188,10 +1792,6 @@
         "id": "POLS 3990"
     },
     {
-        "name": "Supervised Reading and Research",
-        "id": "POLS 3990"
-    },
-    {
         "name": "Politics, Law and the Courts",
         "id": "POLS 4130"
     },
@@ -2204,20 +1804,12 @@
         "id": "POLS 4990"
     },
     {
-        "name": "Supervised Reading and Research",
-        "id": "POLS 4990"
-    },
-    {
         "name": "International Political Economy and Ecology Summer School",
         "id": "POLS 6282"
     },
     {
         "name": "Reading Course",
         "id": "POLS 6990"
-    },
-    {
-        "name": "Reading Course",
-        "id": "POLS 6990A"
     },
     {
         "name": "M.A. Major Research Paper",
@@ -2234,10 +1826,6 @@
     {
         "name": "Equity, Policy, Law and Planning",
         "id": "PPAL 6130"
-    },
-    {
-        "name": "Internship/Co-Op",
-        "id": "PPAL 6900"
     },
     {
         "name": "Independent Readings and Research",
@@ -2272,10 +1860,6 @@
         "id": "PSYC 3902"
     },
     {
-        "name": "Individual Research Project",
-        "id": "PSYC 3903"
-    },
-    {
         "name": "Behaviour Modification and Behaviour Therapy",
         "id": "PSYC 4030"
     },
@@ -2288,100 +1872,24 @@
         "id": "PSYC 4902"
     },
     {
-        "name": "Individual Research Project",
-        "id": "PSYC 4903"
-    },
-    {
         "name": "Clinical Practicum II",
         "id": "PSYC 6440P"
     },
     {
-        "name": "Clinical Practicum III (Optional)",
-        "id": "PSYC 6460P"
-    },
-    {
-        "name": "Clinical Practicum III (Optional)",
-        "id": "PSYC 6460P"
-    },
-    {
         "name": "Readings",
         "id": "PSYC 6710"
     },
     {
-        "name": "Readings",
-        "id": "PSYC 6710"
+        "name": "Applied Practicum",
+        "id": "PSYC 6810"
     },
     {
-        "name": "Readings",
-        "id": "PSYC 6710A"
-    },
-    {
-        "name": "Readings",
-        "id": "PSYC 6710B"
-    },
-    {
-        "name": "Applied Practicum I",
-        "id": "PSYC 6810A"
-    },
-    {
-        "name": "Applied Practicum I",
-        "id": "PSYC 6810A"
-    },
-    {
-        "name": "Applied Practicum II",
-        "id": "PSYC 6810B"
-    },
-    {
-        "name": "Applied Practicum II",
-        "id": "PSYC 6810B"
-    },
-    {
-        "name": "Applied Practicum III",
-        "id": "PSYC 6810C"
-    },
-    {
-        "name": "Applied Practicum III",
-        "id": "PSYC 6810C"
-    },
-    {
-        "name": "Research Practicum I",
+        "name": "Research Practicum",
         "id": "PSYC 6820A"
-    },
-    {
-        "name": "Research Practicum I",
-        "id": "PSYC 6820A"
-    },
-    {
-        "name": "Research Practicum II",
-        "id": "PSYC 6820B"
-    },
-    {
-        "name": "Research Practicum II",
-        "id": "PSYC 6820B"
-    },
-    {
-        "name": "Research Practicum III",
-        "id": "PSYC 6820C"
-    },
-    {
-        "name": "Research Practicum III",
-        "id": "PSYC 6820C"
-    },
-    {
-        "name": "Research Practicum IV",
-        "id": "PSYC 6820D"
-    },
-    {
-        "name": "Research Practicum IV",
-        "id": "PSYC 6820D"
     },
     {
         "name": "Clinical Internship",
         "id": "PSYC 6840"
-    },
-    {
-        "name": "Clinical Internship II",
-        "id": "PSYC 6840B"
     },
     {
         "name": "Myth and Imagination in Ancient Greece and Rome",
@@ -2436,18 +1944,6 @@
         "id": "SOCI 5900"
     },
     {
-        "name": "Independent Reading Course",
-        "id": "SOCI 5900"
-    },
-    {
-        "name": "Independent Reading Course",
-        "id": "SOCI 6900"
-    },
-    {
-        "name": "Independent Reading Course",
-        "id": "SOCI 6900A"
-    },
-    {
         "name": "Introduction to Social Science",
         "id": "SOSC 1000"
     },
@@ -2500,20 +1996,12 @@
         "id": "SOSC 3099"
     },
     {
-        "name": "Directed Reading",
-        "id": "SOSC 3099"
-    },
-    {
         "name": "The Global Information Society",
         "id": "SOSC 3500"
     },
     {
         "name": "Hip Hop and the City",
         "id": "SOSC 3755"
-    },
-    {
-        "name": "Directed Reading",
-        "id": "SOSC 4099"
     },
     {
         "name": "Directed Reading",
@@ -2544,10 +2032,6 @@
         "id": "SOWK 5970"
     },
     {
-        "name": "Directed Readings",
-        "id": "SOWK 5970B"
-    },
-    {
         "name": "Elementary Spanish",
         "id": "SP 1000"
     },
@@ -2560,38 +2044,6 @@
         "id": "SXST 1600"
     },
     {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 3901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 3901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 3901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 3901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 4901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 4901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 4901"
-    },
-    {
-        "name": "Directed Readings/Travaux Individuels",
-        "id": "SXST 4901"
-    },
-    {
         "name": "Innovation, Creativity and Entrepreneurship",
         "id": "TECL 2500"
     },
@@ -2600,40 +2052,8 @@
         "id": "THEA 2000"
     },
     {
-        "name": "Independent Production Practicum",
-        "id": "THEA 2000"
-    },
-    {
-        "name": "Independent Production Practicum",
-        "id": "THEA 3000"
-    },
-    {
-        "name": "Independent Production Practicum",
-        "id": "THEA 3000"
-    },
-    {
-        "name": "Independent Production Practicum",
-        "id": "THEA 4000"
-    },
-    {
-        "name": "Independent Production Practicum",
-        "id": "THEA 4000"
-    },
-    {
-        "name": "Independent Study I",
+        "name": "Independent Study",
         "id": "THEA 4300"
-    },
-    {
-        "name": "Independent Study I",
-        "id": "THEA 4300"
-    },
-    {
-        "name": "Independent Study II",
-        "id": "THEA 4301"
-    },
-    {
-        "name": "Independent Study II",
-        "id": "THEA 4301"
     },
     {
         "name": "Theatre & Performance Studies Internship",
@@ -2644,15 +2064,11 @@
         "id": "THST 6500"
     },
     {
-        "name": "Independent Studies [rubric]",
-        "id": "THST 6500A"
-    },
-    {
         "name": "Onsite Professional Internship/Stage professionnel en entreprise",
         "id": "TRAN 3900"
     },
     {
-        "name": "Online Professional Internship/Stage professionnel \u00e0 distance",
+        "name": "Online Professional Internship/Stage professionnel distance",
         "id": "TRAN 4900"
     },
     {
@@ -2666,10 +2082,6 @@
     {
         "name": "Contemporary Visual Arts Summer Institute",
         "id": "VISA 6020"
-    },
-    {
-        "name": "Contemporary Visual Arts Summer Institute",
-        "id": "VISA 6030"
     },
     {
         "name": "Directed Reading",
