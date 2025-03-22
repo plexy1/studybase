@@ -10,6 +10,7 @@
   />
   <link href="generalUI.css" rel="stylesheet">
   <link href="search-topic.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,12 +37,16 @@
   <div class="container text-center mt-5">
 
     <h1 id="greetingDisplay"></h1> <div class="search-box mt-4 d-flex">
-      <input
-        id="searchInput"
-        type="text"
-        class="form-control me-2"
-        placeholder="Search any topic or concept"
-      >
+      <div class="search-input-wrapper">
+        <i class="fas fa-search" style="z-index: 2;"></i>
+        <input
+          id="searchInput"
+          type="text"
+          class="form-control me-2"
+          placeholder="Search any topic or concept"
+          autocomplete="off"
+        >
+      </div>
       <select id="educationLevel" class="form-select" style="width: 200px;">
         <option selected value="highSchool">High School</option>
         <option value="university12">Year 1-2 University</option>
@@ -79,10 +84,11 @@
 
     <div id="saveStatusMessage" class="save-message text-center" style="display: none;"></div>
 
-
-    <div id="searchResult" class="result-container">
+    <div id="searchResult" class="result-container" style="display: none;">
       <div class="left-half">
-        <h6></h6><div id="geminiResult" class="mt-4"></div></h6>
+        <h6></h6><div id="geminiResult" class="mt-4">
+          <!-- Roadmap tiles will be inserted here -->
+        </div></h6>
         <div class="mt-2 text-center">
           <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
           <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
@@ -92,6 +98,7 @@
         <div class="youtube-results-container mt-4">
           <div class="d-flex flex-column align-items-center">
             <div id="videoSlider" class="d-flex overflow-hidden">
+              <!-- Videos will be inserted here -->
             </div>
             <div class="mt-2">
               <button id="prevVideos" class="btn btn-outline-secondary me-2" style="display: none;">◀ Previous</button>
@@ -99,10 +106,9 @@
             </div>
           </div>
           <div class="google-results-container mt-4 mb-5">
-            <div id="googleResults"></div>
-            <div class="mt-2 text-center">
-              <button id="prevGoogle" class="btn btn-outline-secondary me-2" style="display: none;">⬆ Previous Results</button>
-              <button id="nextGoogle" class="btn btn-outline-secondary" style="display: none;">⬇ More Results</button>
+            <h3 class="text-center mb-2" style="color: #1a73e8; font-size: 1.5rem; font-weight: 500;">Top Google Searches</h3>
+            <div id="googleResults" class="grid-container">
+              <!-- Google results will be inserted here -->
             </div>
           </div>
         </div>
@@ -124,14 +130,16 @@
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
       if (query) {
+        // Show the search results container
+        document.getElementById('searchResult').style.display = 'flex';
+        // Clear previous results
+        document.getElementById('geminiResult').innerHTML = '';
+        document.getElementById('videoSlider').innerHTML = '';
+        document.getElementById('googleResults').innerHTML = '';
+        // Perform searches
         searchYouTube(query);
         searchGoogle(query);
         searchGemini(query);
-
-       // Save the topic to Firestore - assuming you have this function defined elsewhere
-       // await saveSearchTopic(query);
-
-        updateHistoryDisplay();
       }
     });
 
@@ -216,8 +224,9 @@
   // Import Firebase modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
-  // Firebase configuration (You should use your actual config here, but for now using the one from your provided files)
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
     authDomain: "studybase-data.firebaseapp.com",
@@ -230,22 +239,38 @@
   // Initialize Firebase app
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const greetingDisplay = document.getElementById('greetingDisplay');
   const searchInput = document.getElementById('searchInput');
   const educationLevelDropdown = document.getElementById('educationLevel');
   const roadmapStepsSlider = document.getElementById('questionSlider');
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     let greeting = getGreeting();
 
     if (user) {
-      greetingDisplay.textContent = `${greeting}, ${user.accountNameElement} Search a topic`;
-      greetingDisplay.style.color = 'black'; // Or your desired logged-in color
-    } 
-    
-    else {
+      try {
+        // Get user data from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const username = userData.username || user.email.split('@')[0];
+          greetingDisplay.textContent = `${greeting}, ${username}! Search a topic`;
+          greetingDisplay.style.color = '#212529'; // Dark text for light mode
+        } else {
+          // Fallback to email if no username found
+          const username = user.email.split('@')[0];
+          greetingDisplay.textContent = `${greeting}, ${username}! Search a topic`;
+          greetingDisplay.style.color = '#212529';
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        greetingDisplay.textContent = `${greeting}! Search a topic`;
+        greetingDisplay.style.color = '#212529';
+      }
+    } else {
       greetingDisplay.textContent = "Testing/Demonstration Mode - Search a topic";
-      greetingDisplay.style.color = 'grey'; // Or your desired demo mode color
+      greetingDisplay.style.color = '#6c757d'; // Grey text for demo mode
     }
   });
 
@@ -256,9 +281,8 @@
     } else if (currentHour < 18) {
       return "Good afternoon";
     } else if (currentHour < 22) {
-        return "Good evening";
-    }
-     else {
+      return "Good evening";
+    } else {
       return "Good night";
     }
   }

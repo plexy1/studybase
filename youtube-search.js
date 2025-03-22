@@ -1,99 +1,114 @@
 const API_KEY = 'AIzaSyAs4Rbt-G3tXoCm8JKb7e-rn4V8oKx9r4s'; // temporary API key (.env to be used later)
-  const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
-  const VIDEO_DETAILS_URL = 'https://www.googleapis.com/youtube/v3/videos';
+const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
+const VIDEO_DETAILS_URL = 'https://www.googleapis.com/youtube/v3/videos';
 
-  let currentQuery = "";
-  let nextPageToken = "";
-  let prevPageToken = "";
+let currentQuery = "";
+let nextPageToken = "";
+let prevPageToken = "";
 
-  function searchYouTube(query, pageToken = "") {
-    currentQuery = query; // update global query for pagination
+function searchYouTube(query, pageToken = "") {
+  currentQuery = query;
 
-    let url = `${SEARCH_URL}?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&maxResults=1&type=video`;
-    if (pageToken) {
-      url += `&pageToken=${pageToken}`;
-    }
-    
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        nextPageToken = data.nextPageToken || "";
-        prevPageToken = data.prevPageToken || "";
-
-        if (data.items && data.items.length > 0) {
-          const videoId = data.items[0].id.videoId;
-          getVideoDetails(videoId);
-        } else {
-          console.error("No video found for this query.");
-          document.getElementById('videoSlider').innerHTML = "<p>No video found.</p>";
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching YouTube data:', error);
-      });
-    }
-
-  function getVideoDetails(videoId) {
-    const url = `${VIDEO_DETAILS_URL}?part=snippet,statistics&id=${videoId}&key=${API_KEY}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.items && data.items.length > 0) {
-          displayResult(data.items[0]);
-          updateNavigationButtons();
-        } else {
-          console.error("No video details found for videoId:", videoId);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching video details:', error);
-      });
+  let url = `${SEARCH_URL}?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&maxResults=1&type=video&videoDuration=long`;
+  if (pageToken) {
+    url += `&pageToken=${pageToken}`;
   }
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      nextPageToken = data.nextPageToken || "";
+      prevPageToken = data.prevPageToken || "";
 
-  function displayResult(video) {
-    const title = video.snippet.title;
-    const videoId = video.id;
-    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    const description = video.snippet.description;
-    const views = video.statistics.viewCount;
-    const likes = video.statistics.likeCount;
-    const creator = video.snippet.channelTitle;
+      if (data.items && data.items.length > 0) {
+        const videoId = data.items[0].id.videoId;
+        getVideoDetails(videoId);
+      } else {
+        console.error("No video found for this query.");
+        document.getElementById('videoSlider').innerHTML = "<p>No video found.</p>";
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching YouTube data:', error);
+    });
+}
 
-    const resultHTML = `
-      <div class="video-result" style="min-width:300px; margin: 0 auto;">
-        <iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
-        <div class="video-details mt-2">
-          <h3><a href="${videoUrl}" target="_blank">${title}</a></h3>
-          <div class="video-info">
-            <p><strong>Creator:</strong> ${creator}</p>
-            <p><strong>Views:</strong> ${views}</p>
-            <p><strong>Likes:</strong> ${likes}</p>
-          </div>
-          <div class="description">
-            <p><strong>Description:</strong> ${description.slice(0, 150)}...</p>
-          </div>
-        </div>
+function getVideoDetails(videoId) {
+  const url = `${VIDEO_DETAILS_URL}?part=snippet,statistics,contentDetails&id=${videoId}&key=${API_KEY}`;
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.items && data.items.length > 0) {
+        displayResult(data.items[0]);
+        updateNavigationButtons();
+      } else {
+        console.error("No video details found for videoId:", videoId);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching video details:', error);
+    });
+}
+
+function displayResult(video) {
+  const videoSlider = document.getElementById('videoSlider');
+  const duration = formatDuration(video.contentDetails.duration);
+  
+  videoSlider.innerHTML = `
+    <div class="video-container">
+      <iframe
+        src="https://www.youtube.com/embed/${video.id}"
+        title="${video.snippet.title}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+      <div class="video-info mt-3">
+        <h5>${video.snippet.title}</h5>
+        <p class="text-muted">${video.snippet.channelTitle} • ${formatDate(video.snippet.publishedAt)} • ${duration}</p>
+        <p class="description">${video.snippet.description}</p>
       </div>
-    `;
-    document.getElementById('videoSlider').innerHTML = resultHTML;
-  }
+    </div>
+  `;
+}
 
-  function updateNavigationButtons() {
-    const nextBtn = document.getElementById('nextVideos');
-    const prevBtn = document.getElementById('prevVideos');
+function formatDuration(duration) {
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  const hours = (match[1] || '').replace('H', '');
+  const minutes = (match[2] || '').replace('M', '');
+  const seconds = (match[3] || '').replace('S', '');
+  
+  let result = '';
+  if (hours) result += `${hours}:`;
+  result += `${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
+  return result;
+}
 
-    nextBtn.style.display = nextPageToken ? "inline-block" : "none";
-    prevBtn.style.display = prevPageToken ? "inline-block" : "none";
-  }
-
-  document.getElementById('nextVideos').addEventListener('click', function() {
-    if (nextPageToken) {
-      searchYouTube(currentQuery, nextPageToken);
-    }
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
   });
+}
 
-  document.getElementById('prevVideos').addEventListener('click', function() {
-    if (prevPageToken) {
-      searchYouTube(currentQuery, prevPageToken);
-    }
-  });
+function updateNavigationButtons() {
+  const prevButton = document.getElementById('prevVideos');
+  const nextButton = document.getElementById('nextVideos');
+  
+  prevButton.style.display = prevPageToken ? 'inline-block' : 'none';
+  nextButton.style.display = nextPageToken ? 'inline-block' : 'none';
+}
+
+// Event listeners for navigation
+document.getElementById('prevVideos')?.addEventListener('click', () => {
+  if (prevPageToken) {
+    searchYouTube(currentQuery, prevPageToken);
+  }
+});
+
+document.getElementById('nextVideos')?.addEventListener('click', () => {
+  if (nextPageToken) {
+    searchYouTube(currentQuery, nextPageToken);
+  }
+});
