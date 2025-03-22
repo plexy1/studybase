@@ -596,6 +596,37 @@ body {
   transition: all var(--anim-normal);
 }
 
+/* Folder Colors */
+.folder-container[data-color="green"] {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: var(--success-color);
+}
+
+.folder-container[data-color="red"] {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--danger-color);
+}
+
+.folder-container[data-color="blue"] {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-color: var(--primary-color);
+}
+
+.folder-container[data-color="yellow"] {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: var(--warning-color);
+}
+
+.folder-container[data-color="white"] {
+  background-color: var(--card-bg-light);
+  border-color: var(--border-light);
+}
+
+[data-bs-theme="dark"] .folder-container[data-color="white"] {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+}
+
 .folder-container:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
@@ -722,54 +753,117 @@ body {
   display: block;
 }
 
+/* Folder View Header */
 .folder-view-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
-.folder-view-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-primary-light);
+.folder-view-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.folder-view-back {
+  background: none;
+  border: none;
+  color: var(--text-secondary-light);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--anim-normal);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
-[data-bs-theme="dark"] .folder-view-title {
-  color: var(--text-primary-dark);
-}
-
-.folder-view-close {
-  background: none;
-  border: none;
-  color: var(--text-secondary-light);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-md);
-  transition: all var(--anim-normal);
-}
-
-[data-bs-theme="dark"] .folder-view-close {
+[data-bs-theme="dark"] .folder-view-back {
   color: var(--text-secondary-dark);
 }
 
-.folder-view-close:hover {
+.folder-view-back:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: var(--primary-color);
 }
 
-[data-bs-theme="dark"] .folder-view-close:hover {
+[data-bs-theme="dark"] .folder-view-back:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.folder-view-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-lg);
+/* Folder Color Menu */
+.folder-color-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--card-bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  display: none;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+[data-bs-theme="dark"] .folder-color-menu {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.folder-color-menu.active {
+  display: block;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--anim-normal);
+  margin: var(--spacing-xs);
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: var(--text-primary-light);
+}
+
+[data-bs-theme="dark"] .color-option.selected {
+  border-color: var(--text-primary-dark);
+}
+
+.color-option[data-color="green"] {
+  background-color: var(--success-color);
+}
+
+.color-option[data-color="red"] {
+  background-color: var(--danger-color);
+}
+
+.color-option[data-color="blue"] {
+  background-color: var(--primary-color);
+}
+
+.color-option[data-color="yellow"] {
+  background-color: var(--warning-color);
+}
+
+.color-option[data-color="white"] {
+  background-color: var(--card-bg-light);
+  border: 2px solid var(--border-light);
+}
+
+[data-bs-theme="dark"] .color-option[data-color="white"] {
+  background-color: #1e293b;
+  border-color: #334155;
 }
 
 /* Update history tiles grid for folders */

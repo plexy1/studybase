@@ -58,9 +58,15 @@
     <!-- Folder View Container -->
     <div id="folderView" class="folder-view">
       <div class="folder-view-header">
-        <div class="folder-view-title">
-          <i class="fas fa-folder"></i>
-          <span id="folderViewTitle"></span>
+        <div class="folder-view-left">
+          <button class="folder-view-back">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </button>
+          <div class="folder-view-title">
+            <i class="fas fa-folder"></i>
+            <span id="folderViewTitle"></span>
+          </div>
         </div>
         <button class="folder-view-close">
           <i class="fas fa-times"></i>
@@ -84,10 +90,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="createFolderForm">
+            <form id="createFolderForm" onsubmit="return false;">
               <div class="mb-3">
                 <label for="folderName" class="form-label">Folder Name</label>
-                <input type="text" class="form-control" id="folderName" required>
+                <input type="text" class="form-control" id="folderName" required autocomplete="off">
               </div>
             </form>
           </div>
@@ -234,6 +240,7 @@
       const folderContainer = document.createElement('div');
       folderContainer.className = 'folder-container';
       folderContainer.dataset.folderId = folderId;
+      folderContainer.dataset.color = folderData.color || 'white';
 
       const folderHeader = document.createElement('div');
       folderHeader.className = 'folder-header';
@@ -245,6 +252,15 @@
       const folderActions = document.createElement('div');
       folderActions.className = 'folder-actions';
 
+      // Add color picker button
+      const colorPickerBtn = document.createElement('button');
+      colorPickerBtn.className = 'folder-btn';
+      colorPickerBtn.innerHTML = '<i class="fas fa-palette"></i>';
+      colorPickerBtn.onclick = (e) => {
+        e.stopPropagation();
+        toggleColorMenu(folderId, colorPickerBtn);
+      };
+
       const deleteFolderBtn = document.createElement('button');
       deleteFolderBtn.className = 'folder-btn';
       deleteFolderBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
@@ -253,9 +269,33 @@
         deleteFolder(folderId);
       };
 
+      folderActions.appendChild(colorPickerBtn);
       folderActions.appendChild(deleteFolderBtn);
       folderHeader.appendChild(folderTitle);
       folderHeader.appendChild(folderActions);
+
+      // Create color menu
+      const colorMenu = document.createElement('div');
+      colorMenu.className = 'folder-color-menu';
+      colorMenu.innerHTML = `
+        <div class="color-option" data-color="white"></div>
+        <div class="color-option" data-color="blue"></div>
+        <div class="color-option" data-color="green"></div>
+        <div class="color-option" data-color="yellow"></div>
+        <div class="color-option" data-color="red"></div>
+      `;
+
+      // Add click handlers for color options
+      colorMenu.querySelectorAll('.color-option').forEach(option => {
+        option.onclick = (e) => {
+          e.stopPropagation();
+          const color = option.dataset.color;
+          updateFolderColor(folderId, color);
+          colorMenu.classList.remove('active');
+        };
+      });
+
+      folderContainer.appendChild(colorMenu);
 
       const folderContent = document.createElement('div');
       folderContent.className = 'folder-content';
@@ -329,6 +369,7 @@
       const folderViewTitle = document.getElementById('folderViewTitle');
       const folderViewContent = document.getElementById('folderViewContent');
       const folderViewClose = folderView.querySelector('.folder-view-close');
+      const folderViewBack = folderView.querySelector('.folder-view-back');
 
       folderViewTitle.textContent = folderData.name;
       folderViewContent.innerHTML = '';
@@ -364,6 +405,11 @@
 
       // Close button handler
       folderViewClose.onclick = () => {
+        folderView.classList.remove('active');
+      };
+
+      // Back button handler
+      folderViewBack.onclick = () => {
         folderView.classList.remove('active');
       };
     }
@@ -424,6 +470,26 @@
       const folderName = folderNameInput.value.trim();
       if (folderName) {
         createFolder(folderName);
+      }
+    });
+
+    // Add form submit handler to prevent default submission
+    document.getElementById('createFolderForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const folderName = folderNameInput.value.trim();
+      if (folderName) {
+        createFolder(folderName);
+      }
+    });
+
+    // Add enter key handler for the input field
+    folderNameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const folderName = folderNameInput.value.trim();
+        if (folderName) {
+          createFolder(folderName);
+        }
       }
     });
 
@@ -669,6 +735,49 @@
       } catch (error) {
         console.error("Error fetching saved searches:", error);
         searchHistoryTiles.innerHTML = `<p class="error-message">Error loading search history.</p>`;
+      }
+    }
+
+    function toggleColorMenu(folderId, button) {
+      const folder = document.querySelector(`[data-folder-id="${folderId}"]`);
+      const colorMenu = folder.querySelector('.folder-color-menu');
+      const currentColor = folder.dataset.color;
+
+      // Update selected state
+      colorMenu.querySelectorAll('.color-option').forEach(option => {
+        option.classList.toggle('selected', option.dataset.color === currentColor);
+      });
+
+      // Toggle menu
+      colorMenu.classList.toggle('active');
+
+      // Close menu when clicking outside
+      const closeMenu = (e) => {
+        if (!colorMenu.contains(e.target) && e.target !== button) {
+          colorMenu.classList.remove('active');
+        }
+      };
+
+      if (colorMenu.classList.contains('active')) {
+        document.addEventListener('click', closeMenu);
+      } else {
+        document.removeEventListener('click', closeMenu);
+      }
+    }
+
+    async function updateFolderColor(folderId, color) {
+      if (!currentUser) return;
+
+      try {
+        await updateDoc(doc(db, 'folders', folderId), {
+          color: color
+        });
+        const folder = document.querySelector(`[data-folder-id="${folderId}"]`);
+        folder.dataset.color = color;
+        displayDeleteStatus("Folder color updated!", true);
+      } catch (error) {
+        console.error("Error updating folder color:", error);
+        displayDeleteStatus("Error updating folder color.", false);
       }
     }
   </script>
