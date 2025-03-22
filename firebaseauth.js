@@ -76,6 +76,14 @@ onAuthStateChanged(auth, async (user) => {
       if (userDoc.exists()) {
         const userData = userDoc.data();
         
+        // Update profile photo if available
+        if (userData.photoURL) {
+          const profileImages = document.querySelectorAll('img[alt="Profile"]');
+          profileImages.forEach(img => {
+            img.src = userData.photoURL;
+          });
+        }
+        
         const username = userData.username || "Not set";
         
         // Update UI elements if they exist
@@ -86,7 +94,6 @@ onAuthStateChanged(auth, async (user) => {
         const emailElement = document.getElementById("email");
         const profileEmailElement = document.getElementById("profileEmail");
         const lastLoginElement = document.getElementById("lastLogin");
-        const profileImageElement = document.getElementById("profileImage");
         const accountTab = document.getElementById("accountTab");
         
         if (accountNameElement) accountNameElement.textContent = username;
@@ -95,13 +102,6 @@ onAuthStateChanged(auth, async (user) => {
         if (emailElement) emailElement.textContent = user.email;
         if (profileEmailElement) profileEmailElement.textContent = user.email;
         
-        if (userData.photoURL && profileImageElement) {
-          profileImageElement.src = userData.photoURL;
-          document.querySelectorAll('img[alt="Profile"]').forEach(img => {
-            img.src = userData.photoURL;
-          });
-        }
-
         if (accountTab) {
           accountTab.textContent = username;
         }
@@ -302,49 +302,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const changePhotoForm = document.getElementById("changePhotoForm");
-    if (changePhotoForm) {
-      changePhotoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const fileInput = document.getElementById("newPhoto");
-        const file = fileInput.files[0];
-  
-        if (!file) {
-          console.error("No file selected");
-          return;
-        }
-  
-        try {
-          const user = auth.currentUser;
-          if (user) {
-            const storage = getStorage();
-            const storageRef = ref(storage, `profile_photos/user.jpg`);
-            await uploadBytes(storageRef, file);
-            const timestamp = new Date().getTime();
-            const photoURL = await getDownloadURL(storageRef);
-            const cacheBusterURL = `${photoURL}?t=${timestamp}`;
-            await updateUserProfile(user.uid, { photoURL: cacheBusterURL });
+  // Photo upload handler
+  const changePhotoForm = document.getElementById("changePhotoForm");
+  if (changePhotoForm) {
+    changePhotoForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("newPhoto");
+      const file = fileInput.files[0];
 
-            const profileImageElement = document.getElementById("profileImage");
-            if (profileImageElement) {
-              profileImageElement.src = cacheBusterURL;
-            }
-            document.querySelectorAll('img[alt="Profile"]').forEach(img => {
-              img.src = cacheBusterURL;
-            });
-  
-            const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
-            if (modal) modal.hide();
-          }
-        } 
-        
-        catch (error) {
-          console.error("Error updating profile photo:", error);
+      if (!file) {
+        alert("Please select a file first");
+        return;
+      }
+
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const storage = getStorage();
+          const storageRef = ref(storage, `profile_photos/${user.uid}`);
+          await uploadBytes(storageRef, file);
+          const photoURL = await getDownloadURL(storageRef);
+          
+          // Update user profile with new image URL
+          await updateUserProfile(user.uid, { photoURL: photoURL });
+
+          // Update all profile images on the page
+          const profileImages = document.querySelectorAll('img[alt="Profile"]');
+          profileImages.forEach(img => {
+            img.src = photoURL;
+          });
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+          if (modal) modal.hide();
+          changePhotoForm.reset();
         }
-      });
-    }
-  });
+      } catch (error) {
+        console.error("Error uploading profile photo:", error);
+        alert("Failed to upload photo. Please try again.");
+      }
+    });
+  }
   
   // Logout button
   const logoutButton = document.querySelector(".btn-danger");
