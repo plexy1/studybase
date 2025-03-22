@@ -427,12 +427,26 @@
         folderViewBack.classList.remove('drag-over');
       });
 
-      folderViewBack.addEventListener('drop', (e) => {
+      folderViewBack.addEventListener('drop', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         folderViewBack.classList.remove('drag-over');
+        
         if (draggedTile) {
-          moveTileToFolder(draggedTile.dataset.searchId, null);
+          // Immediately move the tile to the main history view
+          const searchId = draggedTile.dataset.searchId;
+          await moveTileToFolder(searchId, null);
+          
+          // Remove the tile from the folder view
+          draggedTile.remove();
+          
+          // Add the tile to the main history view
+          const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+          searchHistoryTiles.appendChild(draggedTile);
+          
+          // Hide the no history message if it's showing
+          const noHistoryMessage = document.getElementById('noHistoryMessage');
+          noHistoryMessage.style.display = 'none';
         }
       });
     }
@@ -533,8 +547,13 @@
         await updateDoc(doc(db, 'savedSearches', searchId), {
           folderId: folderId
         });
-        loadSavedSearches(currentUser);
-        loadFolders(currentUser);
+        
+        // Only reload if we're not handling the UI update manually
+        if (!draggedTile) {
+          loadSavedSearches(currentUser);
+          loadFolders(currentUser);
+        }
+        
         displayDeleteStatus(folderId ? "Item moved to folder successfully!" : "Item moved out of folder successfully!", true);
       } catch (error) {
         console.error("Error moving item:", error);
@@ -585,6 +604,8 @@
       tile.addEventListener('dragstart', (e) => {
         draggedTile = tile;
         tile.classList.add('dragging');
+        // Store the original parent to check if we're dragging from a folder
+        tile.dataset.originalParent = tile.parentElement.id;
       });
 
       tile.addEventListener('dragend', () => {
@@ -861,6 +882,42 @@
         displayDeleteStatus("Error updating folder color.", false);
       }
     }
+
+    // Add drag and drop handlers for the main history view
+    const mainHistoryTiles = document.getElementById('searchHistoryTiles');
+    
+    mainHistoryTiles.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      mainHistoryTiles.classList.add('drag-over');
+    });
+
+    mainHistoryTiles.addEventListener('dragleave', () => {
+      mainHistoryTiles.classList.remove('drag-over');
+    });
+
+    mainHistoryTiles.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      mainHistoryTiles.classList.remove('drag-over');
+      
+      if (draggedTile) {
+        const searchId = draggedTile.dataset.searchId;
+        await moveTileToFolder(searchId, null);
+        
+        // If the tile was dragged from a folder, remove it from there
+        if (draggedTile.dataset.originalParent === 'folderViewContent') {
+          draggedTile.remove();
+        }
+        
+        // Add the tile to the main history view
+        mainHistoryTiles.appendChild(draggedTile);
+        
+        // Hide the no history message if it's showing
+        const noHistoryMessage = document.getElementById('noHistoryMessage');
+        noHistoryMessage.style.display = 'none';
+      }
+    });
   </script>
 </body>
 
