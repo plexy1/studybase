@@ -1,4 +1,6 @@
 async function genTest(query, questionCount = 10, difficulty = 'medium', educationLevel = 'university12') {
+  console.log('Starting test generation with:', { query, questionCount, difficulty, educationLevel });
+  
   const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
   const count = parseInt(questionCount);
   const finalCount = isNaN(count) || count < 1 ? 1 : (count > 20 ? 20 : count);
@@ -36,16 +38,23 @@ async function genTest(query, questionCount = 10, difficulty = 'medium', educati
       difficultyLevel = 'intermediate level';
   }
 
-  const promptText = `Generate ${finalCount} multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question as follows:
+  const promptText = `Generate ${finalCount} multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question EXACTLY as follows:
 Question: [question text]
 A) [option A]
 B) [option B]
 C) [option C]
 D) [option D]
 Correct Answer: [letter of correct answer]
-Explanation: [brief explanation of why this is the correct answer]`;
+Explanation: [brief explanation of why this is the correct answer]
+
+Make sure each question follows this exact format with no additional text or formatting.`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
+  if (!geminiResultDiv) {
+    console.error('Could not find geminiResult div');
+    return;
+  }
+
   const loadingText = "Loading Test Questions...";
   let loadingHTML = '<div class="loading-container">';
   for (let i = 0; i < loadingText.length; i++) {
@@ -55,6 +64,8 @@ Explanation: [brief explanation of why this is the correct answer]`;
   geminiResultDiv.innerHTML = loadingHTML;
 
   try {
+    console.log('Sending request to API with prompt:', promptText);
+
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
@@ -67,25 +78,38 @@ Explanation: [brief explanation of why this is the correct answer]`;
       })
     });
 
+    console.log('API Response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
+      throw new Error(`API request failed: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
-    let questions = "No Questions Could Be Generated.";
+    console.log('API Response data:', data);
 
-    if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts) {
-      questions = data.candidates[0].content.parts.map(part => part.text).join('\n');
+    if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+      console.error('Invalid API response format:', data);
+      throw new Error('Invalid API response format');
+    }
+
+    const questions = data.candidates[0].content.parts[0].text;
+    console.log('Raw questions text:', questions);
+
+    if (!questions || questions.trim() === '') {
+      throw new Error('No questions were generated');
     }
 
     geminiResultDiv.innerHTML = formatTestQuestions(questions, difficulty, educationLevel);
 
   } catch (error) {
-    console.error('Gemini search error:', error);
+    console.error('Error generating test:', error);
     geminiResultDiv.innerHTML = `
       <div class="alert alert-danger">
         <h4>Error Generating Test Questions</h4>
         <p>${error.message}</p>
+        <p>Please try again or try a different topic.</p>
         <button class="btn btn-outline-secondary mt-3" onclick="resetStudyTools()">
           <i class="fas fa-arrow-left"></i> Back to Study Tools
         </button>
@@ -95,24 +119,37 @@ Explanation: [brief explanation of why this is the correct answer]`;
 }
 
 function formatTestQuestions(questionsText, difficulty, educationLevel) {
-  const questionBlocks = questionsText.split('\n\n').filter(block => block.trim());
+  console.log('Formatting questions from text:', questionsText);
+  
+  // Split text into individual questions
+  const questionBlocks = questionsText.split(/Question:/i).filter(block => block.trim());
+  console.log('Question blocks:', questionBlocks);
+  
   const formattedQuestions = [];
   
   for (const block of questionBlocks) {
     const lines = block.split('\n').filter(line => line.trim());
     if (lines.length >= 7) { // Question + 4 options + correct answer + explanation
-      const question = lines[0].replace('Question:', '').trim();
+      const question = lines[0].trim();
       const options = lines.slice(1, 5).map(line => line.trim());
       const correctAnswer = lines[5].replace('Correct Answer:', '').trim();
       const explanation = lines[6].replace('Explanation:', '').trim();
       
-      formattedQuestions.push({
-        question,
-        options,
-        correctAnswer,
-        explanation
-      });
+      if (question && options.length === 4 && correctAnswer && explanation) {
+        formattedQuestions.push({
+          question,
+          options,
+          correctAnswer,
+          explanation
+        });
+      }
     }
+  }
+  
+  console.log('Formatted questions:', formattedQuestions);
+  
+  if (formattedQuestions.length === 0) {
+    throw new Error('No valid questions could be parsed from the response');
   }
 
   // Start the timer when questions are formatted
