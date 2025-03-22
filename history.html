@@ -68,9 +68,6 @@
             <span id="folderViewTitle"></span>
           </div>
         </div>
-        <button class="folder-view-close">
-          <i class="fas fa-times"></i>
-        </button>
       </div>
       <div id="folderViewContent" class="folder-view-content">
         <!-- Folder contents will be loaded here -->
@@ -252,6 +249,17 @@
       const folderActions = document.createElement('div');
       folderActions.className = 'folder-actions';
 
+      // Add share button
+      const shareFolderBtn = document.createElement('button');
+      shareFolderBtn.className = 'folder-btn';
+      shareFolderBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
+      shareFolderBtn.title = 'Share Folder';
+      shareFolderBtn.onclick = (e) => {
+        e.stopPropagation();
+        // Share functionality will be implemented later
+        displayDeleteStatus("Share functionality coming soon!", true);
+      };
+
       // Add color picker button
       const colorPickerBtn = document.createElement('button');
       colorPickerBtn.className = 'folder-btn';
@@ -266,9 +274,10 @@
       deleteFolderBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
       deleteFolderBtn.onclick = (e) => {
         e.stopPropagation();
-        deleteFolder(folderId);
+        showDeleteFolderConfirmation(folderId);
       };
 
+      folderActions.appendChild(shareFolderBtn);
       folderActions.appendChild(colorPickerBtn);
       folderActions.appendChild(deleteFolderBtn);
       folderHeader.appendChild(folderTitle);
@@ -368,7 +377,6 @@
       const folderView = document.getElementById('folderView');
       const folderViewTitle = document.getElementById('folderViewTitle');
       const folderViewContent = document.getElementById('folderViewContent');
-      const folderViewClose = folderView.querySelector('.folder-view-close');
       const folderViewBack = folderView.querySelector('.folder-view-back');
 
       folderViewTitle.textContent = folderData.name;
@@ -403,15 +411,30 @@
         folderViewContent.innerHTML = `<p class="error-message">Error loading folder contents.</p>`;
       }
 
-      // Close button handler
-      folderViewClose.onclick = () => {
-        folderView.classList.remove('active');
-      };
-
       // Back button handler
       folderViewBack.onclick = () => {
         folderView.classList.remove('active');
       };
+
+      // Add drag and drop handlers for the back button
+      folderViewBack.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.add('drag-over');
+      });
+
+      folderViewBack.addEventListener('dragleave', () => {
+        folderViewBack.classList.remove('drag-over');
+      });
+
+      folderViewBack.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.remove('drag-over');
+        if (draggedTile) {
+          moveTileToFolder(draggedTile.dataset.searchId, null);
+        }
+      });
     }
 
     async function createFolder(name) {
@@ -432,13 +455,71 @@
       }
     }
 
+    function showDeleteFolderConfirmation(folderId) {
+      const modal = document.createElement('div');
+      modal.className = 'modal fade';
+      modal.id = 'deleteFolderModal';
+      modal.innerHTML = `
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Folder</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> Are You Sure? Deleting A Folder Also Deletes The Contents Inside!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Cancel</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteFolder">Yes, Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      const deleteModal = new bootstrap.Modal(modal);
+      deleteModal.show();
+
+      // Handle modal cleanup
+      modal.addEventListener('hidden.bs.modal', () => {
+        document.body.removeChild(modal);
+      });
+
+      // Handle delete confirmation
+      document.getElementById('confirmDeleteFolder').addEventListener('click', () => {
+        deleteFolder(folderId);
+        deleteModal.hide();
+      });
+    }
+
     async function deleteFolder(folderId) {
       if (!currentUser) return;
 
       try {
-        await deleteDoc(doc(db, 'folders', folderId));
+        // First, delete all items in the folder
+        const savedSearchesRef = collection(db, 'savedSearches');
+        const q = query(savedSearchesRef, 
+          where("userId", "==", currentUser.uid),
+          where("folderId", "==", folderId)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const batch = writeBatch(db);
+
+        // Add all folder items to the batch delete
+        querySnapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        // Add the folder itself to the batch delete
+        batch.delete(doc(db, 'folders', folderId));
+
+        // Commit the batch
+        await batch.commit();
+        
         loadFolders(currentUser);
-        displayDeleteStatus("Folder deleted successfully!", true);
+        displayDeleteStatus("Folder and its contents deleted successfully!", true);
       } catch (error) {
         console.error("Error deleting folder:", error);
         displayDeleteStatus("Error deleting folder.", false);
@@ -454,10 +535,10 @@
         });
         loadSavedSearches(currentUser);
         loadFolders(currentUser);
-        displayDeleteStatus("Item moved to folder successfully!", true);
+        displayDeleteStatus(folderId ? "Item moved to folder successfully!" : "Item moved out of folder successfully!", true);
       } catch (error) {
-        console.error("Error moving item to folder:", error);
-        displayDeleteStatus("Error moving item to folder.", false);
+        console.error("Error moving item:", error);
+        displayDeleteStatus("Error moving item.", false);
       }
     }
 
@@ -493,7 +574,7 @@
       }
     });
 
-    // Modify the createSearchTile function to add drag and drop
+    // Modify the createSearchTile function to handle drag and drop
     function createSearchTile(docId, searchData) {
       const tile = document.createElement('div');
       tile.className = 'history-tile';

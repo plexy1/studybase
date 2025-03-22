@@ -622,6 +622,26 @@ body {
   border-color: var(--border-light);
 }
 
+[data-bs-theme="dark"] .folder-container[data-color="green"] {
+  background-color: rgba(16, 185, 129, 0.15);
+  border-color: var(--success-color);
+}
+
+[data-bs-theme="dark"] .folder-container[data-color="red"] {
+  background-color: rgba(239, 68, 68, 0.15);
+  border-color: var(--danger-color);
+}
+
+[data-bs-theme="dark"] .folder-container[data-color="blue"] {
+  background-color: rgba(79, 70, 229, 0.15);
+  border-color: var(--primary-color);
+}
+
+[data-bs-theme="dark"] .folder-container[data-color="yellow"] {
+  background-color: rgba(245, 158, 11, 0.15);
+  border-color: var(--warning-color);
+}
+
 [data-bs-theme="dark"] .folder-container[data-color="white"] {
   background-color: rgba(30, 41, 59, 0.8);
   border-color: #334155;
@@ -768,6 +788,19 @@ body {
   gap: var(--spacing-md);
 }
 
+.folder-view-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary-light);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+[data-bs-theme="dark"] .folder-view-title {
+  color: var(--text-primary-dark);
+}
+
 .folder-view-back {
   background: none;
   border: none;
@@ -793,6 +826,40 @@ body {
 
 [data-bs-theme="dark"] .folder-view-back:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.folder-view-back.drag-over {
+  background-color: rgba(79, 70, 229, 0.1);
+  border: 2px dashed var(--primary-color);
+}
+
+[data-bs-theme="dark"] .folder-view-back.drag-over {
+  background-color: rgba(79, 70, 229, 0.2);
+}
+
+/* Folder View Content */
+.folder-view-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.folder-view-content .history-tile {
+  aspect-ratio: 1;
+}
+
+.folder-view-content .history-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-view-content .history-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Folder Color Menu */
