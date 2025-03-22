@@ -15,7 +15,7 @@ async function genTest(query, questionCount = 10, difficulty = 'medium', educati
       levelText = 'Year 3-4 University';
       break;
     case 'masters':
-      levelText = 'Masters/PhD';
+      levelText = 'Graduate Student';
       break;
     default:
       levelText = 'university level student';
@@ -82,7 +82,15 @@ Explanation: [brief explanation of why this is the correct answer]`;
 
   } catch (error) {
     console.error('Gemini search error:', error);
-    geminiResultDiv.innerHTML = '<p>Error Generating Test Questions.</p>';
+    geminiResultDiv.innerHTML = `
+      <div class="alert alert-danger">
+        <h4>Error Generating Test Questions</h4>
+        <p>${error.message}</p>
+        <button class="btn btn-outline-secondary mt-3" onclick="resetStudyTools()">
+          <i class="fas fa-arrow-left"></i> Back to Study Tools
+        </button>
+      </div>
+    `;
   }
 }
 
@@ -154,10 +162,14 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
   let formattedTest = `
   <div class="quiz-container">
     <div class="quiz-info mb-3">
-      <span class="badge bg-secondary">Level: ${levelDisplay}</span>
-      <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
-      <span class="badge bg-secondary ms-2">Questions: ${formattedQuestions.length}</span>
-    </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-secondary">Level: ${levelDisplay}</span>
+          <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
+          <span class="badge bg-secondary ms-2">Questions: ${formattedQuestions.length}</span>
+        </div>
+      </div>
+    </div>ac
     <form id="testForm" onsubmit="submitTest(event)">
       <div class="question-grid">`;
 
@@ -186,6 +198,9 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
       <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
           <i class="fas fa-check-circle me-2"></i>Submit Test
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="resetStudyTools()">
+          <i class="fas fa-arrow-left me-2"></i>Back To Study Page
         </button>
       </div>
     </form>
@@ -252,4 +267,7 @@ function submitTest(event) {
   // Disable the submit button
   const submitButton = form.querySelector('button[type="submit"]');
   submitButton.disabled = true;
-} 
+}
+
+// Expose the function to the global scope
+window.genTest = genTest;
