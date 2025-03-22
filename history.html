@@ -21,7 +21,7 @@
         <a href="quiz.html">Study</a>
         <a href="communities.html">Communities</a>
         <a href="courses.html">Courses</a>
-        <a href="history.html" class="active">History</a>
+        <a href="history.html" class="active">Library</a>
         <a href="account.html">Account</a>
       </div>
       <div class="nav-utils">
@@ -333,12 +333,35 @@
         folderContent.classList.remove('drag-over');
       });
 
-      folderContent.addEventListener('drop', (e) => {
+      folderContent.addEventListener('drop', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         folderContent.classList.remove('drag-over');
         if (draggedTile) {
-          moveTileToFolder(draggedTile.dataset.searchId, folderId);
+          const searchId = draggedTile.dataset.searchId;
+          await moveTileToFolder(searchId, folderId);
+          
+          // If the tile was dragged from the main history view, remove it from there
+          if (draggedTile.dataset.originalParent === 'searchHistoryTiles') {
+            draggedTile.remove();
+            
+            // Show the no history message if needed
+            if (searchHistoryTiles.children.length === 0) {
+              noHistoryMessage.style.display = 'flex';
+            }
+          }
+          
+          // Add the tile to the folder view
+          const folderViewContent = document.getElementById('folderViewContent');
+          if (folderViewContent) {
+            folderViewContent.appendChild(draggedTile);
+          }
+          
+          // Update the folder's topic list
+          const topicList = folderContainer.querySelector('.topic-list');
+          if (topicList) {
+            loadFolderTopics(folderId, topicList);
+          }
         }
       });
 
@@ -447,7 +470,7 @@
           const searchId = draggedTile.dataset.searchId;
           await moveTileToFolder(searchId, null);
           
-          // Remove the tile from the folder view
+          // Remove the tile from the folder view immediately
           draggedTile.remove();
           
           // Add the tile to the main history view
@@ -457,6 +480,12 @@
           // Hide the no history message if it's showing
           const noHistoryMessage = document.getElementById('noHistoryMessage');
           noHistoryMessage.style.display = 'none';
+
+          // Update the folder's topic list
+          const topicList = folderView.querySelector('.topic-list');
+          if (topicList) {
+            loadFolderTopics(folderId, topicList);
+          }
         }
       });
     }
@@ -1012,6 +1041,13 @@
         // If the tile was dragged from a folder, remove it from there
         if (draggedTile.dataset.originalParent === 'folderViewContent') {
           draggedTile.remove();
+          
+          // Update the folder's topic list
+          const folderView = document.getElementById('folderView');
+          const topicList = folderView.querySelector('.topic-list');
+          if (topicList) {
+            loadFolderTopics(folderId, topicList);
+          }
         }
         
         // Add the tile to the main history view
