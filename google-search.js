@@ -28,7 +28,7 @@ function searchGoogle(query) {
 function displayGoogleResults(items) {
   const container = document.getElementById('googleResults');
   if (!items || items.length === 0) {
-    container.innerHTML = '<p>No Google results found.</p>';
+    container.innerHTML = '<div class="text-center">No resources found.</div>';
     return;
   }
 
@@ -46,13 +46,25 @@ function displayGoogleResults(items) {
     }
     
     const div = document.createElement('div');
-    div.className = 'g-item';
+    div.className = 'google-item';
     div.onclick = () => window.open(item.link, '_blank');
     
-    div.innerHTML = `
+    // Create favicon element
+    const favicon = document.createElement('div');
+    favicon.className = 'resource-favicon';
+    favicon.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${hostname}&sz=32" alt="${hostname}">`;
+    
+    // Create content wrapper for title and description
+    const content = document.createElement('div');
+    content.className = 'resource-content';
+    content.innerHTML = `
       <h4>${hostname}</h4>
       <p>${description}</p>
     `;
+    
+    // Append elements to the div
+    div.appendChild(favicon);
+    div.appendChild(content);
     
     container.appendChild(div);
   });

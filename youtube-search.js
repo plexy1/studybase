@@ -53,6 +53,7 @@ function getVideoDetails(videoId) {
 function displayResult(video) {
   const videoSlider = document.getElementById('videoSlider');
   const duration = formatDuration(video.contentDetails.duration);
+  const viewCount = parseInt(video.statistics.viewCount).toLocaleString();
   
   videoSlider.innerHTML = `
     <div class="video-container">
@@ -62,10 +63,13 @@ function displayResult(video) {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       ></iframe>
-      <div class="video-info mt-3">
-        <h5>${video.snippet.title}</h5>
-        <p class="text-muted">${video.snippet.channelTitle} • ${formatDate(video.snippet.publishedAt)} • ${duration}</p>
-        <p class="description">${video.snippet.description}</p>
+      <div class="video-info mt-2">
+        <h6 class="video-title">${video.snippet.title}</h6>
+        <div class="video-meta">
+          <span class="channel-name">${video.snippet.channelTitle}</span> • 
+          <span class="video-views">${viewCount} views</span> • 
+          <span class="video-duration">${duration}</span>
+        </div>
       </div>
     </div>
   `;
