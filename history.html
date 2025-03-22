@@ -62,9 +62,12 @@
             <i class="fas fa-arrow-left"></i>
             Back
           </button>
-          <div class="folder-view-title">
-            <i class="fas fa-folder"></i>
-            <span id="folderViewTitle"></span>
+          <div class="folder-view-title-container">
+            <div class="folder-view-title">
+              <i class="fas fa-folder"></i>
+              <span id="folderViewTitle"></span>
+            </div>
+            <div id="folderViewDescription" class="folder-view-description"></div>
           </div>
         </div>
       </div>
@@ -90,6 +93,13 @@
               <div class="mb-3">
                 <label for="folderName" class="form-label">Folder Name</label>
                 <input type="text" class="form-control" id="folderName" required autocomplete="off">
+              </div>
+              <div class="mb-3">
+                <label for="folderDescription" class="form-label">Description (Optional)</label>
+                <textarea class="form-control" id="folderDescription" rows="2" maxlength="50" placeholder="Enter a brief description of this folder"></textarea>
+                <div class="form-text text-end">
+                  <span id="descriptionCharCount">0</span>/50 characters
+                </div>
               </div>
             </form>
           </div>
@@ -367,10 +377,17 @@
     async function openFolderView(folderId, folderData) {
       const folderView = document.getElementById('folderView');
       const folderViewTitle = document.getElementById('folderViewTitle');
+      const folderViewDescription = document.getElementById('folderViewDescription');
       const folderViewContent = document.getElementById('folderViewContent');
       const folderViewBack = folderView.querySelector('.folder-view-back');
 
       folderViewTitle.textContent = folderData.name;
+      if (folderData.description) {
+        folderViewDescription.textContent = folderData.description;
+        folderViewDescription.style.display = 'block';
+      } else {
+        folderViewDescription.style.display = 'none';
+      }
       folderViewContent.innerHTML = '';
       folderView.classList.add('active');
 
@@ -442,18 +459,21 @@
       });
     }
 
-    async function createFolder(name) {
+    async function createFolder(name, description) {
       if (!currentUser) return;
 
       try {
         await addDoc(collection(db, 'folders'), {
           name,
+          description: description || '',
           userId: currentUser.uid,
           createdAt: new Date()
         });
         loadFolders(currentUser);
         createFolderModal.hide();
         folderNameInput.value = '';
+        folderDescriptionInput.value = '';
+        document.getElementById('descriptionCharCount').textContent = '0';
       } catch (error) {
         console.error("Error creating folder:", error);
         displayDeleteStatus("Error creating folder.", false);
@@ -559,8 +579,9 @@
 
     createFolderSubmit.addEventListener('click', () => {
       const folderName = folderNameInput.value.trim();
+      const folderDescription = folderDescriptionInput.value.trim();
       if (folderName) {
-        createFolder(folderName);
+        createFolder(folderName, folderDescription);
       }
     });
 
@@ -568,8 +589,9 @@
     document.getElementById('createFolderForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const folderName = folderNameInput.value.trim();
+      const folderDescription = folderDescriptionInput.value.trim();
       if (folderName) {
-        createFolder(folderName);
+        createFolder(folderName, folderDescription);
       }
     });
 
@@ -578,10 +600,20 @@
       if (e.key === 'Enter') {
         e.preventDefault();
         const folderName = folderNameInput.value.trim();
+        const folderDescription = folderDescriptionInput.value.trim();
         if (folderName) {
-          createFolder(folderName);
+          createFolder(folderName, folderDescription);
         }
       }
+    });
+
+    // Add character counter for description
+    const folderDescriptionInput = document.getElementById('folderDescription');
+    const descriptionCharCount = document.getElementById('descriptionCharCount');
+
+    folderDescriptionInput.addEventListener('input', () => {
+      const count = folderDescriptionInput.value.length;
+      descriptionCharCount.textContent = count;
     });
 
     // Modify the createSearchTile function to handle drag and drop

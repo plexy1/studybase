@@ -915,3 +915,20 @@ body {
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
+
+.folder-view-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.folder-view-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary-light);
+  font-style: italic;
+  display: none;
+}
+
+[data-bs-theme="dark"] .folder-view-description {
+  color: var(--text-secondary-dark);
+}
