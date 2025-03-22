@@ -283,6 +283,7 @@ body {
   display: flex;
   justify-content: flex-end;
   margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 .action-btn {
@@ -295,6 +296,22 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: all var(--anim-normal);
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.action-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+[data-bs-theme="dark"] .action-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+[data-bs-theme="dark"] .action-btn:hover {
+  background-color: var(--primary-hover);
 }
 
 .danger-btn {
@@ -562,4 +579,151 @@ body {
   .footer {
     margin-bottom: var(--spacing-sm);
   }
+}
+
+/* Folder Styles */
+.folder-container {
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--border-light);
+}
+
+[data-bs-theme="dark"] .folder-container {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+}
+
+.folder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.folder-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary-light);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+[data-bs-theme="dark"] .folder-title {
+  color: var(--text-primary-dark);
+}
+
+.folder-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.folder-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary-light);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--anim-normal);
+}
+
+[data-bs-theme="dark"] .folder-btn {
+  color: var(--text-secondary-dark);
+}
+
+.folder-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-color);
+}
+
+[data-bs-theme="dark"] .folder-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.folder-content {
+  min-height: 100px;
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  transition: all var(--anim-normal);
+}
+
+[data-bs-theme="dark"] .folder-content {
+  border-color: #334155;
+}
+
+.folder-content.drag-over {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-color: var(--primary-color);
+}
+
+[data-bs-theme="dark"] .folder-content.drag-over {
+  background-color: rgba(79, 70, 229, 0.2);
+}
+
+/* Folder Creation Modal */
+.modal-content {
+  background-color: var(--card-bg-light);
+  color: var(--text-primary-light);
+  border: 1px solid var(--border-light);
+}
+
+[data-bs-theme="dark"] .modal-content {
+  background-color: #1e293b;
+  color: var(--text-primary-dark);
+  border-color: #334155;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-light);
+}
+
+[data-bs-theme="dark"] .modal-header {
+  border-color: #334155;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-light);
+}
+
+[data-bs-theme="dark"] .modal-footer {
+  border-color: #334155;
+}
+
+.form-control {
+  background-color: var(--card-bg-light);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary-light);
+}
+
+[data-bs-theme="dark"] .form-control {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: var(--text-primary-dark);
+}
+
+.form-control:focus {
+  background-color: var(--card-bg-light);
+  border-color: var(--primary-color);
+  color: var(--text-primary-light);
+  box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+}
+
+[data-bs-theme="dark"] .form-control:focus {
+  background-color: #1e293b;
+  color: var(--text-primary-dark);
+}
+
+/* Drag and Drop Styles */
+.history-tile.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.history-tile {
+  cursor: grab;
 }

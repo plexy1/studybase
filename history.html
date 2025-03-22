@@ -43,13 +43,44 @@
     </div>
 
     <div class="history-actions">
+      <button id="createFolderBtn" class="action-btn">
+        <i class="fas fa-folder-plus"></i> Create Folder
+      </button>
       <button id="deleteAllHistoryBtn" class="action-btn danger-btn">
         <i class="fas fa-trash-alt"></i> Delete All History
       </button>
     </div>
 
+    <div id="foldersContainer" class="folders-container">
+      <!-- Folders will be loaded here -->
+    </div>
+
     <div id="searchHistoryTiles" class="history-tiles">
       <!-- Search history tiles will be loaded here -->
+    </div>
+
+    <!-- Folder Creation Modal -->
+    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createFolderModalLabel">Create New Folder</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="createFolderForm">
+              <div class="mb-3">
+                <label for="folderName" class="form-label">Folder Name</label>
+                <input type="text" class="form-control" id="folderName" required>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="createFolderSubmit">Create Folder</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="noHistoryMessage" class="empty-state" style="display:none;">
@@ -108,7 +139,7 @@
     // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs, orderBy, deleteDoc, doc, getDocsFromCache, writeBatch } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, orderBy, deleteDoc, doc, getDocsFromCache, writeBatch, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     // Firebase configuration
     const firebaseConfig = {
@@ -130,59 +161,187 @@
     const noHistoryMessage = document.getElementById('noHistoryMessage');
     const deleteStatusMessage = document.getElementById('deleteStatusMessage');
     const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn');
+    const createFolderBtn = document.getElementById('createFolderBtn');
+    const createFolderModal = new bootstrap.Modal(document.getElementById('createFolderModal'));
+    const createFolderSubmit = document.getElementById('createFolderSubmit');
+    const folderNameInput = document.getElementById('folderName');
+    const foldersContainer = document.getElementById('foldersContainer');
+
+    let currentUser = null;
+    let draggedTile = null;
 
     onAuthStateChanged(auth, (user) => {
+      currentUser = user;
       if (user) {
-        // User is signed in, display their email
         userDisplay.textContent = `${user.email}`;
         userDisplay.classList.add('logged-in');
         userDisplay.classList.remove('demo-mode');
-        loadSavedSearches(user); // Load saved searches for logged-in user
-        deleteAllHistoryBtn.style.display = 'flex'; // Show delete all button for logged-in users
+        loadSavedSearches(user);
+        loadFolders(user);
+        deleteAllHistoryBtn.style.display = 'flex';
+        createFolderBtn.style.display = 'flex';
+        createFolderBtn.classList.add('action-btn');
       } else {
-        // User is signed out, display demonstration mode message
         userDisplay.textContent = "Testing/Demonstration Mode";
         userDisplay.classList.add('demo-mode');
         userDisplay.classList.remove('logged-in');
-        searchHistoryTiles.innerHTML = ''; // Clear any tiles if logged out
-        noHistoryMessage.style.display = 'flex'; // Show no history message
-        deleteAllHistoryBtn.style.display = 'none'; // Hide delete all button in demo mode
+        searchHistoryTiles.innerHTML = '';
+        foldersContainer.innerHTML = '';
+        noHistoryMessage.style.display = 'flex';
+        deleteAllHistoryBtn.style.display = 'none';
+        createFolderBtn.style.display = 'none';
       }
     });
 
-    async function loadSavedSearches(user) {
-      searchHistoryTiles.innerHTML = ''; // Clear existing tiles
-      noHistoryMessage.style.display = 'none'; // Hide no history message initially
+    // Folder Management Functions
+    async function loadFolders(user) {
+      if (!user) return;
 
-      if (!user) {
-        console.log("No user logged in to fetch history.");
-        noHistoryMessage.style.display = 'flex'; // Show no history message if no user
-        return;
-      }
-
-      const savedSearchesRef = collection(db, 'savedSearches');
-      const q = query(savedSearchesRef, where("userId", "==", user.uid), orderBy("timestamp", "desc")); //Order by timestamp, newest first
+      const foldersRef = collection(db, 'folders');
+      const q = query(foldersRef, where("userId", "==", user.uid));
 
       try {
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          noHistoryMessage.style.display = 'flex'; // Show message if no history found
-        } else {
-          querySnapshot.forEach((doc) => {
-            const searchData = doc.data();
-            const tile = createSearchTile(doc.id, searchData); // Pass doc.id to createSearchTile
-            searchHistoryTiles.appendChild(tile);
-          });
-        }
+        foldersContainer.innerHTML = '';
+        
+        querySnapshot.forEach((doc) => {
+          const folderData = doc.data();
+          const folderElement = createFolderElement(doc.id, folderData);
+          foldersContainer.appendChild(folderElement);
+        });
       } catch (error) {
-        console.error("Error fetching saved searches:", error);
-        searchHistoryTiles.innerHTML = `<p class="error-message">Error loading search history.</p>`; // Display error message in tiles area
+        console.error("Error loading folders:", error);
       }
     }
 
+    function createFolderElement(folderId, folderData) {
+      const folderContainer = document.createElement('div');
+      folderContainer.className = 'folder-container';
+      folderContainer.dataset.folderId = folderId;
+
+      const folderHeader = document.createElement('div');
+      folderHeader.className = 'folder-header';
+
+      const folderTitle = document.createElement('div');
+      folderTitle.className = 'folder-title';
+      folderTitle.innerHTML = `<i class="fas fa-folder"></i> ${folderData.name}`;
+
+      const folderActions = document.createElement('div');
+      folderActions.className = 'folder-actions';
+
+      const deleteFolderBtn = document.createElement('button');
+      deleteFolderBtn.className = 'folder-btn';
+      deleteFolderBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteFolderBtn.onclick = () => deleteFolder(folderId);
+
+      folderActions.appendChild(deleteFolderBtn);
+      folderHeader.appendChild(folderTitle);
+      folderHeader.appendChild(folderActions);
+
+      const folderContent = document.createElement('div');
+      folderContent.className = 'folder-content';
+      folderContent.dataset.folderId = folderId;
+
+      // Add drag and drop event listeners
+      folderContent.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        folderContent.classList.add('drag-over');
+      });
+
+      folderContent.addEventListener('dragleave', () => {
+        folderContent.classList.remove('drag-over');
+      });
+
+      folderContent.addEventListener('drop', (e) => {
+        e.preventDefault();
+        folderContent.classList.remove('drag-over');
+        if (draggedTile) {
+          moveTileToFolder(draggedTile.dataset.searchId, folderId);
+        }
+      });
+
+      folderContainer.appendChild(folderHeader);
+      folderContainer.appendChild(folderContent);
+
+      return folderContainer;
+    }
+
+    async function createFolder(name) {
+      if (!currentUser) return;
+
+      try {
+        await addDoc(collection(db, 'folders'), {
+          name,
+          userId: currentUser.uid,
+          createdAt: new Date()
+        });
+        loadFolders(currentUser);
+        createFolderModal.hide();
+        folderNameInput.value = '';
+      } catch (error) {
+        console.error("Error creating folder:", error);
+        displayDeleteStatus("Error creating folder.", false);
+      }
+    }
+
+    async function deleteFolder(folderId) {
+      if (!currentUser) return;
+
+      try {
+        await deleteDoc(doc(db, 'folders', folderId));
+        loadFolders(currentUser);
+        displayDeleteStatus("Folder deleted successfully!", true);
+      } catch (error) {
+        console.error("Error deleting folder:", error);
+        displayDeleteStatus("Error deleting folder.", false);
+      }
+    }
+
+    async function moveTileToFolder(searchId, folderId) {
+      if (!currentUser) return;
+
+      try {
+        await updateDoc(doc(db, 'savedSearches', searchId), {
+          folderId: folderId
+        });
+        loadSavedSearches(currentUser);
+        loadFolders(currentUser);
+        displayDeleteStatus("Item moved to folder successfully!", true);
+      } catch (error) {
+        console.error("Error moving item to folder:", error);
+        displayDeleteStatus("Error moving item to folder.", false);
+      }
+    }
+
+    // Event Listeners for Folder Creation
+    createFolderBtn.addEventListener('click', () => {
+      createFolderModal.show();
+    });
+
+    createFolderSubmit.addEventListener('click', () => {
+      const folderName = folderNameInput.value.trim();
+      if (folderName) {
+        createFolder(folderName);
+      }
+    });
+
+    // Modify the createSearchTile function to add drag and drop
     function createSearchTile(docId, searchData) {
       const tile = document.createElement('div');
       tile.className = 'history-tile';
+      tile.dataset.searchId = docId;
+      tile.draggable = true;
+
+      // Add drag and drop event listeners
+      tile.addEventListener('dragstart', (e) => {
+        draggedTile = tile;
+        tile.classList.add('dragging');
+      });
+
+      tile.addEventListener('dragend', () => {
+        tile.classList.remove('dragging');
+        draggedTile = null;
+      });
 
       // Create card container
       const card = document.createElement('div');
@@ -369,6 +528,41 @@
 
     // Event listener for the Delete All button
     deleteAllHistoryBtn.addEventListener('click', deleteAllSearches);
+
+    // Modify loadSavedSearches to handle folders
+    async function loadSavedSearches(user) {
+      searchHistoryTiles.innerHTML = '';
+      noHistoryMessage.style.display = 'none';
+
+      if (!user) {
+        console.log("No user logged in to fetch history.");
+        noHistoryMessage.style.display = 'flex';
+        return;
+      }
+
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef, 
+        where("userId", "==", user.uid), 
+        where("folderId", "==", null), // Only load items not in folders
+        orderBy("timestamp", "desc")
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          noHistoryMessage.style.display = 'flex';
+        } else {
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            const tile = createSearchTile(doc.id, searchData);
+            searchHistoryTiles.appendChild(tile);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching saved searches:", error);
+        searchHistoryTiles.innerHTML = `<p class="error-message">Error loading search history.</p>`;
+      }
+    }
   </script>
 </body>
 
