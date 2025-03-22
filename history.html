@@ -55,6 +55,22 @@
       <!-- Folders will be loaded here -->
     </div>
 
+    <!-- Folder View Container -->
+    <div id="folderView" class="folder-view">
+      <div class="folder-view-header">
+        <div class="folder-view-title">
+          <i class="fas fa-folder"></i>
+          <span id="folderViewTitle"></span>
+        </div>
+        <button class="folder-view-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="folderViewContent" class="folder-view-content">
+        <!-- Folder contents will be loaded here -->
+      </div>
+    </div>
+
     <div id="searchHistoryTiles" class="history-tiles">
       <!-- Search history tiles will be loaded here -->
     </div>
@@ -232,7 +248,10 @@
       const deleteFolderBtn = document.createElement('button');
       deleteFolderBtn.className = 'folder-btn';
       deleteFolderBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-      deleteFolderBtn.onclick = () => deleteFolder(folderId);
+      deleteFolderBtn.onclick = (e) => {
+        e.stopPropagation();
+        deleteFolder(folderId);
+      };
 
       folderActions.appendChild(deleteFolderBtn);
       folderHeader.appendChild(folderTitle);
@@ -240,11 +259,21 @@
 
       const folderContent = document.createElement('div');
       folderContent.className = 'folder-content';
-      folderContent.dataset.folderId = folderId;
+
+      // Create topic list
+      const topicList = document.createElement('div');
+      topicList.className = 'topic-list';
+      folderContent.appendChild(topicList);
+
+      // Add click handler to open folder view
+      folderContainer.addEventListener('click', () => {
+        openFolderView(folderId, folderData);
+      });
 
       // Add drag and drop event listeners
       folderContent.addEventListener('dragover', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         folderContent.classList.add('drag-over');
       });
 
@@ -254,6 +283,7 @@
 
       folderContent.addEventListener('drop', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         folderContent.classList.remove('drag-over');
         if (draggedTile) {
           moveTileToFolder(draggedTile.dataset.searchId, folderId);
@@ -263,7 +293,79 @@
       folderContainer.appendChild(folderHeader);
       folderContainer.appendChild(folderContent);
 
+      // Load topics for this folder
+      loadFolderTopics(folderId, topicList);
+
       return folderContainer;
+    }
+
+    async function loadFolderTopics(folderId, topicList) {
+      if (!currentUser) return;
+
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef, 
+        where("userId", "==", currentUser.uid),
+        where("folderId", "==", folderId)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        topicList.innerHTML = '';
+        
+        querySnapshot.forEach((doc) => {
+          const searchData = doc.data();
+          const topicItem = document.createElement('div');
+          topicItem.className = 'topic-item';
+          topicItem.textContent = searchData.query;
+          topicList.appendChild(topicItem);
+        });
+      } catch (error) {
+        console.error("Error loading folder topics:", error);
+      }
+    }
+
+    async function openFolderView(folderId, folderData) {
+      const folderView = document.getElementById('folderView');
+      const folderViewTitle = document.getElementById('folderViewTitle');
+      const folderViewContent = document.getElementById('folderViewContent');
+      const folderViewClose = folderView.querySelector('.folder-view-close');
+
+      folderViewTitle.textContent = folderData.name;
+      folderViewContent.innerHTML = '';
+      folderView.classList.add('active');
+
+      // Load folder contents
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef, 
+        where("userId", "==", currentUser.uid),
+        where("folderId", "==", folderId)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          folderViewContent.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-folder-open empty-icon"></i>
+              <p>No items in this folder</p>
+            </div>
+          `;
+        } else {
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            const tile = createSearchTile(doc.id, searchData);
+            folderViewContent.appendChild(tile);
+          });
+        }
+      } catch (error) {
+        console.error("Error loading folder contents:", error);
+        folderViewContent.innerHTML = `<p class="error-message">Error loading folder contents.</p>`;
+      }
+
+      // Close button handler
+      folderViewClose.onclick = () => {
+        folderView.classList.remove('active');
+      };
     }
 
     async function createFolder(name) {
