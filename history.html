@@ -192,6 +192,8 @@
     const createFolderModal = new bootstrap.Modal(document.getElementById('createFolderModal'));
     const createFolderSubmit = document.getElementById('createFolderSubmit');
     const foldersContainer = document.getElementById('foldersContainer');
+    const folderNameInput = document.getElementById('folderName');
+    const folderDescriptionInput = document.getElementById('folderDescription');
 
     let currentUser = null;
     let draggedTile = null;
@@ -608,7 +610,6 @@
     });
 
     // Add character counter for description
-    const folderDescriptionInput = document.getElementById('folderDescription');
     const descriptionCharCount = document.getElementById('descriptionCharCount');
 
     folderDescriptionInput.addEventListener('input', () => {
