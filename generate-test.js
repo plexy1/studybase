@@ -169,7 +169,7 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
           <span class="badge bg-secondary ms-2">Questions: ${formattedQuestions.length}</span>
         </div>
       </div>
-    </div>ac
+    </div>
     <form id="testForm" onsubmit="submitTest(event)">
       <div class="question-grid">`;
 
