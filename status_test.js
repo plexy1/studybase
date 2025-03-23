@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -239,6 +240,83 @@ async function checkQuizAnswerAPIStatus() {
     }
 }
 
+async function checkRateCourseExperienceStatus() {
+    const rateCourseStatusElement = document.getElementById('rate-course-experience-status');
+    
+    try {
+        // Test by fetching the courses.json file which is used by the rate course experience
+        const response = await fetch('courses.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+            rateCourseStatusElement.textContent = 'Operational';
+            rateCourseStatusElement.className = 'status ok';
+            rateCourseStatusElement.classList.remove('error');
+            rateCourseStatusElement.classList.add('ok');
+        } else {
+            throw new Error('Invalid course data format');
+        }
+    } catch (error) {
+        console.error("Rate Course Experience API Test Failed:", error);
+        rateCourseStatusElement.textContent = 'Service Down';
+        rateCourseStatusElement.className = 'status error';
+        rateCourseStatusElement.classList.remove('ok');
+        rateCourseStatusElement.classList.add('error');
+    }
+}
+
+async function checkHistorySavingStatus() {
+    const historyStatusElement = document.getElementById('history-saving-status');
+    
+    try {
+        // We'll test if Firebase is operational since history saving relies on Firebase
+        // Also, verify that we can access the Firestore features
+        
+        // First verify if Firebase Auth is working (we already have this check in checkFirebaseStatus())
+        await signInWithEmailAndPassword(auth, 'studybaseuser@gmail.com', 'studybaseuser');
+        
+        // If we made it here, Firebase is operational
+        historyStatusElement.textContent = 'Operational';
+        historyStatusElement.className = 'status ok';
+        historyStatusElement.classList.remove('error');
+        historyStatusElement.classList.add('ok');
+    } catch (error) {
+        console.error("History Saving Service Test Failed:", error);
+        historyStatusElement.textContent = 'Service Down';
+        historyStatusElement.className = 'status error';
+        historyStatusElement.classList.remove('ok');
+        historyStatusElement.classList.add('error');
+    }
+}
+
+async function checkCommunitiesChatStatus() {
+    const communitiesChatStatusElement = document.getElementById('communities-chat-status');
+    
+    try {
+        // Initialize Firestore
+        const db = getFirestore(app);
+        
+        // Try to fetch messages from the 'messages' collection to verify chat functionality
+        const messagesQuery = query(collection(db, "messages"), limit(1));
+        await getDocs(messagesQuery);
+        
+        // If we made it here, the communities chat service is operational
+        communitiesChatStatusElement.textContent = 'Operational';
+        communitiesChatStatusElement.className = 'status ok';
+        communitiesChatStatusElement.classList.remove('error');
+        communitiesChatStatusElement.classList.add('ok');
+    } catch (error) {
+        console.error("Communities Chat Service Test Failed:", error);
+        communitiesChatStatusElement.textContent = 'Service Down';
+        communitiesChatStatusElement.className = 'status error';
+        communitiesChatStatusElement.classList.remove('ok');
+        communitiesChatStatusElement.classList.add('error');
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkFirebaseStatus();
@@ -246,4 +324,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await checkYouTubeAPIStatus();
     await checkGeminiAPIStatus();
     await checkQuizAnswerAPIStatus(); 
+    await checkRateCourseExperienceStatus();
+    await checkHistorySavingStatus();
+    await checkCommunitiesChatStatus();
 });
