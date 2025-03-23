@@ -466,18 +466,25 @@
         folderViewBack.classList.remove('drag-over');
         
         if (draggedTile) {
-          // Immediately remove the tile from the folder view
-          draggedTile.remove();
-          
-          // Move the tile to the main history view
           const searchId = draggedTile.dataset.searchId;
+          
+          // First update the database
           await moveTileToFolder(searchId, null);
           
-          // Add the tile to the main history view
+          // Then handle UI updates
           const searchHistoryTiles = document.getElementById('searchHistoryTiles');
-          searchHistoryTiles.appendChild(draggedTile);
+          const clonedTile = draggedTile.cloneNode(true);
           
-          // Hide the no history message if it's showing
+          // Remove the original tile from folder view
+          draggedTile.remove();
+          
+          // Add the cloned tile to main history
+          searchHistoryTiles.appendChild(clonedTile);
+          
+          // Re-attach drag event listeners to the cloned tile
+          setupDragListeners(clonedTile);
+          
+          // Hide the no history message
           const noHistoryMessage = document.getElementById('noHistoryMessage');
           noHistoryMessage.style.display = 'none';
 
@@ -485,6 +492,17 @@
           const topicList = folderView.querySelector('.topic-list');
           if (topicList) {
             loadFolderTopics(folderId, topicList);
+          }
+          
+          // Close the folder view if it's empty
+          const folderViewContent = document.getElementById('folderViewContent');
+          if (folderViewContent.children.length === 0) {
+            folderViewContent.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-folder-open empty-icon"></i>
+                <p>No items in this folder</p>
+              </div>
+            `;
           }
         }
       });
@@ -653,18 +671,8 @@
       tile.dataset.searchId = docId;
       tile.draggable = true;
 
-      // Add drag and drop event listeners
-      tile.addEventListener('dragstart', (e) => {
-        draggedTile = tile;
-        tile.classList.add('dragging');
-        // Store the original parent to check if we're dragging from a folder
-        tile.dataset.originalParent = tile.parentElement.id;
-      });
-
-      tile.addEventListener('dragend', () => {
-        tile.classList.remove('dragging');
-        draggedTile = null;
-      });
+      // Use the new setupDragListeners function
+      setupDragListeners(tile);
 
       // Create card container
       const card = document.createElement('div');
@@ -1056,28 +1064,36 @@
       
       if (draggedTile) {
         const searchId = draggedTile.dataset.searchId;
+        
+        // First update the database
         await moveTileToFolder(searchId, null);
         
-        // If the tile was dragged from a folder, remove it from there
+        // Only add to main history if it came from a folder
         if (draggedTile.dataset.originalParent === 'folderViewContent') {
+          const clonedTile = draggedTile.cloneNode(true);
+          setupDragListeners(clonedTile);
+          mainHistoryTiles.appendChild(clonedTile);
           draggedTile.remove();
-          
-          // Update the folder's topic list
-          const folderView = document.getElementById('folderView');
-          const topicList = folderView.querySelector('.topic-list');
-          if (topicList) {
-            loadFolderTopics(folderId, topicList);
-          }
         }
         
-        // Add the tile to the main history view
-        mainHistoryTiles.appendChild(draggedTile);
-        
-        // Hide the no history message if it's showing
-        const noHistoryMessage = document.getElementById('noHistoryMessage');
+        // Hide the no history message
         noHistoryMessage.style.display = 'none';
       }
     });
+
+    // Add this new function to setup drag listeners
+    function setupDragListeners(tile) {
+      tile.addEventListener('dragstart', (e) => {
+        draggedTile = tile;
+        tile.classList.add('dragging');
+        tile.dataset.originalParent = tile.parentElement.id;
+      });
+
+      tile.addEventListener('dragend', () => {
+        tile.classList.remove('dragging');
+        draggedTile = null;
+      });
+    }
   </script>
 </body>
 
