@@ -466,12 +466,12 @@
         folderViewBack.classList.remove('drag-over');
         
         if (draggedTile) {
-          // Immediately move the tile to the main history view
+          // Immediately remove the tile from the folder view
+          draggedTile.remove();
+          
+          // Move the tile to the main history view
           const searchId = draggedTile.dataset.searchId;
           await moveTileToFolder(searchId, null);
-          
-          // Remove the tile from the folder view immediately
-          draggedTile.remove();
           
           // Add the tile to the main history view
           const searchHistoryTiles = document.getElementById('searchHistoryTiles');
@@ -946,6 +946,7 @@
       const savedSearchesRef = collection(db, 'savedSearches');
       const q = query(savedSearchesRef, 
         where("userId", "==", user.uid),
+        where("folderId", "==", null),  // Only get items that don't belong to any folder
         orderBy("timestamp", "desc")
       );
 
@@ -956,16 +957,9 @@
         } else {
           querySnapshot.forEach((doc) => {
             const searchData = doc.data();
-            // Only show items that don't belong to any folder
-            if (!searchData.folderId) {
-              const tile = createSearchTile(doc.id, searchData);
-              searchHistoryTiles.appendChild(tile);
-            }
+            const tile = createSearchTile(doc.id, searchData);
+            searchHistoryTiles.appendChild(tile);
           });
-          // If no items were added (all are in folders), show the empty message
-          if (searchHistoryTiles.children.length === 0) {
-            noHistoryMessage.style.display = 'flex';
-          }
         }
       } catch (error) {
         console.error("Error fetching saved searches:", error);
