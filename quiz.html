@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StudyBase - Study Tools</title>
+  <title>Study | studybase</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link href="generalUI.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
   <link href="quiz.css" rel="stylesheet" />
-  <link rel="stylesheet" href="dark-mode.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar">
     <div class="container">
       <a class="navbar-brand">studybase</a>
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="search-topic.html">Search</a></li>
-          <li class="nav-item"><a class="nav-link active" href="quiz.html">Study</a></li>
-          <li class="nav-item"><a class="nav-link" href="communities.html">Communities</a></li>
-          <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
-          <li class="nav-item"><a class="nav-link" href="history.html">Library</a></li>
-          <li class="nav-item"><a class="nav-link" href="account.html">Account</a></li>
-        </ul>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html" class="active">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html" >Library</a>
+        <a href="account.html">Account</a>
       </div>
-      <div class="form-check form-switch ms-auto">
-        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
-        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
       </div>
-      <img src="user.jpg" alt="Profile" class="profile-logo ms-5"/>
     </div>
   </nav>
 
@@ -82,9 +84,8 @@
     </div>
     
     <!-- Search bar -->
-    <div class="search-container mb-4">
+    <div class="search-container mb-5">
       <div class="search-input-wrapper w-100">
-        <i class="fas fa-search"></i>
         <input
           id="searchInput"
           type="text"
@@ -232,13 +233,6 @@
     
     <div id="studyContent" class="mt-3"></div>
   </div>
-
-  <footer class="footer bg-dark text-light py-3 mt-5">
-    <div class="container d-flex justify-content-between align-items-center">
-      <p class="mb-0">&copy; 2025 Group 7</p>
-      <div><a>AI Can Make Mistakes! Double Check All Answers</a></div>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="generate-quiz.js"></script>
@@ -444,31 +438,29 @@
     
     // Dark mode toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
+    const html = document.documentElement;
 
     function enableDarkMode() {
-      body.classList.add('dark-mode');
-      darkModeToggle.checked = true;
-      localStorage.setItem('darkMode', 'enabled');
+      html.setAttribute('data-bs-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
     }
 
     function disableDarkMode() {
-      body.classList.remove('dark-mode');
-      darkModeToggle.checked = false;
-      localStorage.setItem('darkMode', null);
+      html.setAttribute('data-bs-theme', 'light');
+      localStorage.setItem('theme', 'light');
     }
 
-    function toggleDarkMode() {
-      if (body.classList.contains('dark-mode')) {
+    darkModeToggle.addEventListener('click', () => {
+      if (html.getAttribute('data-bs-theme') === 'dark') {
         disableDarkMode();
       } else {
         enableDarkMode();
       }
-    }
+    });
 
-    darkModeToggle.addEventListener('change', toggleDarkMode);
-
-    if (localStorage.getItem('darkMode') === 'enabled') {
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
       enableDarkMode();
     } else {
       disableDarkMode();
