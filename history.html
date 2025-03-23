@@ -401,6 +401,7 @@
 
     async function openFolderView(folderId, folderData) {
       const folderView = document.getElementById('folderView');
+      folderView.dataset.folderId = folderId;
       const folderViewTitle = document.getElementById('folderViewTitle');
       const folderViewDescription = document.getElementById('folderViewDescription');
       const folderViewContent = document.getElementById('folderViewContent');
@@ -467,6 +468,7 @@
         
         if (draggedTile) {
           const searchId = draggedTile.dataset.searchId;
+          const currentFolderId = draggedTile.closest('.folder-view').dataset.folderId;
           
           // First update the database
           await moveTileToFolder(searchId, null);
@@ -488,21 +490,34 @@
           const noHistoryMessage = document.getElementById('noHistoryMessage');
           noHistoryMessage.style.display = 'none';
 
-          // Update the folder's topic list
-          const topicList = folderView.querySelector('.topic-list');
-          if (topicList) {
-            loadFolderTopics(folderId, topicList);
-          }
-          
-          // Close the folder view if it's empty
+          // Refresh the folder view
           const folderViewContent = document.getElementById('folderViewContent');
-          if (folderViewContent.children.length === 0) {
-            folderViewContent.innerHTML = `
-              <div class="empty-state">
-                <i class="fas fa-folder-open empty-icon"></i>
-                <p>No items in this folder</p>
-              </div>
-            `;
+          const savedSearchesRef = collection(db, 'savedSearches');
+          const q = query(savedSearchesRef, 
+            where("userId", "==", currentUser.uid),
+            where("folderId", "==", currentFolderId)
+          );
+
+          try {
+            const querySnapshot = await getDocs(q);
+            folderViewContent.innerHTML = '';
+            
+            if (querySnapshot.empty) {
+              folderViewContent.innerHTML = `
+                <div class="empty-state">
+                  <i class="fas fa-folder-open empty-icon"></i>
+                  <p>No items in this folder</p>
+                </div>
+              `;
+            } else {
+              querySnapshot.forEach((doc) => {
+                const searchData = doc.data();
+                const tile = createSearchTile(doc.id, searchData);
+                folderViewContent.appendChild(tile);
+              });
+            }
+          } catch (error) {
+            console.error("Error refreshing folder view:", error);
           }
         }
       });
