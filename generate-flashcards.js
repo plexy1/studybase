@@ -35,7 +35,7 @@ async function generateFlashcards(topic, cardCount = 10, educationLevel = 'unive
     const prompt = `Generate ${count} flashcards about "${topic}" suitable for ${level} students. 
     For each flashcard, provide:
     1. A clear, concise question or term on the front
-    2. A comprehensive answer or explanation on the back
+    2. A max of 2 sentences answer that matches the complexity of the flashcard
     
     Format each flashcard as:
     CARD #[number]
@@ -153,8 +153,46 @@ function displayFlashcards(flashcards) {
   }
   
   const html = `
+    <style>
+      .flashcard-container {
+        perspective: 1000px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .flashcard {
+        width: 100%;
+        height: 400px;
+        position: relative;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .flashcard.flipped {
+        transform: rotateY(180deg);
+      }
+      .flashcard-front, 
+      .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+      .flashcard-back {
+        transform: rotateY(180deg);
+        background-color: #f8f9fa;
+      }
+    </style>
     <div class="container">
-      <div class="flashcard-container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div class="flashcard-container">
         <div class="flashcard-controls mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <button class="btn btn-primary" id="prevCard" disabled>
@@ -167,49 +205,12 @@ function displayFlashcards(flashcards) {
           </div>
         </div>
 
-        <div class="card flashcard mb-4" style="
-          min-height: 300px;
-          cursor: pointer;
-          background-color: white;
-          border: 1px solid #dee2e6;
-          border-radius: 12px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          perspective: 1000px;
-          position: relative;
-          transform-style: preserve-3d;
-          transition: transform 0.6s;
-        ">
-          <div class="card-body flashcard-content" style="
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            text-align: center;
-          ">
-            <div class="flashcard-front" style="
-              width: 100%;
-              position: absolute;
-              backface-visibility: hidden;
-              transform: rotateY(0deg);
-              background-color: white;
-              padding: 2rem;
-              border-radius: 12px;
-            ">
-              <h4 class="mb-0" style="font-size: 1.5rem; color: #333;">${flashcards[0].front}</h4>
-            </div>
-            <div class="flashcard-back" style="
-              width: 100%;
-              position: absolute;
-              backface-visibility: hidden;
-              transform: rotateY(180deg);
-              background-color: #f8f9fa;
-              padding: 2rem;
-              border-radius: 12px;
-              display: none;
-            ">
-              <p class="mb-0" style="font-size: 1.25rem; color: #333;">${flashcards[0].back}</p>
-            </div>
+        <div class="flashcard">
+          <div class="flashcard-front">
+            <h4 class="mb-0" style="font-size: 1.5rem; color: #333;">${flashcards[0].front}</h4>
+          </div>
+          <div class="flashcard-back">
+            <p class="mb-0" style="font-size: 1.25rem; color: #333;">${flashcards[0].back}</p>
           </div>
         </div>
 
@@ -239,49 +240,36 @@ function displayFlashcards(flashcards) {
   const nextButton = resultDiv.querySelector('#nextCard');
   const cardCounter = resultDiv.querySelector('.card-counter');
   const progressBar = resultDiv.querySelector('.progress-bar');
-  const frontContent = resultDiv.querySelector('.flashcard-front');
-  const backContent = resultDiv.querySelector('.flashcard-back');
+  const frontContent = resultDiv.querySelector('.flashcard-front h4');
+  const backContent = resultDiv.querySelector('.flashcard-back p');
 
   if (!flashcard || !prevButton || !nextButton || !cardCounter || !progressBar || !frontContent || !backContent) {
-    console.error('Could not find required elements:', {
-      flashcard,
-      prevButton,
-      nextButton,
-      cardCounter,
-      progressBar,
-      frontContent,
-      backContent
-    });
+    console.error('Could not find required elements');
     return;
   }
 
   // Flip card on click
-  flashcard.addEventListener('click', () => {
+  flashcard.addEventListener('click', (e) => {
     console.log('Card clicked, flipping...');
-    if (!flashcard.classList.contains('flipped')) {
-      flashcard.style.transform = 'rotateY(180deg)';
-      frontContent.style.display = 'none';
-      backContent.style.display = 'block';
-      flashcard.classList.add('flipped');
-    } else {
-      flashcard.style.transform = 'rotateY(0deg)';
-      frontContent.style.display = 'block';
-      backContent.style.display = 'none';
-      flashcard.classList.remove('flipped');
-    }
+    flashcard.classList.toggle('flipped');
   });
 
   // Navigation functions
   function updateCard() {
     console.log('Updating card to index:', currentIndex);
-    flashcard.style.transform = 'rotateY(0deg)';
-    frontContent.style.display = 'block';
-    backContent.style.display = 'none';
+    
+    // Reset card to front side
     flashcard.classList.remove('flipped');
-    frontContent.querySelector('h4').textContent = flashcards[currentIndex].front;
-    backContent.querySelector('p').textContent = flashcards[currentIndex].back;
+    
+    // Update card content
+    frontContent.textContent = flashcards[currentIndex].front;
+    backContent.textContent = flashcards[currentIndex].back;
+    
+    // Update navigation and progress
     cardCounter.textContent = `Card ${currentIndex + 1} of ${flashcards.length}`;
     progressBar.style.width = `${((currentIndex + 1) / flashcards.length) * 100}%`;
+    
+    // Enable/disable navigation buttons
     prevButton.disabled = currentIndex === 0;
     nextButton.disabled = currentIndex === flashcards.length - 1;
   }
@@ -315,4 +303,4 @@ function displayFlashcards(flashcards) {
 }
 
 // Expose the function to the global scope
-window.generateFlashcards = generateFlashcards; 
+window.generateFlashcards = generateFlashcards;
