@@ -375,6 +375,18 @@
       stepsSelector.classList.add(`selected-${value}`);
     }
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const saveSearchBtn = document.getElementById('saveSearchBtn');
+
+  // Disable save button by default if input is empty
+  saveSearchBtn.disabled = !searchInput.value.trim();
+  
+  searchInput.addEventListener('input', () => {
+    saveSearchBtn.disabled = !searchInput.value.trim();
+  });
+});
 </script>
 </body>
 </html>
