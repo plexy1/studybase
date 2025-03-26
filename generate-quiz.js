@@ -1,7 +1,7 @@
 async function genQuiz(query, questionCount = 5, difficulty = 'medium', educationLevel = 'university12') {
   const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
   const count = parseInt(questionCount);
-  const finalCount = isNaN(count) || count < 1 ? 1 : (count > 8 ? 8 : count);
+  const finalCount = isNaN(count) || count < 1 ? 1 : (count > 20 ? 20 : count);
   
   let levelText = '';
   switch(educationLevel) {
@@ -231,7 +231,7 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
     <div class="quiz-info mb-3">
       <span class="badge bg-secondary">Level: ${levelDisplay}</span>
       <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
-      <span class="badge bg-secondary ms-2">Questions: ${Math.min(questions.length, 8)}</span>
+      <span class="badge bg-secondary ms-2">Questions: ${Math.min(questions.length, 20)}</span>
     </div>
     <div class="question-grid">`;
 

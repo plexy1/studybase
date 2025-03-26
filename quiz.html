@@ -240,109 +240,120 @@
   <script src="generate-test.js"></script>
   <script src="generate-flashcards.js"></script>
   <script>
-    let selectedStudyOption = '';
-    let selectedDifficulty = 'easy';
-    let quizTimer;
-    const studyOptionCards = document.querySelectorAll('.study-option-card');
-    const configContainer = document.getElementById('configurationContainer');
-    const itemCountRange = document.getElementById('itemCountRange');
-    const itemCountValue = document.getElementById('itemCountValue');
-    const itemCountLabel = document.getElementById('itemCountLabel');
-    const timeSettingsCard = document.getElementById('timeSettingsCard');
+  let selectedStudyOption = '';
+  let selectedDifficulty = 'easy';
+  let quizTimer;
+  const studyOptionCards = document.querySelectorAll('.study-option-card');
+  const configContainer = document.getElementById('configurationContainer');
+  const itemCountRange = document.getElementById('itemCountRange');
+  const itemCountValue = document.getElementById('itemCountValue');
+  const itemCountLabel = document.getElementById('itemCountLabel');
+  const timeSettingsCard = document.getElementById('timeSettingsCard');
+  const itemCountUnit = document.querySelector('.slider-unit');
+  const sliderProgress = itemCountRange.parentElement.querySelector('.slider-progress');
+
+  function updateSliderProgress() {
+    const progress = ((itemCountRange.value - itemCountRange.min) / (itemCountRange.max - itemCountRange.min)) * 100;
+    sliderProgress.style.width = `${progress}%`;
+  }
+
+  itemCountRange.addEventListener('input', function() {
+    itemCountValue.textContent = this.value;
+    updateSliderProgress();
     
-    // Update displayed count value when slider changes
-    itemCountRange.addEventListener('input', function() {
-      itemCountValue.textContent = this.value;
-      const progress = ((this.value - this.min) / (this.max - this.min)) * 100;
-      this.parentElement.querySelector('.slider-progress').style.width = `${progress}%`;
+    if (selectedStudyOption === 'flashcards') {
+      itemCountUnit.textContent = 'cards';
+    } 
+    
+    else {
+      itemCountUnit.textContent = 'questions';
+    }
+  });
+
+  const educationLevelItems = document.querySelectorAll('.option-selection-item');
+  let selectedEducationLevel = 'highSchool';
+
+  educationLevelItems.forEach(item => {
+    item.addEventListener('click', () => {
+      educationLevelItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      selectedEducationLevel = item.getAttribute('data-value');
     });
-    
-    // Initialize slider progress
-    const sliderProgress = itemCountRange.parentElement.querySelector('.slider-progress');
-    const initialProgress = ((itemCountRange.value - itemCountRange.min) / (itemCountRange.max - itemCountRange.min)) * 100;
-    sliderProgress.style.width = `${initialProgress}%`;
-    
-    // Education level selection
-    const educationLevelItems = document.querySelectorAll('.option-selection-item');
-    let selectedEducationLevel = 'highSchool';
-    
-    educationLevelItems.forEach(item => {
-      item.addEventListener('click', () => {
-        educationLevelItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        selectedEducationLevel = item.getAttribute('data-value');
-      });
+  });
+
+  const difficultyItems = document.querySelectorAll('.difficulty-selection-item');
+  difficultyItems.forEach(item => {
+    item.addEventListener('click', () => {
+      difficultyItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      selectedDifficulty = item.getAttribute('data-difficulty');
     });
-    
-    // Difficulty selection
-    const difficultyItems = document.querySelectorAll('.difficulty-selection-item');
-    
-    difficultyItems.forEach(item => {
-      item.addEventListener('click', () => {
-        difficultyItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        selectedDifficulty = item.getAttribute('data-difficulty');
-      });
-    });
-    
-    studyOptionCards.forEach(card => {
-      card.addEventListener('click', () => {
-        studyOptionCards.forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        selectedStudyOption = card.getAttribute('data-option');
-        const configTitle = document.getElementById('configTitle');
+  });
+
+  studyOptionCards.forEach(card => {
+    card.addEventListener('click', () => {
+      studyOptionCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedStudyOption = card.getAttribute('data-option');
+      const configTitle = document.getElementById('configTitle');
+      
+      // Hide configuration container first
+      configContainer.classList.remove('visible');
+      const optionGrid = configContainer.querySelector('.option-picker-grid');
+      const optionCards = configContainer.querySelectorAll('.option-picker-card');
+      optionGrid.classList.remove('visible');
+      optionCards.forEach(card => card.classList.remove('visible'));
+      
+      setTimeout(() => {
+        switch(selectedStudyOption) {
+          case 'questions':
+            configTitle.textContent = 'Configure Practice Questions';
+            itemCountLabel.textContent = 'Number of Questions';
+            itemCountRange.min = '1';
+            itemCountRange.max = '20';
+            itemCountRange.value = '10';
+            itemCountValue.textContent = '10';
+            itemCountUnit.textContent = 'questions';
+            timeSettingsCard.style.display = 'none';
+            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
+            break;
+          case 'flashcards':
+            configTitle.textContent = 'Configure Flashcards';
+            itemCountLabel.textContent = 'Number of Cards';
+            itemCountRange.min = '1';
+            itemCountRange.max = '20';
+            itemCountRange.value = '10';
+            itemCountValue.textContent = '10';
+            itemCountUnit.textContent = 'cards';
+            timeSettingsCard.style.display = 'none';
+            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'none';
+            break;
+          case 'quiz':
+            configTitle.textContent = 'Configure Timed Test';
+            itemCountLabel.textContent = 'Number of Questions';
+            itemCountRange.min = '1';
+            itemCountRange.max = '20';
+            itemCountRange.value = '10';
+            itemCountValue.textContent = '10';
+            itemCountUnit.textContent = 'questions';
+            timeSettingsCard.style.display = 'block';
+            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
+            break;
+        }
         
-        // Hide configuration container first
-        configContainer.classList.remove('visible');
-        const optionGrid = configContainer.querySelector('.option-picker-grid');
-        const optionCards = configContainer.querySelectorAll('.option-picker-card');
-        optionGrid.classList.remove('visible');
-        optionCards.forEach(card => card.classList.remove('visible'));
-        
+        // Show configuration container
+        updateSliderProgress();
+        configContainer.style.display = 'block';
         setTimeout(() => {
-          switch(selectedStudyOption) {
-            case 'questions':
-              configTitle.textContent = 'Configure Practice Questions';
-              itemCountLabel.textContent = 'Number of Questions';
-              itemCountRange.min = '1';
-              itemCountRange.max = '20';
-              itemCountRange.value = '10';
-              itemCountValue.textContent = '10';
-              timeSettingsCard.style.display = 'none';
-              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
-              break;
-            case 'flashcards':
-              configTitle.textContent = 'Configure Flashcards';
-              itemCountLabel.textContent = 'Number of Cards';
-              itemCountRange.min = '1';
-              itemCountRange.max = '20';
-              itemCountRange.value = '10';
-              itemCountValue.textContent = '10';
-              timeSettingsCard.style.display = 'none';
-              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'none';
-              break;
-            case 'quiz':
-              configTitle.textContent = 'Configure Timed Test';
-              itemCountLabel.textContent = 'Number of Questions';
-              itemCountRange.min = '1';
-              itemCountRange.max = '20';
-              itemCountRange.value = '10';
-              itemCountValue.textContent = '10';
-              timeSettingsCard.style.display = 'block';
-              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
-              break;
-          }
-          
-          // Show configuration container with transitions
-          configContainer.style.display = 'block';
-          setTimeout(() => {
-            configContainer.classList.add('visible');
-            optionGrid.classList.add('visible');
-            optionCards.forEach(card => card.classList.add('visible'));
-          }, 50);
-        }, 300);
-      });
+          configContainer.classList.add('visible');
+          optionGrid.classList.add('visible');
+          optionCards.forEach(card => card.classList.add('visible'));
+        }, 50);
+      }, 300);
     });
+  });
+
+  updateSliderProgress();
     
     // Generate button
     document.getElementById('generateBtn').addEventListener('click', () => {
