@@ -45,16 +45,6 @@
   --anim-slow: 0.5s;
 }
 
-html[data-bs-theme="dark"] {
-  --primary-color: #6366f1;
-  --primary-hover: #4f46e5;
-  --secondary-color: #1e293b;
-  --text-color: #e2e8f0;
-  --border-color: #334155;
-  --card-background: #1e293b;
-  --background-color: #0f172a;
-}
-
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-light);

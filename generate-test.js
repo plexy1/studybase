@@ -103,7 +103,9 @@ Make sure each question follows this exact format with no additional text or for
 
     geminiResultDiv.innerHTML = formatTestQuestions(questions, difficulty, educationLevel);
 
-  } catch (error) {
+  } 
+  
+  catch (error) {
     console.error('Error generating test:', error);
     geminiResultDiv.innerHTML = `
       <div class="alert alert-danger">

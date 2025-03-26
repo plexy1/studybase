@@ -550,7 +550,9 @@
       
       if (typeof window.genTest === 'function') {
         window.genTest(topic, count, difficulty, educationLevel);
-      } else {
+      } 
+      
+      else {
         studyContent.innerHTML = `
           <div class="alert alert-danger">
             <h4>Error</h4>
@@ -564,6 +566,7 @@
         `;
       }
     }
+
   </script>
 </body>
 </html>

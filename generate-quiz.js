@@ -74,10 +74,19 @@ async function genQuiz(query, questionCount = 5, difficulty = 'medium', educatio
 
     geminiResultDiv.innerHTML = formatQuestions(roadmap, difficulty, educationLevel);
 
-  } catch (error) {
-    console.error('Gemini search error:', error);
-    geminiResultDiv.innerHTML = '<p>Error Generating Questions.</p>';
-  }
+  }catch (error) {
+      console.error('Error generating test:', error);
+      geminiResultDiv.innerHTML = `
+        <div class="alert alert-danger">
+          <h4>Error Generating Test Questions</h4>
+          <p>${error.message}</p>
+          <p>Please try again or try a different topic.</p>
+          <button class="btn btn-outline-secondary mt-3" onclick="resetStudyTools()">
+            <i class="fas fa-arrow-left"></i> Back to Study Tools
+          </button>
+        </div>
+      `;
+    }
 }
 
 async function genAns(query, difficulty, educationLevel) {
@@ -258,6 +267,16 @@ function formatQuestions(roadmapText, difficulty, educationLevel) {
   }
 
   formattedRoadmap += '</div></div>';
+  formattedRoadmap += `
+    </div>
+    <div class="text-center mt-4">
+      <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="resetStudyTools()">
+        <i class="fas fa-arrow-left me-2"></i>Back To Study Page
+      </button>
+    </div>
+  </form>
+  </div>`;
+
   return formattedRoadmap;
 }
 
