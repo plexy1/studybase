@@ -401,7 +401,8 @@ async function submitTest(event) {
               Provide a detailed scoring:
               - First, MUST directly state the SPECIFIC numeric score out of 5. the score should be on IDEAS presented rather than grammar, length, or nitpickinhg. be generous even if every detail isnt stated.
               Next do the next points within 20-25 words MAX:                
-              - Highlight any missing or incorrect information.
+              - Highlight any missing or incorrect information. If you dont have any, say "none"
+              - If you dont have any, say "none"
                 - Provide constructive feedback on how to improve the answer
 
               IMPORTANT: Your response MUST include a clear "Score: X/5" at the beginning of the evaluation.`
