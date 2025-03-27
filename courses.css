@@ -262,6 +262,237 @@ html[data-bs-theme="dark"] .review-content {
   opacity: 0.7;
 }
 
+/* Professor Rating Styles */
+.professor-rating {
+  animation: fadeIn var(--anim-normal) ease-out;
+}
+
+.rating-header {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.rating-header h4 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary-light);
+}
+
+.rating-header .department {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.rating-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+}
+
+.rating-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.rating-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--anim-normal) ease;
+}
+
+.rating-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  max-width: 7rem;
+}
+
+.rating-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.num-ratings {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 0;
+}
+
+.rmp-link {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--anim-fast) ease;
+}
+
+.rmp-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Rating color classes */
+.rating-value.excellent {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.rating-value.good {
+  background-color: rgba(45, 212, 191, 0.15);
+  color: #0d9488;
+}
+
+.rating-value.average {
+  background-color: rgba(250, 204, 21, 0.15);
+  color: #ca8a04;
+}
+
+.rating-value.poor {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+
+.rating-value.hard {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+
+.rating-value.medium {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: #ea580c;
+}
+
+.rating-value.easy {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.rating-value.very-easy {
+  background-color: rgba(45, 212, 191, 0.15);
+  color: #0d9488;
+}
+
+/* Loading state */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.loading-state .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Error state */
+.error-state, .not-found-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.error-state i, .not-found-state i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.not-found-state small {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* Dark mode adjustments for RMP styles */
+html[data-bs-theme="dark"] .rating-header h4 {
+  color: var(--text-primary-dark);
+}
+
+html[data-bs-theme="dark"] .rating-header .department,
+html[data-bs-theme="dark"] .rating-label,
+html[data-bs-theme="dark"] .num-ratings {
+  color: #94a3b8;
+}
+
+html[data-bs-theme="dark"] .rating-footer {
+  border-color: #334155;
+}
+
+html[data-bs-theme="dark"] .rmp-link {
+  color: #818cf8;
+}
+
+html[data-bs-theme="dark"] .rmp-link:hover {
+  color: #a5b4fc;
+}
+
+html[data-bs-theme="dark"] .rating-value.excellent {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+html[data-bs-theme="dark"] .rating-value.good {
+  background-color: rgba(45, 212, 191, 0.2);
+  color: #5eead4;
+}
+
+html[data-bs-theme="dark"] .rating-value.average {
+  background-color: rgba(250, 204, 21, 0.2);
+  color: #facc15;
+}
+
+html[data-bs-theme="dark"] .rating-value.poor {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+html[data-bs-theme="dark"] .rating-value.hard {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+html[data-bs-theme="dark"] .rating-value.medium {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+}
+
+html[data-bs-theme="dark"] .rating-value.easy {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+html[data-bs-theme="dark"] .rating-value.very-easy {
+  background-color: rgba(45, 212, 191, 0.2);
+  color: #5eead4;
+}
+
+html[data-bs-theme="dark"] .loading-state,
+html[data-bs-theme="dark"] .error-state,
+html[data-bs-theme="dark"] .not-found-state {
+  color: #94a3b8;
+}
+
 /* Action buttons */
 .action-container {
   display: flex;
