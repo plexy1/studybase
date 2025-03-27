@@ -1,12 +1,13 @@
-async function genTest(query, questionCount = 10, difficulty = 'medium', educationLevel = 'university12') {
-  console.log('Starting test generation with:', { query, questionCount, difficulty, educationLevel });
-  
+async function genTest(query, difficulty = 'medium', educationLevel = 'university12', shortAnswerCount = 5, multipleChoiceCount = 5) {
   const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
-  const count = parseInt(questionCount);
-  const finalCount = isNaN(count) || count < 1 ? 1 : (count > 20 ? 20 : count);
-  
+
+  const mcCount = parseInt(multipleChoiceCount);
+  const SACount = parseInt(shortAnswerCount);
+  const finalmCCount = isNaN(mcCount) || mcCount < 1 ? 1 : (mcCount > 20 ? 20 : mcCount);
+  const finalSACount = isNaN(SACount) || SACount < 1 ? 1 : (SACount > 20 ? 20 : SACount);
+
   let levelText = '';
-  switch(educationLevel) {
+  switch (educationLevel) {
     case 'highSchool':
       levelText = 'High School';
       break;
@@ -22,9 +23,9 @@ async function genTest(query, questionCount = 10, difficulty = 'medium', educati
     default:
       levelText = 'university level student';
   }
-  
+
   let difficultyLevel = '';
-  switch(difficulty) {
+  switch (difficulty) {
     case 'easy':
       difficultyLevel = 'basic, introductory level';
       break;
@@ -38,7 +39,7 @@ async function genTest(query, questionCount = 10, difficulty = 'medium', educati
       difficultyLevel = 'intermediate level';
   }
 
-  const promptText = `Generate ${finalCount} multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question EXACTLY as follows:
+  const promptMCText = `Generate ${finalmCCount} multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question EXACTLY as follows:
 Question: [question text]
 A) [option A]
 B) [option B]
@@ -48,6 +49,28 @@ Correct Answer: [letter of correct answer]
 Explanation: [brief explanation of why this is the correct answer]
 
 Make sure each question follows this exact format with no additional text or formatting.`;
+
+  const promptSAText = `Generate ${finalSACount} short answer questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. These questions can be of two types:
+
+1. Open-Ended Analytical Questions: Requiring a detailed, thoughtful response of 3-5 sentences that demonstrates comprehensive understanding.
+
+2. Problem-Solving Questions: These can include mathematical word problems, coding challenges, or scenario-based problems with specific solution strategies (more preferred).
+
+For EACH question, provide:
+- A clear, engaging question text
+- 5 key scoring points that represent:
+  - For analytical questions: Critical insights, nuanced understanding, or comprehensive analysis
+  - For problem-solving questions: Specific solution steps, key mathematical/logical approaches, or essential components of the solution
+
+Format EXACTLY as follows:
+Question: [question text]
+Expected Answer: [a quick 2-3 secntence answer that explains the question or the answer to a problem]
+
+IMPORTANT: 
+- For Problem-Solving questions, the key points should represent the EXACT steps or components needed to fully solve the problem
+- For Analytical questions, focus on depth of insight and comprehensive understanding
+- Ensure the scoring points are specific, measurable, and directly related to the question's core content.
+- DO NOT ADD ANY BOLDS OR ANYTHING ELSE!`;
 
   const geminiResultDiv = document.getElementById('geminiResult');
   if (!geminiResultDiv) {
@@ -69,48 +92,54 @@ Make sure each question follows this exact format with no additional text or for
   geminiResultDiv.innerHTML = loadingHTML;
 
   try {
-    console.log('Sending request to API with prompt:', promptText);
-
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const mcResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         contents: [{
-          parts: [{ text: promptText }]
+          parts: [{
+            text: promptMCText
+          }]
         }]
       })
     });
 
-    console.log('API Response status:', response.status);
+    // Generate Short Answer Questions
+    const saResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: promptSAText
+          }]
+        }]
+      })
+    });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('API Error Response:', errorText);
-      throw new Error(`API request failed: ${response.status} - ${errorText}`);
+    if (!mcResponse.ok || !saResponse.ok) {
+      const mcErrorText = await mcResponse.text();
+      const saErrorText = await saResponse.text();
+      console.error('API Error Response:', {
+        mcErrorText,
+        saErrorText
+      });
+      throw new Error(`API request failed`);
     }
 
-    const data = await response.json();
-    console.log('API Response data:', data);
+    const mcData = await mcResponse.json();
+    const saData = await saResponse.json();
 
-    if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-      console.error('Invalid API response format:', data);
-      throw new Error('Invalid API response format');
-    }
+    const multipleChoiceQuestions = mcData.candidates[0].content.parts[0].text;
+    const shortAnswerQuestions = saData.candidates[0].content.parts[0].text;
 
-    const questions = data.candidates[0].content.parts[0].text;
-    console.log('Raw questions text:', questions);
+    geminiResultDiv.innerHTML = formatTestQuestions(multipleChoiceQuestions, shortAnswerQuestions, difficulty, educationLevel);
 
-    if (!questions || questions.trim() === '') {
-      throw new Error('No questions were generated');
-    }
-
-    geminiResultDiv.innerHTML = formatTestQuestions(questions, difficulty, educationLevel);
-
-  } 
-  
-  catch (error) {
+  } catch (error) {
     console.error('Error generating test:', error);
     geminiResultDiv.innerHTML = `
       <div class="alert alert-danger">
@@ -125,25 +154,21 @@ Make sure each question follows this exact format with no additional text or for
   }
 }
 
-function formatTestQuestions(questionsText, difficulty, educationLevel) {
-  console.log('Formatting questions from text:', questionsText);
-  
-  // Split text into individual questions
-  const questionBlocks = questionsText.split(/Question:/i).filter(block => block.trim());
-  console.log('Question blocks:', questionBlocks);
-  
-  const formattedQuestions = [];
-  
-  for (const block of questionBlocks) {
+function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, educationLevel) {
+  const mcQuestionBlocks = multipleChoiceText.split(/Question:/i).filter(block => block.trim());
+  const formattedMCQuestions = [];
+
+  for (const block of mcQuestionBlocks) {
     const lines = block.split('\n').filter(line => line.trim());
-    if (lines.length >= 7) { // Question + 4 options + correct answer + explanation
+    if (lines.length >= 7) {
       const question = lines[0].trim();
       const options = lines.slice(1, 5).map(line => line.trim());
       const correctAnswer = lines[5].replace('Correct Answer:', '').trim();
       const explanation = lines[6].replace('Explanation:', '').trim();
-      
+
       if (question && options.length === 4 && correctAnswer && explanation) {
-        formattedQuestions.push({
+        formattedMCQuestions.push({
+          type: 'mc',
           question,
           options,
           correctAnswer,
@@ -152,10 +177,28 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
       }
     }
   }
-  
-  console.log('Formatted questions:', formattedQuestions);
-  
-  if (formattedQuestions.length === 0) {
+
+  // Parse Short Answer Questions
+  const saQuestionBlocks = shortAnswerText.split(/Question:/i).filter(block => block.trim());
+  const formattedSAQuestions = [];
+
+  for (const block of saQuestionBlocks) {
+    const lines = block.split('\n').filter(line => line.trim());
+    if (lines.length >= 2) {
+      const question = lines[0].trim();
+      const keyPoints = lines[1].replace('Expected Answer Key Points:', '').trim().split('•').filter(point => point.trim());
+
+      if (question && keyPoints.length > 0) {
+        formattedSAQuestions.push({
+          type: 'sa',
+          question,
+          keyPoints
+        });
+      }
+    }
+  }
+
+  if (formattedMCQuestions.length === 0 && formattedSAQuestions.length === 0) {
     throw new Error('No valid questions could be parsed from the response');
   }
 
@@ -165,7 +208,7 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
   }
 
   let levelDisplay = '';
-  switch(educationLevel) {
+  switch (educationLevel) {
     case 'highSchool':
       levelDisplay = 'High School';
       break;
@@ -184,8 +227,8 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
 
   let difficultyClass = '';
   let difficultyText = '';
-  
-  switch(difficulty) {
+
+  switch (difficulty) {
     case 'easy':
       difficultyClass = 'text-success';
       difficultyText = 'Easy';
@@ -210,30 +253,45 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
         <div>
           <span class="badge bg-secondary">Level: ${levelDisplay}</span>
           <span class="badge bg-secondary ms-2">Difficulty: <span class="${difficultyClass}">${difficultyText}</span></span>
-          <span class="badge bg-secondary ms-2">Questions: ${formattedQuestions.length}</span>
+          <span class="badge bg-secondary ms-2">Multiple Choice: ${formattedMCQuestions.length}</span>
+          <span class="badge bg-secondary ms-2">Short Answer: ${formattedSAQuestions.length}</span>
         </div>
       </div>
     </div>
     <form id="testForm" onsubmit="submitTest(event)">
       <div class="question-grid">`;
 
-  formattedQuestions.forEach((q, index) => {
+  // Add Multiple Choice Questions
+  formattedMCQuestions.forEach((q, index) => {
     formattedTest += `
-      <div class="question-box">
-        <b>QUESTION ${index + 1}</b><br><br>
+      <div class="question-box multiple-choice">
+        <b>MULTIPLE CHOICE QUESTION ${index + 1}</b><br><br>
         ${q.question}<br><br>
         <div class="options-container">
           ${q.options.map((option, optIndex) => `
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="q${index}" id="q${index}opt${optIndex}" value="${String.fromCharCode(65 + optIndex)}">
-              <label class="form-check-label" for="q${index}opt${optIndex}">
+              <input class="form-check-input" type="radio" name="mcq${index}" id="mcq${index}opt${optIndex}" value="${String.fromCharCode(65 + optIndex)}">
+              <label class="form-check-label" for="mcq${index}opt${optIndex}">
                 ${option}
               </label>
             </div>
           `).join('')}
         </div>
-        <input type="hidden" name="correct${index}" value="${q.correctAnswer}">
-        <input type="hidden" name="explanation${index}" value="${q.explanation}">
+        <input type="hidden" name="mcCorrect${index}" value="${q.correctAnswer}">
+        <input type="hidden" name="mcExplanation${index}" value="${q.explanation}">
+      </div>`;
+  });
+
+  // Add Short Answer Questions
+  formattedSAQuestions.forEach((q, index) => {
+    formattedTest += `
+      <div class="question-box short-answer">
+        <b>SHORT ANSWER QUESTION ${index + 1}</b><br><br>
+        ${q.question}<br><br>
+        <div class="short-answer-container">
+          <textarea class="form-control" name="saq${index}" rows="5" placeholder="Type your answer here..."></textarea>
+        </div>
+        <input type="hidden" name="saKeyPoints${index}" value="${q.keyPoints.join('|')}">
       </div>`;
   });
 
@@ -253,19 +311,21 @@ function formatTestQuestions(questionsText, difficulty, educationLevel) {
   return formattedTest;
 }
 
-function submitTest(event) {
+async function submitTest(event) {
   event.preventDefault();
   const form = event.target;
-  const questions = form.querySelectorAll('.question-box');
-  let score = 0;
-  let totalQuestions = questions.length;
+  const mcQuestions = form.querySelectorAll('.multiple-choice');
+  const saQuestions = form.querySelectorAll('.short-answer');
+  let mcScore = 0;
+  let totalMCQuestions = mcQuestions.length;
+  let totalScore = 0;
 
-  questions.forEach((qBox, index) => {
-    const selectedAnswer = form.querySelector(`input[name="q${index}"]:checked`);
-    const correctAnswer = form.querySelector(`input[name="correct${index}"]`).value;
-    const explanation = form.querySelector(`input[name="explanation${index}"]`).value;
-    
-    // Create or get the feedback container
+  // Multiple Choice Question Scoring (remains the same)
+  mcQuestions.forEach((qBox, index) => {
+    const selectedAnswer = form.querySelector(`input[name="mcq${index}"]:checked`);
+    const correctAnswer = form.querySelector(`input[name="mcCorrect${index}"]`).value;
+    const explanation = form.querySelector(`input[name="mcExplanation${index}"]`).value;
+
     let feedbackContainer = qBox.querySelector('.feedback-container');
     if (!feedbackContainer) {
       feedbackContainer = document.createElement('div');
@@ -274,14 +334,16 @@ function submitTest(event) {
     }
 
     if (selectedAnswer && selectedAnswer.value === correctAnswer) {
-      score++;
+      mcScore++;
+      totalScore++;
       qBox.classList.add('correct');
       feedbackContainer.innerHTML = `
         <div class="alert alert-success">
           <strong>Correct!</strong>
           <p class="mb-0 mt-2">${explanation}</p>
         </div>`;
-    } else {
+    } 
+    else {
       qBox.classList.add('incorrect');
       const selectedOption = selectedAnswer ? selectedAnswer.value : 'Not answered';
       feedbackContainer.innerHTML = `
@@ -293,25 +355,161 @@ function submitTest(event) {
         </div>`;
     }
 
-    // Disable all radio buttons for this question
     qBox.querySelectorAll('input[type="radio"]').forEach(radio => {
       radio.disabled = true;
     });
   });
 
-  const percentage = (score / totalQuestions) * 100;
+  // Enhanced Short Answer Scoring
+  const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
+
+  for (const [index, qBox] of saQuestions.entries()) {
+    const studentAnswer = form.querySelector(`textarea[name="saq${index}"]`).value;
+    const keyPointsStr = form.querySelector(`input[name="saKeyPoints${index}"]`).value;
+    const keyPoints = keyPointsStr.split('|');
+
+    let feedbackContainer = qBox.querySelector('.feedback-container');
+    if (!feedbackContainer) {
+      feedbackContainer = document.createElement('div');
+      feedbackContainer.className = 'feedback-container mt-3';
+      qBox.appendChild(feedbackContainer);
+    }
+
+    // If no answer is provided
+    if (studentAnswer.trim() === '') {
+      feedbackContainer.innerHTML = `
+        <div class="alert alert-warning">
+          <strong>No answer provided</strong>
+          <p class="mb-0 mt-2">Score: 0/5</p>
+        </div>`;
+      continue;
+    }
+
+    // Use Gemini API to compare and score the answer
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Evaluate the student's short answer based on these criteria:
+              - Student's answer: ${studentAnswer}
+
+              Provide a detailed scoring:
+              - First, MUST directly state the SPECIFIC numeric score out of 5. the score should be on IDEAS presented rather than grammar, length, or nitpickinhg. be generous even if every detail isnt stated.
+              Next do the next points within 20-25 words MAX:                
+              - Highlight any missing or incorrect information.
+                - Provide constructive feedback on how to improve the answer
+
+              IMPORTANT: Your response MUST include a clear "Score: X/5" at the beginning of the evaluation.`
+            }]
+          }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      const aiEvaluation = data.candidates[0].content.parts[0].text;
+
+      // More robust score extraction
+      const scoreRegexes = [
+        /Score:\s*(\d+)\s*\/\s*5/i,
+        /Total\s*Score:\s*(\d+)\s*\/\s*5/i,
+        /Numeric\s*Score:\s*(\d+)\s*\/\s*5/i
+      ];
+
+      let saScore = 0;
+      for (const regex of scoreRegexes) {
+        const scoreMatch = aiEvaluation.match(regex);
+        if (scoreMatch) {
+          saScore = parseInt(scoreMatch[1]);
+          break;
+        }
+      }
+
+      // Fallback if no score found
+      if (saScore === 0) {
+        const matchedPoints = keyPoints.filter(point =>
+          studentAnswer.toLowerCase().includes(point.toLowerCase().trim())
+        );
+
+        switch (matchedPoints.length) {
+          case 0: saScore = 0; break;
+          case 1: saScore = 1; break;
+          case 2: saScore = 2; break;
+          case 3: saScore = 3; break;
+          case 4: saScore = 4; break;
+          default: saScore = 5; break;
+        }
+      }
+
+      totalScore += saScore;
+
+      // Determine alert color based on score
+      let scoreColor = 'alert-danger';
+      if (saScore === 3 || saScore === 4) {
+        scoreColor = 'alert-warning';
+      } else if (saScore === 5) {
+        scoreColor = 'alert-success';
+      }
+
+      feedbackContainer.innerHTML = `
+        <div class="alert ${scoreColor}">
+          <strong>Short Answer Evaluation</strong>
+          <p class="mb-0 mt-2">Score: ${saScore}/5</p>
+          <p class="mb-0 mt-2"><strong>Answer Evaluation</strong></p>
+          <p class="mb-0">${aiEvaluation}</p>
+
+        </div>`;
+    } catch (error) {
+      console.error('Scoring error:', error);
+      
+      // Fallback scoring method
+      let saScore = 0;
+      const matchedPoints = keyPoints.filter(point =>
+        studentAnswer.toLowerCase().includes(point.toLowerCase().trim())
+      );
+
+      switch (matchedPoints.length) {
+        case 0: saScore = 0; break;
+        case 1: saScore = 1; break;
+        case 2: saScore = 2; break;
+        case 3: saScore = 3; break;
+        case 4: saScore = 4; break;
+        default: saScore = 5; break;
+      }
+
+      totalScore += saScore;
+
+      feedbackContainer.innerHTML = `
+        <div class="alert alert-warning">
+          <strong>Scoring Error</strong>
+          <p class="mb-0 mt-2">Fallback Score: ${saScore}/5</p>
+          <p class="mb-0 mt-2">Unable to get detailed AI evaluation due to API error.</p>
+        </div>`;
+    }
+
+    qBox.querySelector('textarea').disabled = true;
+  }
+
+  const percentage = (totalScore / (totalMCQuestions + (saQuestions.length * 5))) * 100;
   const resultMessage = document.createElement('div');
   resultMessage.className = 'alert alert-info mt-4';
   resultMessage.innerHTML = `
     <h4>Test Results</h4>
-    <p>Your score: ${score}/${totalQuestions} (${percentage}%)</p>
+    <p>Multiple Choice Score: ${mcScore}/${totalMCQuestions}</p>
+    <p>Total Score: ${totalScore.toFixed(1)}/${totalMCQuestions + (saQuestions.length * 5)} (${percentage.toFixed(1)}%)</p>
   `;
   form.appendChild(resultMessage);
-  
-  // Disable the submit button
   const submitButton = form.querySelector('button[type="submit"]');
   submitButton.disabled = true;
 }
 
 // Expose the function to the global scope
-window.genTest = genTest;
+window.submitTest = submitTest;

@@ -201,36 +201,36 @@
                     <span class="max-value">20</span>
                   </div>
                   <div id="questionOptionsCard" class="option-picker-card" style="display: none;">
-                    <!-- Multiple Choice Slider -->
+                    <!-- Multiple Choice Selector -->
                     <div class="slider-container mb-4">
-                      <div class="slider-wrapper">
-                        <div class="slider-value">
-                          <span id="multipleChoiceDisplay">5</span>
-                          <label for="multipleChoiceRange" class="text-sm text-gray-700">
-                            Multiple Choice Questions
-                          </label>
-                        </div>
-                        <div class="slider-track">
-                          <input type="range" id="multipleChoiceRange" class="custom-range" min="0" max="10" value="5">
-                          <div class="slider-progress"></div>
-                        </div>
+                      <div class="question-type-selector">
+                        <button id="multipleChoiceDecrease" class="btn btn-control btn-multiple-choice-decrease">
+                          <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <span id="multipleChoiceDisplay" class="value-display">5</span>
+                        <button id="multipleChoiceIncrease" class="btn btn-control btn-multiple-choice-increase">
+                          <i class="fas fa-chevron-up"></i>
+                        </button>
                       </div>
+                      <label for="multipleChoiceDisplay" class="text-sm text-gray-700 text-center d-block mt-2">
+                        Multiple Choice Questions
+                      </label>
                     </div>
-
-                    <!-- Short Answer Slider -->
+                
+                    <!-- Short Answer Selector -->
                     <div class="slider-container">
-                      <div class="slider-wrapper">
-                        <div class="slider-value">
-                          <span id="shortAnswerDisplay">5</span>
-                          <label for="shortAnswerRange" class="text-sm text-gray-700">
-                            Short Answer Questions
-                          </label>
-                        </div>
-                        <div class="slider-track">
-                          <input type="range" id="shortAnswerRange" class="custom-range" min="0" max="10" value="5">
-                          <div class="slider-progress"></div>
-                        </div>
+                      <div class="question-type-selector">
+                        <button id="shortAnswerDecrease" class="btn btn-control btn-short-answer-decrease">
+                          <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <span id="shortAnswerDisplay" class="value-display">5</span>
+                        <button id="shortAnswerIncrease" class="btn btn-control btn-short-answer-increase">
+                          <i class="fas fa-chevron-up"></i>
+                        </button>
                       </div>
+                      <label for="shortAnswerDisplay" class="text-sm text-gray-700 text-center d-block mt-2">
+                        Short Answer Questions
+                      </label>
                     </div>
                   </div>
 
@@ -536,7 +536,9 @@
       studyContent.innerHTML = '<div id="geminiResult"></div>';
       if (typeof window.genQuiz === 'function') {
         window.genQuiz(topic, count, difficulty, educationLevel);
-      } else {
+      } 
+      
+      else {
         studyContent.innerHTML = `
           <div class="alert alert-danger">
             <h4>Error</h4>
@@ -560,11 +562,15 @@
         if (typeof window.generateFlashcards === 'function') {
           console.log('Found window.generateFlashcards function, calling it now...');
           window.generateFlashcards(topic, count, educationLevel);
-        } else {
+        } 
+        
+        else {
           console.error('window.generateFlashcards is not defined');
           throw new Error('Flashcard generation function not found');
         }
-      } catch (error) {
+      } 
+      
+      catch (error) {
         console.error('Error in flashcard generation:', error);
         studyContent.innerHTML = `
           <div class="alert alert-danger">
@@ -580,13 +586,13 @@
       }
     }
 
-    function generateQuiz(topic, count, difficulty, educationLevel) {
+    function generateQuiz(topic, count, difficulty, educationLevel, multipleChoiceQuestions, shortAnswerQuestions) {
       const studyContent = document.getElementById('studyContent');
       const timeLimit = document.getElementById('timeLimit').value;
       studyContent.innerHTML = '<div id="geminiResult"></div>';
 
       if (typeof window.genTest === 'function') {
-        window.genTest(topic, count, difficulty, educationLevel);
+        window.genTest(topic, difficulty, educationLevel, multipleChoiceQuestions, shortAnswerQuestions);
       }
 
       else {
@@ -594,7 +600,7 @@
           <div class="alert alert-danger">
             <h4>Error</h4>
             <p>Test generation is not available. Please try again later.</p>
-          </div>
+          </div>gen
           <div class="text-center mt-4">
             <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
               <i class="fas fa-arrow-left"></i> Back to Study Tools
@@ -604,59 +610,86 @@
       }
     }
 
-    const multipleChoiceRange = document.getElementById('multipleChoiceRange');
-    const shortAnswerRange = document.getElementById('shortAnswerRange');
+    const multipleChoiceDecrease = document.getElementById('multipleChoiceDecrease');
+    const multipleChoiceIncrease = document.getElementById('multipleChoiceIncrease');
+    const shortAnswerDecrease = document.getElementById('shortAnswerDecrease');
+    const shortAnswerIncrease = document.getElementById('shortAnswerIncrease');
+
     const multipleChoiceDisplay = document.getElementById('multipleChoiceDisplay');
     const shortAnswerDisplay = document.getElementById('shortAnswerDisplay');
 
-    itemCountRange.addEventListener('input', updateQuestionDistribution);
-
-    // Update individual question type counts
-    multipleChoiceRange.addEventListener('input', function () {
-      updateQuestionDistribution(true);
-    });
-
-    shortAnswerRange.addEventListener('input', function () {
-      updateQuestionDistribution(false);
-    });
-
-    function updateQuestionDistribution(isMultipleChoiceChanged = null) {
+    function updateQuestionDistribution() {
       const totalQuestions = parseInt(itemCountRange.value);
-      let multipleChoiceQuestions = parseInt(multipleChoiceRange.value);
-      let shortAnswerQuestions = parseInt(shortAnswerRange.value);
+      let multipleChoiceQuestions = parseInt(multipleChoiceDisplay.textContent);
+      let shortAnswerQuestions = parseInt(shortAnswerDisplay.textContent);
 
-      if (isMultipleChoiceChanged === true) {
-        shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
-        shortAnswerRange.value = shortAnswerQuestions;
-      }
-
-      else if (isMultipleChoiceChanged === false) {
-        multipleChoiceQuestions = totalQuestions - shortAnswerQuestions;
-        multipleChoiceRange.value = multipleChoiceQuestions;
-      }
-
-      else {
-        const currentTotal = multipleChoiceQuestions + shortAnswerQuestions;
-        if (currentTotal !== totalQuestions) {
-          const ratio = multipleChoiceQuestions / currentTotal;
-          multipleChoiceQuestions = Math.round(totalQuestions * ratio);
-          shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
-          multipleChoiceRange.value = multipleChoiceQuestions;
-          shortAnswerRange.value = shortAnswerQuestions;
-        }
-      }
+      // Validation
+      multipleChoiceQuestions = Math.max(0, Math.min(multipleChoiceQuestions, totalQuestions));
+      shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
 
       // Update displays
-      itemCountValue.textContent = totalQuestions;
       multipleChoiceDisplay.textContent = multipleChoiceQuestions;
       shortAnswerDisplay.textContent = shortAnswerQuestions;
-      multipleChoiceRange.max = totalQuestions;
-      shortAnswerRange.max = totalQuestions;
+
+      // Button state management
+      multipleChoiceDecrease.disabled = multipleChoiceQuestions <= 0;
+      multipleChoiceIncrease.disabled = multipleChoiceQuestions >= totalQuestions;
+      shortAnswerDecrease.disabled = shortAnswerQuestions <= 0;
+      shortAnswerIncrease.disabled = shortAnswerQuestions >= totalQuestions;
     }
 
-    updateQuestionDistribution();
+    // Multiple Choice Controls
+    multipleChoiceDecrease.addEventListener('click', () => {
+      const totalQuestions = parseInt(itemCountRange.value);
+      let current = parseInt(multipleChoiceDisplay.textContent);
+      if (current > 0) {
+        multipleChoiceDisplay.textContent = current - 1;
+        updateQuestionDistribution();
+      }
+    });
 
+    multipleChoiceIncrease.addEventListener('click', () => {
+      const totalQuestions = parseInt(itemCountRange.value);
+      let current = parseInt(multipleChoiceDisplay.textContent);
+      if (current < totalQuestions) {
+        multipleChoiceDisplay.textContent = current + 1;
+        updateQuestionDistribution();
+      }
+    });
+
+    // Short Answer Controls
+    shortAnswerDecrease.addEventListener('click', () => {
+      const totalQuestions = parseInt(itemCountRange.value);
+      let current = parseInt(shortAnswerDisplay.textContent);
+      if (current > 0) {
+        shortAnswerDisplay.textContent = current - 1;
+        updateQuestionDistribution();
+      }
+    });
+
+    shortAnswerIncrease.addEventListener('click', () => {
+      const totalQuestions = parseInt(itemCountRange.value);
+      let current = parseInt(shortAnswerDisplay.textContent);
+      if (current < totalQuestions) {
+        shortAnswerDisplay.textContent = current + 1;
+        updateQuestionDistribution();
+      }
+    });
+
+    // Modify existing event listener for total questions
+    itemCountRange.addEventListener('input', function () {
+      const totalQuestions = parseInt(this.value);
+      const currentMultipleChoice = parseInt(multipleChoiceDisplay.textContent);
+      const newMultipleChoice = Math.min(currentMultipleChoice, totalQuestions);
+      
+      multipleChoiceDisplay.textContent = newMultipleChoice;
+      shortAnswerDisplay.textContent = totalQuestions - newMultipleChoice;
+      
+      updateQuestionDistribution();
+    });
+
+    // Initial setup
+    updateQuestionDistribution();
   </script>
 </body>
-
 </html>
