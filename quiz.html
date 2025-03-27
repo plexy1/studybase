@@ -216,7 +216,7 @@
                         Multiple Choice Questions
                       </label>
                     </div>
-                
+
                     <!-- Short Answer Selector -->
                     <div class="slider-container">
                       <div class="question-type-selector">
@@ -392,49 +392,6 @@
 
     updateSliderProgress();
 
-    // Generate button
-    document.getElementById('generateBtn').addEventListener('click', () => {
-      const topic = document.getElementById('searchInput').value.trim();
-      const count = document.getElementById('itemCountRange').value;
-
-      if (!topic) {
-        alert('Please enter a topic');
-        return;
-      }
-
-      document.getElementById('studyOptionsContainer').classList.add('fade-transition');
-      configContainer.classList.add('fade-transition');
-
-      setTimeout(() => {
-        document.getElementById('studyOptionsContainer').style.display = 'none';
-        configContainer.style.display = 'none';
-        const resultContainer = document.getElementById('resultContainer');
-        resultContainer.style.display = 'block';
-        resultContainer.style.opacity = '0';
-        resultContainer.style.transform = 'translateY(20px)';
-
-        setTimeout(() => {
-          resultContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-          resultContainer.style.opacity = '1';
-          resultContainer.style.transform = 'translateY(0)';
-
-          // Generate content based on selection
-          switch (selectedStudyOption) {
-            case 'questions':
-              generateQuestions(topic, count, selectedDifficulty, selectedEducationLevel);
-              break;
-            case 'flashcards':
-              initiateFlashcardGeneration(topic, count, selectedEducationLevel);
-              break;
-            case 'quiz':
-              generateQuiz(topic, count, selectedDifficulty, selectedEducationLevel);
-              startTimer();
-              break;
-          }
-        }, 50);
-      }, 300);
-    });
-
     function startTimer() {
       if (quizTimer) {
         clearInterval(quizTimer);
@@ -536,8 +493,8 @@
       studyContent.innerHTML = '<div id="geminiResult"></div>';
       if (typeof window.genQuiz === 'function') {
         window.genQuiz(topic, count, difficulty, educationLevel);
-      } 
-      
+      }
+
       else {
         studyContent.innerHTML = `
           <div class="alert alert-danger">
@@ -562,14 +519,14 @@
         if (typeof window.generateFlashcards === 'function') {
           console.log('Found window.generateFlashcards function, calling it now...');
           window.generateFlashcards(topic, count, educationLevel);
-        } 
-        
+        }
+
         else {
           console.error('window.generateFlashcards is not defined');
           throw new Error('Flashcard generation function not found');
         }
-      } 
-      
+      }
+
       catch (error) {
         console.error('Error in flashcard generation:', error);
         studyContent.innerHTML = `
@@ -586,13 +543,13 @@
       }
     }
 
-    function generateQuiz(topic, count, difficulty, educationLevel, multipleChoiceQuestions, shortAnswerQuestions) {
+    function generateQuiz(topic, difficulty, educationLevel, shortAnswerQuestions, mutlipleChoiceQuestions) {
       const studyContent = document.getElementById('studyContent');
       const timeLimit = document.getElementById('timeLimit').value;
       studyContent.innerHTML = '<div id="geminiResult"></div>';
 
       if (typeof window.genTest === 'function') {
-        window.genTest(topic, difficulty, educationLevel, multipleChoiceQuestions, shortAnswerQuestions);
+        window.genTest(topic, difficulty, educationLevel, shortAnswerQuestions, mutlipleChoiceQuestions);
       }
 
       else {
@@ -610,86 +567,136 @@
       }
     }
 
-    const multipleChoiceDecrease = document.getElementById('multipleChoiceDecrease');
-    const multipleChoiceIncrease = document.getElementById('multipleChoiceIncrease');
-    const shortAnswerDecrease = document.getElementById('shortAnswerDecrease');
-    const shortAnswerIncrease = document.getElementById('shortAnswerIncrease');
+    let globalTotalQuestions = 10;
+    let globalMultipleChoiceQuestions = 5;
+    let globalShortAnswerQuestions = 5;
 
-    const multipleChoiceDisplay = document.getElementById('multipleChoiceDisplay');
-    const shortAnswerDisplay = document.getElementById('shortAnswerDisplay');
-
+    // Modify existing functions to use these global variables
     function updateQuestionDistribution() {
       const totalQuestions = parseInt(itemCountRange.value);
-      let multipleChoiceQuestions = parseInt(multipleChoiceDisplay.textContent);
-      let shortAnswerQuestions = parseInt(shortAnswerDisplay.textContent);
+      globalTotalQuestions = totalQuestions;
 
-      // Validation
-      multipleChoiceQuestions = Math.max(0, Math.min(multipleChoiceQuestions, totalQuestions));
-      shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
+      // Ensure multiple choice and short answer questions don't exceed total
+      globalMultipleChoiceQuestions = Math.min(
+        parseInt(multipleChoiceDisplay.textContent),
+        totalQuestions
+      );
+
+      globalShortAnswerQuestions = totalQuestions - globalMultipleChoiceQuestions;
 
       // Update displays
-      multipleChoiceDisplay.textContent = multipleChoiceQuestions;
-      shortAnswerDisplay.textContent = shortAnswerQuestions;
+      multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
+      shortAnswerDisplay.textContent = globalShortAnswerQuestions;
 
       // Button state management
-      multipleChoiceDecrease.disabled = multipleChoiceQuestions <= 0;
-      multipleChoiceIncrease.disabled = multipleChoiceQuestions >= totalQuestions;
-      shortAnswerDecrease.disabled = shortAnswerQuestions <= 0;
-      shortAnswerIncrease.disabled = shortAnswerQuestions >= totalQuestions;
+      multipleChoiceDecrease.disabled = globalMultipleChoiceQuestions <= 0;
+      multipleChoiceIncrease.disabled = globalMultipleChoiceQuestions >= totalQuestions;
+      shortAnswerDecrease.disabled = globalShortAnswerQuestions <= 0;
+      shortAnswerIncrease.disabled = globalShortAnswerQuestions >= totalQuestions;
     }
 
-    // Multiple Choice Controls
+    // Modify multiple choice controls to update global variables
     multipleChoiceDecrease.addEventListener('click', () => {
-      const totalQuestions = parseInt(itemCountRange.value);
-      let current = parseInt(multipleChoiceDisplay.textContent);
-      if (current > 0) {
-        multipleChoiceDisplay.textContent = current - 1;
+      if (globalMultipleChoiceQuestions > 0) {
+        globalMultipleChoiceQuestions--;
+        globalShortAnswerQuestions++;
+        multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
+        shortAnswerDisplay.textContent = globalShortAnswerQuestions;
         updateQuestionDistribution();
       }
     });
 
     multipleChoiceIncrease.addEventListener('click', () => {
-      const totalQuestions = parseInt(itemCountRange.value);
-      let current = parseInt(multipleChoiceDisplay.textContent);
-      if (current < totalQuestions) {
-        multipleChoiceDisplay.textContent = current + 1;
+      if (globalMultipleChoiceQuestions < globalTotalQuestions) {
+        globalMultipleChoiceQuestions++;
+        globalShortAnswerQuestions--;
+        multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
+        shortAnswerDisplay.textContent = globalShortAnswerQuestions;
         updateQuestionDistribution();
       }
     });
 
-    // Short Answer Controls
+    // Similar modifications for short answer controls
     shortAnswerDecrease.addEventListener('click', () => {
-      const totalQuestions = parseInt(itemCountRange.value);
-      let current = parseInt(shortAnswerDisplay.textContent);
-      if (current > 0) {
-        shortAnswerDisplay.textContent = current - 1;
+      if (globalShortAnswerQuestions > 0) {
+        globalShortAnswerQuestions--;
+        globalMultipleChoiceQuestions++;
+        shortAnswerDisplay.textContent = globalShortAnswerQuestions;
+        multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
         updateQuestionDistribution();
       }
     });
 
     shortAnswerIncrease.addEventListener('click', () => {
-      const totalQuestions = parseInt(itemCountRange.value);
-      let current = parseInt(shortAnswerDisplay.textContent);
-      if (current < totalQuestions) {
-        shortAnswerDisplay.textContent = current + 1;
+      if (globalShortAnswerQuestions < globalTotalQuestions) {
+        globalShortAnswerQuestions++;
+        globalMultipleChoiceQuestions--;
+        shortAnswerDisplay.textContent = globalShortAnswerQuestions;
+        multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
         updateQuestionDistribution();
       }
     });
 
-    // Modify existing event listener for total questions
+    // Modify total questions input to update global variables
     itemCountRange.addEventListener('input', function () {
       const totalQuestions = parseInt(this.value);
-      const currentMultipleChoice = parseInt(multipleChoiceDisplay.textContent);
-      const newMultipleChoice = Math.min(currentMultipleChoice, totalQuestions);
-      
-      multipleChoiceDisplay.textContent = newMultipleChoice;
-      shortAnswerDisplay.textContent = totalQuestions - newMultipleChoice;
-      
+      globalTotalQuestions = totalQuestions;
+
+      const newMultipleChoice = Math.min(globalMultipleChoiceQuestions, totalQuestions);
+      globalMultipleChoiceQuestions = newMultipleChoice;
+      globalShortAnswerQuestions = totalQuestions - newMultipleChoice;
+
+      multipleChoiceDisplay.textContent = globalMultipleChoiceQuestions;
+      shortAnswerDisplay.textContent = globalShortAnswerQuestions;
+
       updateQuestionDistribution();
     });
 
-    // Initial setup
-    updateQuestionDistribution();
+    // Generate button
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      const topic = document.getElementById('searchInput').value.trim();
+      const count = document.getElementById('itemCountRange').value;
+
+      if (!topic) {
+        alert('Please enter a topic');
+        return;
+      }
+
+      document.getElementById('studyOptionsContainer').classList.add('fade-transition');
+      configContainer.classList.add('fade-transition');
+
+      setTimeout(() => {
+        document.getElementById('studyOptionsContainer').style.display = 'none';
+        configContainer.style.display = 'none';
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.style.display = 'block';
+        resultContainer.style.opacity = '0';
+        resultContainer.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+          resultContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          resultContainer.style.opacity = '1';
+          resultContainer.style.transform = 'translateY(0)';
+
+          // Generate content based on selection
+          switch (selectedStudyOption) {
+            case 'questions':
+              generateQuestions(topic, count, selectedDifficulty, selectedEducationLevel);
+              break;
+            case 'flashcards':
+              initiateFlashcardGeneration(topic, count, selectedEducationLevel);
+              break;
+            case 'quiz':
+              generateQuiz(topic, selectedDifficulty, selectedEducationLevel, globalShortAnswerQuestions, globalMultipleChoiceQuestions);
+              startTimer();
+              break;
+          }
+        }, 50);
+      }, 300);
+    });
+
+
   </script>
 </body>
+
 </html>
