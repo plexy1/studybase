@@ -916,26 +916,9 @@
   background-color: rgba(79, 70, 229, 0.1);
 }
 
-/* Reduce animations for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    animation-delay: 0ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  .reduced-motion * {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
 /* Range Slider Custom Styling */
 .form-range {
   height: 8px;
-  -webkit-appearance: none;
   margin: var(--spacing-md) 0;
   width: 100%;
   background: transparent;
