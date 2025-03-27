@@ -23,9 +23,9 @@ body {
   color: var(--text-primary-dark);
 }
 
-.quiz-controls, 
-.question-box, 
-.loading-container, 
+.quiz-controls,
+.question-box,
+.loading-container,
 .generator-card {
   background-color: var(--card-bg-light);
   border-radius: var(--radius-lg);
@@ -34,9 +34,9 @@ body {
   border: none;
 }
 
-[data-bs-theme="dark"] .quiz-controls, 
-[data-bs-theme="dark"] .question-box, 
-[data-bs-theme="dark"] .loading-container, 
+[data-bs-theme="dark"] .quiz-controls,
+[data-bs-theme="dark"] .question-box,
+[data-bs-theme="dark"] .loading-container,
 [data-bs-theme="dark"] .generator-card {
   background-color: var(--card-bg-dark);
   color: var(--text-primary-dark);
@@ -179,7 +179,7 @@ body {
 }
 
 /* Search and answer buttons */
-#searchBtn, 
+#searchBtn,
 .show-answer-button {
   height: var(--input-height);
   font-weight: 600;
@@ -251,19 +251,19 @@ body {
 }
 
 [data-bs-theme="dark"] .btn-outline-success.active,
-[data-bs-theme="dark"] .btn-check:checked + .btn-outline-success {
+[data-bs-theme="dark"] .btn-check:checked+.btn-outline-success {
   background-color: var(--success-color);
   color: white;
 }
 
 [data-bs-theme="dark"] .btn-outline-warning.active,
-[data-bs-theme="dark"] .btn-check:checked + .btn-outline-warning {
+[data-bs-theme="dark"] .btn-check:checked+.btn-outline-warning {
   background-color: var(--warning-color);
   color: var(--text-primary-dark);
 }
 
 [data-bs-theme="dark"] .btn-outline-danger.active,
-[data-bs-theme="dark"] .btn-check:checked + .btn-outline-danger {
+[data-bs-theme="dark"] .btn-check:checked+.btn-outline-danger {
   background-color: var(--danger-color);
   color: white;
 }
@@ -332,11 +332,11 @@ body {
   .question-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .option-picker-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .difficulty-selection-group {
     flex-direction: row;
   }
@@ -393,13 +393,22 @@ body {
 }
 
 @keyframes bounceLetters {
-  0% { transform: translateY(0); }
-  40% { 
+  0% {
+    transform: translateY(0);
+  }
+
+  40% {
     transform: translateY(-20px);
     text-shadow: 0 15px 10px rgba(0, 0, 0, 0.15);
   }
-  70% { transform: translateY(5px); }
-  100% { transform: translateY(0); }
+
+  70% {
+    transform: translateY(5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Generator Cards */
@@ -508,7 +517,7 @@ body {
 }
 
 /* Containers with animations */
-#configurationContainer, 
+#configurationContainer,
 #resultContainer {
   opacity: 0;
   transform: translateY(20px);
@@ -825,144 +834,155 @@ body {
 }
 
 /* Add transition delay for grid items */
-.option-picker-card:nth-child(1) { transition-delay: 0.1s; }
-.option-picker-card:nth-child(2) { transition-delay: 0.2s; }
-.option-picker-card:nth-child(3) { transition-delay: 0.3s; }
-.option-picker-card:nth-child(4) { transition-delay: 0.4s; }
+.option-picker-card:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.option-picker-card:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.option-picker-card:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.option-picker-card:nth-child(4) {
+  transition-delay: 0.4s;
+}
 
 .option-picker-card.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-    /* Dark mode specific overrides */
-    [data-bs-theme="dark"] {
-      --bs-body-bg: #121212;
-      --bs-body-color: #e0e0e0;
-    }
-    
-    [data-bs-theme="dark"] .card {
-      background-color: #1e1e1e;
-      border-color: #333;
-    }
-    
-    [data-bs-theme="dark"] .navbar {
-      background-color: #1a1a1a;
-      border-bottom: 1px solid #333;
-    }
-    
-    [data-bs-theme="dark"] .option-picker-card {
-      background-color: #1e1e1e;
-      border-color: #333;
-    }
-    
-    [data-bs-theme="dark"] .option-selection-item,
-    [data-bs-theme="dark"] .difficulty-selection-item {
-      background-color: #2a2a2a;
-      color: #e0e0e0;
-      border-color: #444;
-    }
-    
-    [data-bs-theme="dark"] .option-selection-item.active,
-    [data-bs-theme="dark"] .difficulty-selection-item.active {
-      background-color: #0d6efd;
-      color: white;
-    }
-    
-    [data-bs-theme="dark"] .selection-radio {
-      border-color: #666;
-    }
-    
-    [data-bs-theme="dark"] .timer-container {
-      background-color: #1e1e1e;
-      border-color: #333;
-    }
-    
-    [data-bs-theme="dark"] input.form-control {
-      background-color: #2a2a2a;
-      color: #e0e0e0;
-      border-color: #444;
-    }
-    
-    [data-bs-theme="dark"] .input-group-text {
-      background-color: #333;
-      color: #e0e0e0;
-      border-color: #444;
-    }
-    
-    [data-bs-theme="dark"] .slider-track {
-      background-color: #444;
-    }
-    
-    [data-bs-theme="dark"] .study-option-card:hover {
-      background-color: #2a2a2a;
-      border-color: #0d6efd;
-    }
-    
-    [data-bs-theme="dark"] .dark-icon {
-      display: none;
-    }
-    
-    [data-bs-theme="dark"] .light-icon {
-      display: inline-block;
-    }
-    
-    [data-bs-theme="light"] .dark-icon {
-      display: inline-block;
-    }
-    
-    [data-bs-theme="light"] .light-icon {
-      display: none;
-    }
-    
-    /* Universal styles that work in both modes */
-    .dark-mode-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 1.2rem;
-      color: inherit;
-      padding: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .fade-transition {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    
-    /* Fix for flashcards in dark mode */
-    [data-bs-theme="dark"] .flashcard {
-      background-color: #1e1e1e;
-      border-color: #333;
-    }
-    
-    [data-bs-theme="dark"] .flashcard .front,
-    [data-bs-theme="dark"] .flashcard .back {
-      background-color: #2a2a2a;
-      color: #e0e0e0;
-    }
-    
-    /* Fix for quiz questions in dark mode */
-    [data-bs-theme="dark"] .question-container {
-      background-color: #1e1e1e;
-      border-color: #333;
-    }
-    
-    [data-bs-theme="dark"] .option-item {
-      background-color: #2a2a2a;
-      border-color: #444;
-      color: #e0e0e0;
-    }
-    
-    [data-bs-theme="dark"] .option-item:hover {
-      background-color: #333;
-    }
-    
-    [data-bs-theme="dark"] .option-item.selected {
-      background-color: #0d6efd;
-      color: white;
-    }
+/* Dark mode specific overrides */
+[data-bs-theme="dark"] {
+  --bs-body-bg: #121212;
+  --bs-body-color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .card {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+[data-bs-theme="dark"] .navbar {
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
+[data-bs-theme="dark"] .option-picker-card {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+[data-bs-theme="dark"] .option-selection-item,
+[data-bs-theme="dark"] .difficulty-selection-item {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+[data-bs-theme="dark"] .option-selection-item.active,
+[data-bs-theme="dark"] .difficulty-selection-item.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+[data-bs-theme="dark"] .selection-radio {
+  border-color: #666;
+}
+
+[data-bs-theme="dark"] .timer-container {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+[data-bs-theme="dark"] input.form-control {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+[data-bs-theme="dark"] .input-group-text {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+[data-bs-theme="dark"] .slider-track {
+  background-color: #444;
+}
+
+[data-bs-theme="dark"] .study-option-card:hover {
+  background-color: #2a2a2a;
+  border-color: #0d6efd;
+}
+
+[data-bs-theme="dark"] .dark-icon {
+  display: none;
+}
+
+[data-bs-theme="dark"] .light-icon {
+  display: inline-block;
+}
+
+[data-bs-theme="light"] .dark-icon {
+  display: inline-block;
+}
+
+[data-bs-theme="light"] .light-icon {
+  display: none;
+}
+
+/* Universal styles that work in both modes */
+.dark-mode-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: inherit;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fade-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Fix for flashcards in dark mode */
+[data-bs-theme="dark"] .flashcard {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+[data-bs-theme="dark"] .flashcard .front,
+[data-bs-theme="dark"] .flashcard .back {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+/* Fix for quiz questions in dark mode */
+[data-bs-theme="dark"] .question-container {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+[data-bs-theme="dark"] .option-item {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .option-item:hover {
+  background-color: #333;
+}
+
+[data-bs-theme="dark"] .option-item.selected {
+  background-color: #0d6efd;
+  color: white;
+}

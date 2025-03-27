@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Search | studybase</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
@@ -11,6 +12,7 @@
   <link href="quiz.css" rel="stylesheet">
 
 </head>
+
 <body>
   <nav class="navbar">
     <div class="container">
@@ -49,11 +51,12 @@
           <div class="card-body">
             <i class="fas fa-question-circle option-icon text-primary"></i>
             <h3 class="card-title">Generate Questions</h3>
-            <p class="card-text">Create custom practice questions with detailed explanations to test your understanding.</p>
+            <p class="card-text">Create custom practice questions with detailed explanations to test your understanding.
+            </p>
           </div>
         </div>
       </div>
-      
+
       <!-- Generate Flashcards Option -->
       <div class="col">
         <div class="card h-100 study-option-card text-center" data-option="flashcards">
@@ -64,7 +67,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Generate Quiz Option -->
       <div class="col">
         <div class="card h-100 study-option-card text-center" data-option="quiz">
@@ -83,138 +86,166 @@
     <div class="d-flex align-items-center mb-4 text-center">
       <h2 id="configTitle" class="mb-r w-100">Configure Your Study Tool</h2>
     </div>
-    
+
     <!-- Search bar -->
     <div class="search-container mb-5">
       <div class="search-input-wrapper w-100">
-        <input
-          id="searchInput"
-          type="text"
-          class="form-control"
-          placeholder="Enter Topic"
-          autocomplete="off"
-        >
+        <input id="searchInput" type="text" class="form-control" placeholder="Enter Topic" autocomplete="off">
       </div>
     </div>
-    
-     <!-- Configuration Options - Modern Card-Based Style -->
-  <div class="quiz-controls">
-    <!-- Option Picker Grid -->
-    <div class="option-picker-grid">
-      <!-- Left Column -->
-      <div class="option-picker-column">
-        <!-- Education Level Option Card -->
-        <div class="option-picker-card">
-          <div class="option-picker-header">
-            <span class="option-icon">
-              <i class="fas fa-graduation-cap"></i>
-            </span>
-            <h4>Education Level</h4>
+
+    <!-- Configuration Options - Modern Card-Based Style -->
+    <div class="quiz-controls">
+      <!-- Option Picker Grid -->
+      <div class="option-picker-grid">
+        <!-- Left Column -->
+        <div class="option-picker-column">
+          <!-- Education Level Option Card -->
+          <div class="option-picker-card">
+            <div class="option-picker-header">
+              <span class="option-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </span>
+              <h4>Education Level</h4>
+            </div>
+            <div class="option-picker-content">
+              <div class="option-selection-group">
+                <div class="option-selection-item active" data-value="highSchool">
+                  <div class="selection-radio"></div>
+                  <span>High School</span>
+                </div>
+                <div class="option-selection-item" data-value="university12">
+                  <div class="selection-radio"></div>
+                  <span>Year 1-2 University</span>
+                </div>
+                <div class="option-selection-item" data-value="university34">
+                  <div class="selection-radio"></div>
+                  <span>Year 3-4 University</span>
+                </div>
+                <div class="option-selection-item" data-value="masters">
+                  <div class="selection-radio"></div>
+                  <span>Masters+</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="option-picker-content">
-            <div class="option-selection-group">
-              <div class="option-selection-item active" data-value="highSchool">
-                <div class="selection-radio"></div>
-                <span>High School</span>
+
+          <!-- Difficulty Option Card -->
+          <div class="option-picker-card">
+            <div class="option-picker-header">
+              <span class="option-icon">
+                <i class="fas fa-chart-line"></i>
+              </span>
+              <h4>Difficulty</h4>
+            </div>
+            <div class="option-picker-content">
+              <div class="difficulty-selection-group">
+                <div class="difficulty-selection-item active" data-difficulty="easy">
+                  <i class="fas fa-smile text-success"></i>
+                  <span>Easy</span>
+                </div>
+                <div class="difficulty-selection-item" data-difficulty="medium">
+                  <i class="fas fa-meh text-warning"></i>
+                  <span>Medium</span>
+                </div>
+                <div class="difficulty-selection-item" data-difficulty="hard">
+                  <i class="fas fa-frown text-danger"></i>
+                  <span>Hard</span>
+                </div>
               </div>
-              <div class="option-selection-item" data-value="university12">
-                <div class="selection-radio"></div>
-                <span>Year 1-2 University</span>
-              </div>
-              <div class="option-selection-item" data-value="university34">
-                <div class="selection-radio"></div>
-                <span>Year 3-4 University</span>
-              </div>
-              <div class="option-selection-item" data-value="masters">
-                <div class="selection-radio"></div>
-                <span>Masters+</span>
+            </div>
+          </div>
+
+          <!-- Time Limit Option Card - Only for quiz -->
+          <div id="timeSettingsCard" class="option-picker-card" style="display: none;">
+            <div class="option-picker-header">
+              <span class="option-icon">
+                <i class="fas fa-clock"></i>
+              </span>
+              <h4>Time Limit</h4>
+            </div>
+            <div class="option-picker-content">
+              <div class="time-input-container">
+                <div class="input-group">
+                  <input type="number" id="timeLimit" class="form-control" value="10" min="1" max="60">
+                  <span class="input-group-text">minutes</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        <!-- Difficulty Option Card -->
-        <div class="option-picker-card">
-          <div class="option-picker-header">
-            <span class="option-icon">
-              <i class="fas fa-chart-line"></i>
-            </span>
-            <h4>Difficulty</h4>
-          </div>
-          <div class="option-picker-content">
-            <div class="difficulty-selection-group">
-              <div class="difficulty-selection-item active" data-difficulty="easy">
-                <i class="fas fa-smile text-success"></i>
-                <span>Easy</span>
-              </div>
-              <div class="difficulty-selection-item" data-difficulty="medium">
-                <i class="fas fa-meh text-warning"></i>
-                <span>Medium</span>
-              </div>
-              <div class="difficulty-selection-item" data-difficulty="hard">
-                <i class="fas fa-frown text-danger"></i>
-                <span>Hard</span>
+
+        <!-- Right Column -->
+        <div class="option-picker-column">
+          <!-- Item Count Option Card -->
+          <div class="option-picker-card">
+            <div class="option-picker-header">
+              <span class="option-icon">
+                <i class="fas fa-list-ol"></i>
+              </span>
+              <h4 id="itemCountLabel">Number of Questions</h4>
+            </div>
+            <div class="option-picker-content">
+              <div class="slider-container">
+                <div class="slider-wrapper">
+                  <div class="slider-value">
+                    <span id="itemCountValue">10</span>
+                    <span class="slider-unit">questions</span>
+                  </div>
+                  <div class="slider-track">
+                    <input type="range" class="custom-range" id="itemCountRange" min="1" max="20" value="10">
+                    <div class="slider-progress"></div>
+                  </div>
+                  <div class="slider-limits">
+                    <span class="min-value">1</span>
+                    <span class="max-value">20</span>
+                  </div>
+                  <div id="questionOptionsCard" class="option-picker-card" style="display: none;">
+                    <!-- Multiple Choice Slider -->
+                    <div class="slider-container mb-4">
+                      <div class="slider-wrapper">
+                        <div class="slider-value">
+                          <span id="multipleChoiceDisplay">5</span>
+                          <label for="multipleChoiceRange" class="text-sm text-gray-700">
+                            Multiple Choice Questions
+                          </label>
+                        </div>
+                        <div class="slider-track">
+                          <input type="range" id="multipleChoiceRange" class="custom-range" min="0" max="10" value="5">
+                          <div class="slider-progress"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Short Answer Slider -->
+                    <div class="slider-container">
+                      <div class="slider-wrapper">
+                        <div class="slider-value">
+                          <span id="shortAnswerDisplay">5</span>
+                          <label for="shortAnswerRange" class="text-sm text-gray-700">
+                            Short Answer Questions
+                          </label>
+                        </div>
+                        <div class="slider-track">
+                          <input type="range" id="shortAnswerRange" class="custom-range" min="0" max="10" value="5">
+                          <div class="slider-progress"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column -->
-      <div class="option-picker-column">
-        <!-- Item Count Option Card -->
-        <div class="option-picker-card">
-          <div class="option-picker-header">
-            <span class="option-icon">
-              <i class="fas fa-list-ol"></i>
-            </span>
-            <h4 id="itemCountLabel">Number of Questions</h4>
-          </div>
-          <div class="option-picker-content">
-            <div class="slider-container">
-              <div class="slider-wrapper">
-                <div class="slider-value">
-                  <span id="itemCountValue">10</span>
-                  <span class="slider-unit">questions</span>
-                </div>
-                <div class="slider-track">
-                  <input type="range" class="custom-range" id="itemCountRange" min="1" max="20" value="10">
-                  <div class="slider-progress"></div>
-                </div>
-                <div class="slider-limits">
-                  <span class="min-value">1</span>
-                  <span class="max-value">20</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Time Limit Option Card - Only for quiz -->
-        <div id="timeSettingsCard" class="option-picker-card" style="display: none;">
-          <div class="option-picker-header">
-            <span class="option-icon">
-              <i class="fas fa-clock"></i>
-            </span>
-            <h4>Time Limit</h4>
-          </div>
-          <div class="option-picker-content">
-            <div class="time-input-container">
-              <div class="input-group">
-                <input type="number" id="timeLimit" class="form-control" value="10" min="1" max="60">
-                <span class="input-group-text">minutes</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="text-center mt-4">
+        <button id="generateBtn" class="btn btn-primary btn-lg">Generate</button>
       </div>
     </div>
-    
-    <div class="text-center mt-4">
-      <button id="generateBtn" class="btn btn-primary btn-lg">Generate</button>
-    </div>
   </div>
-</div>
 
   <div id="resultContainer" class="container mt-5" style="display: none;">
     <div id="timerDisplay" class="text-center mb-4" style="display: none;">
@@ -231,7 +262,7 @@
         </div>
       </div>
     </div>
-    
+
     <div id="studyContent" class="mt-3"></div>
   </div>
 
@@ -240,126 +271,132 @@
   <script src="generate-test.js"></script>
   <script src="generate-flashcards.js"></script>
   <script>
-  let selectedStudyOption = '';
-  let selectedDifficulty = 'easy';
-  let quizTimer;
-  const studyOptionCards = document.querySelectorAll('.study-option-card');
-  const configContainer = document.getElementById('configurationContainer');
-  const itemCountRange = document.getElementById('itemCountRange');
-  const itemCountValue = document.getElementById('itemCountValue');
-  const itemCountLabel = document.getElementById('itemCountLabel');
-  const timeSettingsCard = document.getElementById('timeSettingsCard');
-  const itemCountUnit = document.querySelector('.slider-unit');
-  const sliderProgress = itemCountRange.parentElement.querySelector('.slider-progress');
+    let selectedStudyOption = '';
+    let selectedDifficulty = 'easy';
+    let quizTimer;
+    const studyOptionCards = document.querySelectorAll('.study-option-card');
+    const configContainer = document.getElementById('configurationContainer');
+    const itemCountRange = document.getElementById('itemCountRange');
+    const itemCountValue = document.getElementById('itemCountValue');
+    const itemCountLabel = document.getElementById('itemCountLabel');
+    const timeSettingsCard = document.getElementById('timeSettingsCard');
+    const questionOptionsCard = document.getElementById('questionOptionsCard');
+    const itemCountUnit = document.querySelector('.slider-unit');
+    const sliderProgress = itemCountRange.parentElement.querySelector('.slider-progress');
 
-  function updateSliderProgress() {
-    const progress = ((itemCountRange.value - itemCountRange.min) / (itemCountRange.max - itemCountRange.min)) * 100;
-    sliderProgress.style.width = `${progress}%`;
-  }
-
-  itemCountRange.addEventListener('input', function() {
-    itemCountValue.textContent = this.value;
-    updateSliderProgress();
-    
-    if (selectedStudyOption === 'flashcards') {
-      itemCountUnit.textContent = 'cards';
-    } 
-    
-    else {
-      itemCountUnit.textContent = 'questions';
+    function updateSliderProgress() {
+      const progress = ((itemCountRange.value - itemCountRange.min) / (itemCountRange.max - itemCountRange.min)) * 100;
+      sliderProgress.style.width = `${progress}%`;
     }
-  });
 
-  const educationLevelItems = document.querySelectorAll('.option-selection-item');
-  let selectedEducationLevel = 'highSchool';
+    itemCountRange.addEventListener('input', function () {
+      itemCountValue.textContent = this.value;
+      updateSliderProgress();
 
-  educationLevelItems.forEach(item => {
-    item.addEventListener('click', () => {
-      educationLevelItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      selectedEducationLevel = item.getAttribute('data-value');
+      if (selectedStudyOption === 'flashcards') {
+        itemCountUnit.textContent = 'cards';
+      }
+
+      else {
+        itemCountUnit.textContent = 'questions';
+      }
     });
-  });
 
-  const difficultyItems = document.querySelectorAll('.difficulty-selection-item');
-  difficultyItems.forEach(item => {
-    item.addEventListener('click', () => {
-      difficultyItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      selectedDifficulty = item.getAttribute('data-difficulty');
+    const educationLevelItems = document.querySelectorAll('.option-selection-item');
+    let selectedEducationLevel = 'highSchool';
+
+    educationLevelItems.forEach(item => {
+      item.addEventListener('click', () => {
+        educationLevelItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        selectedEducationLevel = item.getAttribute('data-value');
+      });
     });
-  });
 
-  studyOptionCards.forEach(card => {
-    card.addEventListener('click', () => {
-      studyOptionCards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      selectedStudyOption = card.getAttribute('data-option');
-      const configTitle = document.getElementById('configTitle');
-      
-      // Hide configuration container first
-      configContainer.classList.remove('visible');
-      const optionGrid = configContainer.querySelector('.option-picker-grid');
-      const optionCards = configContainer.querySelectorAll('.option-picker-card');
-      optionGrid.classList.remove('visible');
-      optionCards.forEach(card => card.classList.remove('visible'));
-      
-      setTimeout(() => {
-        switch(selectedStudyOption) {
-          case 'questions':
-            configTitle.textContent = 'Configure Practice Questions';
-            itemCountLabel.textContent = 'Number of Questions';
-            itemCountRange.min = '1';
-            itemCountRange.max = '20';
-            itemCountRange.value = '10';
-            itemCountValue.textContent = '10';
-            itemCountUnit.textContent = 'questions';
-            timeSettingsCard.style.display = 'none';
-            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
-            break;
-          case 'flashcards':
-            configTitle.textContent = 'Configure Flashcards';
-            itemCountLabel.textContent = 'Number of Cards';
-            itemCountRange.min = '1';
-            itemCountRange.max = '20';
-            itemCountRange.value = '10';
-            itemCountValue.textContent = '10';
-            itemCountUnit.textContent = 'cards';
-            timeSettingsCard.style.display = 'none';
-            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'none';
-            break;
-          case 'quiz':
-            configTitle.textContent = 'Configure Timed Test';
-            itemCountLabel.textContent = 'Number of Questions';
-            itemCountRange.min = '1';
-            itemCountRange.max = '20';
-            itemCountRange.value = '10';
-            itemCountValue.textContent = '10';
-            itemCountUnit.textContent = 'questions';
-            timeSettingsCard.style.display = 'block';
-            document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
-            break;
-        }
-        
-        // Show configuration container
-        updateSliderProgress();
-        configContainer.style.display = 'block';
+    const difficultyItems = document.querySelectorAll('.difficulty-selection-item');
+    difficultyItems.forEach(item => {
+      item.addEventListener('click', () => {
+        difficultyItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        selectedDifficulty = item.getAttribute('data-difficulty');
+      });
+    });
+
+    studyOptionCards.forEach(card => {
+      card.addEventListener('click', () => {
+        studyOptionCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedStudyOption = card.getAttribute('data-option');
+        const configTitle = document.getElementById('configTitle');
+
+        // Hide configuration container first
+        configContainer.classList.remove('visible');
+        const optionGrid = configContainer.querySelector('.option-picker-grid');
+        const optionCards = configContainer.querySelectorAll('.option-picker-card');
+        optionGrid.classList.remove('visible');
+        optionCards.forEach(card => card.classList.remove('visible'));
+
         setTimeout(() => {
-          configContainer.classList.add('visible');
-          optionGrid.classList.add('visible');
-          optionCards.forEach(card => card.classList.add('visible'));
-        }, 50);
-      }, 300);
-    });
-  });
+          switch (selectedStudyOption) {
+            case 'questions':
+              configTitle.textContent = 'Configure Practice Questions';
+              itemCountLabel.textContent = 'Number of Questions';
+              itemCountRange.min = '1';
+              itemCountRange.max = '20';
+              itemCountRange.value = '10';
+              itemCountValue.textContent = '10';
+              itemCountUnit.textContent = 'questions';
+              timeSettingsCard.style.display = 'none';
+              questionOptionsCard.style.display = 'none';
 
-  updateSliderProgress();
-    
+              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
+              break;
+            case 'flashcards':
+              configTitle.textContent = 'Configure Flashcards';
+              itemCountLabel.textContent = 'Number of Cards';
+              itemCountRange.min = '1';
+              itemCountRange.max = '20';
+              itemCountRange.value = '10';
+              itemCountValue.textContent = '10';
+              itemCountUnit.textContent = 'cards';
+              timeSettingsCard.style.display = 'none';
+              questionOptionsCard.style.display = 'none';
+              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'none';
+              break;
+            case 'quiz':
+              configTitle.textContent = 'Configure Timed Test';
+              itemCountLabel.textContent = 'Number of Questions';
+              itemCountRange.min = '1';
+              itemCountRange.max = '20';
+              itemCountRange.value = '10';
+              itemCountValue.textContent = '10';
+              itemCountUnit.textContent = 'questions';
+              timeSettingsCard.style.display = 'block';
+              questionOptionsCard.style.display = 'block';
+
+              document.querySelector('.option-picker-card:has(.difficulty-selection-group)').style.display = 'block';
+              break;
+          }
+
+          // Show configuration container
+          updateSliderProgress();
+          configContainer.style.display = 'block';
+          setTimeout(() => {
+            configContainer.classList.add('visible');
+            optionGrid.classList.add('visible');
+            optionCards.forEach(card => card.classList.add('visible'));
+          }, 50);
+        }, 300);
+      });
+    });
+
+    updateSliderProgress();
+
     // Generate button
     document.getElementById('generateBtn').addEventListener('click', () => {
       const topic = document.getElementById('searchInput').value.trim();
       const count = document.getElementById('itemCountRange').value;
-      
+
       if (!topic) {
         alert('Please enter a topic');
         return;
@@ -367,7 +404,7 @@
 
       document.getElementById('studyOptionsContainer').classList.add('fade-transition');
       configContainer.classList.add('fade-transition');
-      
+
       setTimeout(() => {
         document.getElementById('studyOptionsContainer').style.display = 'none';
         configContainer.style.display = 'none';
@@ -375,14 +412,14 @@
         resultContainer.style.display = 'block';
         resultContainer.style.opacity = '0';
         resultContainer.style.transform = 'translateY(20px)';
-        
+
         setTimeout(() => {
           resultContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
           resultContainer.style.opacity = '1';
           resultContainer.style.transform = 'translateY(0)';
-          
+
           // Generate content based on selection
-          switch(selectedStudyOption) {
+          switch (selectedStudyOption) {
             case 'questions':
               generateQuestions(topic, count, selectedDifficulty, selectedEducationLevel);
               break;
@@ -397,12 +434,12 @@
         }, 50);
       }, 300);
     });
-    
+
     function startTimer() {
       if (quizTimer) {
         clearInterval(quizTimer);
       }
-      
+
       const timerDisplay = document.getElementById('timerDisplay');
       const timeRemainingElement = document.getElementById('timeRemaining');
       const progressBar = document.querySelector('.timer-progress-bar');
@@ -410,16 +447,16 @@
       timerDisplay.style.display = 'block';
       let timeRemaining = timeLimit * 60;
       const totalTime = timeLimit * 60;
-      
+
       function updateTimerDisplay() {
         const minutes = Math.floor(timeRemaining / 60);
         const seconds = timeRemaining % 60;
         timeRemainingElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        
+
         // Update progress bar
         const progress = (timeRemaining / totalTime) * 100;
         progressBar.style.width = `${progress}%`;
-        
+
         // Change color based on remaining time
         if (progress <= 25) {
           progressBar.style.backgroundColor = '#dc3545';
@@ -427,18 +464,18 @@
           progressBar.style.backgroundColor = '#ffc107';
         }
       }
-      
+
       updateTimerDisplay();
 
       quizTimer = setInterval(() => {
         timeRemaining--;
         updateTimerDisplay();
-        
+
         if (timeRemaining <= 0) {
           clearInterval(quizTimer);
           timeRemainingElement.textContent = "Time's up!";
           progressBar.style.width = '0%';
-          
+
           const studyContent = document.getElementById('studyContent');
           const timeUpNotification = document.createElement('div');
           timeUpNotification.className = 'alert alert-warning mt-3';
@@ -447,7 +484,7 @@
         }
       }, 1000);
     }
-    
+
     // Dark mode toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
     const html = document.documentElement;
@@ -485,10 +522,10 @@
       document.getElementById('studyOptionsContainer').classList.remove('fade-transition');
       document.getElementById('configurationContainer').classList.remove('fade-transition');
       document.getElementById('timerDisplay').style.display = 'none';
-      
+
       // Reset selected card
       document.querySelectorAll('.study-option-card').forEach(c => c.classList.remove('selected'));
-      
+
       if (quizTimer) {
         clearInterval(quizTimer);
       }
@@ -518,7 +555,7 @@
       console.log('Initiating flashcard generation with:', { topic, count, educationLevel });
       const studyContent = document.getElementById('studyContent');
       studyContent.innerHTML = '<div id="geminiResult"></div>';
-      
+
       try {
         if (typeof window.generateFlashcards === 'function') {
           console.log('Found window.generateFlashcards function, calling it now...');
@@ -547,11 +584,11 @@
       const studyContent = document.getElementById('studyContent');
       const timeLimit = document.getElementById('timeLimit').value;
       studyContent.innerHTML = '<div id="geminiResult"></div>';
-      
+
       if (typeof window.genTest === 'function') {
         window.genTest(topic, count, difficulty, educationLevel);
-      } 
-      
+      }
+
       else {
         studyContent.innerHTML = `
           <div class="alert alert-danger">
@@ -567,6 +604,59 @@
       }
     }
 
+    const multipleChoiceRange = document.getElementById('multipleChoiceRange');
+    const shortAnswerRange = document.getElementById('shortAnswerRange');
+    const multipleChoiceDisplay = document.getElementById('multipleChoiceDisplay');
+    const shortAnswerDisplay = document.getElementById('shortAnswerDisplay');
+
+    itemCountRange.addEventListener('input', updateQuestionDistribution);
+
+    // Update individual question type counts
+    multipleChoiceRange.addEventListener('input', function () {
+      updateQuestionDistribution(true);
+    });
+
+    shortAnswerRange.addEventListener('input', function () {
+      updateQuestionDistribution(false);
+    });
+
+    function updateQuestionDistribution(isMultipleChoiceChanged = null) {
+      const totalQuestions = parseInt(itemCountRange.value);
+      let multipleChoiceQuestions = parseInt(multipleChoiceRange.value);
+      let shortAnswerQuestions = parseInt(shortAnswerRange.value);
+
+      if (isMultipleChoiceChanged === true) {
+        shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
+        shortAnswerRange.value = shortAnswerQuestions;
+      }
+
+      else if (isMultipleChoiceChanged === false) {
+        multipleChoiceQuestions = totalQuestions - shortAnswerQuestions;
+        multipleChoiceRange.value = multipleChoiceQuestions;
+      }
+
+      else {
+        const currentTotal = multipleChoiceQuestions + shortAnswerQuestions;
+        if (currentTotal !== totalQuestions) {
+          const ratio = multipleChoiceQuestions / currentTotal;
+          multipleChoiceQuestions = Math.round(totalQuestions * ratio);
+          shortAnswerQuestions = totalQuestions - multipleChoiceQuestions;
+          multipleChoiceRange.value = multipleChoiceQuestions;
+          shortAnswerRange.value = shortAnswerQuestions;
+        }
+      }
+
+      // Update displays
+      itemCountValue.textContent = totalQuestions;
+      multipleChoiceDisplay.textContent = multipleChoiceQuestions;
+      shortAnswerDisplay.textContent = shortAnswerQuestions;
+      multipleChoiceRange.max = totalQuestions;
+      shortAnswerRange.max = totalQuestions;
+    }
+
+    updateQuestionDistribution();
+
   </script>
 </body>
+
 </html>
