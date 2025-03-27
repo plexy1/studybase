@@ -23,10 +23,12 @@ async function generateFlashcards(topic, cardCount = 10, educationLevel = 'unive
 
   resultDiv.innerHTML = `
     <div class="loading-container">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
       </div>
-      <p class="mt-2">Generating flashcards...</p>
+      <div class="loading-message">Generating flashcards...</div>
     </div>
   `;
 
@@ -186,9 +188,32 @@ function displayFlashcards(flashcards) {
         background-color: white;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       }
+      [data-bs-theme="dark"] .flashcard-front,
+      [data-bs-theme="dark"] .flashcard-back {
+        background-color: #1e293b;
+        color: #fff;
+        border-color: #334155;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
       .flashcard-back {
         transform: rotateY(180deg);
         background-color: #f8f9fa;
+      }
+      [data-bs-theme="dark"] .flashcard-back {
+        background-color: #1a2234;
+        border-left: 4px solid var(--primary-color);
+      }
+      [data-bs-theme="dark"] .card-counter {
+        color: var(--text-primary-dark);
+      }
+      [data-bs-theme="dark"] .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+      [data-bs-theme="dark"] .progress {
+        background-color: #334155;
+      }
+      [data-bs-theme="dark"] .progress-bar {
+        background-color: var(--primary-color);
       }
     </style>
     <div class="container">
@@ -207,10 +232,10 @@ function displayFlashcards(flashcards) {
 
         <div class="flashcard">
           <div class="flashcard-front">
-            <h4 class="mb-0" style="font-size: 1.5rem; color: #333;">${flashcards[0].front}</h4>
+            <h4 class="mb-0" style="font-size: 1.5rem;">${flashcards[0].front}</h4>
           </div>
           <div class="flashcard-back">
-            <p class="mb-0" style="font-size: 1.25rem; color: #333;">${flashcards[0].back}</p>
+            <p class="mb-0" style="font-size: 1.25rem;">${flashcards[0].back}</p>
           </div>
         </div>
 

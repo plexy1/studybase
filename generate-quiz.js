@@ -40,11 +40,16 @@ async function genQuiz(query, questionCount = 5, difficulty = 'medium', educatio
 
   const geminiResultDiv = document.getElementById('geminiResult');
   const loadingText = "Loading Questions...";
-  let loadingHTML = '<div class="loading-container">';
-  for (let i = 0; i < loadingText.length; i++) {
-    loadingHTML += `<span style="animation-delay: ${i * 0.1}s" class="loading-letter">${loadingText[i]}</span>`;
-  }
-  loadingHTML += '</div>';
+  let loadingHTML = `
+    <div class="loading-container">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-message">${loadingText}</div>
+    </div>
+  `;
   geminiResultDiv.innerHTML = loadingHTML;
 
 
