@@ -56,11 +56,16 @@ Make sure each question follows this exact format with no additional text or for
   }
 
   const loadingText = "Loading Test Questions...";
-  let loadingHTML = '<div class="loading-container">';
-  for (let i = 0; i < loadingText.length; i++) {
-    loadingHTML += `<span style="animation-delay: ${i * 0.1}s" class="loading-letter">${loadingText[i]}</span>`;
-  }
-  loadingHTML += '</div>';
+  let loadingHTML = `
+    <div class="loading-container">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-message">${loadingText}</div>
+    </div>
+  `;
   geminiResultDiv.innerHTML = loadingHTML;
 
   try {
