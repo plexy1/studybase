@@ -152,23 +152,45 @@
   <script src="google-search.js"></script>
   <script src="generate-roadmap.js"></script>
   <script>
-    document.getElementById('searchBtn').addEventListener('click', async function(event) {
-      event.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
-      if (query) {
-        // Show the search results container
-        document.getElementById('searchResult').style.display = 'flex';
-        // Clear previous results
-        document.getElementById('geminiResult').innerHTML = '';
-        document.getElementById('videoSlider').innerHTML = '';
-        document.getElementById('googleResults').innerHTML = '';
-        // Perform searches
-        searchYouTube(query);
-        searchGoogle(query);
-        searchGemini(query);
-      }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const saveSearchBtn = document.getElementById('saveSearchBtn');
+  const searchResult = document.getElementById('searchResult');
+  saveSearchBtn.disabled = true;
 
+  document.getElementById('searchBtn').addEventListener('click', async function(event) {
+    event.preventDefault();
+    const query = searchInput.value.trim();
+    
+    if (query) {
+      // Show the search results container
+      searchResult.style.display = 'flex';
+      
+      // Clear previous results
+      document.getElementById('geminiResult').innerHTML = '';
+      document.getElementById('videoSlider').innerHTML = '';
+      document.getElementById('googleResults').innerHTML = '';
+      
+      // Perform searches
+      searchYouTube(query);
+      searchGoogle(query);
+      searchGemini(query);
+
+      setTimeout(() => {
+        const geminiResults = document.getElementById('geminiResult').innerHTML.trim();
+        const videoResults = document.getElementById('videoSlider').innerHTML.trim();
+        const googleResults = document.getElementById('googleResults').innerHTML.trim();
+
+        saveSearchBtn.disabled = !(geminiResults || videoResults || googleResults);
+      }, 1000); 
+    }
+  });
+
+  searchInput.addEventListener('input', () => {
+    saveSearchBtn.disabled = true;
+  });
+});
     function setCookie(name, value, days) {
       let expires = "";
       if (days) {
@@ -375,18 +397,6 @@
       stepsSelector.classList.add(`selected-${value}`);
     }
   });
-
-  document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('searchInput');
-  const saveSearchBtn = document.getElementById('saveSearchBtn');
-
-  // Disable save button by default if input is empty
-  saveSearchBtn.disabled = !searchInput.value.trim();
-  
-  searchInput.addEventListener('input', () => {
-    saveSearchBtn.disabled = !searchInput.value.trim();
-  });
-});
 </script>
 </body>
 </html>
