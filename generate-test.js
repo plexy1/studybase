@@ -289,7 +289,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
         <b>SHORT ANSWER QUESTION ${index + 1}</b><br><br>
         ${q.question}<br><br>
         <div class="short-answer-container">
-          <textarea class="form-control" name="saq${index}" rows="5" placeholder="Type your answer here..."></textarea>
+          <textarea class="form-control" name="saq${index}" rows="5" placeholder="Type your answer here..." spellcheck="false"></textarea>
         </div>
         <input type="hidden" name="saKeyPoints${index}" value="${q.keyPoints.join('|')}">
       </div>`;
@@ -306,7 +306,14 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
         </button>
       </div>
     </form>
-  </div>`;
+  </div>
+  <style>
+    [data-bs-theme="dark"] .short-answer-container textarea.form-control {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+      border-color: #444;
+    }
+  </style>`;
 
   return formattedTest;
 }
