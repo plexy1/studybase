@@ -245,7 +245,7 @@ function displayFlashcards(flashcards) {
         </div>
 
         <div class="progress mb-4" style="height: 8px; background-color: #e9ecef; border-radius: 4px;">
-          <div class="progress-bar" role="progressbar" style="width: ${(1/flashcards.length) * 100}%; background-color: #0d6efd;"></div>
+          <div class="progress-bar" role="progressbar" style="width: ${(1/flashcards.length) * 100}%; background-color: var(--primary-color);"></div>
         </div>
 
         <div class="text-center mt-4">
