@@ -71,7 +71,8 @@ body {
   align-items: stretch;
   overflow-x: auto;
   padding-bottom: 0.5rem;
-  flex: 1; /* Take remaining space */
+  flex: 1;
+  /* Take remaining space */
 }
 
 .config-section {
@@ -305,7 +306,7 @@ body {
   width: 180px;
   position: sticky;
   right: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--card-bg-light) 15%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--card-bg-light) 15%);
   padding-left: 20px;
 }
 
@@ -460,7 +461,7 @@ body {
   .config-panels {
     flex-wrap: wrap;
   }
-  
+
   .config-section {
     width: 100%;
     min-width: 100%;
@@ -531,6 +532,7 @@ body {
 }
 
 @keyframes loadingPulse {
+
   0%,
   100% {
     transform: scale(0.75);
@@ -710,8 +712,8 @@ body {
   color: white;
 }
 
-.btn-primary:hover, 
-.btn-primary:active, 
+.btn-primary:hover,
+.btn-primary:active,
 .btn-primary:focus {
   background-color: var(--primary-hover);
   border-color: var(--primary-hover);
@@ -1770,7 +1772,7 @@ body {
 }
 
 /* Add a more compact style for labels in the question type selector */
-.question-type-selector + label {
+.question-type-selector+label {
   font-size: 0.85rem;
   margin-top: 0.25rem !important;
 }
@@ -1792,7 +1794,8 @@ p.text-muted {
 }
 
 .flashcard-back {
-  background-color: #f0f4ff;  /* Light purple/blue tint */
+  background-color: #f0f4ff;
+  /* Light purple/blue tint */
   border: 2px solid var(--primary-color);
   position: relative;
   overflow: hidden;
@@ -1812,7 +1815,7 @@ p.text-muted {
   pointer-events: none;
 }
 
-.flashcard-back > * {
+.flashcard-back>* {
   position: relative;
   z-index: 1;
 }
@@ -1824,7 +1827,8 @@ p.text-muted {
 }
 
 [data-bs-theme="dark"] .flashcard-back {
-  background-color: #1a2234;  /* Darker blue with purple tint */
+  background-color: #1a2234;
+  /* Darker blue with purple tint */
   border: 2px solid var(--primary-color);
   color: var(--text-primary-dark);
 }
@@ -1864,7 +1868,8 @@ p.text-muted {
   margin-bottom: 0.3rem;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
   padding: 0.4rem 0.75rem;
   height: auto;
   min-height: 32px;
@@ -1963,29 +1968,29 @@ input[type="range"] {
   .quiz-controls-inner {
     flex-direction: column;
   }
-  
+
   .config-panels {
     flex-wrap: wrap;
   }
-  
+
   .config-section {
     width: 100%;
     min-width: 100%;
   }
-  
+
   .generate-btn-container {
     width: 100%;
     background: none;
     padding-left: 0;
     margin-top: 1rem;
   }
-  
+
   .generate-btn {
     min-height: 60px;
     width: 100%;
     flex-direction: row;
   }
-  
+
   .generate-btn i {
     font-size: 1.2rem;
     margin-bottom: 0;
@@ -1993,7 +1998,8 @@ input[type="range"] {
   }
 }
 
-#multipleChoiceDisplay, #shortAnswerDisplay {
+#multipleChoiceDisplay,
+#shortAnswerDisplay {
   font-size: 0.75rem;
   display: inline-block;
   min-width: 1.2rem;
@@ -2052,7 +2058,7 @@ input[type="range"] {
 }
 
 /* Fix for slider value displays in dark mode */
-[data-bs-theme="dark"] #multipleChoiceDisplay, 
+[data-bs-theme="dark"] #multipleChoiceDisplay,
 [data-bs-theme="dark"] #shortAnswerDisplay {
   color: var(--text-primary-dark);
 }
@@ -2195,7 +2201,7 @@ input[type="range"] {
 }
 
 [data-bs-theme="dark"] .slider-value,
-[data-bs-theme="dark"] #multipleChoiceDisplay, 
+[data-bs-theme="dark"] #multipleChoiceDisplay,
 [data-bs-theme="dark"] #shortAnswerDisplay,
 [data-bs-theme="dark"] .number-selector .value {
   color: #e2e8f0;
@@ -2244,7 +2250,7 @@ input[type="range"] {
   background: #4f46e5;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 #formatSection input[type="range"]::-moz-range-thumb {
@@ -2254,7 +2260,7 @@ input[type="range"] {
   background: #4f46e5;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 #formatSection input[type="range"]:focus {
@@ -2278,13 +2284,13 @@ input[type="range"] {
 [data-bs-theme="dark"] #formatSection input[type="range"]::-webkit-slider-thumb {
   background: #6366f1;
   border: 2px solid #0f172a;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 [data-bs-theme="dark"] #formatSection input[type="range"]::-moz-range-thumb {
   background: #6366f1;
   border: 2px solid #0f172a;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 [data-bs-theme="dark"] #formatSection input[type="range"]:hover::-webkit-slider-thumb {
@@ -2293,4 +2299,37 @@ input[type="range"] {
 
 [data-bs-theme="dark"] #formatSection input[type="range"]:hover::-moz-range-thumb {
   background: #818cf8;
+}
+
+@media (prefers-color-scheme: dark) {
+  textarea {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+  }
+
+  textarea:focus {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+  }
+
+  .alert-light {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+  }
+
+  .text-muted {
+    color: #aaa !important;
+  }
+
+  .text-secondary {
+    color: #b0b0b0 !important;
+  }
+
+  .alert-success {
+    background-color: rgba(25, 135, 84, 0.2) !important;
+    color: #d4edda !important;
+    border-color: rgba(25, 135, 84, 0.4) !important;
+  }
 }

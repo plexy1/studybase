@@ -445,8 +445,8 @@ async function submitTest(event) {
               Student's answer: ${studentAnswer}
               
               ONLY provide these two pieces of information:
-              1. A numeric score out of 5 (be generous in scoring based on concepts rather than exact wording)
-              2. A VERY brief list of any missing key information (maximum 20 words total)
+              1. A numeric score out of 5 (be generous in scoring based on concepts rather than exact wording). Make a 5/5 VERY achieveable if a right answer is met
+              2. If the score is NOT A 5/5. present a A VERY brief list of any missing key information or the correct answer (maximum 20 words total). 
               
               Format your response EXACTLY like this:
               Score: X
