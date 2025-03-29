@@ -1,383 +1,253 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Communities | studybase</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="generalUI.css" rel="stylesheet" />
-    <link href="communities.css" rel="stylesheet" />
-    <!-- Emoji Picker CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.15.0/index.css" />
-    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.15.0/index.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
-            authDomain: "studybase-data.firebaseapp.com",
-            projectId: "studybase-data",
-            storageBucket: "studybase-data.firebasestorage.app",
-            messagingSenderId: "471482464641",
-            appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-        };
-
-        const app = initializeApp(firebaseConfig);
-    </script>
-    <script type="module" src="communities.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Communities | studybase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="communities.css" rel="stylesheet" />
+  <link href="generalUI.css" rel="stylesheet" />
+  <style>
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      flex-direction: column;
+    }
+    .loading i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--bs-primary);
+    }
+    .dev-mode-banner {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-mode-banner i {
+      font-size: 1.25rem;
+    }
+    
+    /* Chat styles */
+    .message-list {
+      height: calc(100vh - 280px);
+      overflow-y: auto;
+      padding: 20px;
+      background-color: var(--bs-tertiary-bg);
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chat-form {
+      padding: 15px;
+      background-color: var(--bs-secondary-bg);
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .message {
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 16px;
+      max-width: 80%;
+      word-wrap: break-word;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message-mine {
+      align-self: flex-end;
+      background-color: var(--bs-primary);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .message-other {
+      align-self: flex-start;
+      background-color: var(--bs-secondary-bg);
+      border: 1px solid var(--bs-border-color);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 0.8rem;
+    }
+    
+    .message-user {
+      font-weight: bold;
+    }
+    
+    .message-time {
+      opacity: 0.7;
+    }
+    
+    .typing-indicator {
+      align-self: flex-start;
+      color: var(--bs-secondary-color);
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .typing-indicator .dots {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    
+    .typing-indicator .dot {
+      width: 4px;
+      height: 4px;
+      background-color: var(--bs-secondary-color);
+      border-radius: 50%;
+      animation: bounce 1.5s infinite;
+    }
+    
+    .typing-indicator .dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .typing-indicator .dot:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .typing-indicator .dot:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--bs-secondary-color);
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--bs-secondary-color);
+      opacity: 0.5;
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand">studybase</a>
-            <div class="nav-links">
-                <a href="search-topic.html">Search</a>
-                <a href="quiz.html">Study</a>
-                <a href="communities.html" class="active">Communities</a>
-                <a href="courses.html">Courses</a>
-                <a href="history.html">Library</a>
-                <a href="account.html">Account</a>
-            </div>
-            <div class="nav-utils">
-                <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon dark-icon"></i>
-                    <i class="fas fa-sun light-icon"></i>
-                </button>
-                <div class="profile-img">
-                    <img src="user.jpg" alt="Profile" />
-                </div>
-            </div>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html" class="active">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
         </div>
-    </nav>
-
-    <div class="container main-content">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="community-container">
-                    <div class="chat-header">
-                        <h3>
-                            <i class="fas fa-comments me-2"></i>
-                            Community Chat
-                            <span class="badge bg-primary ms-2" id="onlineCounter">
-                                <span class="online-indicator"></span>
-                                0 online
-                            </span>
-                        </h3>
-                        <div>
-                            <span id="usernameDisplay" class="fw-bold"></span>
-                        </div>
-                    </div>
-
-                    <div id="messageContainer" class="message-area">
-                        <!-- Messages will be inserted here by JS -->
-                    </div>
-
-                    <div class="input-area">
-                        <div class="input-wrapper">
-                            <!-- Reply indicator will appear here when replying -->
-                            <div id="replyIndicator" class="reply-indicator" style="display: none;">
-                                <div class="reply-indicator-text">
-                                    Replying to <span id="replyToName" class="reply-indicator-name"></span>
-                                </div>
-                                <button class="cancel-reply" id="cancelReply">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            <input type="text" id="messageInput" class="form-control"
-                                placeholder="Type your message...">
-                        </div>
-                        <div class="input-actions">
-                            <span id="characterCounter" class="char-counter">0/300</span>
-
-                            <div id="emojiPickerContainer">
-                                <button class="input-action" id="emojiButton" title="Add emoji">
-                                    <i class="far fa-smile"></i>
-                                </button>
-                                <emoji-picker id="emojiPicker"></emoji-picker>
-                            </div>
-                            <button id="sendButton" class="action-btn">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="guidelines-card">
-                    <h3><i class="fas fa-info-circle me-2"></i>Community Guidelines</h3>
-                    <ul class="guidelines-list">
-                        <li>Be respectful and supportive to other students</li>
-                        <li>Share valuable study resources and insights</li>
-                        <li>Ask questions about course content</li>
-                        <li>Keep discussions on-topic and academic</li>
-                        <li>Avoid sharing assessment answers or violating academic integrity</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </nav>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="mb-0">&copy; 2025 studybase | Group 7</p>
-        </div>
-    </footer>
+  <div class="container main-content">
+    <div class="communities-header">
+      <h2>Studybase Community Chat</h2>
+      <p>Connect and collaborate with other students</p>
+    </div>
+    
+    
+    
+    <div class="chat-container" id="chat-container">
+      <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading chat interface...</p>
+      </div>
+    </div>
+  </div>
 
-    <!-- Templates for dynamic content (hidden) -->
-    <template id="messageTemplate">
-        <div class="message">
-            <div class="message-header">
-                <img class="message-avatar" src="user.jpg" alt="User">
-                <span class="message-sender"></span>
-                <div class="user-metadata">
-                    <span class="university"></span>
-                    <span class="major"></span>
-                </div>
-            </div>
-            <div class="reply-to" style="display: none;">
-                Replying to <span class="reply-sender"></span>: <span class="reply-preview"></span>
-            </div>
-            <div class="message-body"></div>
-            <div class="message-reactions"></div>
-            <div class="message-footer">
-                <span class="message-time"></span>
-                <div class="message-actions">
-                    <button class="action-button reaction-button" data-action="react">
-                        <i class="far fa-smile"></i> React
-                    </button>
-                    <button class="action-button reply-button" data-action="reply">
-                        <i class="fas fa-reply"></i> Reply
-                    </button>
-                </div>
-            </div>
-        </div>
-    </template>
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+    </div>
+  </footer>
 
-    <template id="reactionTemplate">
-        <div class="reaction">
-            <span class="reaction-emoji"></span>
-            <span class="reaction-count">1</span>
-            <div class="reaction-tooltip">
-                <span class="reaction-users">User</span>
-            </div>
-        </div>
-    </template>
-
-    <template id="typingIndicatorTemplate">
-        <div class="typing-indicator">
-            <span class="typing-username"></span> is typing
-            <div class="dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        </div>
-    </template>
-
-    <template id="systemMessageTemplate">
-        <div class="system-message"></div>
-    </template>
-
-    <!-- Add reaction picker template -->
-    <template id="reactionPickerTemplate">
-        <div class="reaction-picker">
-            <div class="emoji-grid">
-                <div class="emoji-item" data-emoji="👍">👍</div>
-                <div class="emoji-item" data-emoji="👏">👏</div>
-                <div class="emoji-item" data-emoji="❤️">❤️</div>
-                <div class="emoji-item" data-emoji="🎉">🎉</div>
-                <div class="emoji-item" data-emoji="😄">😄</div>
-                <div class="emoji-item" data-emoji="🤔">🤔</div>
-                <div class="emoji-item" data-emoji="👀">👀</div>
-                <div class="emoji-item" data-emoji="🙏">🙏</div>
-                <div class="emoji-item" data-emoji="💯">💯</div>
-                <div class="emoji-item" data-emoji="✅">✅</div>
-                <div class="emoji-item" data-emoji="🔥">🔥</div>
-                <div class="emoji-item" data-emoji="⭐">⭐</div>
-                <div class="emoji-item" data-emoji="😂">😂</div>
-                <div class="emoji-item" data-emoji="💡">💡</div>
-                <div class="emoji-item" data-emoji="👎">👎</div>
-                <div class="emoji-item" data-emoji="😍">😍</div>
-            </div>
-        </div>
-    </template>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const htmlElement = document.documentElement;
-            const darkIcon = document.querySelector('.dark-icon');
-            const lightIcon = document.querySelector('.light-icon');
-
-            // Check for saved theme preference or use preferred color scheme
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                htmlElement.setAttribute('data-bs-theme', 'dark');
-                darkIcon.style.display = 'none';
-                lightIcon.style.display = 'block';
-            } else {
-                htmlElement.setAttribute('data-bs-theme', 'light');
-                darkIcon.style.display = 'block';
-                lightIcon.style.display = 'none';
-            }
-
-            darkModeToggle.addEventListener('click', () => {
-                const currentTheme = htmlElement.getAttribute('data-bs-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-                htmlElement.setAttribute('data-bs-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-
-                if (newTheme === 'dark') {
-                    darkIcon.style.display = 'none';
-                    lightIcon.style.display = 'block';
-                } else {
-                    darkIcon.style.display = 'block';
-                    lightIcon.style.display = 'none';
-                }
-            });
-
-            // Emoji picker functionality
-            const emojiButton = document.getElementById('emojiButton');
-            const emojiPicker = document.getElementById('emojiPicker');
-            const messageInput = document.getElementById('messageInput');
-
-            emojiButton.addEventListener('click', () => {
-                if (emojiPicker.style.display === 'block') {
-                    emojiPicker.style.display = 'none';
-                } else {
-                    emojiPicker.style.display = 'block';
-                }
-            });
-
-            // Handle emoji selection for message input
-            emojiPicker.addEventListener('emoji-click', e => {
-                const cursorPosition = messageInput.selectionStart;
-                const text = messageInput.value;
-                const emoji = e.detail.unicode;
-
-                // Insert emoji at cursor position
-                messageInput.value = text.substring(0, cursorPosition) + emoji + text.substring(cursorPosition);
-
-                // Set cursor position after the inserted emoji
-                messageInput.selectionStart = cursorPosition + emoji.length;
-                messageInput.selectionEnd = cursorPosition + emoji.length;
-                messageInput.focus();
-
-                // Hide picker after selection
-                emojiPicker.style.display = 'none';
-            });
-
-            // Close emoji picker when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!emojiButton.contains(e.target) && !emojiPicker.contains(e.target)) {
-                    emojiPicker.style.display = 'none';
-                }
-            });
-
-            // Handle reactions
-            document.addEventListener('click', (e) => {
-                // Handle clicking on existing reaction
-                if (e.target.closest('.reaction') && !e.target.closest('.reaction-button')) {
-                    const reaction = e.target.closest('.reaction');
-                    const message = reaction.closest('.message');
-                    const messageId = message.dataset.id;
-                    const emoji = reaction.querySelector('.reaction-emoji').textContent;
-
-                    // Add the same reaction
-                    addReactionToMessage(messageId, emoji, 'Current User');
-                    return;
-                }
-
-                if (e.target.closest('.reaction-button')) {
-                    const message = e.target.closest('.message');
-                    const messageId = message.dataset.id;
-
-                    // Remove any existing reaction pickers
-                    document.querySelectorAll('.reaction-picker').forEach(picker => {
-                        picker.remove();
-                    });
-
-                    // Create and show the reaction picker
-                    const template = document.getElementById('reactionPickerTemplate');
-                    const reactionPicker = template.content.cloneNode(true).querySelector('.reaction-picker');
-
-                    // Position the picker near the reaction button
-                    const button = e.target.closest('.reaction-button');
-                    const rect = button.getBoundingClientRect();
-                    reactionPicker.style.top = `${rect.top - 220}px`;  // Position above the button
-                    reactionPicker.style.left = `${rect.left - 50}px`;  // Align with button
-                    reactionPicker.style.display = 'block';
-                    reactionPicker.dataset.messageId = messageId;
-
-                    document.body.appendChild(reactionPicker);
-
-                    // Handle emoji item click in the reaction picker
-                    reactionPicker.querySelectorAll('.emoji-item').forEach(item => {
-                        item.addEventListener('click', (event) => {
-                            const emoji = event.target.dataset.emoji;
-                            // For demo purposes, let's just add the reaction to the UI
-                            addReactionToMessage(messageId, emoji, 'Current User');
-                            reactionPicker.remove();
-                        });
-                    });
-
-                    // Close reaction picker when clicking outside
-                    document.addEventListener('click', function closeReactionPicker(event) {
-                        if (!reactionPicker.contains(event.target) && !button.contains(event.target)) {
-                            reactionPicker.remove();
-                            document.removeEventListener('click', closeReactionPicker);
-                        }
-                    });
-                }
-            });
-
-            // Function to add reaction to message (demo)
-            function addReactionToMessage(messageId, emoji, username = 'Current User') {
-                // Find the message by ID
-                const message = document.querySelector(`.message[data-id="${messageId}"]`);
-                if (!message) return;
-
-                // Find or create the reactions container
-                const reactionsContainer = message.querySelector('.message-reactions');
-
-                // Check if this emoji reaction already exists
-                const existingReaction = Array.from(reactionsContainer.children).find(
-                    child => child.querySelector('.reaction-emoji').textContent === emoji
-                );
-
-                if (existingReaction) {
-                    // Increment the count if it exists
-                    const countElem = existingReaction.querySelector('.reaction-count');
-                    const count = parseInt(countElem.textContent) + 1;
-                    countElem.textContent = count;
-                    existingReaction.classList.add('active');
-
-                    // Update the tooltip with user info
-                    const tooltipElem = existingReaction.querySelector('.reaction-users');
-                    const currentUsers = tooltipElem.textContent.split(', ');
-                    if (!currentUsers.includes(username)) {
-                        currentUsers.push(username);
-                        tooltipElem.textContent = currentUsers.join(', ');
-                    }
-                } else {
-                    // Create a new reaction if it doesn't exist
-                    const reactionTemplate = document.getElementById('reactionTemplate');
-                    const newReaction = reactionTemplate.content.cloneNode(true).querySelector('.reaction');
-                    newReaction.querySelector('.reaction-emoji').textContent = emoji;
-                    newReaction.querySelector('.reaction-users').textContent = username;
-                    newReaction.classList.add('active');
-                    reactionsContainer.appendChild(newReaction);
-                }
-            }
-        });
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  <script type="module" src="communities.js"></script>
 </body>
-
 </html>
