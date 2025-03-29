@@ -5,7 +5,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
   const formattedMCQuestions = [];
   if (multipleChoiceText && multipleChoiceText.trim() !== '') {
     const mcQuestionBlocks = multipleChoiceText.split(/Question:/i).filter(block => block.trim());
-    
+
     for (const block of mcQuestionBlocks) {
       const lines = block.split('\n').filter(line => line.trim());
       if (lines.length >= 7) {
@@ -30,7 +30,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
   const formattedSAQuestions = [];
   if (shortAnswerText && shortAnswerText.trim() !== '') {
     const saQuestionBlocks = shortAnswerText.split(/Question:/i).filter(block => block.trim());
-    
+
     for (const block of saQuestionBlocks) {
       const lines = block.split('\n').filter(line => line.trim());
       if (lines.length >= 2) {
@@ -38,7 +38,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
         const answerLine = lines.find(line => line.includes('Expected Answer'));
         if (question && answerLine) {
           const keyPoints = answerLine.replace('Expected Answer:', '').trim().split('•').filter(point => point.trim());
-          
+
           formattedSAQuestions.push({
             type: 'sa',
             question,
@@ -389,6 +389,7 @@ async function submitTest(event) {
     const studentAnswer = form.querySelector(`textarea[name="saq${index}"]`).value;
     const keyPointsStr = form.querySelector(`input[name="saKeyPoints${index}"]`).value;
     const keyPoints = keyPointsStr.split('|');
+    const questionText = qBox.querySelector('b').nextSibling.nextSibling.nextSibling.textContent.trim();
 
     let feedbackContainer = qBox.querySelector('.feedback-container');
     if (!feedbackContainer) {
@@ -441,18 +442,27 @@ async function submitTest(event) {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Evaluate the student's short answer based on these criteria:
-              Student's answer: ${studentAnswer}
-              
-              ONLY provide these two pieces of information:
-              1. A numeric score out of 5 (be generous in scoring based on concepts rather than exact wording). Make a 5/5 VERY achieveable if a right answer is met
-              2. If the score is NOT A 5/5. present a A VERY brief list of any missing key information or the correct answer (maximum 20 words total). 
-              
-              Format your response EXACTLY like this:
-              Score: X
-              Missing: [missing information OR "None" if answer is complete]
-              
-              DO NOT add ANY other commentary, explanation or feedback.`
+              text: `Grade this student's answer to the following question:
+
+Question: ${questionText}
+
+Student's answer: ${studentAnswer}
+
+Key concepts that should be addressed: ${keyPoints.join(', ')}
+
+Your task:
+1. Be generous in grading based on overall understanding rather than exact wording.
+2. Give a 5/5 if the student demonstrates understanding of the core concepts, even if their phrasing differs from the expected answer.
+3. Give a 4/5 for mostly correct answers with minor omissions.
+4. Give a 3/5 for partially correct answers with significant gaps.
+5. Give a 2/5 or lower only for answers that show minimal understanding.
+
+Format your response EXACTLY like this:
+Score: [number 0-5]
+Missing: [ONLY include this field if score is LESS than 5, otherwise omit completely]
+
+If the score is 5/5, your response should ONLY contain "Score: 5" with no "Missing:" field.
+DO NOT add ANY other commentary, explanation or feedback.`
             }]
           }]
         })
@@ -466,16 +476,15 @@ async function submitTest(event) {
       const aiEvaluation = data.candidates[0].content.parts[0].text;
       const scoreMatch = aiEvaluation.match(/Score:\s*(\d+)/i);
       const missingMatch = aiEvaluation.match(/Missing:\s*(.*?)(?:\n|$)/i);
-      
+
       let saScore = scoreMatch ? parseInt(scoreMatch[1]) : 0;
-      let missingInfo = missingMatch ? missingMatch[1].trim() : "None";
-      
-      // Cap score at 5
+      let missingInfo = missingMatch ? missingMatch[1].trim() : "";
+
       saScore = Math.min(saScore, 5);
       totalScore += saScore;
       let scoreClass = 'danger';
       let progressWidth = (saScore / 5) * 100;
-      
+
       if (saScore === 3) {
         scoreClass = 'warning';
       } else if (saScore === 4) {
@@ -500,22 +509,27 @@ async function submitTest(event) {
                 <div class="text-muted small mt-1">of 5 points</div>
               </div>
             </div>
-            ${missingInfo && missingInfo !== "None" ? 
-              `<div class="alert alert-light border mb-0">
+            ${saScore < 5 && missingInfo ?
+          `<div class="alert alert-light border mb-0">
                 <div class="fw-bold mb-1 text-secondary"><i class="fas fa-info-circle me-1"></i> Missing Information:</div>
                 <div>${missingInfo}</div>
-              </div>` : 
-              `<div class="alert alert-success mb-0">
-                <i class="fas fa-check-circle me-1"></i> Complete answer with no missing key information.
-              </div>`
-            }
+              </div>` :
+          (saScore === 5 ?
+            `<div class="alert alert-success mb-0">
+                  <i class="fas fa-check-circle me-1"></i> Complete answer with all key concepts addressed.
+                </div>` :
+            `<div class="alert alert-success mb-0">
+                  <i class="fas fa-check-circle me-1"></i> Answer demonstrates good understanding.
+                </div>`
+          )
+        }
           </div>
         </div>`;
-    } 
-    
+    }
+
     catch (error) {
       console.error('Scoring error:', error);
-      
+
       feedbackContainer.innerHTML = `
         <div class="card shadow border-0 mb-3">
           <div class="card-header bg-danger text-white">
@@ -534,7 +548,7 @@ async function submitTest(event) {
   const percentage = (totalScore / (totalMCQuestions + (saQuestions.length * 5))) * 100;
   const resultMessage = document.createElement('div');
   resultMessage.className = 'card shadow border-0 mb-4 mt-4';
-  
+
   let gradeClass = 'danger';
   if (percentage >= 70 && percentage < 80) {
     gradeClass = 'warning';
@@ -543,7 +557,7 @@ async function submitTest(event) {
   } else if (percentage >= 90) {
     gradeClass = 'success';
   }
-  
+
   resultMessage.innerHTML = `
     <div class="card-header bg-primary text-white">
       <h4 class="m-0">Test Results</h4>
@@ -563,7 +577,7 @@ async function submitTest(event) {
           </div>
           <div class="progress mb-3" style="height: 6px;">
             <div class="progress-bar bg-primary" role="progressbar" 
-                 style="width: ${(mcScore/totalMCQuestions)*100}%"></div>
+                 style="width: ${(mcScore / totalMCQuestions) * 100}%"></div>
           </div>
           
           <div class="d-flex justify-content-between mb-2">
@@ -572,7 +586,7 @@ async function submitTest(event) {
           </div>
           <div class="progress mb-3" style="height: 6px;">
             <div class="progress-bar bg-info" role="progressbar" 
-                 style="width: ${((totalScore - mcScore)/(saQuestions.length * 5))*100}%"></div>
+                 style="width: ${((totalScore - mcScore) / (saQuestions.length * 5)) * 100}%"></div>
           </div>
           
           <div class="d-flex justify-content-between fw-bold">
@@ -592,7 +606,7 @@ function startTimer(minutes) {
   if (typeof window.quizTimer === 'undefined') {
     window.quizTimer = null;
   }
-  
+
   if (window.quizTimer) {
     clearInterval(window.quizTimer);
   }
@@ -637,7 +651,7 @@ function startTimer(minutes) {
           <p class="mb-0">Your test has been automatically submitted.</p>
         </div>
       `;
-      
+
       const quizContainer = document.querySelector('.quiz-container');
       if (quizContainer && quizContainer.firstChild) {
         quizContainer.insertBefore(timeUpNotification, quizContainer.firstChild);
