@@ -196,7 +196,6 @@
     const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn');
     const createFolderBtn = document.getElementById('createFolderBtn');
     const createFolderModal = new bootstrap.Modal(document.getElementById('createFolderModal'));
-    createFolderSubmit.disabled = true;
     const createFolderSubmit = document.getElementById('createFolderSubmit');
     const foldersContainer = document.getElementById('foldersContainer');
     const folderNameInput = document.getElementById('folderName');
@@ -694,8 +693,7 @@
 
       if (count > 0 && count <= 20) {
         createFolderSubmit.disabled = false;
-      }
-
+      } 
       else {
         createFolderSubmit.disabled = true;
       }
@@ -1131,8 +1129,6 @@
         draggedTile = null;
       });
     }
-
-
   </script>
 </body>
 
