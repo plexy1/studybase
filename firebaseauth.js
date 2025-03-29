@@ -123,11 +123,15 @@ onAuthStateChanged(auth, async (user) => {
         }
         
         loadUserPreferences(userData);
-      } else {
+      } 
+      
+      else {
         console.log("No user document found");
         setDefaultValues();
       }
-    } catch (error) {
+    } 
+    
+    catch (error) {
       console.error("Error fetching user data:", error);
       setDefaultValues();
     }

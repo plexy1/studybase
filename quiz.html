@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search | studybase</title>
+  <title>Study | studybase</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,44 +42,43 @@
     <p class="lead">Choose a study format to get started</p>
   </div>
 
-  <!-- Study Options Selection -->
-  <div id="studyOptionsContainer" class="container">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <!-- Generate Questions Option -->
-      <div class="col">
-        <div class="card h-100 study-option-card text-center" data-option="questions">
-          <div class="card-body">
-            <i class="fas fa-question-circle option-icon text-primary"></i>
-            <h3 class="card-title">Generate Questions</h3>
-            <p class="card-text">Create custom practice questions with detailed explanations to test your understanding.
-            </p>
-          </div>
+<!-- Study Options Selection -->
+<div id="studyOptionsContainer" class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Generate Test Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="quiz">
+        <div class="card-body">
+          <i class="fas fa-clipboard-list option-icon text-warning"></i>
+          <h3 class="card-title">Generate Test</h3>
+          <p class="card-text">Create a timed multiple-choice test with automatic grading.</p>
         </div>
       </div>
+    </div>
 
-      <!-- Generate Flashcards Option -->
-      <div class="col">
-        <div class="card h-100 study-option-card text-center" data-option="flashcards">
-          <div class="card-body">
-            <i class="fas fa-clone option-icon text-success"></i>
-            <h3 class="card-title">Generate Flashcards</h3>
-            <p class="card-text">Create digital flashcards to memorize key concepts.</p>
-          </div>
+    <!-- Generate Questions Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="questions">
+        <div class="card-body">
+          <i class="fas fa-question-circle option-icon text-primary"></i>
+          <h3 class="card-title">Generate Questions</h3>
+          <p class="card-text">Create custom practice questions with detailed explanations to test your understanding.</p>
         </div>
       </div>
+    </div>
 
-      <!-- Generate Quiz Option -->
-      <div class="col">
-        <div class="card h-100 study-option-card text-center" data-option="quiz">
-          <div class="card-body">
-            <i class="fas fa-clipboard-list option-icon text-warning"></i>
-            <h3 class="card-title">Generate Test</h3>
-            <p class="card-text">Create a timed multiple-choice test with automatic grading.</p>
-          </div>
+    <!-- Generate Flashcards Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="flashcards">
+        <div class="card-body">
+          <i class="fas fa-clone option-icon text-success"></i>
+          <h3 class="card-title">Generate Flashcards</h3>
+          <p class="card-text">Create digital flashcards to memorize key concepts.</p>
         </div>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Main configuration container that appears below options after selection -->
   <div id="configurationContainer" class="container mt-4 centered-content" style="display: none;">
@@ -593,15 +592,12 @@
       // Clear previous content
       document.getElementById('studyContent').innerHTML = '<div id="geminiResult"></div>';
       
-      // Start the timer
-      if (timeLimit > 0) {
-        startTimer(timeLimit);
-      }
-      
       // Call the function from generate-test.js
       if (typeof window.genTest === 'function') {
-        window.genTest(topic, difficulty, educationLevel, shortAnswerCount, multipleChoiceCount);
-      } else {
+        window.genTest(topic, difficulty, educationLevel, shortAnswerCount, multipleChoiceCount, timeLimit);
+      } 
+      
+      else {
         document.getElementById('studyContent').innerHTML = `
           <div class="alert alert-danger">
             <h4>Error</h4>
@@ -701,73 +697,6 @@
       disableDarkMode();
     }
 
-    // Timer function for quiz mode
-    function startTimer(minutes) {
-      if (quizTimer) {
-        clearInterval(quizTimer);
-      }
-      
-      const timerDisplay = document.getElementById('timerDisplay');
-      const timeRemaining = document.getElementById('timeRemaining');
-      const timerProgressBar = document.querySelector('.timer-progress-bar');
-      
-      timerDisplay.style.display = 'block';
-      
-      const totalSeconds = minutes * 60;
-      let secondsLeft = totalSeconds;
-      
-      // Update timer display
-      function updateTimerDisplay() {
-        const minutesLeft = Math.floor(secondsLeft / 60);
-        const secondsDisplay = secondsLeft % 60;
-        timeRemaining.textContent = `${minutesLeft}:${secondsDisplay < 10 ? '0' : ''}${secondsDisplay}`;
-        
-        // Update progress bar
-        const percentLeft = (secondsLeft / totalSeconds) * 100;
-        timerProgressBar.style.width = `${percentLeft}%`;
-        
-        // Change color as time runs out
-        if (percentLeft < 25) {
-          timerProgressBar.style.backgroundColor = '#dc3545'; // Red
-        } else if (percentLeft < 50) {
-          timerProgressBar.style.backgroundColor = '#ffc107'; // Yellow
-        }
-      }
-      
-      // Initial display
-      updateTimerDisplay();
-      
-      // Start the timer
-      quizTimer = setInterval(() => {
-        secondsLeft--;
-        updateTimerDisplay();
-        
-        if (secondsLeft <= 0) {
-          clearInterval(quizTimer);
-          timeRemaining.textContent = "Time's up!";
-          timerProgressBar.style.width = '0%';
-          
-          // Add time's up notification
-      const studyContent = document.getElementById('studyContent');
-          const timeUpNotification = document.createElement('div');
-          timeUpNotification.className = 'alert alert-warning mt-3';
-          timeUpNotification.innerHTML = '<strong>Time\'s up!</strong> Please submit your answers now.';
-          
-          // Insert at the top of the content
-          if (studyContent.firstChild) {
-            studyContent.insertBefore(timeUpNotification, studyContent.firstChild);
-          } else {
-            studyContent.appendChild(timeUpNotification);
-          }
-          
-          // Time's up - auto submit the test if there's a form
-          const testForm = document.getElementById('testForm');
-          if (testForm) {
-            testForm.dispatchEvent(new Event('submit'));
-          }
-        }
-      }, 1000);
-    }
   </script>
 </body>
 

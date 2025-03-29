@@ -142,6 +142,10 @@ html[data-bs-theme="dark"] .navbar {
   font-size: 1.5rem;
   color: var(--primary-color);
   text-decoration: none;
+  transform: none !important;
+  pointer-events: none;
+  cursor: default;
+
 }
 
 .nav-links {
