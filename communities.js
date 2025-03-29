@@ -152,6 +152,31 @@ function setupChat() {
         }
     });
 
+    messageInput.addEventListener('input', () => {
+        const currentLength = messageInput.value.length;
+        characterCounter.textContent = `${currentLength}/300`;
+        
+        if (currentLength > 250) {
+            characterCounter.classList.add('text-amber-500');
+        } 
+        
+        else {
+            characterCounter.classList.remove('text-amber-500');
+        }
+        
+        if (currentLength >= 300) {
+            characterCounter.classList.add('text-red-500');
+            characterCounter.classList.remove('text-amber-500');
+        } else {
+            characterCounter.classList.remove('text-red-500');
+        }
+        
+        if (currentLength > 300) {
+            messageInput.value = messageInput.value.substring(0, 300);
+            characterCounter.textContent = "300/300";
+        }
+    });  
+
     // Event listeners
     sendButton.addEventListener('click', sendMessage);
     messageInput.addEventListener('keypress', (event) => {
@@ -664,3 +689,11 @@ logoutButton.addEventListener('click', async () => {
         console.error('Error signing out:', error);
     }
 });
+
+function initializeCharacterCounter() {
+    if (characterCounter) {
+        characterCounter.textContent = "0/300";
+    }
+}
+
+initializeCharacterCounter();
