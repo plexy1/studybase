@@ -260,11 +260,6 @@
       <h2>Search History</h2>
     </div>
 
-    <h3 class="folders-title"><i class="fas fa-folder-open"></i> Folders</h3>
-    <div id="foldersContainer" class="folders-container">
-      <!-- Folders will be loaded here -->
-    </div>
-
     <div class="history-actions">
       <button id="createFolderBtn" class="action-btn">
         <i class="fas fa-folder-plus"></i> Create Folder
@@ -272,6 +267,11 @@
       <button id="deleteAllHistoryBtn" class="action-btn danger-btn">
         <i class="fas fa-trash-alt"></i> Delete All History
       </button>
+    </div>
+
+    <h3 class="folders-title"><i class="fas fa-folder-open"></i> Folders</h3>
+    <div id="foldersContainer" class="folders-container">
+      <!-- Folders will be loaded here -->
     </div>
 
     <!-- Folder View Modal -->
@@ -743,6 +743,66 @@
       // Show the modal
       const modal = new bootstrap.Modal(folderViewModal);
       modal.show();
+
+      // Add drag and drop handlers for the back button
+      folderViewBack.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.add('drag-over');
+      });
+
+      folderViewBack.addEventListener('dragleave', () => {
+        folderViewBack.classList.remove('drag-over');
+      });
+
+      folderViewBack.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.remove('drag-over');
+
+        if (draggedTile) {
+          const searchId = draggedTile.dataset.searchId;
+          const currentFolderId = folderViewModal.dataset.folderId;
+          const folderName = document.getElementById('folderViewTitle').textContent;
+
+          // First update the database
+          await moveTileToFolder(searchId, null);
+
+          // Create a clone for the unsorted items section
+          const clonedTile = draggedTile.cloneNode(true);
+
+          // Update badge on cloned tile
+          const badge = clonedTile.querySelector('.location-badge');
+          if (badge) {
+            badge.className = 'location-badge unsorted-location';
+            badge.innerHTML = '<i class="fas fa-layer-group"></i> Unsorted Items';
+          }
+
+          // Add the cloned tile to unsorted items
+          const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+          searchHistoryTiles.appendChild(clonedTile);
+
+          // Re-attach drag event listeners to the cloned tile
+          setupDragListeners(clonedTile);
+
+          // Hide the no history message
+          const noHistoryMessage = document.getElementById('noHistoryMessage');
+          noHistoryMessage.style.display = 'none';
+          
+          // Also refresh the folder topics display
+          const folderContainer = document.querySelector(`[data-folder-id="${currentFolderId}"]`);
+          if (folderContainer) {
+            const topicList = folderContainer.querySelector('.topic-list');
+            if (topicList) {
+              await loadFolderTopics(currentFolderId, topicList);
+            }
+          }
+          
+          // Close the modal
+          const modal = bootstrap.Modal.getInstance(folderViewModal);
+          modal.hide();
+        }
+      });
     }
 
     async function createFolder(name, description) {
