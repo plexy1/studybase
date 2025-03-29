@@ -1,3 +1,154 @@
+async function genTest(query, difficulty = 'medium', educationLevel = 'university12', shortAnswerCount = 5, multipleChoiceCount = 5, timeLimit = 10) {
+  const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
+  const mcCount = parseInt(multipleChoiceCount);
+  const SACount = parseInt(shortAnswerCount);
+  const finalmCCount = mcCount < 0 ? 0 : (mcCount > 20 ? 20 : mcCount);
+  const finalSACount = SACount < 0 ? 0 : (SACount > 20 ? 20 : SACount);
+
+  let levelText = '';
+  switch (educationLevel) {
+    case 'highSchool':
+      levelText = 'High School';
+      break;
+    case 'university12':
+      levelText = 'Year 1-2 University';
+      break;
+    case 'university34':
+      levelText = 'Year 3-4 University';
+      break;
+    case 'masters':
+      levelText = 'Graduate Student';
+      break;
+    default:
+      levelText = 'university level student';
+  }
+
+  let difficultyLevel = '';
+  switch (difficulty) {
+    case 'easy':
+      difficultyLevel = 'basic, introductory level';
+      break;
+    case 'medium':
+      difficultyLevel = 'intermediate level';
+      break;
+    case 'hard':
+      difficultyLevel = 'advanced, challenging level';
+      break;
+    default:
+      difficultyLevel = 'intermediate level';
+  }
+
+  const promptMCText = `Generate ${finalmCCount} unique multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question EXACTLY as follows:
+Question: [question text]
+A) [option A]
+B) [option B]
+C) [option C]
+D) [option D]
+Correct Answer: [letter of correct answer]
+Explanation: [brief explanation of why this is the correct answer]
+
+Make sure each question follows this exact format with no additional text or formatting.`;
+
+  const promptSAText = `Generate ${finalSACount} short answer questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. These questions can be of two types:
+
+1. Open-Ended Analytical Questions: Requiring a detailed, thoughtful response of 3-5 sentences that demonstrates comprehensive understanding.
+
+2. Problem-Solving Questions: These can include mathematical word problems, coding challenges, or scenario-based problems where there could be multiple valid approaches to the solution.
+
+For EACH question, provide:
+- A clear, engaging question text
+- A model answer that represents what a correct answer would contain, but emphasize that any valid approach that reaches the correct conclusion should be accepted
+
+Format EXACTLY as follows:
+Question: [question text]
+Expected Answer: [a concise explanation of what constitutes a correct answer, including possible alternative approaches]
+
+IMPORTANT: 
+- For Problem-Solving questions, focus on the correctness of the final result rather than requiring a specific method
+- For Analytical questions, focus on depth of insight and comprehensive understanding
+- DO NOT list specific key points for grading
+- DO NOT ADD ANY BOLDS OR ANYTHING ELSE!`;
+
+  const geminiResultDiv = document.getElementById('geminiResult');
+  if (!geminiResultDiv) {
+    console.error('Could not find geminiResult div');
+    return;
+  }
+
+  const loadingText = "Loading Test Questions...";
+  let loadingHTML = `
+    <div class="loading-container">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-message">${loadingText}</div>
+    </div>
+  `;
+  geminiResultDiv.innerHTML = loadingHTML;
+
+  try {
+    let multipleChoiceQuestions = '';
+    let shortAnswerQuestions = '';
+    const apiCalls = [];
+
+    if (finalmCCount > 0) {
+      apiCalls.push(
+        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptMCText }] }]
+          })
+        }).then(response => {
+          if (!response.ok) throw new Error('API request for MC questions failed');
+          return response.json();
+        }).then(data => {
+          multipleChoiceQuestions = data.candidates[0].content.parts[0].text;
+        })
+      );
+    }
+
+    if (finalSACount > 0) {
+      apiCalls.push(
+        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptSAText }] }]
+          })
+        }).then(response => {
+          if (!response.ok) throw new Error('API request for SA questions failed');
+          return response.json();
+        }).then(data => {
+          shortAnswerQuestions = data.candidates[0].content.parts[0].text;
+        })
+      );
+    }
+    await Promise.all(apiCalls);
+
+    geminiResultDiv.innerHTML = formatTestQuestions(multipleChoiceQuestions, shortAnswerQuestions, difficulty, educationLevel, timeLimit);
+
+  } catch (error) {
+    console.error('Error generating test:', error);
+    geminiResultDiv.innerHTML = `
+      <div class="card border-danger mb-3">
+        <div class="card-header bg-danger text-white">
+          <h4 class="m-0">Error Generating Test Questions</h4>
+        </div>
+        <div class="card-body">
+          <p>${error.message}</p>
+          <p>Please try again or try a different topic.</p>
+          <button class="btn btn-outline-secondary mt-3" onclick="resetStudyTools()">
+            <i class="fas fa-arrow-left"></i> Back to Study Tools
+          </button>
+        </div>
+      </div>
+    `;
+  }
+}
+
 function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, educationLevel, timeLimit) {
   const timeCount = parseInt(timeLimit);
   const finaltime = isNaN(timeCount) || timeCount < 1 ? 1 : (timeCount > 60 ? 60 : timeCount);
@@ -5,7 +156,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
   const formattedMCQuestions = [];
   if (multipleChoiceText && multipleChoiceText.trim() !== '') {
     const mcQuestionBlocks = multipleChoiceText.split(/Question:/i).filter(block => block.trim());
-
+    
     for (const block of mcQuestionBlocks) {
       const lines = block.split('\n').filter(line => line.trim());
       if (lines.length >= 7) {
@@ -30,19 +181,19 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
   const formattedSAQuestions = [];
   if (shortAnswerText && shortAnswerText.trim() !== '') {
     const saQuestionBlocks = shortAnswerText.split(/Question:/i).filter(block => block.trim());
-
+    
     for (const block of saQuestionBlocks) {
       const lines = block.split('\n').filter(line => line.trim());
       if (lines.length >= 2) {
         const question = lines[0].trim();
         const answerLine = lines.find(line => line.includes('Expected Answer'));
         if (question && answerLine) {
-          const keyPoints = answerLine.replace('Expected Answer:', '').trim().split('•').filter(point => point.trim());
-
+          const expectedAnswer = answerLine.replace('Expected Answer:', '').trim();
+          
           formattedSAQuestions.push({
             type: 'sa',
             question,
-            keyPoints: keyPoints.length > 0 ? keyPoints : [answerLine.replace('Expected Answer:', '').trim()]
+            expectedAnswer
           });
         }
       }
@@ -143,7 +294,7 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
         <div class="short-answer-container">
           <textarea class="form-control" name="saq${index}" rows="5" placeholder="Type your answer here..."></textarea>
         </div>
-        <input type="hidden" name="saKeyPoints${index}" value="${q.keyPoints.join('|')}">
+        <input type="hidden" name="saExpectedAnswer${index}" value="${q.expectedAnswer}">
       </div>`;
   });
 
@@ -166,159 +317,6 @@ function formatTestQuestions(multipleChoiceText, shortAnswerText, difficulty, ed
   }, 500);
 
   return formattedTest;
-}
-
-async function genTest(query, difficulty = 'medium', educationLevel = 'university12', shortAnswerCount = 5, multipleChoiceCount = 5, timeLimit = 10) {
-  const apiKey = 'AIzaSyAJJQLYD2wHZu49VgCIzbAuc2XBWFtCBJA';
-  const mcCount = parseInt(multipleChoiceCount);
-  const SACount = parseInt(shortAnswerCount);
-  const finalmCCount = mcCount < 0 ? 0 : (mcCount > 20 ? 20 : mcCount);
-  const finalSACount = SACount < 0 ? 0 : (SACount > 20 ? 20 : SACount);
-
-  let levelText = '';
-  switch (educationLevel) {
-    case 'highSchool':
-      levelText = 'High School';
-      break;
-    case 'university12':
-      levelText = 'Year 1-2 University';
-      break;
-    case 'university34':
-      levelText = 'Year 3-4 University';
-      break;
-    case 'masters':
-      levelText = 'Graduate Student';
-      break;
-    default:
-      levelText = 'university level student';
-  }
-
-  let difficultyLevel = '';
-  switch (difficulty) {
-    case 'easy':
-      difficultyLevel = 'basic, introductory level';
-      break;
-    case 'medium':
-      difficultyLevel = 'intermediate level';
-      break;
-    case 'hard':
-      difficultyLevel = 'advanced, challenging level';
-      break;
-    default:
-      difficultyLevel = 'intermediate level';
-  }
-
-  const promptMCText = `Generate ${finalmCCount} multiple choice questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. For each question, provide 4 options (A, B, C, D) with one correct answer and a brief explanation. Format each question EXACTLY as follows:
-Question: [question text]
-A) [option A]
-B) [option B]
-C) [option C]
-D) [option D]
-Correct Answer: [letter of correct answer]
-Explanation: [brief explanation of why this is the correct answer]
-
-Make sure each question follows this exact format with no additional text or formatting.`;
-
-  const promptSAText = `Generate ${finalSACount} short answer questions about "${query}" at a ${difficultyLevel} appropriate for a ${levelText}. These questions can be of two types:
-
-1. Open-Ended Analytical Questions: Requiring a detailed, thoughtful response of 3-5 sentences that demonstrates comprehensive understanding.
-
-2. Problem-Solving Questions: These can include mathematical word problems, coding challenges, or scenario-based problems with specific solution strategies (more preferred).
-
-For EACH question, provide:
-- A clear, engaging question text
-- 5 key scoring points that represent:
-  - For analytical questions: Critical insights, nuanced understanding, or comprehensive analysis
-  - For problem-solving questions: Specific solution steps, key mathematical/logical approaches, or essential components of the solution
-
-Format EXACTLY as follows:
-Question: [question text]
-Expected Answer: [a quick 2-3 secntence answer that explains the question or the answer to a problem]
-
-IMPORTANT: 
-- For Problem-Solving questions, the key points should represent the EXACT steps or components needed to fully solve the problem
-- For Analytical questions, focus on depth of insight and comprehensive understanding
-- Ensure the scoring points are specific, measurable, and directly related to the question's core content.
-- DO NOT ADD ANY BOLDS OR ANYTHING ELSE!`;
-
-  const geminiResultDiv = document.getElementById('geminiResult');
-  if (!geminiResultDiv) {
-    console.error('Could not find geminiResult div');
-    return;
-  }
-
-  const loadingText = "Loading Test Questions...";
-  let loadingHTML = `
-    <div class="loading-container">
-      <div class="loading-dots">
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-      </div>
-      <div class="loading-message">${loadingText}</div>
-    </div>
-  `;
-  geminiResultDiv.innerHTML = loadingHTML;
-
-  try {
-    let multipleChoiceQuestions = '';
-    let shortAnswerQuestions = '';
-    const apiCalls = [];
-
-    if (finalmCCount > 0) {
-      apiCalls.push(
-        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptMCText }] }]
-          })
-        }).then(response => {
-          if (!response.ok) throw new Error('API request for MC questions failed');
-          return response.json();
-        }).then(data => {
-          multipleChoiceQuestions = data.candidates[0].content.parts[0].text;
-        })
-      );
-    }
-
-    if (finalSACount > 0) {
-      apiCalls.push(
-        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptSAText }] }]
-          })
-        }).then(response => {
-          if (!response.ok) throw new Error('API request for SA questions failed');
-          return response.json();
-        }).then(data => {
-          shortAnswerQuestions = data.candidates[0].content.parts[0].text;
-        })
-      );
-    }
-    await Promise.all(apiCalls);
-
-    geminiResultDiv.innerHTML = formatTestQuestions(multipleChoiceQuestions, shortAnswerQuestions, difficulty, educationLevel, timeLimit);
-
-  } catch (error) {
-    console.error('Error generating test:', error);
-    geminiResultDiv.innerHTML = `
-      <div class="card border-danger mb-3">
-        <div class="card-header bg-danger text-white">
-          <h4 class="m-0">Error Generating Test Questions</h4>
-        </div>
-        <div class="card-body">
-          <p>${error.message}</p>
-          <p>Please try again or try a different topic.</p>
-          <button class="btn btn-outline-secondary mt-3" onclick="resetStudyTools()">
-            <i class="fas fa-arrow-left"></i> Back to Study Tools
-          </button>
-        </div>
-      </div>
-    `;
-  }
 }
 
 async function submitTest(event) {
@@ -387,8 +385,7 @@ async function submitTest(event) {
 
   for (const [index, qBox] of saQuestions.entries()) {
     const studentAnswer = form.querySelector(`textarea[name="saq${index}"]`).value;
-    const keyPointsStr = form.querySelector(`input[name="saKeyPoints${index}"]`).value;
-    const keyPoints = keyPointsStr.split('|');
+    const expectedAnswer = form.querySelector(`input[name="saExpectedAnswer${index}"]`).value;
     const questionText = qBox.querySelector('b').nextSibling.nextSibling.nextSibling.textContent.trim();
 
     let feedbackContainer = qBox.querySelector('.feedback-container');
@@ -448,14 +445,19 @@ Question: ${questionText}
 
 Student's answer: ${studentAnswer}
 
-Key concepts that should be addressed: ${keyPoints.join(', ')}
+Expected answer (for reference): ${expectedAnswer}
 
 Your task:
-1. Be generous in grading based on overall understanding rather than exact wording.
-2. Give a 5/5 if the student demonstrates understanding of the core concepts, even if their phrasing differs from the expected answer.
-3. Give a 4/5 for mostly correct answers with minor omissions.
-4. Give a 3/5 for partially correct answers with significant gaps.
-5. Give a 2/5 or lower only for answers that show minimal understanding.
+1. Be generous in grading based on CORRECTNESS of the solution rather than matching a specific approach or methodology.
+2. ANY valid method that reaches the correct conclusion should receive a 5/5.
+3. Focus on whether the student understands the core concepts and can solve the problem correctly, not on whether they used a specific approach.
+4. For mathematical or technical problems, if the student uses a different but valid approach (e.g., L'Hôpital's rule instead of factoring, or a different algorithm that produces the same result), they should receive full credit.
+5. Give a 5/5 if the student demonstrates understanding and arrives at the correct solution, even if their approach differs.
+6. Give a 4/5 for mostly correct answers with minor errors or omissions.
+7. Give a 3/5 for partially correct answers with some understanding but significant gaps.
+8. Give a 2/5 only for answers that show minimal understanding.
+9. Give a 1/5 if student shows incorrect answers and poor understanding.
+10. Give a 0/5 only for blank answers or completely irrelevant responses.
 
 Format your response EXACTLY like this:
 Score: [number 0-5]
@@ -476,15 +478,15 @@ DO NOT add ANY other commentary, explanation or feedback.`
       const aiEvaluation = data.candidates[0].content.parts[0].text;
       const scoreMatch = aiEvaluation.match(/Score:\s*(\d+)/i);
       const missingMatch = aiEvaluation.match(/Missing:\s*(.*?)(?:\n|$)/i);
-
+      
       let saScore = scoreMatch ? parseInt(scoreMatch[1]) : 0;
       let missingInfo = missingMatch ? missingMatch[1].trim() : "";
-
+      
       saScore = Math.min(saScore, 5);
       totalScore += saScore;
       let scoreClass = 'danger';
       let progressWidth = (saScore / 5) * 100;
-
+      
       if (saScore === 3) {
         scoreClass = 'warning';
       } else if (saScore === 4) {
@@ -494,42 +496,55 @@ DO NOT add ANY other commentary, explanation or feedback.`
       }
 
       feedbackContainer.innerHTML = `
-        <div class="card shadow border-0 mb-3">
-          <div class="card-header bg-${scoreClass} text-white d-flex justify-content-between align-items-center">
-            <strong>Answer Assessment</strong>
-            <span class="badge bg-white text-${scoreClass} px-2 py-1 rounded-pill">${saScore}/5</span>
-          </div>
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <div class="display-4 me-3 text-${scoreClass}">${saScore}</div>
-              <div class="flex-grow-1">
-                <div class="progress" style="height: 10px;">
-                  <div class="progress-bar bg-${scoreClass}" role="progressbar" style="width: ${progressWidth}%"></div>
-                </div>
-                <div class="text-muted small mt-1">of 5 points</div>
+      <div class="card shadow border-0 mb-3">
+        <div class="card-header bg-${scoreClass} text-white d-flex justify-content-between align-items-center">
+          <strong>Answer Assessment</strong>
+          <span class="badge bg-white text-${scoreClass} px-2 py-1 rounded-pill">${saScore}/5</span>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="display-4 me-3 text-${scoreClass}">${saScore}</div>
+            <div class="flex-grow-1">
+              <div class="progress" style="height: 10px;">
+                <div class="progress-bar bg-${scoreClass}" role="progressbar" style="width: ${progressWidth}%"></div>
               </div>
+              <div class="text-muted small mt-1">of 5 points</div>
             </div>
-            ${saScore < 5 && missingInfo ?
-          `<div class="alert alert-light border mb-0">
-                <div class="fw-bold mb-1 text-secondary"><i class="fas fa-info-circle me-1"></i> Missing Information:</div>
-                <div>${missingInfo}</div>
-              </div>` :
-          (saScore === 5 ?
-            `<div class="alert alert-success mb-0">
-                  <i class="fas fa-check-circle me-1"></i> Complete answer with all key concepts addressed.
-                </div>` :
-            `<div class="alert alert-success mb-0">
-                  <i class="fas fa-check-circle me-1"></i> Answer demonstrates good understanding.
-                </div>`
-          )
-        }
           </div>
-        </div>`;
-    }
-
+          ${
+            studentAnswer.trim() === '' ? 
+              '' : 
+              saScore === 5 ? 
+                `<div class="alert alert-success mb-0">
+                  <i class="fas fa-check-circle me-1"></i> Your solution is correct. Well done!
+                </div>` : 
+              saScore === 4 ? 
+                `<div class="alert alert-info mb-0">
+                  <i class="fas fa-info-circle me-1"></i> Your solution is mostly correct, but ${missingInfo}
+                </div>` : 
+              saScore === 3 ? 
+                `<div class="alert alert-warning mb-0">
+                  <i class="fas fa-exclamation-circle me-1"></i> Your solution shows partial understanding, but ${missingInfo}
+                </div>` : 
+              saScore === 2 ? 
+                `<div class="alert alert-danger mb-0">
+                  <i class="fas fa-times-circle me-1"></i> Your solution shows minimal understanding. ${missingInfo}
+                </div>` : 
+              saScore === 1 ? 
+                `<div class="alert alert-danger mb-0">
+                  <i class="fas fa-times-circle me-1"></i> Your solution is incorrect. ${missingInfo}
+                </div>` : 
+                `<div class="alert alert-danger mb-0">
+                  <i class="fas fa-times-circle me-1"></i> No relevant answer provided.
+                </div>`
+          }
+        </div>
+      </div>`;
+    } 
+    
     catch (error) {
       console.error('Scoring error:', error);
-
+      
       feedbackContainer.innerHTML = `
         <div class="card shadow border-0 mb-3">
           <div class="card-header bg-danger text-white">
@@ -548,7 +563,7 @@ DO NOT add ANY other commentary, explanation or feedback.`
   const percentage = (totalScore / (totalMCQuestions + (saQuestions.length * 5))) * 100;
   const resultMessage = document.createElement('div');
   resultMessage.className = 'card shadow border-0 mb-4 mt-4';
-
+  
   let gradeClass = 'danger';
   if (percentage >= 70 && percentage < 80) {
     gradeClass = 'warning';
@@ -557,7 +572,7 @@ DO NOT add ANY other commentary, explanation or feedback.`
   } else if (percentage >= 90) {
     gradeClass = 'success';
   }
-
+  
   resultMessage.innerHTML = `
     <div class="card-header bg-primary text-white">
       <h4 class="m-0">Test Results</h4>
@@ -577,7 +592,7 @@ DO NOT add ANY other commentary, explanation or feedback.`
           </div>
           <div class="progress mb-3" style="height: 6px;">
             <div class="progress-bar bg-primary" role="progressbar" 
-                 style="width: ${(mcScore / totalMCQuestions) * 100}%"></div>
+                 style="width: ${(mcScore/totalMCQuestions)*100}%"></div>
           </div>
           
           <div class="d-flex justify-content-between mb-2">
@@ -586,7 +601,7 @@ DO NOT add ANY other commentary, explanation or feedback.`
           </div>
           <div class="progress mb-3" style="height: 6px;">
             <div class="progress-bar bg-info" role="progressbar" 
-                 style="width: ${((totalScore - mcScore) / (saQuestions.length * 5)) * 100}%"></div>
+                 style="width: ${((totalScore - mcScore)/(saQuestions.length * 5))*100}%"></div>
           </div>
           
           <div class="d-flex justify-content-between fw-bold">
@@ -606,7 +621,7 @@ function startTimer(minutes) {
   if (typeof window.quizTimer === 'undefined') {
     window.quizTimer = null;
   }
-
+  
   if (window.quizTimer) {
     clearInterval(window.quizTimer);
   }
@@ -651,7 +666,7 @@ function startTimer(minutes) {
           <p class="mb-0">Your test has been automatically submitted.</p>
         </div>
       `;
-
+      
       const quizContainer = document.querySelector('.quiz-container');
       if (quizContainer && quizContainer.firstChild) {
         quizContainer.insertBefore(timeUpNotification, quizContainer.firstChild);
