@@ -508,12 +508,10 @@ async function sendMessage() {
     if (!messageText) return;
 
     try {
-        // Clear typing indicator
         clearTimeout(typingTimeout);
         isTyping = false;
         sendTypingStatus(false);
 
-        // Add animation to send button
         sendButton.classList.add('sending');
 
         // Create message object
@@ -546,12 +544,22 @@ async function sendMessage() {
         // Clear input and focus
         messageInput.value = '';
         messageInput.focus();
+        
+        // Reset character counter
+        const characterCounter = document.getElementById('characterCounter');
+        if (characterCounter) {
+            characterCounter.textContent = "0/300";
+            characterCounter.classList.remove('text-amber-500');
+            characterCounter.classList.remove('text-red-500');
+        }
 
         // Remove animation class
         setTimeout(() => {
             sendButton.classList.remove('sending');
         }, 500);
-    } catch (error) {
+    } 
+    
+    catch (error) {
         console.error("Error sending message:", error);
         sendButton.classList.remove('sending');
     }

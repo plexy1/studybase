@@ -82,7 +82,8 @@
     </div>
 
     <!-- Folder Creation Modal -->
-    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -93,11 +94,15 @@
             <form id="createFolderForm" onsubmit="return false;">
               <div class="mb-3">
                 <label for="folderName" class="form-label">Folder Name</label>
-                <input type="text" class="form-control" id="folderName" required autocomplete="off">
+                <input type="text" class="form-control" id="folderName" required maxlength="20" autocomplete="off">
+                <div class="form-text text-end">
+                  <span id="nameCharCount">0</span>/20 characters
+                </div>
               </div>
               <div class="mb-3">
                 <label for="folderDescription" class="form-label">Description (Optional)</label>
-                <textarea class="form-control" id="folderDescription" rows="2" maxlength="50" placeholder="Enter a brief description of this folder"></textarea>
+                <textarea class="form-control" id="folderDescription" rows="2" maxlength="50"
+                  placeholder="Enter a brief description of this folder"></textarea>
                 <div class="form-text text-end">
                   <span id="descriptionCharCount">0</span>/50 characters
                 </div>
@@ -133,7 +138,7 @@
       const htmlElement = document.documentElement;
       const darkIcon = document.querySelector('.dark-icon');
       const lightIcon = document.querySelector('.light-icon');
-      
+
       // Check for saved theme preference or use preferred color scheme
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -145,14 +150,14 @@
         darkIcon.style.display = 'block';
         lightIcon.style.display = 'none';
       }
-      
+
       darkModeToggle.addEventListener('click', () => {
         const currentTheme = htmlElement.getAttribute('data-bs-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
+
         htmlElement.setAttribute('data-bs-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        
+
         if (newTheme === 'dark') {
           darkIcon.style.display = 'none';
           lightIcon.style.display = 'block';
@@ -191,6 +196,7 @@
     const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn');
     const createFolderBtn = document.getElementById('createFolderBtn');
     const createFolderModal = new bootstrap.Modal(document.getElementById('createFolderModal'));
+    createFolderSubmit.disabled = true;
     const createFolderSubmit = document.getElementById('createFolderSubmit');
     const foldersContainer = document.getElementById('foldersContainer');
     const folderNameInput = document.getElementById('folderName');
@@ -226,7 +232,7 @@
       try {
         const querySnapshot = await getDocs(q);
         foldersContainer.innerHTML = '';
-        
+
         querySnapshot.forEach((doc) => {
           const folderData = doc.data();
           const folderElement = createFolderElement(doc.id, folderData);
@@ -341,23 +347,23 @@
         if (draggedTile) {
           const searchId = draggedTile.dataset.searchId;
           await moveTileToFolder(searchId, folderId);
-          
+
           // If the tile was dragged from the main history view, remove it from there
           if (draggedTile.dataset.originalParent === 'searchHistoryTiles') {
             draggedTile.remove();
-            
+
             // Show the no history message if needed
             if (searchHistoryTiles.children.length === 0) {
               noHistoryMessage.style.display = 'flex';
             }
           }
-          
+
           // Add the tile to the folder view
           const folderViewContent = document.getElementById('folderViewContent');
           if (folderViewContent) {
             folderViewContent.appendChild(draggedTile);
           }
-          
+
           // Update the folder's topic list
           const topicList = folderContainer.querySelector('.topic-list');
           if (topicList) {
@@ -379,7 +385,7 @@
       if (!currentUser) return;
 
       const savedSearchesRef = collection(db, 'savedSearches');
-      const q = query(savedSearchesRef, 
+      const q = query(savedSearchesRef,
         where("userId", "==", currentUser.uid),
         where("folderId", "==", folderId)
       );
@@ -387,7 +393,7 @@
       try {
         const querySnapshot = await getDocs(q);
         topicList.innerHTML = '';
-        
+
         querySnapshot.forEach((doc) => {
           const searchData = doc.data();
           const topicItem = document.createElement('div');
@@ -420,7 +426,7 @@
 
       // Load folder contents
       const savedSearchesRef = collection(db, 'savedSearches');
-      const q = query(savedSearchesRef, 
+      const q = query(savedSearchesRef,
         where("userId", "==", currentUser.uid),
         where("folderId", "==", folderId)
       );
@@ -466,27 +472,27 @@
         e.preventDefault();
         e.stopPropagation();
         folderViewBack.classList.remove('drag-over');
-        
+
         if (draggedTile) {
           const searchId = draggedTile.dataset.searchId;
           const currentFolderId = draggedTile.closest('.folder-view').dataset.folderId;
-          
+
           // First update the database
           await moveTileToFolder(searchId, null);
-          
+
           // Then handle UI updates
           const searchHistoryTiles = document.getElementById('searchHistoryTiles');
           const clonedTile = draggedTile.cloneNode(true);
-          
+
           // Remove the original tile from folder view
           draggedTile.remove();
-          
+
           // Add the cloned tile to main history
           searchHistoryTiles.appendChild(clonedTile);
-          
+
           // Re-attach drag event listeners to the cloned tile
           setupDragListeners(clonedTile);
-          
+
           // Hide the no history message
           const noHistoryMessage = document.getElementById('noHistoryMessage');
           noHistoryMessage.style.display = 'none';
@@ -494,7 +500,7 @@
           // Refresh the folder view
           const folderViewContent = document.getElementById('folderViewContent');
           const savedSearchesRef = collection(db, 'savedSearches');
-          const q = query(savedSearchesRef, 
+          const q = query(savedSearchesRef,
             where("userId", "==", currentUser.uid),
             where("folderId", "==", currentFolderId)
           );
@@ -502,7 +508,7 @@
           try {
             const querySnapshot = await getDocs(q);
             folderViewContent.innerHTML = '';
-            
+
             if (querySnapshot.empty) {
               folderViewContent.innerHTML = `
                 <div class="empty-state">
@@ -589,7 +595,7 @@
       try {
         // First, delete all items in the folder
         const savedSearchesRef = collection(db, 'savedSearches');
-        const q = query(savedSearchesRef, 
+        const q = query(savedSearchesRef,
           where("userId", "==", currentUser.uid),
           where("folderId", "==", folderId)
         );
@@ -607,7 +613,7 @@
 
         // Commit the batch
         await batch.commit();
-        
+
         loadFolders(currentUser);
         displayDeleteStatus("Folder and its contents deleted successfully!", true);
       } catch (error) {
@@ -623,13 +629,13 @@
         await updateDoc(doc(db, 'savedSearches', searchId), {
           folderId: folderId
         });
-        
+
         // Only reload if we're not handling the UI update manually
         if (!draggedTile) {
           loadSavedSearches(currentUser);
           loadFolders(currentUser);
         }
-        
+
         displayDeleteStatus(folderId ? "Item moved to folder successfully!" : "Item moved out of folder successfully!", true);
       } catch (error) {
         console.error("Error moving item:", error);
@@ -680,6 +686,21 @@
       descriptionCharCount.textContent = count;
     });
 
+    const nameCharCount = document.getElementById('nameCharCount');
+
+    folderNameInput.addEventListener('input', () => {
+      const count = folderNameInput.value.length;
+      nameCharCount.textContent = count;
+
+      if (count > 0 && count <= 20) {
+        createFolderSubmit.disabled = false;
+      }
+
+      else {
+        createFolderSubmit.disabled = true;
+      }
+    });
+
     // Modify the createSearchTile function to handle drag and drop
     function createSearchTile(docId, searchData) {
       const tile = document.createElement('div');
@@ -709,13 +730,13 @@
       // Education level
       const educationLevel = document.createElement('div');
       educationLevel.className = 'history-card-detail';
-      
+
       const educationIcon = document.createElement('i');
       educationIcon.className = 'fas fa-graduation-cap detail-icon';
       educationLevel.appendChild(educationIcon);
-      
+
       const educationText = document.createElement('span');
-      
+
       if (searchData.educationLevel == "highSchool") {
         educationText.textContent = 'High School';
       } else if (searchData.educationLevel == "university12") {
@@ -727,20 +748,20 @@
       } else {
         educationText.textContent = searchData.educationLevel;
       }
-      
+
       educationLevel.appendChild(educationText);
       cardContent.appendChild(educationLevel);
 
       // Roadmap steps
       const roadmapSteps = document.createElement('div');
       roadmapSteps.className = 'history-card-detail';
-      
+
       const stepsIcon = document.createElement('i');
       stepsIcon.className = 'fas fa-map-signs detail-icon';
       roadmapSteps.appendChild(stepsIcon);
-      
+
       const stepsText = document.createElement('span');
-      
+
       if (searchData.roadmapSteps == 1) {
         stepsText.textContent = '5 Steps';
       } else if (searchData.roadmapSteps == 2) {
@@ -752,7 +773,7 @@
       } else {
         stepsText.textContent = `${searchData.roadmapSteps} Steps`;
       }
-      
+
       roadmapSteps.appendChild(stepsText);
       cardContent.appendChild(roadmapSteps);
 
@@ -760,18 +781,18 @@
       const timestamp = document.createElement('div');
       timestamp.className = 'history-card-timestamp';
       const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date();
-      
-      const dateString = date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
+
+      const dateString = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       });
-      
+
       const timeString = date.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit'
       });
-      
+
       timestamp.textContent = `${dateString} at ${timeString}`;
       cardContent.appendChild(timestamp);
 
@@ -938,7 +959,7 @@
           });
 
           await batch.commit();
-          
+
           // Update UI
           searchHistoryTiles.innerHTML = '';
           foldersContainer.innerHTML = '';
@@ -968,7 +989,7 @@
       }
 
       const savedSearchesRef = collection(db, 'savedSearches');
-      const q = query(savedSearchesRef, 
+      const q = query(savedSearchesRef,
         where("userId", "==", user.uid),
         orderBy("timestamp", "desc")
       );
@@ -1062,7 +1083,7 @@
 
     // Add drag and drop handlers for the main history view
     const mainHistoryTiles = document.getElementById('searchHistoryTiles');
-    
+
     mainHistoryTiles.addEventListener('dragover', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -1077,13 +1098,13 @@
       e.preventDefault();
       e.stopPropagation();
       mainHistoryTiles.classList.remove('drag-over');
-      
+
       if (draggedTile) {
         const searchId = draggedTile.dataset.searchId;
-        
+
         // First update the database
         await moveTileToFolder(searchId, null);
-        
+
         // Only add to main history if it came from a folder
         if (draggedTile.dataset.originalParent === 'folderViewContent') {
           const clonedTile = draggedTile.cloneNode(true);
@@ -1091,7 +1112,7 @@
           mainHistoryTiles.appendChild(clonedTile);
           draggedTile.remove();
         }
-        
+
         // Hide the no history message
         noHistoryMessage.style.display = 'none';
       }
@@ -1110,6 +1131,8 @@
         draggedTile = null;
       });
     }
+
+
   </script>
 </body>
 
