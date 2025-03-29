@@ -164,6 +164,70 @@
       padding: 0 15px;
       color: var(--bs-secondary-color);
     }
+
+    /* Folder View Modal Styles */
+    #folderViewModal .modal-content {
+      background-color: var(--card-bg-light);
+      border: none;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+    }
+
+    [data-bs-theme="dark"] #folderViewModal .modal-content {
+      background-color: var(--card-bg-dark);
+    }
+
+    #folderViewModal .modal-header {
+      border-bottom: 1px solid var(--border-light);
+      padding: var(--spacing-lg);
+    }
+
+    [data-bs-theme="dark"] #folderViewModal .modal-header {
+      border-bottom-color: var(--border-dark);
+    }
+
+    #folderViewModal .modal-body {
+      padding: var(--spacing-lg);
+    }
+
+    #folderViewModal .modal-dialog {
+      max-width: 90%;
+      margin: 1.75rem auto;
+    }
+
+    #folderViewModal .modal-backdrop {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    #folderViewModal .modal-backdrop.show {
+      opacity: 0.8;
+    }
+
+    /* Folder color-based modal styling */
+    #folderViewModal[data-color="green"] .modal-content {
+      border-left: 4px solid var(--success-color);
+    }
+
+    #folderViewModal[data-color="red"] .modal-content {
+      border-left: 4px solid var(--danger-color);
+    }
+
+    #folderViewModal[data-color="blue"] .modal-content {
+      border-left: 4px solid var(--primary-color);
+    }
+
+    #folderViewModal[data-color="yellow"] .modal-content {
+      border-left: 4px solid var(--warning-color);
+    }
+
+    #folderViewModal[data-color="white"] .modal-content {
+      border-left: 4px solid var(--border-light);
+    }
+
+    [data-bs-theme="dark"] #folderViewModal[data-color="white"] .modal-content {
+      border-left-color: var(--border-dark);
+    }
   </style>
 </head>
 
@@ -196,6 +260,11 @@
       <h2>Search History</h2>
     </div>
 
+    <h3 class="folders-title"><i class="fas fa-folder-open"></i> Folders</h3>
+    <div id="foldersContainer" class="folders-container">
+      <!-- Folders will be loaded here -->
+    </div>
+
     <div class="history-actions">
       <button id="createFolderBtn" class="action-btn">
         <i class="fas fa-folder-plus"></i> Create Folder
@@ -205,30 +274,31 @@
       </button>
     </div>
 
-    <h3 class="folders-title"><i class="fas fa-folder-open"></i> Folders</h3>
-    <div id="foldersContainer" class="folders-container">
-      <!-- Folders will be loaded here -->
-    </div>
-
-    <!-- Folder View Container -->
-    <div id="folderView" class="folder-view">
-      <div class="folder-view-header">
-        <div class="folder-view-left">
-          <button class="folder-view-back">
-            <i class="fas fa-arrow-left"></i>
-            Back
-          </button>
-          <div class="folder-view-title-container">
-            <div class="folder-view-title">
-              <i class="fas fa-folder"></i>
-              <span id="folderViewTitle"></span>
+    <!-- Folder View Modal -->
+    <div class="modal fade" id="folderViewModal" tabindex="-1" aria-labelledby="folderViewModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="folder-view-left">
+              <button class="folder-view-back">
+                <i class="fas fa-arrow-left"></i>
+                Back
+              </button>
+              <div class="folder-view-title-container">
+                <div class="folder-view-title">
+                  <i class="fas fa-folder"></i>
+                  <span id="folderViewTitle"></span>
+                </div>
+                <div id="folderViewDescription" class="folder-view-description"></div>
+              </div>
             </div>
-            <div id="folderViewDescription" class="folder-view-description"></div>
+          </div>
+          <div class="modal-body">
+            <div id="folderViewContent" class="folder-view-content">
+              <!-- Folder contents will be loaded here -->
+            </div>
           </div>
         </div>
-      </div>
-      <div id="folderViewContent" class="folder-view-content">
-        <!-- Folder contents will be loaded here -->
       </div>
     </div>
 
@@ -358,6 +428,7 @@
     const foldersContainer = document.getElementById('foldersContainer');
     const folderNameInput = document.getElementById('folderName');
     const folderDescriptionInput = document.getElementById('folderDescription');
+    const folderViewModal = new bootstrap.Modal(document.getElementById('folderViewModal'));
 
     let currentUser = null;
     let draggedTile = null;
@@ -629,12 +700,14 @@
     }
 
     async function openFolderView(folderId, folderData) {
-      const folderView = document.getElementById('folderView');
-      folderView.dataset.folderId = folderId;
+      const folderViewModal = document.getElementById('folderViewModal');
+      folderViewModal.dataset.folderId = folderId;
+      folderViewModal.dataset.color = folderData.color || 'white';
+      
       const folderViewTitle = document.getElementById('folderViewTitle');
       const folderViewDescription = document.getElementById('folderViewDescription');
       const folderViewContent = document.getElementById('folderViewContent');
-      const folderViewBack = folderView.querySelector('.folder-view-back');
+      const folderViewBack = folderViewModal.querySelector('.folder-view-back');
 
       folderViewTitle.textContent = folderData.name;
       if (folderData.description) {
@@ -645,90 +718,31 @@
       }
       
       folderViewContent.innerHTML = '';
-      folderView.classList.add('active');
 
       // Create drag hint element
       let dragHint = document.createElement('div');
       dragHint.className = 'drag-hint';
       dragHint.innerHTML = '<i class="fas fa-arrow-circle-up"></i> Drag outside to move to Unsorted Items';
       dragHint.style.display = 'none';
-      folderView.appendChild(dragHint);
+      folderViewModal.appendChild(dragHint);
 
       // Define a clear back button handler function
       const closeFolder = () => {
-        folderView.classList.remove('active');
-        if (folderView.contains(dragHint)) {
-          folderView.removeChild(dragHint);
+        if (folderViewModal.contains(dragHint)) {
+          folderViewModal.removeChild(dragHint);
         }
         cleanupDragState();
       };
 
-      // Back button handler - making sure this is a proper function reference
+      // Back button handler
       folderViewBack.onclick = closeFolder;
 
       // Load folder contents using the helper function
       await refreshFolderViewWithName(folderId, folderData.name);
 
-      // Add drag and drop handlers for the back button
-      folderViewBack.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        folderViewBack.classList.add('drag-over');
-      });
-
-      folderViewBack.addEventListener('dragleave', () => {
-        folderViewBack.classList.remove('drag-over');
-      });
-
-      folderViewBack.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        folderViewBack.classList.remove('drag-over');
-
-        if (draggedTile) {
-          const searchId = draggedTile.dataset.searchId;
-          const currentFolderId = draggedTile.closest('.folder-view').dataset.folderId;
-          const folderName = document.getElementById('folderViewTitle').textContent;
-
-          // First update the database
-          await moveTileToFolder(searchId, null);
-
-          // Create a clone for the unsorted items section
-          const clonedTile = draggedTile.cloneNode(true);
-
-          // Update badge on cloned tile
-          const badge = clonedTile.querySelector('.location-badge');
-          if (badge) {
-            badge.className = 'location-badge unsorted-location';
-            badge.innerHTML = '<i class="fas fa-layer-group"></i> Unsorted Items';
-          }
-
-          // Add the cloned tile to unsorted items
-          const searchHistoryTiles = document.getElementById('searchHistoryTiles');
-          searchHistoryTiles.appendChild(clonedTile);
-
-          // Re-attach drag event listeners to the cloned tile
-          setupDragListeners(clonedTile);
-
-          // Hide the no history message
-          const noHistoryMessage = document.getElementById('noHistoryMessage');
-          noHistoryMessage.style.display = 'none';
-          
-          // Also refresh the folder topics display
-          const folderContainer = document.querySelector(`[data-folder-id="${currentFolderId}"]`);
-          if (folderContainer) {
-            const topicList = folderContainer.querySelector('.topic-list');
-            if (topicList) {
-              await loadFolderTopics(currentFolderId, topicList);
-            }
-          }
-          
-          // Execute the onclick handler directly
-          if (folderViewBack.onclick) {
-            folderViewBack.onclick();
-          }
-        }
-      });
+      // Show the modal
+      const modal = new bootstrap.Modal(folderViewModal);
+      modal.show();
     }
 
     async function createFolder(name, description) {
@@ -1627,6 +1641,7 @@
         console.error("Error refreshing folder view:", error);
       }
     }
+    
   </script>
 </body>
 
