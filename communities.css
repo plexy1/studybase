@@ -712,3 +712,18 @@ html[data-bs-theme="dark"] .reaction-picker {
 .quick-reactions {
     position: relative;
 }
+
+.char-counter {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.char-counter.text-amber-500 {
+    color: #f59e0b;
+}
+
+.char-counter.text-red-500 {
+    color: #ef4444;
+}
