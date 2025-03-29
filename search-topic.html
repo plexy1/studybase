@@ -302,9 +302,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          const username = userData.username || user.email.split('@')[0];
+          const username = userData.username;
           greetingDisplay.textContent = `${greeting}, ${username}!`;
-        } else {
+        } 
+        
+        else {
           // Fallback to email if no username found
           const username = user.email.split('@')[0];
           greetingDisplay.textContent = `${greeting}, ${username}!`;
