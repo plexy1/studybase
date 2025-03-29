@@ -543,8 +543,13 @@
         createFolderModal.hide();
         folderNameInput.value = '';
         folderDescriptionInput.value = '';
+        folderNameInput.value = '';
         document.getElementById('descriptionCharCount').textContent = '0';
-      } catch (error) {
+        document.getElementById('nameCharCount').textContent = '0';
+
+      }
+      
+      catch (error) {
         console.error("Error creating folder:", error);
         displayDeleteStatus("Error creating folder.", false);
       }
