@@ -387,7 +387,7 @@
   <!-- Firebase modules -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -545,6 +545,11 @@
           
           if (newPassword !== confirmPassword) {
             displayStatusMessage("New passwords do not match!", false);
+            return;
+          }
+
+          if (newPassword.length < 6) {
+            displayStatusMessage("New password must be at least 6 characters long!", false);
             return;
           }
           
