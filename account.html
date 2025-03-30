@@ -96,6 +96,10 @@
                 <span class="info-label">Last Login</span>
                 <span class="info-value" id="lastLogin">Loading...</span>
               </div>
+              <div class="info-item">
+                <span class="info-label">Date Created</span>
+                <span class="info-value" id="dateCreated">Loading...</span>
+              </div>
             </div>
           </div>
         </div>
@@ -106,27 +110,25 @@
     <div class="account-info-section">
       <div class="info-card">
         <h2>Account Information</h2>
-        <div class="info-row">
-          <div class="info-label">Username</div>
-          <div class="info-value" id="accountName">Loading...</div>
-          <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeNameModal">
-            <i class="fas fa-edit"></i>
-          </button>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Email</div>
-          <div class="info-value" id="email">Loading...</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Password</div>
-          <div class="info-value">••••••••</div>
-          <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-            <i class="fas fa-edit"></i>
-          </button>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Date Created</div>
-          <div class="info-value" id="dateCreated">Loading...</div>
+        <div class="account-info-grid">
+          <div class="account-info-row">
+            <div class="info-label">Username</div>
+            <div class="info-value" id="accountUsername">Loading...</div>
+            <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeNameModal">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+          <div class="account-info-row">
+            <div class="info-label">Email</div>
+            <div class="info-value" id="accountEmail">Loading...</div>
+          </div>
+          <div class="account-info-row">
+            <div class="info-label">Password</div>
+            <div class="info-value">••••••••</div>
+            <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -462,7 +464,7 @@
             const user = auth.currentUser;
             if (user) {
               await updateUserProfile(user.uid, { username: newName });
-              const accountNameElement = document.getElementById("accountName");
+              const accountNameElement = document.getElementById("accountUsername");
               const profileNameElement = document.getElementById("profileName");
               if (accountNameElement) accountNameElement.textContent = newName;
               if (profileNameElement) profileNameElement.textContent = newName;
@@ -623,10 +625,6 @@
 
     // Check authentication state
     onAuthStateChanged(auth, async (user) => {
-      // if (!user) {
-      //   window.location.href = 'index.html';
-      //   return;
-      // }
 
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -634,11 +632,12 @@
           const userData = userDoc.data();
           
           // Update UI with user data
-          document.getElementById('profileName').textContent = userData.username || user.email.split('@')[0];
-          document.getElementById('accountName').textContent = userData.username || user.email.split('@')[0];
+          const username = userData.username || user.email.split('@')[0];
+          document.getElementById('profileName').textContent = username;
+          document.getElementById('accountUsername').textContent = username;
           document.getElementById('university').textContent = userData.university || 'Not set';
           document.getElementById('userMajor').textContent = userData.major || 'Not set';
-          document.getElementById('email').textContent = user.email;
+          document.getElementById('accountEmail').textContent = user.email;
           document.querySelector("#userRole .role-value").textContent = userData.role || 'Student';
           document.getElementById('userBio').value = userData.bio || '';
           
@@ -663,6 +662,7 @@
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+        displayStatusMessage("Error loading user data. Please refresh the page.", false);
       }
     });
   </script>

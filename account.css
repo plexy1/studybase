@@ -716,18 +716,57 @@
   box-shadow: var(--shadow-lg);
 }
 
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
 .info-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: var(--spacing-md);
   padding: var(--spacing-sm) var(--spacing-md);
   background-color: rgba(79, 70, 229, 0.05);
   border-radius: var(--radius-md);
   transition: all var(--anim-normal);
+  margin-bottom: var(--spacing-sm);
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item .info-label {
+  flex: 0 0 30%;
+  font-weight: 500;
+  color: var(--text-secondary-light);
+}
+
+.info-item .info-value {
+  flex: 1;
+  color: var(--text-primary-light);
+  font-weight: 500;
+  margin-right: auto;
+  padding-left: var(--spacing-md);
 }
 
 [data-bs-theme="dark"] .info-item {
   background-color: rgba(79, 70, 229, 0.1);
+}
+
+[data-bs-theme="dark"] .info-item .info-label {
+  color: var(--text-secondary-dark);
+}
+
+[data-bs-theme="dark"] .info-item .info-value {
+  color: var(--text-primary-dark);
 }
 
 .info-item .edit-btn {
@@ -754,16 +793,6 @@
 
 [data-bs-theme="dark"] .info-item .edit-btn:hover {
   background-color: rgba(79, 70, 229, 0.2);
-}
-
-.info-value {
-  color: var(--text-primary-light);
-  font-weight: 500;
-  margin-right: auto;
-}
-
-[data-bs-theme="dark"] .info-value {
-  color: var(--text-primary-dark);
 }
 
 /* Card Left Section */
@@ -818,6 +847,7 @@
   overflow: hidden;
   display: block;
 }
+
 [data-bs-theme="dark"] .bio-section textarea {
   border-color: #334155;
   color: var(--text-primary-dark);
@@ -839,21 +869,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-}
-
-.info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: rgba(79, 70, 229, 0.05);
-  border-radius: var(--radius-md);
 }
 
 /* Stats Grid */
@@ -1144,5 +1159,92 @@
 }
 
 [data-bs-theme="dark"] .role-tag .edit-btn:hover {
+  background-color: rgba(79, 70, 229, 0.3);
+}
+
+/* Account Information Section */
+.account-info-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.account-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.account-info-row {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: rgba(79, 70, 229, 0.05);
+  border-radius: var(--radius-md);
+  transition: all var(--anim-normal);
+}
+
+.account-info-row:hover {
+  background-color: rgba(79, 70, 229, 0.1);
+  transform: translateX(4px);
+}
+
+[data-bs-theme="dark"] .account-info-row {
+  background-color: rgba(79, 70, 229, 0.1);
+}
+
+[data-bs-theme="dark"] .account-info-row:hover {
+  background-color: rgba(79, 70, 229, 0.15);
+}
+
+.account-info-row .info-label {
+  flex: 0 0 120px;
+  font-weight: 600;
+  color: var(--text-secondary-light);
+}
+
+.account-info-row .info-value {
+  flex: 1;
+  color: var(--text-primary-light);
+  font-weight: 500;
+  padding-left: var(--spacing-md);
+}
+
+[data-bs-theme="dark"] .account-info-row .info-label {
+  color: var(--text-secondary-dark);
+}
+
+[data-bs-theme="dark"] .account-info-row .info-value {
+  color: var(--text-primary-dark);
+}
+
+.account-info-row .edit-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-full);
+  transition: all var(--anim-normal);
+  opacity: 0.7;
+  margin-left: var(--spacing-md);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(79, 70, 229, 0.1);
+}
+
+.account-info-row .edit-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  background-color: rgba(79, 70, 229, 0.2);
+}
+
+[data-bs-theme="dark"] .account-info-row .edit-btn {
+  color: #a5b4fc;
+  background-color: rgba(79, 70, 229, 0.15);
+}
+
+[data-bs-theme="dark"] .account-info-row .edit-btn:hover {
   background-color: rgba(79, 70, 229, 0.3);
 }
