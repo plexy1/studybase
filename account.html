@@ -381,121 +381,6 @@
           lightIcon.style.display = 'none';
         }
       });
-
-      // Character counter functionality for modals
-      const modalInputs = [
-        { input: 'newName', counter: 'nameCounter' },
-        { input: 'newUniversity', counter: 'universityModalCounter' },
-        { input: 'newMajor', counter: 'majorModalCounter' },
-        { input: 'currentPassword', counter: 'currentPasswordCounter' },
-        { input: 'newPassword', counter: 'newPasswordCounter' },
-        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
-      ];
-
-      modalInputs.forEach(({ input, counter }) => {
-        const inputElement = document.getElementById(input);
-        const counterElement = document.getElementById(counter);
-        
-        if (inputElement && counterElement) {
-          inputElement.addEventListener('input', () => {
-            counterElement.textContent = inputElement.value.length;
-          });
-        }
-      });
-
-      // Add status message function
-      function displayStatusMessage(message, success) {
-        const statusDiv = document.createElement('div');
-        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
-        statusDiv.style.top = '20px';
-        statusDiv.style.right = '20px';
-        statusDiv.style.zIndex = '9999';
-        statusDiv.textContent = message;
-        
-        document.body.appendChild(statusDiv);
-        
-        setTimeout(() => {
-          statusDiv.remove();
-        }, 3000);
-      }
-
-      // Change name form
-      const changeNameForm = document.getElementById("changeNameForm");
-      if (changeNameForm) {
-        changeNameForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const newName = document.getElementById("newName").value;
-          
-          try {
-            const user = auth.currentUser;
-            if (user) {
-              await updateUserProfile(user.uid, { username: newName });
-              const accountNameElement = document.getElementById("accountName");
-              const profileNameElement = document.getElementById("profileName");
-              if (accountNameElement) accountNameElement.textContent = newName;
-              if (profileNameElement) profileNameElement.textContent = newName;
-              
-              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
-              if (modal) modal.hide();
-              
-              // Display success message
-              displayStatusMessage("Name updated successfully!", true);
-            }
-          } catch (error) {
-            console.error("Error updating name:", error);
-            displayStatusMessage("Error updating name: " + error.message, false);
-          }
-        });
-      }
-
-      // Change university form
-      const changeUniversityForm = document.getElementById("changeUniversityForm");
-      if (changeUniversityForm) {
-        changeUniversityForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const newUniversity = document.getElementById("newUniversity").value;
-          
-          try {
-            const user = auth.currentUser;
-            if (user) {
-              await updateUserProfile(user.uid, { university: newUniversity });
-              const universityElement = document.getElementById("university");
-              if (universityElement) universityElement.textContent = newUniversity;
-              
-              const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
-              if (modal) modal.hide();
-              
-              // Display success message
-              displayStatusMessage("University updated successfully!", true);
-            }
-          } catch (error) {
-            console.error("Error updating university:", error);
-            displayStatusMessage("Error updating university: " + error.message, false);
-          }
-        });
-      }
-
-      document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Password change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
-      });
-
-      document.getElementById('changePhotoForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Photo change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changePhotoModal')).hide();
-      });
-      
-      // Add logout functionality
-      document.querySelector('.btn-logout').addEventListener('click', function() {
-        // Redirect to login page
-        window.location.href = 'index.html';
-      });
     });
   </script>
   
@@ -525,6 +410,25 @@
       await updateDoc(userRef, data);
     }
 
+    // Add status message function
+    function displayStatusMessage(message, success) {
+      const existingMessages = document.querySelectorAll('.alert.position-fixed');
+      existingMessages.forEach(msg => msg.remove());
+      
+      const statusDiv = document.createElement('div');
+      statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
+      statusDiv.style.top = '20px';
+      statusDiv.style.right = '20px';
+      statusDiv.style.zIndex = '9999';
+      statusDiv.textContent = message;
+      
+      document.body.appendChild(statusDiv);
+      
+      setTimeout(() => {
+        statusDiv.remove();
+      }, 3000);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       // Character counter functionality for modals
       const modalInputs = [
@@ -547,6 +451,35 @@
         }
       });
 
+      // Change name form
+      const changeNameForm = document.getElementById("changeNameForm");
+      if (changeNameForm) {
+        changeNameForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newName = document.getElementById("newName").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { username: newName });
+              const accountNameElement = document.getElementById("accountName");
+              const profileNameElement = document.getElementById("profileName");
+              if (accountNameElement) accountNameElement.textContent = newName;
+              if (profileNameElement) profileNameElement.textContent = newName;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Name updated successfully!", true);
+              changeNameForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating name:", error);
+            displayStatusMessage("Error updating name: " + error.message, false);
+          }
+        });
+      }
+
       // Change university form
       const changeUniversityForm = document.getElementById("changeUniversityForm");
       if (changeUniversityForm) {
@@ -564,8 +497,8 @@
               const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
               if (modal) modal.hide();
               
-              // Display success message
               displayStatusMessage("University updated successfully!", true);
+              changeUniversityForm.reset();
             }
           } catch (error) {
             console.error("Error updating university:", error);
@@ -574,20 +507,30 @@
         });
       }
 
-      // Add status message function
-      function displayStatusMessage(message, success) {
-        const statusDiv = document.createElement('div');
-        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
-        statusDiv.style.top = '20px';
-        statusDiv.style.right = '20px';
-        statusDiv.style.zIndex = '9999';
-        statusDiv.textContent = message;
-        
-        document.body.appendChild(statusDiv);
-        
-        setTimeout(() => {
-          statusDiv.remove();
-        }, 3000);
+      // Change password form
+      const changePasswordForm = document.getElementById("changePasswordForm");
+      if (changePasswordForm) {
+        changePasswordForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          // Handle form submission
+          console.log('Password change submitted');
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+          if (modal) modal.hide();
+        });
+      }
+
+      // Change photo form
+      const changePhotoForm = document.getElementById("changePhotoForm");
+      if (changePhotoForm) {
+        changePhotoForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          // Handle form submission
+          console.log('Photo change submitted');
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+          if (modal) modal.hide();
+        });
       }
     });
 
