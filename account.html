@@ -377,9 +377,8 @@
   <!-- Firebase modules -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signOut, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
@@ -394,321 +393,41 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
-    
-    // Load user data
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          // Get user document from Firestore
-          const userDoc = await getDoc(doc(db, "users", user.uid));
+
+    // Check authentication state
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // If not authenticated, redirect to login
+        window.location.href = 'index.html';
+        return;
+      }
+
+      try {
+        // Get user data from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          // Update UI with user data
+          document.getElementById('profileName').textContent = userData.username || user.email.split('@')[0];
+          document.getElementById('accountName').textContent = userData.username || user.email.split('@')[0];
+          document.getElementById('university').textContent = userData.university || 'Not set';
+          document.getElementById('email').textContent = user.email;
           
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            
-            // Update UI with user data
-            document.getElementById('profileName').textContent = userData.name || user.displayName || 'User';
-            document.getElementById('accountName').textContent = userData.name || user.displayName || 'User';
-            document.getElementById('university').textContent = userData.university || 'Not set';
-            document.getElementById('email').textContent = user.email;
-            document.getElementById('userBio').value = userData.bio || '';
-            
-            // Set color theme if saved
-            if (userData.colorTheme) {
-              document.documentElement.setAttribute('data-color-theme', userData.colorTheme);
-            }
-            
-            // Update statistics
+          // Update statistics if they exist
+          if (document.getElementById('topicsSearched')) {
             document.getElementById('topicsSearched').textContent = userData.topicsSearched || 0;
-            document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
-            document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
-            
-            // Update major
-            document.getElementById('userMajor').textContent = userData.major || 'Not set';
-            
-            // Format date created
-            const creationTime = new Date(user.metadata.creationTime);
-            document.getElementById('dateCreated').textContent = creationTime.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            });
-            
-            // Format last login time
-            const lastLoginTime = new Date(user.metadata.lastSignInTime);
-            document.getElementById('lastLogin').textContent = lastLoginTime.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }) + ' at ' + lastLoginTime.toLocaleTimeString('en-US', {
-              hour: 'numeric',
-              minute: '2-digit'
-            });
-            
-            // Load profile image if available
-            if (userData.profileImage) {
-              const profileImages = document.querySelectorAll('.profile-image img, .profile-img img');
-              profileImages.forEach(img => {
-                img.src = userData.profileImage;
-              });
-            }
-            
-            // Add form submission handlers for data changes
-            document.getElementById('changeNameForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const newName = document.getElementById('newName').value.trim();
-              
-              if (newName) {
-                try {
-                  await updateUserField('name', newName);
-                  document.getElementById('profileName').textContent = newName;
-                  document.getElementById('accountName').textContent = newName;
-                  bootstrap.Modal.getInstance(document.getElementById('changeNameModal')).hide();
-                } catch (error) {
-                  console.error("Error updating name:", error);
-                }
-              }
-            });
-            
-            document.getElementById('changeUniversityForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const newUniversity = document.getElementById('newUniversity').value.trim();
-              
-              if (newUniversity) {
-                try {
-                  await updateUserField('university', newUniversity);
-                  document.getElementById('university').textContent = newUniversity;
-                  bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal')).hide();
-                } catch (error) {
-                  console.error("Error updating university:", error);
-                }
-              }
-            });
-            
-            // Password change handler
-            document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const currentPassword = document.getElementById('currentPassword').value;
-              const newPassword = document.getElementById('newPassword').value;
-              const confirmPassword = document.getElementById('confirmPassword').value;
-              
-              if (newPassword !== confirmPassword) {
-                alert("New passwords don't match!");
-                return;
-              }
-              
-              try {
-                // Re-authenticate user
-                const credential = EmailAuthProvider.credential(user.email, currentPassword);
-                await reauthenticateWithCredential(user, credential);
-                
-                // Update password
-                await updatePassword(user, newPassword);
-                alert("Password updated successfully!");
-                bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
-              } catch (error) {
-                console.error("Error updating password:", error);
-                alert("Failed to update password. Make sure your current password is correct.");
-              }
-            });
-            
-            // Add major change handler
-            document.getElementById('changeMajorForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const newMajor = document.getElementById('newMajor').value.trim();
-              
-              if (newMajor) {
-                try {
-                  await updateUserField('major', newMajor);
-                  document.getElementById('userMajor').textContent = newMajor;
-                  bootstrap.Modal.getInstance(document.getElementById('changeMajorModal')).hide();
-                } catch (error) {
-                  console.error("Error updating major:", error);
-                }
-              }
-            });
-            
-            // Enhanced photo upload handler with preview
-            document.getElementById('changePhotoForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const fileInput = document.getElementById('newPhoto');
-              
-              if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                
-                // Validate file type
-                if (!file.type.startsWith('image/')) {
-                  alert('Please upload an image file');
-                  return;
-                }
-                
-                // Validate file size (max 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                  alert('Image size should be less than 5MB');
-                  return;
-                }
-                
-                try {
-                  // Show loading state
-                  const submitButton = this.querySelector('.btn-save');
-                  submitButton.disabled = true;
-                  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-                  
-                  // Upload file to Firebase Storage
-                  const storageRef = ref(storage, `profile-images/${user.uid}`);
-                  await uploadBytes(storageRef, file);
-                  
-                  // Get download URL
-                  const downloadURL = await getDownloadURL(storageRef);
-                  
-                  // Update user profile with new image URL
-                  await updateUserField('profileImage', downloadURL);
-                  
-                  // Update image on page
-                  const profileImages = document.querySelectorAll('.profile-image img, .profile-img img');
-                  profileImages.forEach(img => {
-                    img.src = downloadURL;
-                  });
-                  
-                  // Reset button state
-                  submitButton.disabled = false;
-                  submitButton.innerHTML = 'Upload';
-                  
-                  bootstrap.Modal.getInstance(document.getElementById('changePhotoModal')).hide();
-                  alert('Profile picture updated successfully!');
-                } catch (error) {
-                  console.error("Error uploading image:", error);
-                  alert("Failed to upload image. Please try again.");
-                  // Reset button state
-                  submitButton.disabled = false;
-                  submitButton.innerHTML = 'Upload';
-                }
-              }
-            });
-            
-            // Add image preview functionality
-            document.getElementById('newPhoto').addEventListener('change', function(e) {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                  const preview = document.createElement('img');
-                  preview.src = e.target.result;
-                  preview.style.maxWidth = '200px';
-                  preview.style.maxHeight = '200px';
-                  preview.style.marginTop = '10px';
-                  preview.style.borderRadius = 'var(--radius-md)';
-                  
-                  // Remove existing preview if any
-                  const existingPreview = this.parentElement.querySelector('img');
-                  if (existingPreview) {
-                    existingPreview.remove();
-                  }
-                  
-                  this.parentElement.appendChild(preview);
-                }.bind(this);
-                reader.readAsDataURL(file);
-              }
-            });
-            
-            // Add logout functionality
-            document.querySelector('.btn-logout').addEventListener('click', async function() {
-              try {
-                await signOut(auth);
-                window.location.href = 'index.html';
-              } catch (error) {
-                console.error("Error signing out:", error);
-              }
-            });
-            
-            // Add role change handler
-            document.getElementById('changeRoleForm').addEventListener('submit', async function(e) {
-              e.preventDefault();
-              const newRole = document.getElementById('newRole').value;
-              
-              try {
-                await updateUserField('role', newRole);
-                document.getElementById('userRole').textContent = newRole;
-                bootstrap.Modal.getInstance(document.getElementById('changeRoleModal')).hide();
-              } catch (error) {
-                console.error("Error updating role:", error);
-              }
-            });
-            
-            // Add bio change handler
-            document.getElementById('userBio').addEventListener('change', async function(e) {
-              const newBio = e.target.value.trim();
-              try {
-                await updateUserField('bio', newBio);
-              } catch (error) {
-                console.error("Error updating bio:", error);
-              }
-            });
-            
-            // Add color theme handlers
-            document.querySelectorAll('.color-btn').forEach(btn => {
-              btn.addEventListener('click', async function() {
-                const color = this.dataset.color;
-                document.documentElement.setAttribute('data-color-theme', color);
-                try {
-                  await updateUserField('colorTheme', color);
-                } catch (error) {
-                  console.error("Error updating color theme:", error);
-                }
-              });
-            });
-            
-            // Helper function to update user fields
-            async function updateUserField(field, value) {
-              const userRef = doc(db, "users", user.uid);
-              await updateDoc(userRef, {
-                [field]: value
-              });
-            }
-
-            // Function to increment statistics
-            async function incrementStat(statName) {
-              try {
-                const userRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userRef);
-                const currentValue = userDoc.data()[statName] || 0;
-                
-                await updateDoc(userRef, {
-                  [statName]: currentValue + 1
-                });
-
-                // Update UI
-                document.getElementById(statName).textContent = currentValue + 1;
-              } catch (error) {
-                console.error(`Error incrementing ${statName}:`, error);
-              }
-            }
-
-            // Event listeners for statistics
-            document.addEventListener('topicSearched', async () => {
-              await incrementStat('topicsSearched');
-            });
-
-            document.addEventListener('studyToolUsed', async () => {
-              await incrementStat('studyToolsUsed');
-            });
-          } else {
-            console.error("No user document found");
-            redirectToLogin();
           }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          redirectToLogin();
+          if (document.getElementById('studyToolsUsed')) {
+            document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
+          }
+          if (document.getElementById('coursesEnrolled')) {
+            document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
+          }
         }
-      } else {
-        // User is not logged in
-        redirectToLogin();
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     });
-    
-    function redirectToLogin() {
-      window.location.href = 'index.html';
-    }
   </script>
   
   <footer class="footer">

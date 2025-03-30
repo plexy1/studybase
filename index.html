@@ -35,20 +35,16 @@
             <div class="input-group">
               <div class="input-wrapper">
                 <i class="fa-regular fa-envelope input-icon"></i>
-                <div class="form-floating">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" maxlength="50">
-                  <label for="floatingInput">Email address</label>
-                </div>
+                <input type="email" class="form-control" id="floatingInput" placeholder="Email address" maxlength="30">
+                <small class="char-counter"><span id="emailCounter">0</span>/30</small>
               </div>
             </div>
             
             <div class="input-group">
               <div class="input-wrapper">
                 <i class="fas fa-key input-icon"></i>
-                <div class="form-floating">
-                  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" maxlength="50">
-                  <label for="floatingPassword">Password</label>
-                </div>
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" maxlength="20">
+                <small class="char-counter"><span id="passwordCounter">0</span>/20</small>
               </div>
             </div>
             
@@ -127,6 +123,59 @@
           }
         }
       });
+
+      // Character counter functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const inputs = [
+          { input: 'floatingInput', counter: 'emailCounter' },
+          { input: 'floatingPassword', counter: 'passwordCounter' }
+        ];
+
+        inputs.forEach(({ input, counter }) => {
+          const inputElement = document.getElementById(input);
+          const counterElement = document.getElementById(counter);
+          
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
+        });
+      });
     </script>
+
+    <style>
+      .input-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .form-control {
+        height: 48px;
+        padding: 0 45px 0 40px;
+        border-radius: 8px;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        z-index: 3;
+      }
+
+      .char-counter {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        font-size: 0.75rem;
+        pointer-events: none;
+      }
+
+      .input-group {
+        margin-bottom: 1rem;
+      }
+    </style>
   </body>
 </html>

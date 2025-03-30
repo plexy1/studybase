@@ -252,9 +252,9 @@
             <form id="createFolderForm" onsubmit="return false;">
               <div class="mb-3">
                 <label for="folderName" class="form-label">Folder Name</label>
-                <input type="text" class="form-control" id="folderName" required maxlength="20" autocomplete="off">
+                <input type="text" class="form-control" id="folderName" required maxlength="10" autocomplete="off">
                 <div class="form-text text-end">
-                  <span id="nameCharCount">0</span>/20 characters
+                  <span id="nameCharCount">0</span>/10 characters
                 </div>
               </div>
               <div class="mb-3">
@@ -898,7 +898,7 @@
       const count = folderNameInput.value.length;
       nameCharCount.textContent = count;
 
-      if (count > 0 && count <= 20) {
+      if (count > 0 && count <= 10) {
         createFolderSubmit.disabled = false;
       } 
       else {
