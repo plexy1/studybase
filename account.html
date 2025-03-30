@@ -382,36 +382,6 @@
         }
       });
 
-      // Change name form
-      const changeNameForm = document.getElementById("changeNameForm");
-      if (changeNameForm) {
-        changeNameForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const newName = document.getElementById("newName").value;
-          
-          try {
-            const user = auth.currentUser;
-            if (user) {
-              await updateUserProfile(user.uid, { username: newName });
-              const accountNameElement = document.getElementById("accountName");
-              const profileNameElement = document.getElementById("profileName");
-              const accountTab = document.getElementById("accountTab");
-              
-              if (accountNameElement) accountNameElement.textContent = newName;
-              if (profileNameElement) profileNameElement.textContent = newName;
-              if (accountTab) accountTab.textContent = newName;
-              
-              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
-              if (modal) modal.hide();
-              displayStatusMessage("Name updated successfully!", true);
-            }
-          } catch (error) {
-            console.error("Error updating name:", error);
-            displayStatusMessage("Error updating name: " + error.message, false);
-          }
-        });
-      }
-
       // Character counter functionality for modals
       const modalInputs = [
         { input: 'newName', counter: 'nameCounter' },
@@ -432,6 +402,51 @@
           });
         }
       });
+
+      // Add status message function
+      function displayStatusMessage(message, success) {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
+        statusDiv.style.top = '20px';
+        statusDiv.style.right = '20px';
+        statusDiv.style.zIndex = '9999';
+        statusDiv.textContent = message;
+        
+        document.body.appendChild(statusDiv);
+        
+        setTimeout(() => {
+          statusDiv.remove();
+        }, 3000);
+      }
+
+      // Change name form
+      const changeNameForm = document.getElementById("changeNameForm");
+      if (changeNameForm) {
+        changeNameForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newName = document.getElementById("newName").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { username: newName });
+              const accountNameElement = document.getElementById("accountName");
+              const profileNameElement = document.getElementById("profileName");
+              if (accountNameElement) accountNameElement.textContent = newName;
+              if (profileNameElement) profileNameElement.textContent = newName;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
+              if (modal) modal.hide();
+              
+              // Display success message
+              displayStatusMessage("Name updated successfully!", true);
+            }
+          } catch (error) {
+            console.error("Error updating name:", error);
+            displayStatusMessage("Error updating name: " + error.message, false);
+          }
+        });
+      }
 
       // Change university form
       const changeUniversityForm = document.getElementById("changeUniversityForm");
