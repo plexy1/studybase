@@ -13,26 +13,48 @@
 </head>
 
 <body>
-  <nav class="navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand">studybase</a>
-      <div class="nav-links">
-        <a href="search-topic.html">Search</a>
-        <a href="quiz.html">Study</a>
-        <a href="communities.html">Communities</a>
-        <a href="courses.html">Courses</a>
-        <a href="history.html">Library</a>
-        <a href="account.html" class="active">Account</a>
+      <a class="navbar-brand" href="#">studybase</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="search-topic.html">Search Topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="courses.html">Search Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Generate Quiz</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="history.html">History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="account.html">Account</a>
+          </li>
+        </ul>
       </div>
-      <div class="nav-utils">
-        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
-          <i class="fas fa-moon dark-icon"></i>
-          <i class="fas fa-sun light-icon"></i>
-        </button>
-        <div class="profile-img">
-          <img src="user.jpg" alt="Profile" />
-        </div>
+      <div class="form-check form-switch ms-auto">
+        <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle">
+        <label class="form-check-label text-light" for="darkModeToggle">Dark Mode</label>
       </div>
+      <img
+        src="user.jpg"
+        alt="Profile"
+        class="profile-logo ms-5"
+      />
     </div>
   </nav>
 
@@ -299,6 +321,37 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      darkModeToggle.checked = false;
+      localStorage.setItem('darkMode', null);
+    }
+
+    function toggleDarkMode() {
+      if (body.classList.contains('dark-mode')) {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    }
+
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const darkModeToggle = document.getElementById('darkModeToggle');
       const htmlElement = document.documentElement;
@@ -432,7 +485,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
@@ -448,35 +501,155 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Update user profile data
+    async function updateUserProfile(userId, data) {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, data);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Change name form
+      document.getElementById('changeNameForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const newName = document.getElementById("newName").value;
+        const user = auth.currentUser;
+        
+        if (user) {
+          try {
+            await updateUserProfile(user.uid, { username: newName });
+            document.getElementById("profileName").textContent = newName;
+            document.getElementById("accountName").textContent = newName;
+          } catch (error) {
+            console.error("Error updating name:", error);
+          }
+        }
+        bootstrap.Modal.getInstance(document.getElementById('changeNameModal')).hide();
+      });
+
+      // Change university form
+      document.getElementById('changeUniversityForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const newUniversity = document.getElementById("newUniversity").value;
+        const user = auth.currentUser;
+        
+        if (user) {
+          try {
+            await updateUserProfile(user.uid, { university: newUniversity });
+            document.getElementById("university").textContent = newUniversity;
+          } catch (error) {
+            console.error("Error updating university:", error);
+          }
+        }
+        bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal')).hide();
+      });
+
+      // Change major form
+      document.getElementById('changeMajorForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const newMajor = document.getElementById("newMajor").value;
+        const user = auth.currentUser;
+        
+        if (user) {
+          try {
+            await updateUserProfile(user.uid, { major: newMajor });
+            document.getElementById("userMajor").textContent = newMajor;
+          } catch (error) {
+            console.error("Error updating major:", error);
+          }
+        }
+        bootstrap.Modal.getInstance(document.getElementById('changeMajorModal')).hide();
+      });
+
+      // Change role form
+      document.getElementById('changeRoleForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const newRole = document.getElementById("newRole").value;
+        const user = auth.currentUser;
+        
+        if (user) {
+          try {
+            await updateUserProfile(user.uid, { role: newRole });
+            document.querySelector("#userRole .role-value").textContent = newRole;
+          } catch (error) {
+            console.error("Error updating role:", error);
+          }
+        }
+        bootstrap.Modal.getInstance(document.getElementById('changeRoleModal')).hide();
+      });
+
+      // Change password form
+      document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Handle form submission
+        console.log('Password change submitted');
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
+      });
+
+      // Change photo form
+      document.getElementById('changePhotoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Handle form submission
+        console.log('Photo change submitted');
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('changePhotoModal')).hide();
+      });
+
+      // Bio update
+      const userBio = document.getElementById("userBio");
+      if (userBio) {
+        userBio.addEventListener("input", async function(e) {
+          const user = auth.currentUser;
+          if (user) {
+            try {
+              await updateUserProfile(user.uid, { bio: e.target.value });
+            } catch (error) {
+              console.error("Error updating bio:", error);
+            }
+          }
+        });
+      }
+    });
+
     // Check authentication state
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // If not authenticated, redirect to login
         window.location.href = 'index.html';
         return;
       }
 
       try {
-        // Get user data from Firestore
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           const userData = userDoc.data();
+          
           // Update UI with user data
           document.getElementById('profileName').textContent = userData.username || user.email.split('@')[0];
           document.getElementById('accountName').textContent = userData.username || user.email.split('@')[0];
           document.getElementById('university').textContent = userData.university || 'Not set';
+          document.getElementById('userMajor').textContent = userData.major || 'Not set';
           document.getElementById('email').textContent = user.email;
+          document.querySelector("#userRole .role-value").textContent = userData.role || 'Student';
+          document.getElementById('userBio').value = userData.bio || '';
           
-          // Update statistics if they exist
-          if (document.getElementById('topicsSearched')) {
-            document.getElementById('topicsSearched').textContent = userData.topicsSearched || 0;
-          }
-          if (document.getElementById('studyToolsUsed')) {
-            document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
-          }
-          if (document.getElementById('coursesEnrolled')) {
-            document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
-          }
+          // Update statistics
+          document.getElementById('topicsSearched').textContent = userData.topicsSearched || 0;
+          document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
+          document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
+          
+          // Update last login
+          const lastSignInTime = new Date(user.metadata.lastSignInTime);
+          document.getElementById('lastLogin').textContent = lastSignInTime.toLocaleDateString("en-US", {
+            year: "numeric", month: "long", day: "numeric"
+          }) + " at " + lastSignInTime.toLocaleTimeString("en-US", {
+            hour: '2-digit', minute: '2-digit'
+          });
+          
+          // Update date created
+          const creationTime = new Date(user.metadata.creationTime);
+          document.getElementById('dateCreated').textContent = creationTime.toLocaleDateString("en-US", {
+            year: "numeric", month: "long", day: "numeric"
+          });
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
