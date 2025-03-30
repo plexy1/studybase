@@ -149,7 +149,7 @@
           <form id="changeNameForm">
             <div class="mb-3">
               <label for="newName" class="form-label">New Name</label>
-              <input type="text" class="form-control" id="newName" required>
+              <input type="text" class="form-control" id="newName" required autocomplete="off">
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -174,7 +174,7 @@
           <form id="changeUniversityForm">
             <div class="mb-3">
               <label for="newUniversity" class="form-label">New University</label>
-              <input type="text" class="form-control" id="newUniversity" required>
+              <input type="text" class="form-control" id="newUniversity" required autocomplete="off">
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -199,15 +199,15 @@
           <form id="changePasswordForm">
             <div class="mb-3">
               <label for="currentPassword" class="form-label">Current Password</label>
-              <input type="password" class="form-control" id="currentPassword" required>
+              <input type="password" class="form-control" id="currentPassword" required autocomplete="off">
             </div>
             <div class="mb-3">
               <label for="newPassword" class="form-label">New Password</label>
-              <input type="password" class="form-control" id="newPassword" required>
+              <input type="password" class="form-control" id="newPassword" required autocomplete="new-password">
             </div>
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirm New Password</label>
-              <input type="password" class="form-control" id="confirmPassword" required>
+              <input type="password" class="form-control" id="confirmPassword" required autocomplete="new-password">
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -256,7 +256,7 @@
           <form id="changeMajorForm">
             <div class="mb-3">
               <label for="newMajor" class="form-label">New Major</label>
-              <input type="text" class="form-control" id="newMajor" required>
+              <input type="text" class="form-control" id="newMajor" required autocomplete="off">
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -333,22 +333,76 @@
         }
       });
 
-      // Form handling code would be here
-      document.getElementById('changeNameForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Name change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changeNameModal')).hide();
-      });
+      // Change name form
+      const changeNameForm = document.getElementById("changeNameForm");
+      if (changeNameForm) {
+        changeNameForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newName = document.getElementById("newName").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { username: newName });
+              const accountNameElement = document.getElementById("accountName");
+              const profileNameElement = document.getElementById("profileName");
+              const accountTab = document.getElementById("accountTab");
+              
+              if (accountNameElement) accountNameElement.textContent = newName;
+              if (profileNameElement) profileNameElement.textContent = newName;
+              if (accountTab) accountTab.textContent = newName;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
+              if (modal) modal.hide();
+              displayStatusMessage("Name updated successfully!", true);
+            }
+          } catch (error) {
+            console.error("Error updating name:", error);
+            displayStatusMessage("Error updating name: " + error.message, false);
+          }
+        });
+      }
 
-      document.getElementById('changeUniversityForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('University change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal')).hide();
-      });
+      // Change university form
+      const changeUniversityForm = document.getElementById("changeUniversityForm");
+      if (changeUniversityForm) {
+        changeUniversityForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newUniversity = document.getElementById("newUniversity").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { university: newUniversity });
+              const universityElement = document.getElementById("university");
+              if (universityElement) universityElement.textContent = newUniversity;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
+              if (modal) modal.hide();
+              displayStatusMessage("University updated successfully!", true);
+            }
+          } catch (error) {
+            console.error("Error updating university:", error);
+            displayStatusMessage("Error updating university: " + error.message, false);
+          }
+        });
+      }
+
+      // Add status message function
+      function displayStatusMessage(message, success) {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
+        statusDiv.style.top = '20px';
+        statusDiv.style.right = '20px';
+        statusDiv.style.zIndex = '9999';
+        statusDiv.textContent = message;
+        
+        document.body.appendChild(statusDiv);
+        
+        setTimeout(() => {
+          statusDiv.remove();
+        }, 3000);
+      }
 
       document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
         e.preventDefault();

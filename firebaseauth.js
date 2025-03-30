@@ -28,6 +28,7 @@ async function handleRegistration(e) {
   
   const username = document.getElementById("floatingUsername").value;
   const university = document.getElementById("floatingUniversity").value;
+  const major = document.getElementById("floatingMajor").value;
   const email = document.getElementById("floatingEmail").value;
   const password = document.getElementById("floatingPassword").value;
   const successMessage = document.getElementById("successMessage");
@@ -39,6 +40,7 @@ async function handleRegistration(e) {
     await setDoc(doc(db, "users", user.uid), {
       username: username,
       university: university || "Not set",
+      major: major || "Not set",
       email: email,
       createdAt: new Date(),
       preferences: {
