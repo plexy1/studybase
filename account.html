@@ -412,6 +412,27 @@
         });
       }
 
+      // Character counter functionality for modals
+      const modalInputs = [
+        { input: 'newName', counter: 'nameCounter' },
+        { input: 'newUniversity', counter: 'universityModalCounter' },
+        { input: 'newMajor', counter: 'majorModalCounter' },
+        { input: 'currentPassword', counter: 'currentPasswordCounter' },
+        { input: 'newPassword', counter: 'newPasswordCounter' },
+        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
+      ];
+
+      modalInputs.forEach(({ input, counter }) => {
+        const inputElement = document.getElementById(input);
+        const counterElement = document.getElementById(counter);
+        
+        if (inputElement && counterElement) {
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
+        }
+      });
+
       // Change university form
       const changeUniversityForm = document.getElementById("changeUniversityForm");
       if (changeUniversityForm) {
@@ -428,6 +449,8 @@
               
               const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
               if (modal) modal.hide();
+              
+              // Display success message
               displayStatusMessage("University updated successfully!", true);
             }
           } catch (error) {
@@ -435,22 +458,6 @@
             displayStatusMessage("Error updating university: " + error.message, false);
           }
         });
-      }
-
-      // Add status message function
-      function displayStatusMessage(message, success) {
-        const statusDiv = document.createElement('div');
-        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
-        statusDiv.style.top = '20px';
-        statusDiv.style.right = '20px';
-        statusDiv.style.zIndex = '9999';
-        statusDiv.textContent = message;
-        
-        document.body.appendChild(statusDiv);
-        
-        setTimeout(() => {
-          statusDiv.remove();
-        }, 3000);
       }
 
       document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
@@ -473,27 +480,6 @@
       document.querySelector('.btn-logout').addEventListener('click', function() {
         // Redirect to login page
         window.location.href = 'index.html';
-      });
-
-      // Character counter functionality for modals
-      const modalInputs = [
-        { input: 'newName', counter: 'nameCounter' },
-        { input: 'newUniversity', counter: 'universityModalCounter' },
-        { input: 'newMajor', counter: 'majorModalCounter' },
-        { input: 'currentPassword', counter: 'currentPasswordCounter' },
-        { input: 'newPassword', counter: 'newPasswordCounter' },
-        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
-      ];
-
-      modalInputs.forEach(({ input, counter }) => {
-        const inputElement = document.getElementById(input);
-        const counterElement = document.getElementById(counter);
-        
-        if (inputElement && counterElement) {
-          inputElement.addEventListener('input', () => {
-            counterElement.textContent = inputElement.value.length;
-          });
-        }
       });
     });
   </script>
@@ -525,106 +511,68 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Change name form
-      document.getElementById('changeNameForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const newName = document.getElementById("newName").value;
-        const user = auth.currentUser;
+      // Character counter functionality for modals
+      const modalInputs = [
+        { input: 'newName', counter: 'nameCounter' },
+        { input: 'newUniversity', counter: 'universityModalCounter' },
+        { input: 'newMajor', counter: 'majorModalCounter' },
+        { input: 'currentPassword', counter: 'currentPasswordCounter' },
+        { input: 'newPassword', counter: 'newPasswordCounter' },
+        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
+      ];
+
+      modalInputs.forEach(({ input, counter }) => {
+        const inputElement = document.getElementById(input);
+        const counterElement = document.getElementById(counter);
         
-        if (user) {
-          try {
-            await updateUserProfile(user.uid, { username: newName });
-            document.getElementById("profileName").textContent = newName;
-            document.getElementById("accountName").textContent = newName;
-          } catch (error) {
-            console.error("Error updating name:", error);
-          }
+        if (inputElement && counterElement) {
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
         }
-        bootstrap.Modal.getInstance(document.getElementById('changeNameModal')).hide();
       });
 
       // Change university form
-      document.getElementById('changeUniversityForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const newUniversity = document.getElementById("newUniversity").value;
-        const user = auth.currentUser;
-        
-        if (user) {
+      const changeUniversityForm = document.getElementById("changeUniversityForm");
+      if (changeUniversityForm) {
+        changeUniversityForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newUniversity = document.getElementById("newUniversity").value;
+          
           try {
-            await updateUserProfile(user.uid, { university: newUniversity });
-            document.getElementById("university").textContent = newUniversity;
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { university: newUniversity });
+              const universityElement = document.getElementById("university");
+              if (universityElement) universityElement.textContent = newUniversity;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
+              if (modal) modal.hide();
+              
+              // Display success message
+              displayStatusMessage("University updated successfully!", true);
+            }
           } catch (error) {
             console.error("Error updating university:", error);
-          }
-        }
-        bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal')).hide();
-      });
-
-      // Change major form
-      document.getElementById('changeMajorForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const newMajor = document.getElementById("newMajor").value;
-        const user = auth.currentUser;
-        
-        if (user) {
-          try {
-            await updateUserProfile(user.uid, { major: newMajor });
-            document.getElementById("userMajor").textContent = newMajor;
-          } catch (error) {
-            console.error("Error updating major:", error);
-          }
-        }
-        bootstrap.Modal.getInstance(document.getElementById('changeMajorModal')).hide();
-      });
-
-      // Change role form
-      document.getElementById('changeRoleForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const newRole = document.getElementById("newRole").value;
-        const user = auth.currentUser;
-        
-        if (user) {
-          try {
-            await updateUserProfile(user.uid, { role: newRole });
-            document.querySelector("#userRole .role-value").textContent = newRole;
-          } catch (error) {
-            console.error("Error updating role:", error);
-          }
-        }
-        bootstrap.Modal.getInstance(document.getElementById('changeRoleModal')).hide();
-      });
-
-      // Change password form
-      document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Password change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
-      });
-
-      // Change photo form
-      document.getElementById('changePhotoForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Handle form submission
-        console.log('Photo change submitted');
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('changePhotoModal')).hide();
-      });
-
-      // Bio update
-      const userBio = document.getElementById("userBio");
-      if (userBio) {
-        userBio.addEventListener("input", async function(e) {
-          const user = auth.currentUser;
-          if (user) {
-            try {
-              await updateUserProfile(user.uid, { bio: e.target.value });
-            } catch (error) {
-              console.error("Error updating bio:", error);
-            }
+            displayStatusMessage("Error updating university: " + error.message, false);
           }
         });
+      }
+
+      // Add status message function
+      function displayStatusMessage(message, success) {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
+        statusDiv.style.top = '20px';
+        statusDiv.style.right = '20px';
+        statusDiv.style.zIndex = '9999';
+        statusDiv.textContent = message;
+        
+        document.body.appendChild(statusDiv);
+        
+        setTimeout(() => {
+          statusDiv.remove();
+        }, 3000);
       }
     });
 
@@ -654,16 +602,16 @@
           document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
           document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
           
-          // Update last login
+          // Update last login and date created
           const lastSignInTime = new Date(user.metadata.lastSignInTime);
+          const creationTime = new Date(user.metadata.creationTime);
+          
           document.getElementById('lastLogin').textContent = lastSignInTime.toLocaleDateString("en-US", {
             year: "numeric", month: "long", day: "numeric"
           }) + " at " + lastSignInTime.toLocaleTimeString("en-US", {
             hour: '2-digit', minute: '2-digit'
           });
           
-          // Update date created
-          const creationTime = new Date(user.metadata.creationTime);
           document.getElementById('dateCreated').textContent = creationTime.toLocaleDateString("en-US", {
             year: "numeric", month: "long", day: "numeric"
           });
