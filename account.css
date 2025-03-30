@@ -818,7 +818,6 @@
   overflow: hidden;
   display: block;
 }
-
 [data-bs-theme="dark"] .bio-section textarea {
   border-color: #334155;
   color: var(--text-primary-dark);
