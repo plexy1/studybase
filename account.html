@@ -507,16 +507,71 @@
         });
       }
 
-      // Change password form
+      // Change major form
+      const changeMajorForm = document.getElementById("changeMajorForm");
+      if (changeMajorForm) {
+        changeMajorForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newMajor = document.getElementById("newMajor").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { major: newMajor });
+              const majorElement = document.getElementById("userMajor");
+              if (majorElement) majorElement.textContent = newMajor;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeMajorModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Major updated successfully!", true);
+              changeMajorForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating major:", error);
+            displayStatusMessage("Error updating major: " + error.message, false);
+          }
+        });
+      }
+
+      // Change password form with verification
       const changePasswordForm = document.getElementById("changePasswordForm");
       if (changePasswordForm) {
-        changePasswordForm.addEventListener("submit", function(e) {
+        changePasswordForm.addEventListener("submit", async (e) => {
           e.preventDefault();
-          // Handle form submission
-          console.log('Password change submitted');
-          // Close modal
-          const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-          if (modal) modal.hide();
+          const currentPassword = document.getElementById("currentPassword").value;
+          const newPassword = document.getElementById("newPassword").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          
+          if (newPassword !== confirmPassword) {
+            displayStatusMessage("New passwords do not match!", false);
+            return;
+          }
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              // First verify current password
+              const credential = EmailAuthProvider.credential(user.email, currentPassword);
+              await reauthenticateWithCredential(user, credential);
+              
+              // If verification successful, update password
+              await updatePassword(user, newPassword);
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Password updated successfully!", true);
+              changePasswordForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating password:", error);
+            if (error.code === 'auth/wrong-password') {
+              displayStatusMessage("Current password is incorrect!", false);
+            } else {
+              displayStatusMessage("Error updating password: " + error.message, false);
+            }
+          }
         });
       }
 
@@ -563,10 +618,10 @@
 
     // Check authentication state
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = 'index.html';
-        return;
-      }
+      // if (!user) {
+      //   window.location.href = 'index.html';
+      //   return;
+      // }
 
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -635,11 +690,7 @@
       pointer-events: none;
     }
 
-    /* Add modal styling */
-    .modal-backdrop {
-      opacity: 1 !important;
-    }
-
+    /* Modal styling */
     .modal-content {
       background-color: var(--bs-body-bg);
       border: 1px solid var(--bs-border-color);
@@ -651,6 +702,10 @@
 
     .modal-body {
       background-color: var(--bs-body-bg);
+    }
+
+    .modal-backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
     }
   </style>
 </body>
