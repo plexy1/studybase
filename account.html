@@ -149,7 +149,10 @@
           <form id="changeNameForm">
             <div class="mb-3">
               <label for="newName" class="form-label">New Name</label>
-              <input type="text" class="form-control" id="newName" required autocomplete="off">
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newName" required autocomplete="off" maxlength="15">
+                <small class="char-counter"><span id="nameCounter">0</span>/15</small>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -174,7 +177,10 @@
           <form id="changeUniversityForm">
             <div class="mb-3">
               <label for="newUniversity" class="form-label">New University</label>
-              <input type="text" class="form-control" id="newUniversity" required autocomplete="off">
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newUniversity" required autocomplete="off" maxlength="20">
+                <small class="char-counter"><span id="universityModalCounter">0</span>/20</small>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -199,15 +205,24 @@
           <form id="changePasswordForm">
             <div class="mb-3">
               <label for="currentPassword" class="form-label">Current Password</label>
-              <input type="password" class="form-control" id="currentPassword" required autocomplete="off">
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="currentPassword" required autocomplete="off" maxlength="20">
+                <small class="char-counter"><span id="currentPasswordCounter">0</span>/20</small>
+              </div>
             </div>
             <div class="mb-3">
               <label for="newPassword" class="form-label">New Password</label>
-              <input type="password" class="form-control" id="newPassword" required autocomplete="new-password">
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="newPassword" required autocomplete="new-password" maxlength="20">
+                <small class="char-counter"><span id="newPasswordCounter">0</span>/20</small>
+              </div>
             </div>
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Confirm New Password</label>
-              <input type="password" class="form-control" id="confirmPassword" required autocomplete="new-password">
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="confirmPassword" required autocomplete="new-password" maxlength="20">
+                <small class="char-counter"><span id="confirmPasswordCounter">0</span>/20</small>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -256,7 +271,10 @@
           <form id="changeMajorForm">
             <div class="mb-3">
               <label for="newMajor" class="form-label">New Major</label>
-              <input type="text" class="form-control" id="newMajor" required autocomplete="off">
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newMajor" required autocomplete="off" maxlength="20">
+                <small class="char-counter"><span id="majorModalCounter">0</span>/20</small>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -456,6 +474,27 @@
         // Redirect to login page
         window.location.href = 'index.html';
       });
+
+      // Character counter functionality for modals
+      const modalInputs = [
+        { input: 'newName', counter: 'nameCounter' },
+        { input: 'newUniversity', counter: 'universityModalCounter' },
+        { input: 'newMajor', counter: 'majorModalCounter' },
+        { input: 'currentPassword', counter: 'currentPasswordCounter' },
+        { input: 'newPassword', counter: 'newPasswordCounter' },
+        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
+      ];
+
+      modalInputs.forEach(({ input, counter }) => {
+        const inputElement = document.getElementById(input);
+        const counterElement = document.getElementById(counter);
+        
+        if (inputElement && counterElement) {
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
+        }
+      });
     });
   </script>
   
@@ -640,5 +679,28 @@
       <p class="mb-0">&copy; 2025 studybase | Group 7</p>
     </div>
   </footer>
+
+  <style>
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .form-control {
+      height: 48px;
+      padding: 0 45px 0 40px;
+      border-radius: 8px;
+    }
+
+    .char-counter {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+  </style>
 </body>
 </html>
