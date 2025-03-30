@@ -33,6 +33,19 @@ async function handleRegistration(e) {
   const password = document.getElementById("floatingPassword").value;
   const successMessage = document.getElementById("successMessage");
   
+  // Basic validation
+  if (!username || !email || !password) {
+    successMessage.textContent = "Error: Please fill in all required fields";
+    successMessage.style.display = "block";
+    successMessage.style.color = "red";
+    return;
+  }
+
+  // Show loading state
+  successMessage.textContent = "Creating account...";
+  successMessage.style.display = "block";
+  successMessage.style.color = "black";
+  
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
@@ -43,6 +56,7 @@ async function handleRegistration(e) {
       major: major || "Not set",
       email: email,
       createdAt: new Date(),
+      role: "Student",
       preferences: {
         darkMode: false,
         anonymousMode: false
@@ -55,6 +69,7 @@ async function handleRegistration(e) {
     });
     
     successMessage.textContent = "Account created successfully! Redirecting to login...";
+    successMessage.style.color = "green";
     successMessage.style.display = "block";
     
     setTimeout(() => {
@@ -63,7 +78,23 @@ async function handleRegistration(e) {
     
   } catch (error) {
     console.error("Error creating account:", error);
-    successMessage.textContent = "Error: " + (error.message || "Failed to create account");
+    let errorMessage = "Failed to create account";
+    
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        errorMessage = "This email is already registered";
+        break;
+      case 'auth/invalid-email':
+        errorMessage = "Invalid email address";
+        break;
+      case 'auth/weak-password':
+        errorMessage = "Password should be at least 6 characters";
+        break;
+      default:
+        errorMessage = error.message || errorMessage;
+    }
+    
+    successMessage.textContent = "Error: " + errorMessage;
     successMessage.style.color = "red";
     successMessage.style.display = "block";
   }

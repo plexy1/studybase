@@ -1,22 +1,6 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
-        authDomain: "studybase-data.firebaseapp.com",
-        projectId: "studybase-data",
-        storageBucket: "studybase-data.firebasestorage.app",
-        messagingSenderId: "471482464641",
-        appId: "1:471482464641:web:46fe6cf41e17a24e785080"
-      };
-
-      const app = initializeApp(firebaseConfig);
-    </script>
-    <script type="module" src="firebaseauth.js" defer></script>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Studybase registration page">
@@ -44,12 +28,12 @@
           </div>
           
           <form id="registerForm">
-            <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+            <div id="successMessage" class="alert" style="display: none;"></div>
             
             <div class="input-group">
               <div class="input-wrapper">
                 <i class="fa-regular fa-user input-icon"></i>
-                <input type="text" class="form-control" id="floatingUsername" placeholder="Username" maxlength="15">
+                <input type="text" class="form-control" id="floatingUsername" placeholder="Username" maxlength="15" required>
                 <small class="char-counter"><span id="usernameCounter">0</span>/15</small>
               </div>
             </div>
@@ -73,7 +57,7 @@
             <div class="input-group">
               <div class="input-wrapper">
                 <i class="fa-regular fa-envelope input-icon"></i>
-                <input type="email" class="form-control" id="floatingInput" placeholder="Email address" maxlength="30" autocomplete="off">
+                <input type="email" class="form-control" id="floatingEmail" placeholder="Email address" maxlength="30" autocomplete="off" required>
                 <small class="char-counter"><span id="emailCounter">0</span>/30</small>
               </div>
             </div>
@@ -81,7 +65,7 @@
             <div class="input-group">
               <div class="input-wrapper">
                 <i class="fas fa-key input-icon"></i>
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" maxlength="20" autocomplete="new-password">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" maxlength="20" autocomplete="new-password" required>
                 <small class="char-counter"><span id="passwordCounter">0</span>/20</small>
               </div>
             </div>
@@ -113,6 +97,106 @@
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase modules -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+        authDomain: "studybase-data.firebaseapp.com",
+        projectId: "studybase-data",
+        storageBucket: "studybase-data.firebasestorage.app",
+        messagingSenderId: "471482464641",
+        appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      // Handle registration
+      const registerForm = document.getElementById("registerForm");
+      const successMessage = document.getElementById("successMessage");
+
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById("floatingUsername").value;
+        const university = document.getElementById("floatingUniversity").value;
+        const major = document.getElementById("floatingMajor").value;
+        const email = document.getElementById("floatingEmail").value;
+        const password = document.getElementById("floatingPassword").value;
+        
+        // Basic validation
+        if (!username || !email || !password) {
+          successMessage.textContent = "Error: Please fill in all required fields";
+          successMessage.className = "alert alert-danger";
+          successMessage.style.display = "block";
+          return;
+        }
+
+        // Show loading state
+        successMessage.textContent = "Creating account...";
+        successMessage.className = "alert alert-info";
+        successMessage.style.display = "block";
+        
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          
+          await setDoc(doc(db, "users", user.uid), {
+            username: username,
+            university: university || "Not set",
+            major: major || "Not set",
+            email: email,
+            createdAt: new Date(),
+            role: "Student",
+            preferences: {
+              darkMode: false,
+              anonymousMode: false
+            },
+            notifications: {
+              email: true,
+              quizReminders: true,
+              newFeatures: true
+            }
+          });
+          
+          successMessage.textContent = "Account created successfully! Redirecting to login...";
+          successMessage.className = "alert alert-success";
+          
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 2000);
+          
+        } catch (error) {
+          console.error("Error creating account:", error);
+          let errorMessage = "Failed to create account";
+          
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              errorMessage = "This email is already registered";
+              break;
+            case 'auth/invalid-email':
+              errorMessage = "Invalid email address";
+              break;
+            case 'auth/weak-password':
+              errorMessage = "Password should be at least 6 characters";
+              break;
+            default:
+              errorMessage = error.message || errorMessage;
+          }
+          
+          successMessage.textContent = "Error: " + errorMessage;
+          successMessage.className = "alert alert-danger";
+        }
+      });
+    </script>
+
     <script>
       // Dark mode toggle functionality
       document.addEventListener('DOMContentLoaded', () => {
@@ -152,15 +236,13 @@
             lightIcon.style.display = 'none';
           }
         }
-      });
 
-      // Character counter functionality
-      document.addEventListener('DOMContentLoaded', () => {
+        // Character counter functionality
         const inputs = [
           { input: 'floatingUsername', counter: 'usernameCounter' },
           { input: 'floatingUniversity', counter: 'universityCounter' },
           { input: 'floatingMajor', counter: 'majorCounter' },
-          { input: 'floatingInput', counter: 'emailCounter' },
+          { input: 'floatingEmail', counter: 'emailCounter' },
           { input: 'floatingPassword', counter: 'passwordCounter' }
         ];
 
@@ -168,9 +250,11 @@
           const inputElement = document.getElementById(input);
           const counterElement = document.getElementById(counter);
           
-          inputElement.addEventListener('input', () => {
-            counterElement.textContent = inputElement.value.length;
-          });
+          if (inputElement && counterElement) {
+            inputElement.addEventListener('input', () => {
+              counterElement.textContent = inputElement.value.length;
+            });
+          }
         });
       });
     </script>
@@ -207,6 +291,10 @@
       }
 
       .input-group {
+        margin-bottom: 1rem;
+      }
+
+      .alert {
         margin-bottom: 1rem;
       }
     </style>
