@@ -46,24 +46,32 @@
           <form id="registerForm">
             <div id="successMessage" class="alert alert-success" style="display: none;"></div>
             
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingUsername" placeholder="Username" required maxlength="20">
-              <label for="floatingUsername">Username</label>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="floatingUsername" placeholder="Username" required>
+              </div>
             </div>
             
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingUniversity" placeholder="University Name" maxlength="20">
-              <label for="floatingUniversity">University Name</label>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-university input-icon"></i>
+                <input type="text" id="floatingUniversity" placeholder="University Name">
+              </div>
             </div>
             
-            <div class="form-floating">
-              <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" required maxlength="20">
-              <label for="floatingEmail">Email address</label>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="floatingEmail" placeholder="Email address" required>
+              </div>
             </div>
             
-            <div class="form-floating mb-3">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required maxlength="20">
-              <label for="floatingPassword">Password</label>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" id="floatingPassword" placeholder="Password" required>
+              </div>
             </div>
             
             <button type="submit" class="btn btn-primary login-btn">
