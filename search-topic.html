@@ -172,6 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('videoSlider').innerHTML = '';
       document.getElementById('googleResults').innerHTML = '';
       
+      // Dispatch topic searched event
+      document.dispatchEvent(new Event('topicSearched'));
+      
       // Perform searches
       searchYouTube(query);
       searchGoogle(query);
