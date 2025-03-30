@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,6 +15,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // Handle form submission
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,23 +24,45 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("floatingInput").value;
+    const input = document.getElementById("floatingInput").value;
     const password = document.getElementById("floatingPassword").value;
     const signInMessage = document.getElementById("signInMessage");
 
     try {
-      // Sign in the user
-      await signInWithEmailAndPassword(auth, email, password);
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("username", "==", input));
+      const querySnapshot = await getDocs(q);
+      
+      let emailToUse = input; // Default to using input as email
+      
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        emailToUse = userDoc.data().email;
+      }
 
-      // Redirect to home page or dashboard upon successful login
-      window.location.href = "search-topic.html"; // Modify this to your desired page
+      await signInWithEmailAndPassword(auth, emailToUse, password);
+      window.location.href = "search-topic.html";
 
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
+      let errorMessage = "Please check your login details and try again";
 
-      signInMessage.style.display = "block";
-      signInMessage.textContent = `Error: ${errorMessage}`;
+      switch (errorCode) {
+        case 'auth/user-not-found':
+          errorMessage = "Account not found";
+          break;
+        case 'auth/wrong-password':
+          errorMessage = "Incorrect password";
+          break;
+        case 'auth/invalid-email':
+          errorMessage = "Please enter a valid email";
+          break;
+        default:
+          errorMessage = "Unable to sign in";
+      }
+
+      signInMessage.style.display = 'block';
+      signInMessage.textContent = errorMessage;
     }
   });
 });

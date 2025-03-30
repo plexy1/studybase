@@ -26,7 +26,7 @@ async function checkFirebaseStatus() {
 
   } catch (error) {
     console.error("Firebase Authentication Test Failed:", error);
-    firebaseStatusElement.textContent = 'Service Down';
+    firebaseStatusElement.textContent = 'Service Unavailable';
     firebaseStatusElement.className = 'status error';
     firebaseStatusElement.classList.remove('ok');
     firebaseStatusElement.classList.add('error');

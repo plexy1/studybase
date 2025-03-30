@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, addDoc, collection, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, addDoc, collection, getDocs, setDoc, query, where } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 
 // Firebase configuration
@@ -35,18 +35,31 @@ async function handleRegistration(e) {
   
   // Basic validation
   if (!username || !email || !password) {
-    successMessage.textContent = "Error: Please fill in all required fields";
+    successMessage.textContent = "Please fill in all fields";
     successMessage.style.display = "block";
     successMessage.style.color = "red";
     return;
   }
 
   // Show loading state
-  successMessage.textContent = "Creating account...";
+  successMessage.textContent = "Creating your account...";
   successMessage.style.display = "block";
   successMessage.style.color = "black";
   
   try {
+    // First check if username already exists
+    const usersRef = collection(db, "users");
+    const usernameQuery = query(usersRef, where("username", "==", username));
+    const usernameSnapshot = await getDocs(usernameQuery);
+    
+    if (!usernameSnapshot.empty) {
+      successMessage.textContent = "Username already taken";
+      successMessage.style.color = "red";
+      successMessage.style.display = "block";
+      return;
+    }
+
+    // Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
@@ -68,7 +81,7 @@ async function handleRegistration(e) {
       }
     });
     
-    successMessage.textContent = "Account created successfully! Redirecting to login...";
+    successMessage.textContent = "Account created! Redirecting to login...";
     successMessage.style.color = "green";
     successMessage.style.display = "block";
     
@@ -78,23 +91,23 @@ async function handleRegistration(e) {
     
   } catch (error) {
     console.error("Error creating account:", error);
-    let errorMessage = "Failed to create account";
+    let errorMessage = "Unable to create account";
     
     switch (error.code) {
       case 'auth/email-already-in-use':
-        errorMessage = "This email is already registered";
+        errorMessage = "Email already registered";
         break;
       case 'auth/invalid-email':
-        errorMessage = "Invalid email address";
+        errorMessage = "Please enter a valid email";
         break;
       case 'auth/weak-password':
-        errorMessage = "Password should be at least 6 characters";
+        errorMessage = "Password must be at least 6 characters";
         break;
       default:
-        errorMessage = error.message || errorMessage;
+        errorMessage = "Unable to create account";
     }
     
-    successMessage.textContent = "Error: " + errorMessage;
+    successMessage.textContent = errorMessage;
     successMessage.style.color = "red";
     successMessage.style.display = "block";
   }
@@ -268,6 +281,18 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const user = auth.currentUser;
         if (user) {
+          const usersRef = collection(db, "users");
+          const usernameQuery = query(usersRef, where("username", "==", newName));
+          const usernameSnapshot = await getDocs(usernameQuery);
+          
+          if (!usernameSnapshot.empty) {
+            const foundUser = usernameSnapshot.docs[0];
+            if (foundUser.id !== user.uid) {
+              displayStatusMessage("This username is already taken", false);
+              return;
+            }
+          }
+
           await updateUserProfile(user.uid, { username: newName });
           const accountNameElement = document.getElementById("accountName");
           const profileNameElement = document.getElementById("profileName");
@@ -279,9 +304,13 @@ document.addEventListener("DOMContentLoaded", () => {
           
           const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
           if (modal) modal.hide();
+          
+          displayStatusMessage("Username updated successfully!", true);
+          changeNameForm.reset();
         }
       } catch (error) {
         console.error("Error updating name:", error);
+        displayStatusMessage("Error updating username: " + error.message, false);
       }
     });
   }

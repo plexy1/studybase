@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
   <link href="history.css" rel="stylesheet" />
   <link href="generalUI.css" rel="stylesheet" />
+  <script src="theme-loader.js"></script>
   <style>
     .loading {
       display: flex;
@@ -753,7 +754,7 @@
       
       catch (error) {
         console.error("Error creating folder:", error);
-        displayDeleteStatus("Error creating folder.", false);
+        displayDeleteStatus("Unable to create folder.", false);
       }
     }
 
@@ -824,7 +825,7 @@
         displayDeleteStatus("Folder and its contents deleted successfully!", true);
       } catch (error) {
         console.error("Error deleting folder:", error);
-        displayDeleteStatus("Error deleting folder.", false);
+        displayDeleteStatus("Unable to delete folder.", false);
       }
     }
 
@@ -845,7 +846,7 @@
         displayDeleteStatus(folderId ? "Item moved to folder successfully!" : "Item moved to Unsorted Items successfully!", true);
       } catch (error) {
         console.error("Error moving item:", error);
-        displayDeleteStatus("Error moving item.", false);
+        displayDeleteStatus("Unable to move item.", false);
       }
     }
 
@@ -1110,7 +1111,7 @@
           deleteModal.hide();
         } catch (error) {
           console.error("Error deleting search:", error);
-          displayDeleteStatus("Error deleting search.", false);
+          displayDeleteStatus("Unable to delete search.", false);
           deleteModal.hide();
         }
       });
@@ -1201,7 +1202,7 @@
           deleteModal.hide();
         } catch (error) {
           console.error("Error deleting all history:", error);
-          displayDeleteStatus("Error deleting all history.", false);
+          displayDeleteStatus("Unable to delete history.", false);
           deleteModal.hide();
         }
       });
@@ -1281,7 +1282,7 @@
           }
         } catch (cacheError) {
           console.error("Error fetching from cache:", cacheError);
-          searchHistoryTiles.innerHTML = `<p class="error-message">Error loading search history.</p>`;
+          searchHistoryTiles.innerHTML = `<p class="error-message">Unable to load search history.</p>`;
         }
       }
     }
@@ -1325,7 +1326,7 @@
         displayDeleteStatus("Folder color updated!", true);
       } catch (error) {
         console.error("Error updating folder color:", error);
-        displayDeleteStatus("Error updating folder color.", false);
+        displayDeleteStatus("Unable to update folder color.", false);
       }
     }
 

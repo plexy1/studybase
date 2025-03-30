@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="generalUI.css" rel="stylesheet">
   <link href="quiz.css" rel="stylesheet">
+  <script src="theme-loader.js"></script>
 
 </head>
 
@@ -553,8 +554,8 @@
       } else {
         document.getElementById('studyContent').innerHTML = `
           <div class="alert alert-danger">
-            <h4>Error</h4>
-            <p>Question generation is not available. Please try again later.</p>
+            <h4>Unable to Generate Questions</h4>
+            <p>Please try again later.</p>
           </div>
           <div class="text-center mt-4">
             <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
@@ -579,8 +580,8 @@
       } catch (error) {
         document.getElementById('studyContent').innerHTML = `
           <div class="alert alert-danger">
-            <h4>Error</h4>
-            <p>Flashcard generation is not available: ${error.message}</p>
+            <h4>Unable to Generate Flashcards</h4>
+            <p>Please try again later.</p>
           </div>
           <div class="text-center mt-4">
             <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
@@ -603,8 +604,8 @@
       else {
         document.getElementById('studyContent').innerHTML = `
           <div class="alert alert-danger">
-            <h4>Error</h4>
-            <p>Test generation is not available. Please try again later.</p>
+            <h4>Unable to Generate Test</h4>
+            <p>Please try again later.</p>
           </div>
           <div class="text-center mt-4">
             <button class="btn btn-outline-secondary" onclick="resetStudyTools()">

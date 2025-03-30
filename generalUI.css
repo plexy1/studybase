@@ -203,10 +203,11 @@ html[data-bs-theme="dark"] .nav-links a.active::after {
   gap: 1rem;
 }
 
-.dark-mode-btn {
+/* Notification styles */
+.notification-btn {
   background: none;
   border: none;
-  color: var(--text-primary-light);
+  color: var(--text-secondary-light);
   cursor: pointer;
   font-size: 1.25rem;
   padding: var(--spacing-sm);
@@ -214,37 +215,87 @@ html[data-bs-theme="dark"] .nav-links a.active::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--anim-normal);
+  transition: color var(--anim-normal);
+  position: relative;
 }
 
-.dark-mode-btn:hover {
+.notification-btn i {
+  transition: transform var(--anim-normal);
+}
+
+.notification-btn:hover {
   color: var(--primary-color);
+}
+
+.notification-btn:hover i {
   transform: rotate(12deg);
 }
 
-.dark-icon {
-  display: block;
-}
-
-.light-icon {
+.notification-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -100px;
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-md);
+  min-width: 300px;
   display: none;
-  color: #d1d5db;
+  z-index: 1100;
+  border: 1px solid var(--border-light);
 }
 
-html[data-bs-theme="dark"] .dark-mode-btn {
-  color: #d1d5db;
+.notification-dropdown.show {
+  display: block;
+  animation: fadeIn var(--anim-fast) ease;
 }
 
-html[data-bs-theme="dark"] .dark-mode-btn:hover {
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.notification-title {
+  font-weight: 600;
+  color: var(--text-primary-light);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.notification-content {
+  color: var(--text-secondary-light);
+  text-align: center;
+  padding: var(--spacing-md) 0;
+  font-size: 0.9rem;
+}
+
+[data-bs-theme="dark"] .notification-btn {
+  color: var(--text-secondary-dark);
+}
+
+[data-bs-theme="dark"] .notification-btn:hover {
   color: var(--primary-color);
 }
 
-html[data-bs-theme="dark"] .dark-icon {
-  display: none;
+[data-bs-theme="dark"] .notification-dropdown {
+  background-color: var(--card-bg-dark);
+  border: 1px solid var(--border-dark);
 }
 
-html[data-bs-theme="dark"] .light-icon {
-  display: block;
+[data-bs-theme="dark"] .notification-header {
+  border-bottom-color: var(--border-dark);
+}
+
+[data-bs-theme="dark"] .notification-title {
+  color: var(--text-primary-dark);
+}
+
+[data-bs-theme="dark"] .notification-content {
+  color: var(--text-secondary-dark);
 }
 
 .profile-img {
