@@ -272,8 +272,8 @@
             <div class="mb-3">
               <label for="newMajor" class="form-label">New Major</label>
               <div class="input-wrapper">
-                <input type="text" class="form-control" id="newMajor" required autocomplete="off" maxlength="20">
-                <small class="char-counter"><span id="majorModalCounter">0</span>/20</small>
+                <input type="text" class="form-control" id="newMajor" required autocomplete="off" maxlength="30">
+                <small class="char-counter"><span id="majorModalCounter">0</span>/30</small>
               </div>
             </div>
             <div class="modal-actions">
@@ -532,6 +532,33 @@
           if (modal) modal.hide();
         });
       }
+
+      // Change role form
+      const changeRoleForm = document.getElementById("changeRoleForm");
+      if (changeRoleForm) {
+        changeRoleForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newRole = document.getElementById("newRole").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { role: newRole });
+              const roleElement = document.querySelector("#userRole .role-value");
+              if (roleElement) roleElement.textContent = newRole;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeRoleModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Role updated successfully!", true);
+              changeRoleForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating role:", error);
+            displayStatusMessage("Error updating role: " + error.message, false);
+          }
+        });
+      }
     });
 
     // Check authentication state
@@ -594,7 +621,7 @@
 
     .form-control {
       height: 48px;
-      padding: 0 45px 0 40px;
+      padding: 0 45px 0 12px;
       border-radius: 8px;
     }
 
@@ -606,6 +633,24 @@
       color: #6b7280;
       font-size: 0.75rem;
       pointer-events: none;
+    }
+
+    /* Add modal styling */
+    .modal-backdrop {
+      opacity: 1 !important;
+    }
+
+    .modal-content {
+      background-color: var(--bs-body-bg);
+      border: 1px solid var(--bs-border-color);
+    }
+
+    .modal-header {
+      border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .modal-body {
+      background-color: var(--bs-body-bg);
     }
   </style>
 </body>
