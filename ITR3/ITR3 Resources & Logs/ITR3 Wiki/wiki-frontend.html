@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase Wiki - Frontend Components</title>
+    <link rel="stylesheet" href="wiki.css">
+    <link rel="stylesheet" href="generalUI.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>StudyBase Wiki - Frontend Components</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="wiki.html">Wiki Home</a></li>
+                <li><a href="https://plexy1.github.io/studybase/">App Home</a></li>
+                <li><a href="#main-pages">Main Pages</a></li>
+                <li><a href="#course-pages">Course Pages</a></li>
+                <li><a href="#user-pages">User Pages</a></li>
+                <li><a href="#style-system">Style System</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="main-pages">
+            <h2>Main Pages</h2>
+            <div class="feature-description">
+                <p>The main pages form the core navigation structure of the StudyBase application.</p>
+                
+                <div class="file-grid">
+                    <div class="file-card">
+                        <h3>index.html / index.css</h3>
+                        <p>The landing page of the application that introduces users to StudyBase's features.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Hero section with introduction</li>
+                            <li>Feature highlights</li>
+                            <li>User testimonials</li>
+                            <li>Quick access to main features</li>
+                            <li>Call to action for sign-up/sign-in</li>
+                        </ul>
+                        <p><strong>Styling:</strong> Uses index.css for custom styling with a clean, modern UI focused on highlighting key features.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>status.html / status.css</h3>
+                        <p>Dashboard showing a student's progress, upcoming deadlines, and study recommendations.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Progress overview cards</li>
+                            <li>Study time graphs</li>
+                            <li>Upcoming deadlines section</li>
+                            <li>Personalized recommendations</li>
+                            <li>Quick action buttons</li>
+                        </ul>
+                        <p><strong>Styling:</strong> Uses status.css for a dashboard-style interface with data visualizations and progress indicators.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>communities.html / communities.css</h3>
+                        <p>Page for finding and interacting with study groups and course communities.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Community search and filters</li>
+                            <li>Community cards with member counts</li>
+                            <li>Discussion board previews</li>
+                            <li>Create community form</li>
+                            <li>Recommended communities</li>
+                        </ul>
+                        <p><strong>Styling:</strong> Uses communities.css for social media-inspired interfaces with emphasis on user interaction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="course-pages">
+            <h2>Course-Related Pages</h2>
+            <div class="feature-description">
+                <p>These pages focus on course discovery, content, and assessment.</p>
+                
+                <div class="file-grid">
+                    <div class="file-card">
+                        <h3>courses.html / courses.css</h3>
+                        <p>Central hub for browsing, searching, and filtering available courses.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Search bar with advanced filters</li>
+                            <li>Course cards with key information</li>
+                            <li>Department/subject filters</li>
+                            <li>Professor rating indicators</li>
+                            <li>Pagination controls</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> courses.js handles the search functionality, filtering, and data presentation.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>quiz.html / quiz.css</h3>
+                        <p>Interface for taking generated quizzes and viewing results.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Question cards with various formats</li>
+                            <li>Timer display</li>
+                            <li>Progress indicator</li>
+                            <li>Answer submission controls</li>
+                            <li>Results and analysis view</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> generate-quiz.js provides the backend logic for quiz generation, while the UI is handled in the HTML/CSS.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>search-topic.html / search-topic.css</h3>
+                        <p>Specialized search interface for finding specific topics across courses.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Topic search bar with auto-suggestions</li>
+                            <li>Filter controls for narrowing results</li>
+                            <li>Topic cards with preview content</li>
+                            <li>Related topics suggestions</li>
+                            <li>Save/bookmark controls</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> search-topic.js manages the search logic and API integration with various content sources.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>rate-course-experience.html</h3>
+                        <p>Form for students to provide feedback on courses they've completed.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Rating scales for various aspects</li>
+                            <li>Comment sections for detailed feedback</li>
+                            <li>Course selection dropdown</li>
+                            <li>Professor evaluation section</li>
+                            <li>Submission controls</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> rate-course-experience.js handles form validation and submission to the backend.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="user-pages">
+            <h2>User Account Pages</h2>
+            <div class="feature-description">
+                <p>Pages related to user account management, history, and personalization.</p>
+                
+                <div class="file-grid">
+                    <div class="file-card">
+                        <h3>account.html / account.css</h3>
+                        <p>User profile and account settings page.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Profile information display</li>
+                            <li>Account settings form</li>
+                            <li>Notification preferences</li>
+                            <li>Learning preferences</li>
+                            <li>Connected services management</li>
+                        </ul>
+                        <p><strong>Styling:</strong> account.css provides a clean, form-based interface with clear section divisions.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>create-account.html / create-account.css</h3>
+                        <p>Registration form for new users.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Registration form with validation</li>
+                            <li>Social login options</li>
+                            <li>University selection</li>
+                            <li>Initial preferences setup</li>
+                            <li>Terms and conditions acceptance</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> firebaseauth.js manages the authentication process.</p>
+                    </div>
+
+                    <div class="file-card">
+                        <h3>history.html / history.css</h3>
+                        <p>Comprehensive view of a user's activity and progress history.</p>
+                        <p><strong>Components:</strong></p>
+                        <ul>
+                            <li>Timeline of activities</li>
+                            <li>Study session logs</li>
+                            <li>Quiz results history</li>
+                            <li>Course progress tracking</li>
+                            <li>Achievement displays</li>
+                        </ul>
+                        <p><strong>Key JavaScript:</strong> test-history.js manages history retrieval and display formatting.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="style-system">
+            <h2>Style System</h2>
+            <div class="feature-description">
+                <p>StudyBase implements a consistent style system across all pages for visual coherence and better user experience.</p>
+                
+                <h3>Key Style Files</h3>
+                <ul>
+                    <li><strong>generalUI.css</strong> - Shared components and base styles used across the application</li>
+                    <li>Individual page CSS files for page-specific styling</li>
+                </ul>
+                
+                <h3>Design Elements</h3>
+                <div class="code-explanation">
+                    <h4>Color Palette</h4>
+                    <div class="color-palette">
+                        <div class="color-item" style="background-color: #3498db;">
+                            <span>Primary Blue</span>
+                            <span>#3498db</span>
+                        </div>
+                        <div class="color-item" style="background-color: #2ecc71;">
+                            <span>Success Green</span>
+                            <span>#2ecc71</span>
+                        </div>
+                        <div class="color-item" style="background-color: #e74c3c;">
+                            <span>Error Red</span>
+                            <span>#e74c3c</span>
+                        </div>
+                        <div class="color-item" style="background-color: #f39c12;">
+                            <span>Warning Yellow</span>
+                            <span>#f39c12</span>
+                        </div>
+                        <div class="color-item" style="background-color: #34495e;">
+                            <span>Dark Blue</span>
+                            <span>#34495e</span>
+                        </div>
+                    </div>
+
+                    <h4>Typography</h4>
+                    <p>The application uses a consistent typography system:</p>
+                    <ul>
+                        <li>Primary font: Segoe UI, Tahoma, Geneva, Verdana, sans-serif</li>
+                        <li>Heading sizes: 2rem, 1.75rem, 1.5rem, 1.25rem</li>
+                        <li>Base font size: 16px</li>
+                        <li>Line height: 1.6</li>
+                    </ul>
+
+                    <h4>Components</h4>
+                    <p>Common UI components implemented across the application:</p>
+                    <ul>
+                        <li>Buttons (primary, secondary, danger, success)</li>
+                        <li>Form controls (inputs, selects, checkboxes, radios)</li>
+                        <li>Cards for displaying grouped content</li>
+                        <li>Navigation bars (top and side)</li>
+                        <li>Modals and dialogs</li>
+                        <li>Tabs and accordions</li>
+                        <li>Alert and notification components</li>
+                    </ul>
+
+                    <h4>Responsive Design</h4>
+                    <p>The application is designed to be responsive across devices:</p>
+                    <ul>
+                        <li>Mobile-first approach</li>
+                        <li>Breakpoints at 576px, 768px, 992px, and 1200px</li>
+                        <li>Flexible grid system</li>
+                        <li>Collapsible navigation for smaller screens</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        /* Additional styles specifically for this page */
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .color-item {
+            width: 150px;
+            height: 100px;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--box-shadow);
+        }
+
+        .color-item span {
+            display: block;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        // Script to handle smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
