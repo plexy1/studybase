@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase - Wiki</title>
+    <link rel="stylesheet" href="wiki.css">
+    <link rel="stylesheet" href="generalUI.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>studybase Wiki</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="https://plexy1.github.io/studybase/">Home</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#core-features">Core Features</a></li>
+                <li><a href="#frontend">Frontend</a></li>
+                <li><a href="#backend">Backend</a></li>
+                <li><a href="#api-integrations">API Integrations</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>Project Overview</h2>
+            <p>StudyBase is a powerful and dynamic study assistant designed to help university students streamline their academic journey. Currently tailored for York University students, this tool provides several unique features such as a personalized roadmap, professor search, quiz generation, and course content reviews.</p>
+            <p>The platform is scalable and is not limited to York University; future expansions may include broader functionalities for students from various institutions.</p>
+            
+            <div class="wiki-links">
+                <h3>Quick Documentation Links</h3>
+                <div class="link-grid">
+                    <a href="wiki-core-features.html" class="wiki-link-card">
+                        <h4>Core Features Documentation</h4>
+                        <p>Detailed documentation of StudyBase's main features and their implementation</p>
+                    </a>
+                    <a href="wiki-frontend.html" class="wiki-link-card">
+                        <h4>Frontend Documentation</h4>
+                        <p>Comprehensive guide to all frontend components and pages</p>
+                    </a>
+                    <a href="wiki-api-integrations.html" class="wiki-link-card">
+                        <h4>API Integrations Documentation</h4>
+                        <p>Detailed documentation of all external API integrations</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="core-features">
+            <h2>Core Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Custom Roadmap Generator</h3>
+                    <p>Powered by a custom GPT model, StudyBase generates a personalized roadmap to help students plan and manage their study schedule effectively.</p>
+                    <p><strong>Related Files:</strong> <a href="#generate-roadmap">generate-roadmap.js</a></p>
+                    <a href="wiki-core-features.html#roadmap" class="feature-link">View Detailed Documentation</a>
+                </div>
+                <div class="feature-card">
+                    <h3>Custom Course Search</h3>
+                    <p>Find professors and roadmaps for specific courses. Easily filter based on preferences and other criteria.</p>
+                    <p><strong>Related Files:</strong> <a href="#courses">courses.js, courses.html, courses.css</a></p>
+                    <a href="wiki-core-features.html#search" class="feature-link">View Detailed Documentation</a>
+                </div>
+                <div class="feature-card">
+                    <h3>Quiz Generator</h3>
+                    <p>Automatically generate quizzes for various course topics to help students test their knowledge and prepare for exams.</p>
+                    <p><strong>Related Files:</strong> <a href="#quiz">generate-quiz.js, quiz.html, quiz.css</a></p>
+                    <a href="wiki-core-features.html#quiz" class="feature-link">View Detailed Documentation</a>
+                </div>
+                <div class="feature-card">
+                    <h3>Professor Reviews</h3>
+                    <p>Access valuable student reviews and feedback on professors to make informed decisions when selecting courses and instructors.</p>
+                    <p><strong>Related Files:</strong> <a href="#rmp">rateMyProfessor.js, rmp-client.js</a></p>
+                    <a href="wiki-core-features.html#professor" class="feature-link">View Detailed Documentation</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="frontend">
+            <h2>Frontend Components</h2>
+            <p>StudyBase features a comprehensive frontend with multiple pages and components to deliver a seamless user experience.</p>
+            <a href="wiki-frontend.html" class="section-link">View Complete Frontend Documentation</a>
+            
+            <h3 id="pages">Pages</h3>
+            <div class="file-grid">
+                <div class="file-card">
+                    <h4>index.html / index.css</h4>
+                    <p>Main landing page for the application.</p>
+                    <a href="wiki-frontend.html#main-pages" class="file-link">View Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>account.html / account.css</h4>
+                    <p>User account management page.</p>
+                    <a href="wiki-frontend.html#user-pages" class="file-link">View Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>courses.html / courses.css</h4>
+                    <p>Course search and information page.</p>
+                    <a href="wiki-frontend.html#course-pages" class="file-link">View Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>quiz.html / quiz.css</h4>
+                    <p>Quiz taking interface.</p>
+                    <a href="wiki-frontend.html#course-pages" class="file-link">View Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>history.html / history.css</h4>
+                    <p>User history and activity tracking.</p>
+                    <a href="wiki-frontend.html#user-pages" class="file-link">View Details</a>
+                </div>
+            </div>
+
+            <h3 id="styles">Common Styles</h3>
+            <div class="file-grid">
+                <div class="file-card">
+                    <h4>generalUI.css</h4>
+                    <p>Common UI components and styles shared across pages.</p>
+                    <a href="wiki-frontend.html#style-system" class="file-link">View Details</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="backend">
+            <h2>Backend Components</h2>
+            
+            <h3 id="js-core">Core JavaScript Files</h3>
+            <div class="file-grid">
+                <div class="file-card" id="generate-roadmap">
+                    <h4>generate-roadmap.js</h4>
+                    <p>Creates personalized study roadmaps using GPT integration.</p>
+                    <a href="wiki-api-integrations.html#gpt" class="file-link">View API Integration Details</a>
+                </div>
+                <div class="file-card" id="generate-quiz">
+                    <h4>generate-quiz.js</h4>
+                    <p>Generates quizzes based on course content.</p>
+                    <a href="wiki-api-integrations.html#gpt" class="file-link">View API Integration Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>generate-flashcards.js</h4>
+                    <p>Creates flashcards for study material.</p>
+                </div>
+                <div class="file-card">
+                    <h4>generate-test.js</h4>
+                    <p>Generates comprehensive tests for course material.</p>
+                </div>
+                <div class="file-card" id="courses">
+                    <h4>courses.js</h4>
+                    <p>Handles course data and interactions.</p>
+                    <a href="wiki-core-features.html#search" class="file-link">View Feature Details</a>
+                </div>
+                <div class="file-card" id="communities">
+                    <h4>communities.js</h4>
+                    <p>Manages community features and interactions.</p>
+                    <a href="wiki-frontend.html#main-pages" class="file-link">View Frontend Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>search-topic.js</h4>
+                    <p>Handles topic search functionality.</p>
+                </div>
+                <div class="file-card">
+                    <h4>rate-course-experience.js</h4>
+                    <p>Manages course rating submissions.</p>
+                </div>
+                <div class="file-card">
+                    <h4>firebaseauth.js</h4>
+                    <p>Handles Firebase authentication.</p>
+                </div>
+                <div class="file-card">
+                    <h4>login.js</h4>
+                    <p>Manages user login functionality.</p>
+                </div>
+                <div class="file-card">
+                    <h4>test-history.js</h4>
+                    <p>Manages test history data.</p>
+                </div>
+                <div class="file-card">
+                    <h4>test-gpt.js</h4>
+                    <p>Testing module for GPT functionality.</p>
+                </div>
+                <div class="file-card">
+                    <h4>App.js</h4>
+                    <p>Main application logic.</p>
+                </div>
+            </div>
+
+            <h3 id="search-integration">Search Integration</h3>
+            <div class="file-grid">
+                <div class="file-card">
+                    <h4>google-search.js</h4>
+                    <p>Integration with Google search API.</p>
+                    <a href="wiki-api-integrations.html#google" class="file-link">View API Integration Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>youtube-search.js</h4>
+                    <p>Integration with YouTube API for educational content.</p>
+                    <a href="wiki-api-integrations.html#youtube" class="file-link">View API Integration Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>save-search.js</h4>
+                    <p>Functionality to save search results.</p>
+                </div>
+            </div>
+
+            <h3 id="rmp">RateMyProfessor Integration</h3>
+            <div class="file-grid">
+                <div class="file-card">
+                    <h4>rateMyProfessor.js</h4>
+                    <p>Server component for RateMyProfessor integration.</p>
+                    <a href="wiki-api-integrations.html#rmp" class="file-link">View API Integration Details</a>
+                </div>
+                <div class="file-card">
+                    <h4>rmp-client.js</h4>
+                    <p>Client-side integration with RateMyProfessor API.</p>
+                    <a href="wiki-api-integrations.html#rmp" class="file-link">View API Integration Details</a>
+                </div>
+            </div>
+
+            <h3 id="data">Data Files</h3>
+            <div class="file-grid">
+                <div class="file-card">
+                    <h4>courses.json</h4>
+                    <p>Course data in JSON format.</p>
+                </div>
+                <div class="file-card">
+                    <h4>courseProf.json</h4>
+                    <p>Course-Professor relationship data.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="api-integrations">
+            <h2>API Integrations</h2>
+            <p>StudyBase integrates with multiple external APIs to provide a comprehensive set of features.</p>
+            <a href="wiki-api-integrations.html" class="section-link">View Complete API Documentation</a>
+            
+            <div class="api-grid">
+                <div class="api-card">
+                    <h3>YouTube API</h3>
+                    <p>Integrated for accessing supplementary educational content and lectures.</p>
+                    <p><strong>Related Files:</strong> <a href="#search-integration">youtube-search.js</a></p>
+                    <a href="wiki-api-integrations.html#youtube" class="api-link">View API Documentation</a>
+                </div>
+                <div class="api-card">
+                    <h3>Custom GPT API</h3>
+                    <p>Tailored to provide personalized academic recommendations and support for students, such as generating study plans, quizzes, and more.</p>
+                    <p><strong>Related Files:</strong> <a href="#js-core">generate-roadmap.js, generate-quiz.js, generate-test.js</a></p>
+                    <a href="wiki-api-integrations.html#gpt" class="api-link">View API Documentation</a>
+                </div>
+                <div class="api-card">
+                    <h3>Google API</h3>
+                    <p>Used for various features, including authentication and search functionality.</p>
+                    <p><strong>Related Files:</strong> <a href="#search-integration">google-search.js</a></p>
+                    <a href="wiki-api-integrations.html#google" class="api-link">View API Documentation</a>
+                </div>
+                <div class="api-card">
+                    <h3>Firebase & Cloud Firestore</h3>
+                    <p>Utilized for storing user data, professor reviews, and other dynamic content.</p>
+                    <p><strong>Related Files:</strong> <a href="#backend">firebaseauth.js</a></p>
+                    <a href="wiki-api-integrations.html#firebase" class="api-link">View API Documentation</a>
+                </div>
+                <div class="api-card">
+                    <h3>RateMyProfessor API</h3>
+                    <p>Integrated to provide professor ratings and reviews directly within the application.</p>
+                    <p><strong>Related Files:</strong> <a href="#rmp">rateMyProfessor.js, rmp-client.js</a></p>
+                    <a href="wiki-api-integrations.html#rmp" class="api-link">View API Documentation</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="development">
+            <h2>Development</h2>
+            <h3>Installation</h3>
+            <pre><code>git clone https://github.com/plexy1/studybase.git
+cd studybase
+npm install</code></pre>
+
+            <h3>Setting up RateMyProfessor Integration</h3>
+            <p>The RateMyProfessor integration requires the <code>ratemyprofessor-api</code> package which is included in the dependencies. To run the server component:</p>
+            <pre><code>node rateMyProfessor.js</code></pre>
+            <p>This will start the API server on port 3000, which the frontend will use to fetch professor ratings.</p>
+
+            <h3>Access the Service</h3>
+            <p>Current state is pre-alpha:</p>
+            <pre><code>https://plexy1.github.io/studybase/index.html</code></pre>
+        </section>
+    </main>
+
+    <script>
+        // Script to handle smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

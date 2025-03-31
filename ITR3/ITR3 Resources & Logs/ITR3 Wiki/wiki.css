@@ -1,0 +1,296 @@
+/* Wiki styles */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --dark-color: #2c3e50;
+    --light-color: #ecf0f1;
+    --highlight-color: #f39c12;
+    --danger-color: #e74c3c;
+    --text-color: #333;
+    --border-radius: 5px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    text-align: center;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    margin-bottom: 3rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--light-color);
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+h3 {
+    color: var(--dark-color);
+}
+
+h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--highlight-color);
+}
+
+/* Grids */
+.feature-grid,
+.file-grid,
+.api-grid,
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Cards */
+.feature-card,
+.file-card,
+.api-card,
+.wiki-link-card {
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.feature-card:hover,
+.file-card:hover,
+.api-card:hover,
+.wiki-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3,
+.api-card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+.file-card h4,
+.wiki-link-card h4 {
+    color: var(--secondary-color);
+    margin-top: 0;
+}
+
+/* Link styles */
+.feature-link,
+.file-link,
+.api-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.feature-link:hover,
+.file-link:hover,
+.api-link:hover {
+    background-color: var(--highlight-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.section-link {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 0.6rem 1.2rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.section-link:hover {
+    background-color: var(--highlight-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Wiki links section */
+.wiki-links {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--light-color);
+}
+
+.wiki-link-card {
+    display: block;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.wiki-link-card:hover {
+    color: var(--text-color);
+}
+
+/* Code blocks */
+pre {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    nav ul li {
+        margin: 0.5rem 0;
+    }
+    
+    .feature-grid,
+    .file-grid,
+    .api-grid,
+    .link-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+/* Special styling for the file section links */
+#generate-roadmap:target,
+#generate-quiz:target,
+#courses:target,
+#communities:target,
+#rmp:target {
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: var(--highlight-color); }
+    100% { background-color: var(--light-color); }
+}
+
+/* Feature description styling */
+.feature-description {
+    margin-top: 1rem;
+}
+
+.code-explanation {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+}
+
+/* Color palette for frontend documentation */
+.color-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.color-item {
+    width: 150px;
+    height: 100px;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--box-shadow);
+} 

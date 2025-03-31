@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase Wiki - Core Features</title>
+    <link rel="stylesheet" href="wiki.css">
+    <link rel="stylesheet" href="generalUI.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>StudyBase Wiki - Core Features</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="wiki.html">Wiki Home</a></li>
+                <li><a href="https://plexy1.github.io/studybase/">App Home</a></li>
+                <li><a href="#roadmap">Roadmap Generator</a></li>
+                <li><a href="#search">Course Search</a></li>
+                <li><a href="#quiz">Quiz Generator</a></li>
+                <li><a href="#professor">Professor Reviews</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="roadmap">
+            <h2>Custom Roadmap Generator</h2>
+            <div class="feature-description">
+                <p>The Custom Roadmap Generator is one of the core features of StudyBase, allowing students to create personalized study plans based on their courses, learning style, and schedule.</p>
+                
+                <h3>Key Files</h3>
+                <ul>
+                    <li><strong>generate-roadmap.js</strong> - Core logic for roadmap generation</li>
+                    <li><strong>courses.json</strong> - Course data used for generating roadmaps</li>
+                </ul>
+                
+                <h3>Implementation Details</h3>
+                <div class="code-explanation">
+                    <p>The roadmap generator leverages a custom GPT model to analyze course content and create personalized study plans. It takes into account:</p>
+                    <ul>
+                        <li>Course difficulty</li>
+                        <li>Student learning preferences</li>
+                        <li>Time constraints</li>
+                        <li>Topic dependencies</li>
+                    </ul>
+                    
+                    <p>The generate-roadmap.js file contains several key functions:</p>
+                    <ul>
+                        <li><code>generateRoadmap(courseId, preferences)</code> - Main function to create a roadmap</li>
+                        <li><code>analyzeCourseContent(courseId)</code> - Extracts course structure and content</li>
+                        <li><code>createStudyPlan(courseContent, preferences)</code> - Creates the actual study plan</li>
+                        <li><code>renderRoadmap(roadmapData)</code> - Renders the roadmap in the UI</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="search">
+            <h2>Custom Course Search</h2>
+            <div class="feature-description">
+                <p>The Custom Course Search feature allows students to find courses and professors based on various criteria, making it easier to plan their academic journey.</p>
+                
+                <h3>Key Files</h3>
+                <ul>
+                    <li><strong>courses.js</strong> - Main logic for course search and filtering</li>
+                    <li><strong>courses.html</strong> - UI for course search</li>
+                    <li><strong>courses.css</strong> - Styling for course search interface</li>
+                    <li><strong>courses.json</strong> - Course data</li>
+                    <li><strong>courseProf.json</strong> - Course-Professor relationship data</li>
+                </ul>
+                
+                <h3>Implementation Details</h3>
+                <div class="code-explanation">
+                    <p>The course search functionality provides filters for:</p>
+                    <ul>
+                        <li>Course level</li>
+                        <li>Department</li>
+                        <li>Professor ratings</li>
+                        <li>Schedule availability</li>
+                        <li>Keywords in course descriptions</li>
+                    </ul>
+                    
+                    <p>Key functions in courses.js include:</p>
+                    <ul>
+                        <li><code>searchCourses(query, filters)</code> - Main search function</li>
+                        <li><code>filterByProfessor(courses, professorId)</code> - Filter courses by professor</li>
+                        <li><code>filterByDepartment(courses, departmentId)</code> - Filter by department</li>
+                        <li><code>renderCourseResults(courses)</code> - Renders search results</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz">
+            <h2>Quiz Generator</h2>
+            <div class="feature-description">
+                <p>The Quiz Generator allows students to create custom quizzes based on their course materials, helping them test their knowledge and prepare for exams.</p>
+                
+                <h3>Key Files</h3>
+                <ul>
+                    <li><strong>generate-quiz.js</strong> - Core logic for quiz generation</li>
+                    <li><strong>quiz.html</strong> - UI for quiz taking</li>
+                    <li><strong>quiz.css</strong> - Styling for quiz interface</li>
+                </ul>
+                
+                <h3>Implementation Details</h3>
+                <div class="code-explanation">
+                    <p>The quiz generator uses a custom GPT model to analyze course content and generate relevant questions. Features include:</p>
+                    <ul>
+                        <li>Multiple choice questions</li>
+                        <li>True/False questions</li>
+                        <li>Short answer questions</li>
+                        <li>Difficulty adjustment</li>
+                        <li>Topic focus</li>
+                    </ul>
+                    
+                    <p>Key functions in generate-quiz.js include:</p>
+                    <ul>
+                        <li><code>generateQuiz(courseId, topics, questionCount, difficulty)</code> - Main quiz generation function</li>
+                        <li><code>createMultipleChoiceQuestion(topic, difficulty)</code> - Creates MC questions</li>
+                        <li><code>createTrueFalseQuestion(topic, difficulty)</code> - Creates T/F questions</li>
+                        <li><code>createShortAnswerQuestion(topic, difficulty)</code> - Creates short answer questions</li>
+                        <li><code>scoreQuiz(answers, quizData)</code> - Scores completed quizzes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="professor">
+            <h2>Professor Reviews</h2>
+            <div class="feature-description">
+                <p>The Professor Reviews feature provides students with valuable insights into professors' teaching styles, course difficulty, and overall ratings.</p>
+                
+                <h3>Key Files</h3>
+                <ul>
+                    <li><strong>rateMyProfessor.js</strong> - Server component for RateMyProfessor integration</li>
+                    <li><strong>rmp-client.js</strong> - Client-side integration with RateMyProfessor API</li>
+                    <li><strong>rate-course-experience.html</strong> - UI for rating courses</li>
+                    <li><strong>rate-course-experience.js</strong> - Logic for course ratings</li>
+                </ul>
+                
+                <h3>Implementation Details</h3>
+                <div class="code-explanation">
+                    <p>The professor review system combines data from multiple sources:</p>
+                    <ul>
+                        <li>RateMyProfessor external API</li>
+                        <li>Internal user reviews</li>
+                        <li>Course difficulty ratings</li>
+                    </ul>
+                    
+                    <p>Key functions in the related files include:</p>
+                    <ul>
+                        <li><code>getProfessorRatings(professorId)</code> - Gets ratings from RMP</li>
+                        <li><code>getUserReviews(professorId)</code> - Gets user-submitted reviews</li>
+                        <li><code>submitReview(professorId, courseId, rating, comment)</code> - Submits a new review</li>
+                        <li><code>calculateAverageRating(professorId)</code> - Calculates overall rating</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Script to handle smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
