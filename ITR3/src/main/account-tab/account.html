@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account | studybase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="account.css" rel="stylesheet" />
+  <link href="generalUI.css" rel="stylesheet" />
+  <script src="theme-loader.js"></script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html" class="active">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+    <!-- Studybase Card Section -->
+    <div class="studybase-card-section">
+      <div class="info-card">
+        <h2>studybase Passport</h2>
+        <div class="studybase-card">
+          <div class="card-left">
+            <div class="profile-image">
+              <img src="user.jpg" alt="Profile">
+              <button class="change-photo-btn" data-bs-toggle="modal" data-bs-target="#changePhotoModal">
+                <i class="fas fa-camera"></i>
+              </button>
+            </div>
+            <div class="header-info">
+              <h3 id="profileName">Loading...</h3>
+              <div class="role-tag" id="userRole">
+                <span class="role-value">Student</span>
+                <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeRoleModal">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+              <div class="bio-section">
+                <textarea id="userBio" maxlength="50" placeholder="Add a bio (max 50 characters)"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">University</span>
+                <span class="info-value" id="university">Not set</span>
+                <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeUniversityModal">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Major</span>
+                <span class="info-value" id="userMajor">Not set</span>
+                <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeMajorModal">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-value" id="topicsSearched">0</span>
+                  <span class="stat-label">Topics</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="studyToolsUsed">0</span>
+                  <span class="stat-label">Study Tools</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="coursesEnrolled">0</span>
+                  <span class="stat-label">Courses</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Last Login</span>
+                <span class="info-value" id="lastLogin">Loading...</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Date Created</span>
+                <span class="info-value" id="dateCreated">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Information Section -->
+    <div class="account-info-section">
+      <div class="info-card">
+        <h2>Account Information</h2>
+        <div class="account-info-grid">
+          <div class="account-info-row">
+            <div class="info-label">Username</div>
+            <div class="info-value" id="accountUsername">Loading...</div>
+            <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changeNameModal">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+          <div class="account-info-row">
+            <div class="info-label">Email</div>
+            <div class="info-value" id="accountEmail">Loading...</div>
+          </div>
+          <div class="account-info-row">
+            <div class="info-label">Password</div>
+            <div class="info-value">••••••••</div>
+            <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Section -->
+    <div class="info-card">
+      <h2>Settings</h2>
+    </div>
+  </div>
+
+  <!-- Change Name Modal -->
+  <div class="modal fade" id="changeNameModal" tabindex="-1" aria-labelledby="changeNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeNameModalLabel">Change Name</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changeNameForm">
+            <div class="mb-3">
+              <label for="newName" class="form-label">New Name</label>
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newName" required autocomplete="off" maxlength="15">
+                <small class="char-counter"><span id="nameCounter">0</span>/15</small>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change University Modal -->
+  <div class="modal fade" id="changeUniversityModal" tabindex="-1" aria-labelledby="changeUniversityModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeUniversityModalLabel">Change University</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changeUniversityForm">
+            <div class="mb-3">
+              <label for="newUniversity" class="form-label">New University</label>
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newUniversity" required autocomplete="off" maxlength="20">
+                <small class="char-counter"><span id="universityModalCounter">0</span>/20</small>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changePasswordForm">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="currentPassword" required autocomplete="off" maxlength="20">
+                <small class="char-counter"><span id="currentPasswordCounter">0</span>/20</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">New Password</label>
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="newPassword" required autocomplete="new-password" maxlength="20">
+                <small class="char-counter"><span id="newPasswordCounter">0</span>/20</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm New Password</label>
+              <div class="input-wrapper">
+                <input type="password" class="form-control" id="confirmPassword" required autocomplete="new-password" maxlength="20">
+                <small class="char-counter"><span id="confirmPasswordCounter">0</span>/20</small>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Photo Modal -->
+  <div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePhotoModalLabel">Change Photo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changePhotoForm">
+            <div class="mb-3">
+              <label for="newPhoto" class="form-label">Upload New Photo</label>
+              <input type="file" class="form-control" id="newPhoto" accept="image/*" required>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Upload</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Change Major Modal -->
+  <div class="modal fade" id="changeMajorModal" tabindex="-1" aria-labelledby="changeMajorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeMajorModalLabel">Change Major</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changeMajorForm">
+            <div class="mb-3">
+              <label for="newMajor" class="form-label">New Major</label>
+              <div class="input-wrapper">
+                <input type="text" class="form-control" id="newMajor" required autocomplete="off" maxlength="30">
+                <small class="char-counter"><span id="majorModalCounter">0</span>/30</small>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Change Role Modal -->
+  <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeRoleModalLabel">Change Role</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="changeRoleForm">
+            <div class="mb-3">
+              <label for="newRole" class="form-label">Select Role</label>
+              <select class="form-select" id="newRole" required>
+                <option value="Student">Student</option>
+                <option value="TA">TA</option>
+                <option value="Professor">Professor</option>
+                <option value="Self-learner">Self-learner</option>
+              </select>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      darkModeToggle.checked = true;
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      darkModeToggle.checked = false;
+      localStorage.setItem('darkMode', null);
+    }
+
+    function toggleDarkMode() {
+      if (body.classList.contains('dark-mode')) {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    }
+
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  
+  <!-- Firebase modules -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+      authDomain: "studybase-data.firebaseapp.com",
+      projectId: "studybase-data",
+      storageBucket: "studybase-data.firebasestorage.app",
+      messagingSenderId: "471482464641",
+      appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Update user profile data
+    async function updateUserProfile(userId, data) {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, data);
+    }
+
+    // Add status message function
+    function displayStatusMessage(message, success) {
+      const existingMessages = document.querySelectorAll('.alert.position-fixed');
+      existingMessages.forEach(msg => msg.remove());
+      
+      const statusDiv = document.createElement('div');
+      statusDiv.className = `alert ${success ? 'alert-success' : 'alert-danger'} position-fixed`;
+      statusDiv.style.top = '20px';
+      statusDiv.style.right = '20px';
+      statusDiv.style.zIndex = '9999';
+      statusDiv.textContent = message;
+      
+      document.body.appendChild(statusDiv);
+      
+      setTimeout(() => {
+        statusDiv.remove();
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Character counter functionality for modals
+      const modalInputs = [
+        { input: 'newName', counter: 'nameCounter' },
+        { input: 'newUniversity', counter: 'universityModalCounter' },
+        { input: 'newMajor', counter: 'majorModalCounter' },
+        { input: 'currentPassword', counter: 'currentPasswordCounter' },
+        { input: 'newPassword', counter: 'newPasswordCounter' },
+        { input: 'confirmPassword', counter: 'confirmPasswordCounter' }
+      ];
+
+      modalInputs.forEach(({ input, counter }) => {
+        const inputElement = document.getElementById(input);
+        const counterElement = document.getElementById(counter);
+        
+        if (inputElement && counterElement) {
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
+        }
+      });
+
+      // Change name form
+      const changeNameForm = document.getElementById("changeNameForm");
+      if (changeNameForm) {
+        changeNameForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newName = document.getElementById("newName").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { username: newName });
+              const accountNameElement = document.getElementById("accountUsername");
+              const profileNameElement = document.getElementById("profileName");
+              if (accountNameElement) accountNameElement.textContent = newName;
+              if (profileNameElement) profileNameElement.textContent = newName;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeNameModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Name updated successfully!", true);
+              changeNameForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating name:", error);
+            displayStatusMessage("Unable to update name", false);
+          }
+        });
+      }
+
+      // Change university form
+      const changeUniversityForm = document.getElementById("changeUniversityForm");
+      if (changeUniversityForm) {
+        changeUniversityForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newUniversity = document.getElementById("newUniversity").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { university: newUniversity });
+              const universityElement = document.getElementById("university");
+              if (universityElement) universityElement.textContent = newUniversity;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeUniversityModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("University updated successfully!", true);
+              changeUniversityForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating university:", error);
+            displayStatusMessage("Unable to update university", false);
+          }
+        });
+      }
+
+      // Change major form
+      const changeMajorForm = document.getElementById("changeMajorForm");
+      if (changeMajorForm) {
+        changeMajorForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newMajor = document.getElementById("newMajor").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { major: newMajor });
+              const majorElement = document.getElementById("userMajor");
+              if (majorElement) majorElement.textContent = newMajor;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeMajorModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Major updated successfully!", true);
+              changeMajorForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating major:", error);
+            displayStatusMessage("Unable to update major", false);
+          }
+        });
+      }
+
+      // Change password form with verification
+      const changePasswordForm = document.getElementById("changePasswordForm");
+      if (changePasswordForm) {
+        changePasswordForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const currentPassword = document.getElementById("currentPassword").value;
+          const newPassword = document.getElementById("newPassword").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          
+          if (newPassword !== confirmPassword) {
+            displayStatusMessage("New passwords do not match!", false);
+            return;
+          }
+
+          if (newPassword.length < 6) {
+            displayStatusMessage("New password must be at least 6 characters long!", false);
+            return;
+          }
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              // First verify current password
+              const credential = EmailAuthProvider.credential(user.email, currentPassword);
+              await reauthenticateWithCredential(user, credential);
+              
+              // If verification successful, update password
+              await updatePassword(user, newPassword);
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Password updated successfully!", true);
+              changePasswordForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating password:", error);
+            if (error.code === 'auth/wrong-password') {
+              displayStatusMessage("Current password is incorrect", false);
+            } else {
+              displayStatusMessage("Unable to update password", false);
+            }
+          }
+        });
+      }
+
+      // Change photo form
+      const changePhotoForm = document.getElementById("changePhotoForm");
+      if (changePhotoForm) {
+        changePhotoForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          // Handle form submission
+          console.log('Photo change submitted');
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('changePhotoModal'));
+          if (modal) modal.hide();
+        });
+      }
+
+      // Change role form
+      const changeRoleForm = document.getElementById("changeRoleForm");
+      if (changeRoleForm) {
+        changeRoleForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newRole = document.getElementById("newRole").value;
+          
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              await updateUserProfile(user.uid, { role: newRole });
+              const roleElement = document.querySelector("#userRole .role-value");
+              if (roleElement) roleElement.textContent = newRole;
+              
+              const modal = bootstrap.Modal.getInstance(document.getElementById('changeRoleModal'));
+              if (modal) modal.hide();
+              
+              displayStatusMessage("Role updated successfully!", true);
+              changeRoleForm.reset();
+            }
+          } catch (error) {
+            console.error("Error updating role:", error);
+            displayStatusMessage("Unable to update role", false);
+          }
+        });
+      }
+    });
+
+    // Check authentication state
+    onAuthStateChanged(auth, async (user) => {
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          
+          // Update UI with user data
+          const username = userData.username || user.email.split('@')[0];
+          document.getElementById('profileName').textContent = username;
+          document.getElementById('accountUsername').textContent = username;
+          document.getElementById('university').textContent = userData.university || 'Not set';
+          document.getElementById('userMajor').textContent = userData.major || 'Not set';
+          document.getElementById('accountEmail').textContent = user.email;
+          document.querySelector("#userRole .role-value").textContent = userData.role || 'Student';
+          document.getElementById('userBio').value = userData.bio || '';
+          
+          // Update statistics
+          document.getElementById('topicsSearched').textContent = userData.topicsSearched || 0;
+          document.getElementById('studyToolsUsed').textContent = userData.studyToolsUsed || 0;
+          document.getElementById('coursesEnrolled').textContent = userData.coursesEnrolled || 0;
+          
+          // Update last login and date created
+          const lastSignInTime = new Date(user.metadata.lastSignInTime);
+          const creationTime = new Date(user.metadata.creationTime);
+          
+          document.getElementById('lastLogin').textContent = lastSignInTime.toLocaleDateString("en-US", {
+            year: "numeric", month: "long", day: "numeric"
+          }) + " at " + lastSignInTime.toLocaleTimeString("en-US", {
+            hour: '2-digit', minute: '2-digit'
+          });
+          
+          document.getElementById('dateCreated').textContent = creationTime.toLocaleDateString("en-US", {
+            year: "numeric", month: "long", day: "numeric"
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        displayStatusMessage("Unable to load account data", false);
+      }
+    });
+  </script>
+  
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+    </div>
+  </footer>
+
+  <style>
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .form-control {
+      height: 48px;
+      padding: 0 45px 0 12px;
+      border-radius: 8px;
+    }
+
+    .char-counter {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    /* Modal styling */
+    .modal-content {
+      background-color: var(--bs-body-bg);
+      border: 1px solid var(--bs-border-color);
+    }
+
+    .modal-header {
+      border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .modal-body {
+      background-color: var(--bs-body-bg);
+    }
+
+    .modal-backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search | studybase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="search-topic.css" rel="stylesheet">
+  <link href="generalUI.css" rel="stylesheet">
+  <script src="theme-loader.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html" class="active">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <h1 id="greetingDisplay" class="search-title"></h1>
+        
+        <div class="search-input-group">
+          <div class="search-input-container">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              id="searchInput"
+              type="text"
+              class="search-input"
+              placeholder="Search any topic or concept"
+              autocomplete="off"
+            >
+          </div>
+          <select id="educationLevel" class="search-select">
+            <option selected value="highSchool">High School</option>
+            <option value="university12">Year 1-2 University</option>
+            <option value="university34">Year 3-4 University</option>
+            <option value="masters">Masters+</option>
+          </select>
+        </div>
+        
+        <div class="search-settings">
+          <div class="slider-container">
+            <label for="questionSlider" class="slider-label">Roadmap Steps</label>
+            <div class="steps-selector">
+              <div class="step-option" data-value="1">
+                <div class="step-bubble">5</div>
+                <div class="step-label">Basic</div>
+              </div>
+              <div class="step-option" data-value="2">
+                <div class="step-bubble">10</div>
+                <div class="step-label">Standard</div>
+              </div>
+              <div class="step-option" data-value="3">
+                <div class="step-bubble">15</div>
+                <div class="step-label">Detailed</div>
+              </div>
+              <div class="step-option" data-value="4">
+                <div class="step-bubble">20</div>
+                <div class="step-label">Comprehensive</div>
+              </div>
+            </div>
+            <input
+              type="range"
+              class="form-range visually-hidden"
+              min="1"
+              max="4"
+              step="1"
+              id="questionSlider"
+              value="2"
+            >
+          </div>
+          
+          <div class="search-buttons">
+            <button id="searchBtn" type="button" class="btn btn-primary">
+              Search
+            </button>
+            <button id="saveSearchBtn" type="button" class="btn btn-secondary">
+              Save Search
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div id="saveStatusMessage" class="save-message" style="display: none;"></div>
+      
+      <div id="searchResult" class="results-container" style="display: none;">
+        <div class="results-panel">
+          <div class="panel-title">
+            <h3>Learning Roadmap</h3>
+          </div>
+          <div class="panel-content">
+            <div id="geminiResult"></div>
+            <div class="navigation-controls mt-3 text-center">
+              <button id="prevGoogle" class="btn btn-sm btn-outline-secondary me-2" style="display: none;">⬆ Previous</button>
+              <button id="nextGoogle" class="btn btn-sm btn-outline-secondary" style="display: none;">⬇ More</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="results-panel">
+          <div class="panel-title">
+            <h3>Recommended Resources</h3>
+          </div>
+          <div class="panel-content">
+            <div class="resource-section">
+              <h5 class="resource-section-title">Video Resources</h5>
+              <div id="videoSlider"></div>
+              <div class="navigation-controls mt-2 text-center">
+                <button id="prevVideos" class="btn btn-sm btn-outline-secondary me-2" style="display: none;">◀ Previous</button>
+                <button id="nextVideos" class="btn btn-sm btn-outline-secondary" style="display: none;">Next ▶</button>
+              </div>
+            </div>
+            
+            <div class="resource-section mt-4">
+              <h5 class="resource-section-title">Web Resources</h5>
+              <div id="googleResults" class="google-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">AI can make mistakes!</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="google-search.js"></script>
+  <script src="generate-roadmap.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const saveSearchBtn = document.getElementById('saveSearchBtn');
+  const searchResult = document.getElementById('searchResult');
+  saveSearchBtn.disabled = true;
+
+  document.getElementById('searchBtn').addEventListener('click', async function(event) {
+    event.preventDefault();
+    const query = searchInput.value.trim();
+    
+    if (query) {
+      // Show the search results container
+      searchResult.style.display = 'flex';
+      
+      // Clear previous results
+      document.getElementById('geminiResult').innerHTML = '';
+      document.getElementById('videoSlider').innerHTML = '';
+      document.getElementById('googleResults').innerHTML = '';
+      
+      // Dispatch topic searched event
+      document.dispatchEvent(new Event('topicSearched'));
+      
+      // Perform searches
+      searchYouTube(query);
+      searchGoogle(query);
+      searchGemini(query);
+
+      setTimeout(() => {
+        const geminiResults = document.getElementById('geminiResult').innerHTML.trim();
+        const videoResults = document.getElementById('videoSlider').innerHTML.trim();
+        const googleResults = document.getElementById('googleResults').innerHTML.trim();
+
+        saveSearchBtn.disabled = !(geminiResults || videoResults || googleResults);
+      }, 1000); 
+    }
+  });
+
+  searchInput.addEventListener('input', () => {
+    saveSearchBtn.disabled = true;
+  });
+});
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function updateHistoryDisplay() {
+      let history = getCookie("searchHistory") ? JSON.parse(getCookie("searchHistory")) : [];
+      const historyContainer = document.getElementById('historyContainer');
+
+      if (historyContainer) {
+        historyContainer.innerHTML = '';
+        history.forEach(topic => {
+          const li = document.createElement('li');
+          li.textContent = topic;
+          historyContainer.appendChild(li);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateHistoryDisplay);
+  </script>
+
+  <script src="youtube-search.js"></script>
+  <script src="search-topic.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+    authDomain: "studybase-data.firebaseapp.com",
+    projectId: "studybase-data",
+    storageBucket: "studybase-data.firebasestorage.app",
+    messagingSenderId: "471482464641",
+    appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+  };
+
+  // Initialize Firebase app
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const greetingDisplay = document.getElementById('greetingDisplay');
+  const searchInput = document.getElementById('searchInput');
+  const educationLevelDropdown = document.getElementById('educationLevel');
+  const roadmapStepsSlider = document.getElementById('questionSlider');
+
+  onAuthStateChanged(auth, async (user) => {
+    let greeting = getGreeting();
+
+    if (user) {
+      try {
+        // Get user data from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const username = userData.username;
+          greetingDisplay.textContent = `${greeting}, ${username}!`;
+        } 
+        
+        else {
+          // Fallback to email if no username found
+          const username = user.email.split('@')[0];
+          greetingDisplay.textContent = `${greeting}, ${username}!`;
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        greetingDisplay.textContent = `${greeting}!`;
+      }
+    } else {
+      greetingDisplay.textContent = "What would you like to learn?";
+    }
+  });
+
+  function getGreeting() {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good morning";
+    } else if (currentHour < 18) {
+      return "Good afternoon";
+    } else if (currentHour < 22) {
+      return "Good evening";
+    } else {
+      return "Good night";
+    }
+  }
+
+  // Function to pre-fill search parameters from URL
+  function prefillSearchParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParam = urlParams.get('query');
+    const educationLevelParam = urlParams.get('educationLevel');
+    const roadmapStepsParam = urlParams.get('roadmapSteps');
+
+    if (queryParam) {
+      searchInput.value = decodeURIComponent(queryParam);
+    }
+    if (educationLevelParam) {
+      educationLevelDropdown.value = decodeURIComponent(educationLevelParam);
+    }
+    if (roadmapStepsParam) {
+      roadmapStepsSlider.value = decodeURIComponent(roadmapStepsParam);
+    }
+  }
+
+  // Call prefill function on page load
+  document.addEventListener('DOMContentLoaded', prefillSearchParameters);
+</script>
+<script type="module" src="save-search.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Step selector functionality
+    const stepOptions = document.querySelectorAll('.step-option');
+    const questionSlider = document.getElementById('questionSlider');
+    const stepsSelector = document.querySelector('.steps-selector');
+    
+    // Initialize active state and selector position
+    updateActiveStep(questionSlider.value);
+    updateSelectorPosition(questionSlider.value);
+    
+    // Add click events to step options
+    stepOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const value = option.dataset.value;
+        questionSlider.value = value;
+        updateActiveStep(value);
+        updateSelectorPosition(value);
+      });
+    });
+    
+    // Update active state on slider change
+    questionSlider.addEventListener('input', () => {
+      updateActiveStep(questionSlider.value);
+      updateSelectorPosition(questionSlider.value);
+    });
+    
+    function updateActiveStep(value) {
+      stepOptions.forEach(option => {
+        if (option.dataset.value === value) {
+          option.classList.add('active');
+        } else {
+          option.classList.remove('active');
+        }
+      });
+    }
+    
+    function updateSelectorPosition(value) {
+      // Remove all selected classes
+      stepsSelector.classList.remove('selected-1', 'selected-2', 'selected-3', 'selected-4');
+      // Add the appropriate one
+      stepsSelector.classList.add(`selected-${value}`);
+    }
+  });
+</script>
+</body>
+</html>

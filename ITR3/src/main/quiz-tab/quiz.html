@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study | studybase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="generalUI.css" rel="stylesheet">
+  <link href="quiz.css" rel="stylesheet">
+  <script src="theme-loader.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html" class="active">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container text-center mt-5" id="study-tools-heading">
+    <h1>Study Tools</h1>
+    <p class="lead">Choose a study format to get started</p>
+  </div>
+
+<!-- Study Options Selection -->
+<div id="studyOptionsContainer" class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Generate Questions Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="questions">
+        <div class="card-body">
+          <i class="fas fa-question-circle option-icon text-primary"></i>
+          <h3 class="card-title">Generate Questions</h3>
+          <p class="card-text">Create custom practice questions with detailed explanations to test your understanding.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generate Test Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="quiz">
+        <div class="card-body">
+          <i class="fas fa-clipboard-list option-icon text-warning"></i>
+          <h3 class="card-title">Generate Test</h3>
+          <p class="card-text">Create a timed multiple-choice test with automatic grading.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generate Flashcards Option -->
+    <div class="col">
+      <div class="card h-100 study-option-card text-center" data-option="flashcards">
+        <div class="card-body">
+          <i class="fas fa-clone option-icon text-success"></i>
+          <h3 class="card-title">Generate Flashcards</h3>
+          <p class="card-text">Create digital flashcards to memorize key concepts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Main configuration container that appears below options after selection -->
+  <div id="configurationContainer" class="container mt-4 centered-content" style="display: none;">
+    <div class="d-flex align-items-center mb-4 text-center">
+      <h2 id="configTitle" class="mb-r w-100">Configure Your Study Tool</h2>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-container mb-4">
+      <div class="search-input-wrapper w-100">
+        <input id="searchInput" type="text" class="form-control" placeholder="Enter Topic" autocomplete="off">
+      </div>
+    </div>
+
+    <!-- Configuration Options - Single View Layout -->
+    <div class="quiz-controls">
+      <div class="quiz-controls-inner">
+        <div class="config-panels">
+          <!-- Basic Settings Section -->
+          <div class="config-section">
+            <h5><i class="fas fa-cog me-2"></i>Basic Settings</h5>
+            
+            <!-- Education Level -->
+            <div class="control-group">
+              <div class="control-group-label">Level</div>
+              <div class="control-group-content">
+                <select class="topic-select" id="educationLevelSelect">
+                  <option value="highSchool">High School</option>
+                  <option value="university12">Year 1-2 University</option>
+                  <option value="university34">Year 3-4 University</option>
+                  <option value="masters">Masters+</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Item Count -->
+            <div class="control-group">
+              <div class="control-group-label" id="itemCountLabel">Count</div>
+              <div class="control-group-content">
+                <div class="number-selector">
+                  <button id="decreaseCount" type="button"><i class="fas fa-minus"></i></button>
+                  <div class="value" id="itemCountValue">10</div>
+                  <button id="increaseCount" type="button"><i class="fas fa-plus"></i></button>
+                </div>
+                </div>
+                </div>
+            
+            <!-- Time Limit - Only visible for quiz mode -->
+            <div class="control-group" id="timeSettingsControl" style="display: none;">
+              <div class="control-group-label">Time</div>
+              <div class="control-group-content">
+                <div class="number-selector">
+                  <button id="decreaseTime" type="button"><i class="fas fa-minus"></i></button>
+                  <div class="value" id="timeLimitValue">10</div>
+                  <button id="increaseTime" type="button"><i class="fas fa-plus"></i></button>
+                  <span style="font-size: 0.8rem; margin-left: 4px; flex: 0 0 auto;">min</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Difficulty Section -->
+          <div class="config-section" id="difficultySection">
+            <h5><i class="fas fa-chart-line me-2"></i>Difficulty Level</h5>
+            <div class="control-group">
+              <div class="control-group-content">
+                <div class="difficulty-compact-group">
+                  <button class="difficulty-btn active" data-difficulty="easy">
+                    <i class="fas fa-smile"></i>
+                  <span>Easy</span>
+                    <small>Basic concepts</small>
+                  </button>
+                  <button class="difficulty-btn" data-difficulty="medium">
+                    <i class="fas fa-meh"></i>
+                  <span>Medium</span>
+                    <small>Intermediate</small>
+                  </button>
+                  <button class="difficulty-btn" data-difficulty="hard">
+                    <i class="fas fa-frown"></i>
+                  <span>Hard</span>
+                    <small>Advanced</small>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question Format Section - Only visible for quiz mode -->
+          <div class="config-section" id="formatSection" style="display: none;">
+            <h5><i class="fas fa-list-alt me-2"></i>Question Format</h5>
+            
+            <div class="control-group">
+              <div class="control-group-label">Multiple Choice Questions</div>
+              <div class="control-group-content">
+                <div class="slider-compact">
+                  <input type="range" min="0" max="10" value="5" id="multipleChoiceRange">
+                  <div class="slider-value"><span id="multipleChoiceDisplay">5</span></div>
+            </div>
+          </div>
+        </div>
+
+            <div class="control-group">
+              <div class="control-group-label">Short Answer Questions</div>
+              <div class="control-group-content">
+                <div class="slider-compact">
+                  <input type="range" min="0" max="10" value="5" id="shortAnswerRange">
+                  <div class="slider-value"><span id="shortAnswerDisplay">5</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="generate-btn-container">
+          <button id="generateBtn" class="btn generate-btn">
+            <i class="fas fa-magic"></i>
+            Generate
+          </button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultContainer" class="container mt-5" style="display: none;">
+    <div id="timerDisplay" class="text-center mb-4" style="display: none;">
+      <div class="timer-container">
+        <div class="timer-header">
+          <i class="fas fa-clock me-2"></i>
+          <span>Time Remaining</span>
+        </div>
+        <div class="timer-value">
+          <span id="timeRemaining">10:00</span>
+        </div>
+        <div class="timer-progress">
+          <div class="timer-progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="studyContent" class="mt-3"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="generate-quiz.js"></script>
+  <script src="generate-test.js"></script>
+  <script src="generate-flashcards.js"></script>
+  <script>
+    let selectedStudyOption = '';
+    let selectedDifficulty = 'easy';
+    let quizTimer;
+    const studyOptionCards = document.querySelectorAll('.study-option-card');
+    const configContainer = document.getElementById('configurationContainer');
+    const itemCountValue = document.getElementById('itemCountValue');
+    const timeLimitValue = document.getElementById('timeLimitValue');
+    const formatSection = document.getElementById('formatSection');
+    const difficultySection = document.getElementById('difficultySection');
+    const timeSettingsControl = document.getElementById('timeSettingsControl');
+    const generateBtn = document.getElementById('generateBtn');
+    
+    // Education level select
+    const educationLevelSelect = document.getElementById('educationLevelSelect');
+    let selectedEducationLevel = 'highSchool';
+    
+    educationLevelSelect.addEventListener('change', () => {
+      selectedEducationLevel = educationLevelSelect.value;
+    });
+    
+    // Difficulty buttons
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    difficultyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        difficultyBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedDifficulty = btn.getAttribute('data-difficulty');
+      });
+    });
+    
+    // Number of questions/items counter
+    const decreaseCount = document.getElementById('decreaseCount');
+    const increaseCount = document.getElementById('increaseCount');
+    
+    decreaseCount.addEventListener('click', () => {
+      let count = parseInt(itemCountValue.textContent);
+      if (count > 1) {
+        itemCountValue.textContent = count - 1;
+        updateQuestionDistribution();
+      }
+    });
+    
+    increaseCount.addEventListener('click', () => {
+      let count = parseInt(itemCountValue.textContent);
+      if (count < 20) {
+        itemCountValue.textContent = count + 1;
+        updateQuestionDistribution();
+      }
+    });
+    
+    // Time limit counter (only for quiz)
+    const decreaseTime = document.getElementById('decreaseTime');
+    const increaseTime = document.getElementById('increaseTime');
+    
+    decreaseTime.addEventListener('click', () => {
+      let time = parseInt(timeLimitValue.textContent);
+      if (time > 1) {
+        timeLimitValue.textContent = time - 1;
+      }
+    });
+    
+    increaseTime.addEventListener('click', () => {
+      let time = parseInt(timeLimitValue.textContent);
+      if (time < 60) {
+        timeLimitValue.textContent = time + 1;
+      }
+    });
+    
+    // Multiple choice and short answer sliders
+    const multipleChoiceRange = document.getElementById('multipleChoiceRange');
+    const shortAnswerRange = document.getElementById('shortAnswerRange');
+    const multipleChoiceDisplay = document.getElementById('multipleChoiceDisplay');
+    const shortAnswerDisplay = document.getElementById('shortAnswerDisplay');
+    
+    function updateQuestionDistribution() {
+      if (selectedStudyOption === 'quiz') {
+        const totalQuestions = parseInt(itemCountValue.textContent);
+        
+        // Update the max values for the sliders
+        multipleChoiceRange.max = totalQuestions;
+        shortAnswerRange.max = totalQuestions;
+        
+        // Adjust the current values to maintain the ratio
+        const currentMC = parseInt(multipleChoiceDisplay.textContent);
+        const currentSA = parseInt(shortAnswerDisplay.textContent);
+        const currentTotal = currentMC + currentSA;
+        
+        if (currentTotal !== totalQuestions) {
+          // Distribute questions proportionally
+          const mcProportion = currentMC / currentTotal;
+          let newMC = Math.round(totalQuestions * mcProportion);
+          let newSA = totalQuestions - newMC;
+          
+          // Update display
+          multipleChoiceRange.value = newMC;
+          shortAnswerRange.value = newSA;
+          multipleChoiceDisplay.textContent = newMC;
+          shortAnswerDisplay.textContent = newSA;
+        }
+      }
+    }
+    
+    // Function to update range slider background based on its value
+    function updateRangeBackground(rangeInput) {
+      const value = parseInt(rangeInput.value);
+      const max = parseInt(rangeInput.max);
+      const percentage = (value / max) * 100;
+      const color = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#6366f1' : '#4f46e5';
+      const bgColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#1e293b' : '#e2e8f0';
+      rangeInput.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${percentage}%, ${bgColor} ${percentage}%, ${bgColor} 100%)`;
+    }
+    
+    // Initialize slider backgrounds
+    multipleChoiceRange.addEventListener('input', function() {
+      const value = parseInt(this.value);
+      const totalQuestions = parseInt(itemCountValue.textContent);
+      const newSA = totalQuestions - value;
+      
+      multipleChoiceDisplay.textContent = value;
+      shortAnswerRange.value = newSA;
+      shortAnswerDisplay.textContent = newSA;
+      
+      // Update both sliders' backgrounds
+      updateRangeBackground(this);
+      updateRangeBackground(shortAnswerRange);
+    });
+    
+    shortAnswerRange.addEventListener('input', function() {
+      const value = parseInt(this.value);
+      const totalQuestions = parseInt(itemCountValue.textContent);
+      const newMC = totalQuestions - value;
+      
+      shortAnswerDisplay.textContent = value;
+      multipleChoiceRange.value = newMC;
+      multipleChoiceDisplay.textContent = newMC;
+      
+      // Update both sliders' backgrounds
+      updateRangeBackground(this);
+      updateRangeBackground(multipleChoiceRange);
+    });
+    
+    // Initialize backgrounds when sliders become visible
+    function initializeSliderBackgrounds() {
+      if (selectedStudyOption === 'quiz') {
+        updateRangeBackground(multipleChoiceRange);
+        updateRangeBackground(shortAnswerRange);
+      }
+    }
+    
+    // Run the initialization when the format section is shown
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'style' && 
+            formatSection.style.display !== 'none') {
+          initializeSliderBackgrounds();
+        }
+      });
+    });
+
+    observer.observe(formatSection, { attributes: true });
+    
+    // Update backgrounds on dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', function() {
+      if (formatSection.style.display !== 'none') {
+        setTimeout(function() {
+          updateRangeBackground(multipleChoiceRange);
+          updateRangeBackground(shortAnswerRange);
+        }, 100);
+      }
+    });
+    
+    // Generate button
+    generateBtn.addEventListener('click', generateContent);
+    
+    // Study option selection
+    studyOptionCards.forEach(card => {
+      card.addEventListener('click', () => {
+        studyOptionCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedStudyOption = card.getAttribute('data-option');
+        const configTitle = document.getElementById('configTitle');
+
+        // Add minimized class to parent container
+        document.getElementById('studyOptionsContainer').querySelector('.row').classList.add('option-minimized');
+        
+        // Hide the study tools heading
+        document.getElementById('study-tools-heading').style.display = 'none';
+        
+          switch (selectedStudyOption) {
+            case 'questions':
+              configTitle.textContent = 'Configure Practice Questions';
+            document.getElementById('itemCountLabel').textContent = 'Questions';
+            difficultySection.style.display = 'block';
+            formatSection.style.display = 'none';
+            timeSettingsControl.style.display = 'none';
+              break;
+            case 'flashcards':
+              configTitle.textContent = 'Configure Flashcards';
+            document.getElementById('itemCountLabel').textContent = 'Cards';
+            difficultySection.style.display = 'none';
+            formatSection.style.display = 'none';
+            timeSettingsControl.style.display = 'none';
+              break;
+            case 'quiz':
+              configTitle.textContent = 'Configure Timed Test';
+            document.getElementById('itemCountLabel').textContent = 'Questions';
+            difficultySection.style.display = 'block';
+            formatSection.style.display = 'block';
+            timeSettingsControl.style.display = 'flex';
+            
+            // Initialize the question distribution
+            const totalQuestions = parseInt(itemCountValue.textContent);
+            const halfQuestions = Math.round(totalQuestions / 2);
+            
+            multipleChoiceRange.max = totalQuestions;
+            shortAnswerRange.max = totalQuestions;
+            multipleChoiceRange.value = halfQuestions;
+            shortAnswerRange.value = totalQuestions - halfQuestions;
+            multipleChoiceDisplay.textContent = halfQuestions;
+            shortAnswerDisplay.textContent = totalQuestions - halfQuestions;
+              break;
+          }
+
+        // Show configuration container with animation
+          configContainer.style.display = 'block';
+          setTimeout(() => {
+            configContainer.classList.add('visible');
+          }, 50);
+      });
+    });
+
+    function generateContent() {
+      // Get values from UI
+      const topic = document.getElementById('searchInput').value;
+      const itemCount = parseInt(itemCountValue.textContent);
+      let timeLimit = 10;
+      
+      if (selectedStudyOption === 'quiz') {
+        timeLimit = parseInt(timeLimitValue.textContent);
+      }
+      
+      // Validate topic field is not empty
+      if (!topic || topic.trim() === '') {
+        // Highlight the search input field to show it's required
+        const searchInput = document.getElementById('searchInput');
+        searchInput.classList.add('is-invalid');
+        searchInput.focus();
+        
+        // Add a small animation to draw attention
+        searchInput.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+          searchInput.style.animation = '';
+        }, 500);
+        
+        return;
+      }
+
+      // Dispatch study tool used event
+      document.dispatchEvent(new Event('studyToolUsed'));
+      
+      // Add transition classes for smooth animation
+      document.getElementById('studyOptionsContainer').classList.add('fade-transition');
+      configContainer.classList.add('fade-transition');
+      
+      // Hide configuration container
+      setTimeout(() => {
+        document.getElementById('studyOptionsContainer').style.display = 'none';
+        configContainer.style.display = 'none';
+        
+        // Show result container with animation
+        const resultContainer = document.getElementById('resultContainer');
+        resultContainer.style.display = 'block';
+        resultContainer.style.opacity = '0';
+        resultContainer.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          resultContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          resultContainer.style.opacity = '1';
+          resultContainer.style.transform = 'translateY(0)';
+          
+          // Prepare the study content
+          const studyContent = document.getElementById('studyContent');
+          
+          // Show loading animation
+          studyContent.innerHTML = `
+            <div class="loading-container">
+              <div class="loading-dots">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+              </div>
+              <h3>Generating your study material...</h3>
+              <p class="loading-message">Creating high-quality content based on "${topic}"</p>
+            </div>
+          `;
+          
+          // Call the appropriate generator function based on study option
+          switch (selectedStudyOption) {
+            case 'questions':
+              generateQuizContent(topic, itemCount, selectedDifficulty, selectedEducationLevel);
+              break;
+            case 'flashcards':
+              generateFlashcardsContent(topic, itemCount, selectedEducationLevel);
+              break;
+            case 'quiz':
+              const multipleChoiceCount = parseInt(multipleChoiceDisplay.textContent);
+              const shortAnswerCount = parseInt(shortAnswerDisplay.textContent);
+              generateTestContent(topic, multipleChoiceCount, shortAnswerCount, selectedDifficulty, selectedEducationLevel, timeLimit);
+              break;
+          }
+        }, 50);
+      }, 300);
+    }
+    
+    // Add the helper functions to connect with the external JavaScript files
+    function generateQuizContent(topic, questionCount, difficulty, educationLevel) {
+      // Clear previous content
+      document.getElementById('studyContent').innerHTML = '<div id="geminiResult"></div>';
+      
+      // Call the function from generate-quiz.js
+      if (typeof window.genQuiz === 'function') {
+        window.genQuiz(topic, questionCount, difficulty, educationLevel);
+      } else {
+        document.getElementById('studyContent').innerHTML = `
+          <div class="alert alert-danger">
+            <h4>Unable to Generate Questions</h4>
+            <p>Please try again later.</p>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
+              <i class="fas fa-arrow-left"></i> Back to Study Tools
+            </button>
+          </div>
+        `;
+      }
+    }
+    
+    function generateFlashcardsContent(topic, cardCount, educationLevel) {
+      // Clear previous content
+      document.getElementById('studyContent').innerHTML = '<div id="geminiResult"></div>';
+      
+      // Call the function from generate-flashcards.js
+      try {
+        if (typeof window.generateFlashcards === 'function') {
+          window.generateFlashcards(topic, cardCount, educationLevel);
+        } else {
+          throw new Error('Flashcard generation function not found');
+        }
+      } catch (error) {
+        document.getElementById('studyContent').innerHTML = `
+          <div class="alert alert-danger">
+            <h4>Unable to Generate Flashcards</h4>
+            <p>Please try again later.</p>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
+              <i class="fas fa-arrow-left"></i> Back to Study Tools
+            </button>
+          </div>
+        `;
+      }
+    }
+    
+    function generateTestContent(topic, multipleChoiceCount, shortAnswerCount, difficulty, educationLevel, timeLimit) {
+      // Clear previous content
+      document.getElementById('studyContent').innerHTML = '<div id="geminiResult"></div>';
+      
+      // Call the function from generate-test.js
+      if (typeof window.genTest === 'function') {
+        window.genTest(topic, difficulty, educationLevel, shortAnswerCount, multipleChoiceCount, timeLimit);
+      } 
+      
+      else {
+        document.getElementById('studyContent').innerHTML = `
+          <div class="alert alert-danger">
+            <h4>Unable to Generate Test</h4>
+            <p>Please try again later.</p>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary" onclick="resetStudyTools()">
+              <i class="fas fa-arrow-left"></i> Back to Study Tools
+            </button>
+          </div>
+        `;
+      }
+    }
+    
+    function resetStudyTools() {
+      const resultContainer = document.getElementById('resultContainer');
+      const studyOptionsContainer = document.getElementById('studyOptionsContainer');
+      
+      resultContainer.style.display = 'none';
+      studyOptionsContainer.style.display = 'block';
+      studyOptionsContainer.style.opacity = '1';
+      
+      // Remove fade transition classes
+      resultContainer.classList.remove('fade-transition');
+      configContainer.classList.remove('fade-transition');
+      studyOptionsContainer.classList.remove('fade-transition');
+      
+      // Hide timer display and show study tools heading
+      document.getElementById('timerDisplay').style.display = 'none';
+      document.getElementById('study-tools-heading').style.display = 'block';
+      
+      // Reset selected study option
+      studyOptionCards.forEach(card => card.classList.remove('selected'));
+      
+      // Remove minimized class
+      document.getElementById('studyOptionsContainer').querySelector('.row').classList.remove('option-minimized');
+      
+      // Reset any animations
+      resultContainer.style.transition = '';
+      resultContainer.style.opacity = '';
+      resultContainer.style.transform = '';
+      
+      if (quizTimer) {
+        clearInterval(quizTimer);
+        quizTimer = null;
+      }
+    }
+
+    // Animation for search input validation
+    document.getElementById('searchInput').addEventListener('input', function() {
+      if (this.classList.contains('is-invalid') && this.value.trim() !== '') {
+        this.classList.remove('is-invalid');
+      }
+    });
+    
+    // Add CSS for the shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      .is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Dark mode toggle
+    const html = document.documentElement;
+
+    function enableDarkMode() {
+      html.setAttribute('data-bs-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+
+    function disableDarkMode() {
+      html.setAttribute('data-bs-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      if (html.getAttribute('data-bs-theme') === 'dark') {
+        disableDarkMode();
+      } else {
+        enableDarkMode();
+      }
+    });
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+
+  </script>
+</body>
+
+</html>

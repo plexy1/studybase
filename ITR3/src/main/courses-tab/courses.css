@@ -1,0 +1,567 @@
+/* Main content */
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--spacing-md);
+  animation: fadeIn var(--anim-normal) ease-out;
+}
+
+.courses-header {
+  margin-bottom: 1.5rem;
+  animation: fadeIn var(--anim-normal) ease-out;
+}
+
+.courses-header h2 {
+  font-weight: 600;
+  font-size: 1.75rem;
+  color: var(--text-primary-light);
+}
+
+/* Grid layout */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Course cards */
+.course-selection-card, .professor-card, .review-card {
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  height: 100%;
+  transition: all var(--anim-normal);
+  animation: fadeIn var(--anim-normal) ease-out;
+}
+
+.course-selection-card:hover, .professor-card:hover, .review-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+html[data-bs-theme="dark"] .course-selection-card,
+html[data-bs-theme="dark"] .professor-card,
+html[data-bs-theme="dark"] .review-card {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary-dark);
+}
+
+html[data-bs-theme="dark"] .course-selection-card:hover,
+html[data-bs-theme="dark"] .professor-card:hover,
+html[data-bs-theme="dark"] .review-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary-light);
+}
+
+/* Form controls */
+.search-input {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.form-control, .form-select {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-light);
+  background-color: var(--card-bg-light);
+  color: var(--text-primary-light);
+  width: 100%;
+  transition: border-color var(--anim-fast) ease, box-shadow var(--anim-fast) ease,
+              background-color var(--anim-normal) ease, color var(--anim-normal) ease;
+  font-size: 0.95rem;
+}
+
+.search-input .form-control {
+  padding-left: 2.5rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  outline: none;
+}
+
+html[data-bs-theme="dark"] .form-control:focus,
+html[data-bs-theme="dark"] .form-select:focus {
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+html[data-bs-theme="dark"] .form-control,
+html[data-bs-theme="dark"] .form-select {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* List styles */
+.list-group {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.list-group-item {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  background-color: var(--card-bg-light);
+  color: var(--text-primary-light);
+  transition: all var(--anim-normal);
+  cursor: pointer;
+  animation: slideIn var(--anim-normal) ease-out;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+html[data-bs-theme="dark"] .list-group-item {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+  color: var(--text-primary-dark);
+}
+
+.list-group-item:not(.disabled):hover {
+  background-color: rgba(99, 102, 241, 0.05);
+  transform: translateX(4px);
+  border-color: var(--primary-color);
+}
+
+html[data-bs-theme="dark"] .list-group-item:not(.disabled):hover {
+  background-color: rgba(99, 102, 241, 0.15);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.list-group-item.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  position: relative;
+}
+
+.list-group-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: white;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: width var(--anim-normal) ease;
+}
+
+.list-group-item.active:hover {
+  background-color: var(--primary-hover);
+  color: white;
+  transform: translateX(4px);
+  border-color: var(--primary-hover);
+}
+
+.list-group-item.active:hover::before {
+  width: 6px;
+}
+
+.list-group-item.disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Action button */
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--anim-normal);
+  text-decoration: none;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.action-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+html[data-bs-theme="dark"] .action-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+html[data-bs-theme="dark"] .action-btn:hover {
+  background-color: var(--primary-hover);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Reviews section */
+.review-content {
+  background-color: var(--card-bg-light);
+  border-radius: 0.5rem;
+  min-height: 100px;
+  padding: 1rem;
+  border: 1px solid var(--border-light);
+  transition: border-color var(--anim-normal) ease, background-color var(--anim-normal) ease;
+}
+
+html[data-bs-theme="dark"] .review-content {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.rate-my-prof {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Professor Rating Styles */
+.professor-rating {
+  animation: fadeIn var(--anim-normal) ease-out;
+}
+
+.rating-header {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.rating-header h4 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary-light);
+}
+
+.rating-header .department {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.rating-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+}
+
+.rating-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.rating-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--anim-normal) ease;
+}
+
+.rating-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  max-width: 7rem;
+}
+
+.rating-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.num-ratings {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 0;
+}
+
+.rmp-link {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--anim-fast) ease;
+}
+
+.rmp-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* Rating color classes */
+.rating-value.excellent {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.rating-value.good {
+  background-color: rgba(45, 212, 191, 0.15);
+  color: #0d9488;
+}
+
+.rating-value.average {
+  background-color: rgba(250, 204, 21, 0.15);
+  color: #ca8a04;
+}
+
+.rating-value.poor {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+
+.rating-value.hard {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+
+.rating-value.medium {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: #ea580c;
+}
+
+.rating-value.easy {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+.rating-value.very-easy {
+  background-color: rgba(45, 212, 191, 0.15);
+  color: #0d9488;
+}
+
+/* Loading state */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.loading-state .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Error state */
+.error-state, .not-found-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.error-state i, .not-found-state i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.not-found-state small {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* Dark mode adjustments for RMP styles */
+html[data-bs-theme="dark"] .rating-header h4 {
+  color: var(--text-primary-dark);
+}
+
+html[data-bs-theme="dark"] .rating-header .department,
+html[data-bs-theme="dark"] .rating-label,
+html[data-bs-theme="dark"] .num-ratings {
+  color: #94a3b8;
+}
+
+html[data-bs-theme="dark"] .rating-footer {
+  border-color: #334155;
+}
+
+html[data-bs-theme="dark"] .rmp-link {
+  color: #818cf8;
+}
+
+html[data-bs-theme="dark"] .rmp-link:hover {
+  color: #a5b4fc;
+}
+
+html[data-bs-theme="dark"] .rating-value.excellent {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+html[data-bs-theme="dark"] .rating-value.good {
+  background-color: rgba(45, 212, 191, 0.2);
+  color: #5eead4;
+}
+
+html[data-bs-theme="dark"] .rating-value.average {
+  background-color: rgba(250, 204, 21, 0.2);
+  color: #facc15;
+}
+
+html[data-bs-theme="dark"] .rating-value.poor {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+html[data-bs-theme="dark"] .rating-value.hard {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+html[data-bs-theme="dark"] .rating-value.medium {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+}
+
+html[data-bs-theme="dark"] .rating-value.easy {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+html[data-bs-theme="dark"] .rating-value.very-easy {
+  background-color: rgba(45, 212, 191, 0.2);
+  color: #5eead4;
+}
+
+html[data-bs-theme="dark"] .loading-state,
+html[data-bs-theme="dark"] .error-state,
+html[data-bs-theme="dark"] .not-found-state {
+  color: #94a3b8;
+}
+
+/* Action buttons */
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-bottom: 2.5rem;
+  animation: fadeIn var(--anim-normal) ease-out 0.1s;
+}
+
+/* Dark mode input icon fix */
+html[data-bs-theme="dark"] .input-icon {
+  color: #94a3b8;
+}
+
+/* Dark mode empty state styling */
+html[data-bs-theme="dark"] .empty-state {
+  color: #d1d5db;
+}
+
+html[data-bs-theme="dark"] .empty-icon {
+  color: #94a3b8;
+}
+
+html[data-bs-theme="dark"] .rate-my-prof {
+  color: #94a3b8;
+}
+
+/* Make sure the search placeholder text is visible in dark mode */
+html[data-bs-theme="dark"] .form-control::placeholder,
+html[data-bs-theme="dark"] .form-select::placeholder {
+  color: #94a3b8;
+}
+
+/* Fix course dropdown in dark mode */
+html[data-bs-theme="dark"] .form-select option {
+  background-color: #1e293b;
+  color: var(--text-primary-dark);
+}
+
+/* Fix dropdown appearance in dark mode */
+html[data-bs-theme="dark"] .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d1d5db' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Add a subtle hover state to form elements in dark mode */
+html[data-bs-theme="dark"] .form-control:hover,
+html[data-bs-theme="dark"] .form-select:hover {
+  background-color: rgba(30, 41, 59, 0.9);
+  border-color: #475569;
+}
+
+/* Fix for select dropdown in dark mode */
+html[data-bs-theme="dark"] select.form-select:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236366f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Fix course dropdown text in dark mode */
+html[data-bs-theme="dark"] select.form-select {
+  color: white;
+}
+
+html[data-bs-theme="dark"] select.form-select option {
+  background-color: #1e293b;
+  color: white;
+}
+
+/* Fix for disabled list items in dark mode */
+html[data-bs-theme="dark"] .list-group-item.disabled {
+  color: #94a3b8;
+  background-color: rgba(15, 23, 42, 0.5);
+  border-color: #334155;
+}

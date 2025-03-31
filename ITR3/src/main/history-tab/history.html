@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library | studybase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <link href="history.css" rel="stylesheet" />
+  <link href="generalUI.css" rel="stylesheet" />
+  <script src="theme-loader.js"></script>
+  <style>
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      flex-direction: column;
+    }
+    .loading i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--bs-primary);
+    }
+    .drag-hint {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: rgba(var(--bs-primary-rgb), 0.8);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 0 auto;
+      width: 80%;
+      max-width: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      font-weight: 500;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    
+    .drag-hint i {
+      font-size: 1.2em;
+    }
+    
+    .folder-view {
+      position: relative;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Document-level drag indicators */
+    body.folder-item-dragging {
+      cursor: move;
+    }
+    
+    body.drag-over::before {
+      content: "Release to move to Unsorted Items";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(var(--bs-primary-rgb), 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--bs-primary);
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      pointer-events: none;
+    }
+    
+    /* Location indicators for items */
+    .history-card {
+      position: relative;
+      overflow: visible;
+    }
+    
+    .location-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 10;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .location-badge i {
+      font-size: 0.8rem;
+    }
+    
+    .unsorted-location {
+      background-color: var(--bs-success);
+      color: white;
+    }
+    
+    .folder-location {
+      background-color: var(--bs-primary);
+      color: white;
+    }
+    
+    .folders-title {
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--bs-primary);
+      padding-left: 10px;
+      border-left: 4px solid var(--bs-primary);
+    }
+    
+    .unsorted-items-title {
+      margin: 24px 0 12px;
+      font-weight: 600;
+      color: var(--bs-success);
+      padding-left: 10px;
+      border-left: 4px solid var(--bs-success);
+    }
+    
+    /* Different styling for folder items vs unsorted items */
+    #folderViewContent .history-card {
+      border-left: 3px solid var(--bs-primary);
+    }
+    
+    #searchHistoryTiles .history-card {
+      border-left: 3px solid var(--bs-success);
+    }
+    
+    /* Add divider between sections */
+    .section-divider {
+      height: 1px;
+      background: var(--bs-border-color);
+      margin: 30px 0;
+      position: relative;
+    }
+    
+    .section-divider::after {
+      content: "•";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bs-body-bg);
+      padding: 0 15px;
+      color: var(--bs-secondary-color);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html" class="active">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="history-header">
+      <h2>Search History</h2>
+    </div>
+
+    <div class="history-actions">
+      <button id="createFolderBtn" class="action-btn">
+        <i class="fas fa-folder-plus"></i> Create Folder
+      </button>
+      <button id="deleteAllHistoryBtn" class="action-btn danger-btn">
+        <i class="fas fa-trash-alt"></i> Delete All History
+      </button>
+    </div>
+
+    <h3 class="folders-title"><i class="fas fa-folder-open"></i> Folders</h3>
+    <div id="foldersContainer" class="folders-container">
+      <!-- Folders will be loaded here -->
+    </div>
+
+    <!-- Folder View Container -->
+    <div id="folderView" class="folder-view">
+      <div class="folder-view-header">
+        <div class="folder-view-left">
+          <button class="folder-view-back">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </button>
+          <div class="folder-view-title-container">
+            <div class="folder-view-title">
+              <i class="fas fa-folder"></i>
+              <span id="folderViewTitle"></span>
+            </div>
+            <div id="folderViewDescription" class="folder-view-description"></div>
+          </div>
+        </div>
+      </div>
+      <div id="folderViewContent" class="folder-view-content">
+        <!-- Folder contents will be loaded here -->
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+    
+    <h3 class="unsorted-items-title"><i class="fas fa-layer-group"></i> Unsorted Items</h3>
+    <div id="searchHistoryTiles" class="history-tiles">
+      <!-- Search history tiles will be loaded here -->
+    </div>
+
+    <!-- Folder Creation Modal -->
+    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="createFolderModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createFolderModalLabel">Create New Folder</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="createFolderForm" onsubmit="return false;">
+              <div class="mb-3">
+                <label for="folderName" class="form-label">Folder Name</label>
+                <input type="text" class="form-control" id="folderName" required maxlength="10" autocomplete="off">
+                <div class="form-text text-end">
+                  <span id="nameCharCount">0</span>/10 characters
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="folderDescription" class="form-label">Description (Optional)</label>
+                <textarea class="form-control" id="folderDescription" rows="2" maxlength="50"
+                  placeholder="Enter a brief description of this folder"></textarea>
+                <div class="form-text text-end">
+                  <span id="descriptionCharCount">0</span>/50 characters
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="createFolderSubmit">Create Folder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="noHistoryMessage" class="empty-state" style="display:none;">
+      <i class="fas fa-history empty-icon"></i>
+      <p>No search history found</p>
+    </div>
+
+    <div id="deleteStatusMessage" class="status-message" style="display: none;"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, orderBy, deleteDoc, doc, getDocsFromCache, writeBatch, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAjvShhWqOBIrgero2ODtQQtSzWuafmGJw",
+      authDomain: "studybase-data.firebaseapp.com",
+      projectId: "studybase-data",
+      storageBucket: "studybase-data.firebasestorage.app",
+      messagingSenderId: "471482464641",
+      appId: "1:471482464641:web:46fe6cf41e17a24e785080"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+    const noHistoryMessage = document.getElementById('noHistoryMessage');
+    const deleteStatusMessage = document.getElementById('deleteStatusMessage');
+    const deleteAllHistoryBtn = document.getElementById('deleteAllHistoryBtn');
+    const createFolderBtn = document.getElementById('createFolderBtn');
+    const createFolderModal = new bootstrap.Modal(document.getElementById('createFolderModal'));
+    const createFolderSubmit = document.getElementById('createFolderSubmit');
+    const foldersContainer = document.getElementById('foldersContainer');
+    const folderNameInput = document.getElementById('folderName');
+    const folderDescriptionInput = document.getElementById('folderDescription');
+
+    let currentUser = null;
+    let draggedTile = null;
+
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) {
+        loadSavedSearches(user);
+        loadFolders(user);
+        deleteAllHistoryBtn.style.display = 'flex';
+        createFolderBtn.style.display = 'flex';
+        createFolderBtn.classList.add('action-btn');
+      } else {
+        searchHistoryTiles.innerHTML = '';
+        foldersContainer.innerHTML = '';
+        noHistoryMessage.style.display = 'flex';
+        deleteAllHistoryBtn.style.display = 'none';
+        createFolderBtn.style.display = 'none';
+      }
+    });
+
+    // Folder Management Functions
+    async function loadFolders(user) {
+      if (!user) return;
+
+      const foldersRef = collection(db, 'folders');
+      const q = query(foldersRef, where("userId", "==", user.uid));
+
+      try {
+        const querySnapshot = await getDocs(q);
+        foldersContainer.innerHTML = '';
+
+        querySnapshot.forEach((doc) => {
+          const folderData = doc.data();
+          const folderElement = createFolderElement(doc.id, folderData);
+          foldersContainer.appendChild(folderElement);
+        });
+      } catch (error) {
+        console.error("Error loading folders:", error);
+      }
+    }
+
+    function createFolderElement(folderId, folderData) {
+      const folderContainer = document.createElement('div');
+      folderContainer.className = 'folder-container';
+      folderContainer.dataset.folderId = folderId;
+      folderContainer.dataset.color = folderData.color || 'white';
+
+      const folderHeader = document.createElement('div');
+      folderHeader.className = 'folder-header';
+
+      const folderTitle = document.createElement('div');
+      folderTitle.className = 'folder-title';
+      folderTitle.innerHTML = `<i class="fas fa-folder"></i> ${folderData.name}`;
+
+      const folderActions = document.createElement('div');
+      folderActions.className = 'folder-actions';
+
+      // Add share button
+      const shareFolderBtn = document.createElement('button');
+      shareFolderBtn.className = 'folder-btn';
+      shareFolderBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
+      shareFolderBtn.title = 'Share Folder';
+      shareFolderBtn.onclick = (e) => {
+        e.stopPropagation();
+        // Share functionality will be implemented later
+        displayDeleteStatus("Share functionality coming soon!", true);
+      };
+
+      // Add color picker button
+      const colorPickerBtn = document.createElement('button');
+      colorPickerBtn.className = 'folder-btn';
+      colorPickerBtn.innerHTML = '<i class="fas fa-palette"></i>';
+      colorPickerBtn.onclick = (e) => {
+        e.stopPropagation();
+        toggleColorMenu(folderId, colorPickerBtn);
+      };
+
+      const deleteFolderBtn = document.createElement('button');
+      deleteFolderBtn.className = 'folder-btn';
+      deleteFolderBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteFolderBtn.onclick = (e) => {
+        e.stopPropagation();
+        showDeleteFolderConfirmation(folderId);
+      };
+
+      folderActions.appendChild(shareFolderBtn);
+      folderActions.appendChild(colorPickerBtn);
+      folderActions.appendChild(deleteFolderBtn);
+      folderHeader.appendChild(folderTitle);
+      folderHeader.appendChild(folderActions);
+
+      // Create color menu
+      const colorMenu = document.createElement('div');
+      colorMenu.className = 'folder-color-menu';
+      colorMenu.innerHTML = `
+        <div class="color-option" data-color="white"></div>
+        <div class="color-option" data-color="blue"></div>
+        <div class="color-option" data-color="green"></div>
+        <div class="color-option" data-color="yellow"></div>
+        <div class="color-option" data-color="red"></div>
+      `;
+
+      // Add click handlers for color options
+      colorMenu.querySelectorAll('.color-option').forEach(option => {
+        option.onclick = (e) => {
+          e.stopPropagation();
+          const color = option.dataset.color;
+          updateFolderColor(folderId, color);
+          colorMenu.classList.remove('active');
+        };
+      });
+
+      folderContainer.appendChild(colorMenu);
+
+      const folderContent = document.createElement('div');
+      folderContent.className = 'folder-content';
+
+      // Create topic list
+      const topicList = document.createElement('div');
+      topicList.className = 'topic-list';
+      folderContent.appendChild(topicList);
+
+      // Add click handler to open folder view
+      folderContainer.addEventListener('click', () => {
+        openFolderView(folderId, folderData);
+      });
+
+      // Add drag and drop event listeners
+      folderContent.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderContent.classList.add('drag-over');
+      });
+
+      folderContent.addEventListener('dragleave', () => {
+        folderContent.classList.remove('drag-over');
+      });
+
+      folderContent.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderContent.classList.remove('drag-over');
+        if (draggedTile) {
+          const searchId = draggedTile.dataset.searchId;
+          
+          // Update database
+          await moveTileToFolder(searchId, folderId);
+
+          // If the tile was dragged from the main history view, remove it from there
+          if (draggedTile.dataset.originalParent === 'searchHistoryTiles') {
+            draggedTile.remove();
+
+            // Show the no history message if needed
+            if (searchHistoryTiles.children.length === 0) {
+              // Check if there are items in other folders before showing the message
+              const savedSearchesRef = collection(db, 'savedSearches');
+              const q = query(savedSearchesRef, 
+                where("userId", "==", currentUser.uid),
+                where("folderId", "!=", null)
+              );
+              
+              getDocs(q).then((folderSnapshot) => {
+                if (folderSnapshot.empty) {
+                  // No items in any folders, show the message
+                  noHistoryMessage.style.display = 'flex';
+                }
+              }).catch((error) => {
+                console.error("Error checking folder items:", error);
+              });
+            }
+          }
+
+          // Completely refresh the folder's topic list
+          await loadFolderTopics(folderId, topicList);
+          
+          // If we have an open folder view and it's for this folder, refresh it too
+          const folderView = document.getElementById('folderView');
+          if (folderView.classList.contains('active') && folderView.dataset.folderId === folderId) {
+            const folderName = folderTitle.textContent.replace('<i class="fas fa-folder"></i> ', '');
+            
+            // Completely rebuild the folder view
+            const folderViewContent = document.getElementById('folderViewContent');
+            folderViewContent.innerHTML = '';
+            
+            // Reload fresh data from database
+            const savedSearchesRef = collection(db, 'savedSearches');
+            const q = query(savedSearchesRef,
+              where("userId", "==", currentUser.uid),
+              where("folderId", "==", folderId)
+            );
+            
+            try {
+              const querySnapshot = await getDocs(q);
+              
+              if (querySnapshot.empty) {
+                folderViewContent.innerHTML = `
+                  <div class="empty-state">
+                    <i class="fas fa-folder-open empty-icon"></i>
+                    <p>No items in this folder</p>
+                  </div>
+                `;
+              } else {
+                querySnapshot.forEach((doc) => {
+                  const searchData = doc.data();
+                  const newTile = createSearchTile(doc.id, searchData);
+                  
+                  // Update badge with folder name
+                  const newBadge = newTile.querySelector('.location-badge');
+                  if (newBadge) {
+                    newBadge.innerHTML = `<i class="fas fa-folder"></i> Folder: ${folderName.substring(0, 15)}${folderName.length > 15 ? '...' : ''}`;
+                  }
+                  
+                  // Add drag handlers
+                  const dragHint = folderView.querySelector('.drag-hint');
+                  newTile.addEventListener('dragstart', () => {
+                    if (dragHint) dragHint.style.display = 'flex';
+                  });
+                  
+                  newTile.addEventListener('dragend', () => {
+                    if (dragHint) dragHint.style.display = 'none';
+                  });
+                  
+                  folderViewContent.appendChild(newTile);
+                });
+              }
+            } catch (error) {
+              console.error("Error refreshing folder view:", error);
+            }
+          }
+          
+          // Clean up all drag-related states
+          cleanupDragState();
+        }
+      });
+
+      folderContainer.appendChild(folderHeader);
+      folderContainer.appendChild(folderContent);
+
+      // Load topics for this folder
+      loadFolderTopics(folderId, topicList);
+
+      return folderContainer;
+    }
+
+    async function loadFolderTopics(folderId, topicList) {
+      if (!currentUser) return;
+
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef,
+        where("userId", "==", currentUser.uid),
+        where("folderId", "==", folderId)
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        topicList.innerHTML = '';
+
+        querySnapshot.forEach((doc) => {
+          const searchData = doc.data();
+          const topicItem = document.createElement('div');
+          topicItem.className = 'topic-item';
+          topicItem.textContent = searchData.query;
+          topicList.appendChild(topicItem);
+        });
+      } catch (error) {
+        console.error("Error loading folder topics:", error);
+      }
+    }
+
+    async function openFolderView(folderId, folderData) {
+      const folderView = document.getElementById('folderView');
+      folderView.dataset.folderId = folderId;
+      const folderViewTitle = document.getElementById('folderViewTitle');
+      const folderViewDescription = document.getElementById('folderViewDescription');
+      const folderViewContent = document.getElementById('folderViewContent');
+      const folderViewBack = folderView.querySelector('.folder-view-back');
+
+      folderViewTitle.textContent = folderData.name;
+      if (folderData.description) {
+        folderViewDescription.textContent = folderData.description;
+        folderViewDescription.style.display = 'block';
+      } else {
+        folderViewDescription.style.display = 'none';
+      }
+      
+      folderViewContent.innerHTML = '';
+      folderView.classList.add('active');
+
+      // Create drag hint element
+      let dragHint = document.createElement('div');
+      dragHint.className = 'drag-hint';
+      dragHint.innerHTML = '<i class="fas fa-arrow-circle-up"></i> Drag outside to move to Unsorted Items';
+      dragHint.style.display = 'none';
+      folderView.appendChild(dragHint);
+
+      // Define a clear back button handler function
+      const closeFolder = () => {
+        folderView.classList.remove('active');
+        if (folderView.contains(dragHint)) {
+          folderView.removeChild(dragHint);
+        }
+        cleanupDragState();
+      };
+
+      // Back button handler - making sure this is a proper function reference
+      folderViewBack.onclick = closeFolder;
+
+      // Load folder contents using the helper function
+      await refreshFolderViewWithName(folderId, folderData.name);
+
+      // Add drag and drop handlers for the back button
+      folderViewBack.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.add('drag-over');
+      });
+
+      folderViewBack.addEventListener('dragleave', () => {
+        folderViewBack.classList.remove('drag-over');
+      });
+
+      folderViewBack.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        folderViewBack.classList.remove('drag-over');
+
+        if (draggedTile) {
+          const searchId = draggedTile.dataset.searchId;
+          const currentFolderId = draggedTile.closest('.folder-view').dataset.folderId;
+          const folderName = document.getElementById('folderViewTitle').textContent;
+
+          // First update the database
+          await moveTileToFolder(searchId, null);
+
+          // Create a clone for the unsorted items section
+          const clonedTile = draggedTile.cloneNode(true);
+
+          // Update badge on cloned tile
+          const badge = clonedTile.querySelector('.location-badge');
+          if (badge) {
+            badge.className = 'location-badge unsorted-location';
+            badge.innerHTML = '<i class="fas fa-layer-group"></i> Unsorted Items';
+          }
+
+          // Add the cloned tile to unsorted items
+          const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+          searchHistoryTiles.appendChild(clonedTile);
+
+          // Re-attach drag event listeners to the cloned tile
+          setupDragListeners(clonedTile);
+
+          // Hide the no history message
+          const noHistoryMessage = document.getElementById('noHistoryMessage');
+          noHistoryMessage.style.display = 'none';
+          
+          // Also refresh the folder topics display
+          const folderContainer = document.querySelector(`[data-folder-id="${currentFolderId}"]`);
+          if (folderContainer) {
+            const topicList = folderContainer.querySelector('.topic-list');
+            if (topicList) {
+              await loadFolderTopics(currentFolderId, topicList);
+            }
+          }
+          
+          // Execute the onclick handler directly
+          if (folderViewBack.onclick) {
+            folderViewBack.onclick();
+          }
+        }
+      });
+    }
+
+    async function createFolder(name, description) {
+      if (!currentUser) return;
+
+      try {
+        await addDoc(collection(db, 'folders'), {
+          name,
+          description: description || '',
+          userId: currentUser.uid,
+          createdAt: new Date()
+        });
+        loadFolders(currentUser);
+        createFolderModal.hide();
+        folderNameInput.value = '';
+        folderDescriptionInput.value = '';
+        folderNameInput.value = '';
+        document.getElementById('descriptionCharCount').textContent = '0';
+        document.getElementById('nameCharCount').textContent = '0';
+
+      }
+      
+      catch (error) {
+        console.error("Error creating folder:", error);
+        displayDeleteStatus("Unable to create folder.", false);
+      }
+    }
+
+    function showDeleteFolderConfirmation(folderId) {
+      const modal = document.createElement('div');
+      modal.className = 'modal fade';
+      modal.id = 'deleteFolderModal';
+      modal.innerHTML = `
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Folder</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> Are You Sure? Deleting A Folder Also Deletes The Contents Inside!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Cancel</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteFolder">Yes, Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      const deleteModal = new bootstrap.Modal(modal);
+      deleteModal.show();
+
+      // Handle modal cleanup
+      modal.addEventListener('hidden.bs.modal', () => {
+        document.body.removeChild(modal);
+      });
+
+      // Handle delete confirmation
+      document.getElementById('confirmDeleteFolder').addEventListener('click', () => {
+        deleteFolder(folderId);
+        deleteModal.hide();
+      });
+    }
+
+    async function deleteFolder(folderId) {
+      if (!currentUser) return;
+
+      try {
+        // First, delete all items in the folder
+        const savedSearchesRef = collection(db, 'savedSearches');
+        const q = query(savedSearchesRef,
+          where("userId", "==", currentUser.uid),
+          where("folderId", "==", folderId)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const batch = writeBatch(db);
+
+        // Add all folder items to the batch delete
+        querySnapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        // Add the folder itself to the batch delete
+        batch.delete(doc(db, 'folders', folderId));
+
+        // Commit the batch
+        await batch.commit();
+
+        loadFolders(currentUser);
+        displayDeleteStatus("Folder and its contents deleted successfully!", true);
+      } catch (error) {
+        console.error("Error deleting folder:", error);
+        displayDeleteStatus("Unable to delete folder.", false);
+      }
+    }
+
+    async function moveTileToFolder(searchId, folderId) {
+      if (!currentUser) return;
+
+      try {
+        await updateDoc(doc(db, 'savedSearches', searchId), {
+          folderId: folderId
+        });
+
+        // Only reload if we're not handling the UI update manually
+        if (!draggedTile) {
+          loadSavedSearches(currentUser);
+          loadFolders(currentUser);
+        }
+
+        displayDeleteStatus(folderId ? "Item moved to folder successfully!" : "Item moved to Unsorted Items successfully!", true);
+      } catch (error) {
+        console.error("Error moving item:", error);
+        displayDeleteStatus("Unable to move item.", false);
+      }
+    }
+
+    // Event Listeners for Folder Creation
+    createFolderBtn.addEventListener('click', () => {
+      createFolderModal.show();
+    });
+
+    createFolderSubmit.addEventListener('click', () => {
+      const folderName = folderNameInput.value.trim();
+      const folderDescription = folderDescriptionInput.value.trim();
+      if (folderName) {
+        createFolder(folderName, folderDescription);
+      }
+    });
+
+    // Add form submit handler to prevent default submission
+    document.getElementById('createFolderForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const folderName = folderNameInput.value.trim();
+      const folderDescription = folderDescriptionInput.value.trim();
+      if (folderName) {
+        createFolder(folderName, folderDescription);
+      }
+    });
+
+    // Add enter key handler for the input field
+    folderNameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const folderName = folderNameInput.value.trim();
+        const folderDescription = folderDescriptionInput.value.trim();
+        if (folderName) {
+          createFolder(folderName, folderDescription);
+        }
+      }
+    });
+
+    // Add character counter for description
+    const descriptionCharCount = document.getElementById('descriptionCharCount');
+
+    folderDescriptionInput.addEventListener('input', () => {
+      const count = folderDescriptionInput.value.length;
+      descriptionCharCount.textContent = count;
+    });
+
+    const nameCharCount = document.getElementById('nameCharCount');
+
+    folderNameInput.addEventListener('input', () => {
+      const count = folderNameInput.value.length;
+      nameCharCount.textContent = count;
+
+      if (count > 0 && count <= 10) {
+        createFolderSubmit.disabled = false;
+      } 
+      else {
+        createFolderSubmit.disabled = true;
+      }
+    });
+
+    // Modify the createSearchTile function to handle drag and drop
+    function createSearchTile(docId, searchData) {
+      const tile = document.createElement('div');
+      tile.className = 'history-tile';
+      tile.dataset.searchId = docId;
+      tile.draggable = true;
+
+      // Use the new setupDragListeners function
+      setupDragListeners(tile);
+
+      // Create card container
+      const card = document.createElement('div');
+      card.className = 'history-card';
+      tile.appendChild(card);
+      
+      // Add location badge
+      const locationBadge = document.createElement('div');
+      if (searchData.folderId) {
+        locationBadge.className = 'location-badge folder-location';
+        locationBadge.innerHTML = '<i class="fas fa-folder"></i> In Folder';
+      } else {
+        locationBadge.className = 'location-badge unsorted-location';
+        locationBadge.innerHTML = '<i class="fas fa-layer-group"></i> Unsorted Items';
+      }
+      card.appendChild(locationBadge);
+
+      // Card content
+      const cardContent = document.createElement('div');
+      cardContent.className = 'history-card-content';
+      card.appendChild(cardContent);
+
+      // Title with search query
+      const title = document.createElement('h3');
+      title.className = 'history-card-title';
+      title.textContent = searchData.query;
+      cardContent.appendChild(title);
+
+      // Education level
+      const educationLevel = document.createElement('div');
+      educationLevel.className = 'history-card-detail';
+
+      const educationIcon = document.createElement('i');
+      educationIcon.className = 'fas fa-graduation-cap detail-icon';
+      educationLevel.appendChild(educationIcon);
+
+      const educationText = document.createElement('span');
+
+      if (searchData.educationLevel == "highSchool") {
+        educationText.textContent = 'High School';
+      } else if (searchData.educationLevel == "university12") {
+        educationText.textContent = 'Year 1-2 University';
+      } else if (searchData.educationLevel == "university34") {
+        educationText.textContent = 'Year 3-4 University';
+      } else if (searchData.educationLevel == "masters") {
+        educationText.textContent = 'Masters+';
+      } else {
+        educationText.textContent = searchData.educationLevel;
+      }
+
+      educationLevel.appendChild(educationText);
+      cardContent.appendChild(educationLevel);
+
+      // Roadmap steps
+      const roadmapSteps = document.createElement('div');
+      roadmapSteps.className = 'history-card-detail';
+
+      const stepsIcon = document.createElement('i');
+      stepsIcon.className = 'fas fa-map-signs detail-icon';
+      roadmapSteps.appendChild(stepsIcon);
+
+      const stepsText = document.createElement('span');
+
+      if (searchData.roadmapSteps == 1) {
+        stepsText.textContent = '5 Steps';
+      } else if (searchData.roadmapSteps == 2) {
+        stepsText.textContent = '10 Steps';
+      } else if (searchData.roadmapSteps == 3) {
+        stepsText.textContent = '15 Steps';
+      } else if (searchData.roadmapSteps == 4) {
+        stepsText.textContent = '20 Steps';
+      } else {
+        stepsText.textContent = `${searchData.roadmapSteps} Steps`;
+      }
+
+      roadmapSteps.appendChild(stepsText);
+      cardContent.appendChild(roadmapSteps);
+
+      // Timestamp
+      const timestamp = document.createElement('div');
+      timestamp.className = 'history-card-timestamp';
+      const date = searchData.timestamp ? searchData.timestamp.toDate() : new Date();
+
+      const dateString = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      const timeString = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+
+      timestamp.textContent = `${dateString} at ${timeString}`;
+      cardContent.appendChild(timestamp);
+
+      // Action buttons
+      const actionButtons = document.createElement('div');
+      actionButtons.className = 'history-card-actions';
+
+      // Open search button
+      const openSearchBtn = document.createElement('button');
+      openSearchBtn.className = 'card-btn primary-btn';
+      openSearchBtn.innerHTML = '<i class="fas fa-external-link-alt"></i>';
+      openSearchBtn.title = 'Open Search';
+      openSearchBtn.addEventListener('click', () => {
+        window.location.href = `search-topic.html?query=${encodeURIComponent(searchData.query)}&educationLevel=${encodeURIComponent(searchData.educationLevel)}&roadmapSteps=${encodeURIComponent(searchData.roadmapSteps)}`;
+      });
+      actionButtons.appendChild(openSearchBtn);
+
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'card-btn danger-btn';
+      deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteBtn.title = 'Delete Search';
+      deleteBtn.addEventListener('click', () => {
+        deleteSearch(docId, tile);
+      });
+      actionButtons.appendChild(deleteBtn);
+
+      // Share button (placeholder)
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'card-btn secondary-btn';
+      shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>';
+      shareBtn.title = 'Share Search (Placeholder)';
+      actionButtons.appendChild(shareBtn);
+
+      card.appendChild(actionButtons);
+
+      return tile;
+    }
+
+    async function deleteSearch(docId, tileElement) {
+      const modal = document.createElement('div');
+      modal.className = 'modal fade';
+      modal.id = 'deleteSearchModal';
+      modal.innerHTML = `
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Search</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete this search?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteSearch">Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      const deleteModal = new bootstrap.Modal(modal);
+      deleteModal.show();
+
+      // Handle modal cleanup
+      modal.addEventListener('hidden.bs.modal', () => {
+        document.body.removeChild(modal);
+      });
+
+      // Handle delete confirmation
+      document.getElementById('confirmDeleteSearch').addEventListener('click', async () => {
+        try {
+          await deleteDoc(doc(db, 'savedSearches', docId));
+          // Remove the tile from the UI
+          tileElement.remove();
+          displayDeleteStatus("Search deleted successfully!", true);
+          
+          // Check if history is now empty and show "No history" message if needed
+          if (searchHistoryTiles.children.length === 0) {
+            // Check if there are items in folders before showing the empty message
+            const savedSearchesRef = collection(db, 'savedSearches');
+            const q = query(savedSearchesRef, 
+              where("userId", "==", currentUser.uid),
+              where("folderId", "!=", null)
+            );
+            
+            try {
+              const folderSnapshot = await getDocs(q);
+              if (folderSnapshot.empty) {
+                // No items in folders either, show the empty message
+                noHistoryMessage.style.display = 'flex';
+              }
+            } catch (error) {
+              console.error("Error checking folder items:", error);
+            }
+          }
+          
+          deleteModal.hide();
+        } catch (error) {
+          console.error("Error deleting search:", error);
+          displayDeleteStatus("Unable to delete search.", false);
+          deleteModal.hide();
+        }
+      });
+    }
+
+    function displayDeleteStatus(message, success) {
+      deleteStatusMessage.textContent = message;
+      deleteStatusMessage.style.display = 'block';
+      deleteStatusMessage.className = 'status-message';
+      if (success) {
+        deleteStatusMessage.classList.add('success');
+      } else {
+        deleteStatusMessage.classList.add('error');
+      }
+
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        deleteStatusMessage.style.display = 'none';
+      }, 3000);
+    }
+
+    async function deleteAllSearches() {
+      const modal = document.createElement('div');
+      modal.className = 'modal fade';
+      modal.id = 'deleteAllHistoryModal';
+      modal.innerHTML = `
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete All History</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> This will delete all your search history and folders. This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteAll">Delete All</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      const deleteModal = new bootstrap.Modal(modal);
+      deleteModal.show();
+
+      // Handle modal cleanup
+      modal.addEventListener('hidden.bs.modal', () => {
+        document.body.removeChild(modal);
+      });
+
+      // Handle delete confirmation
+      document.getElementById('confirmDeleteAll').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+          displayDeleteStatus("No user logged in.", false);
+          return;
+        }
+
+        try {
+          // Delete all saved searches
+          const savedSearchesRef = collection(db, 'savedSearches');
+          const searchesQuery = query(savedSearchesRef, where("userId", "==", user.uid));
+          const searchesSnapshot = await getDocs(searchesQuery);
+          const batch = writeBatch(db);
+
+          searchesSnapshot.forEach(docSnapshot => {
+            batch.delete(doc(db, 'savedSearches', docSnapshot.id));
+          });
+
+          // Delete all folders
+          const foldersRef = collection(db, 'folders');
+          const foldersQuery = query(foldersRef, where("userId", "==", user.uid));
+          const foldersSnapshot = await getDocs(foldersQuery);
+
+          foldersSnapshot.forEach(docSnapshot => {
+            batch.delete(doc(db, 'folders', docSnapshot.id));
+          });
+
+          await batch.commit();
+
+          // Update UI
+          searchHistoryTiles.innerHTML = '';
+          foldersContainer.innerHTML = '';
+          noHistoryMessage.style.display = 'flex';
+          displayDeleteStatus("All history and folders deleted successfully!", true);
+          deleteModal.hide();
+        } catch (error) {
+          console.error("Error deleting all history:", error);
+          displayDeleteStatus("Unable to delete history.", false);
+          deleteModal.hide();
+        }
+      });
+    }
+
+    // Event listener for the Delete All button
+    deleteAllHistoryBtn.addEventListener('click', deleteAllSearches);
+
+    // Modify loadSavedSearches to handle folders
+    async function loadSavedSearches(user) {
+      searchHistoryTiles.innerHTML = '';
+      noHistoryMessage.style.display = 'none';
+
+      if (!user) {
+        console.log("No user logged in to fetch history.");
+        noHistoryMessage.style.display = 'flex';
+        return;
+      }
+
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef,
+        where("userId", "==", user.uid),
+        orderBy("timestamp", "desc")
+      );
+
+      try {
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          noHistoryMessage.style.display = 'flex';
+        } else {
+          let hasItemsInFolders = false;
+          let hasItemsOutsideFolders = false;
+          
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            // Only show items that don't belong to any folder
+            if (!searchData.folderId) {
+              hasItemsOutsideFolders = true;
+              const tile = createSearchTile(doc.id, searchData);
+              searchHistoryTiles.appendChild(tile);
+            } else {
+              hasItemsInFolders = true;
+            }
+          });
+          
+          // Only show the empty message if there are no items at all (in or out of folders)
+          if (searchHistoryTiles.children.length === 0 && !hasItemsInFolders) {
+            noHistoryMessage.style.display = 'flex';
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching saved searches:", error);
+        // Instead of showing error message, try to load from cache
+        try {
+          const querySnapshot = await getDocsFromCache(q);
+          if (querySnapshot.empty) {
+            noHistoryMessage.style.display = 'flex';
+          } else {
+            let hasItemsInFolders = false;
+            let hasItemsOutsideFolders = false;
+            
+            querySnapshot.forEach((doc) => {
+              const searchData = doc.data();
+              if (!searchData.folderId) {
+                hasItemsOutsideFolders = true;
+                const tile = createSearchTile(doc.id, searchData);
+                searchHistoryTiles.appendChild(tile);
+              } else {
+                hasItemsInFolders = true;
+              }
+            });
+            
+            // Only show the empty message if there are no items at all (in or out of folders)
+            if (searchHistoryTiles.children.length === 0 && !hasItemsInFolders) {
+              noHistoryMessage.style.display = 'flex';
+            }
+          }
+        } catch (cacheError) {
+          console.error("Error fetching from cache:", cacheError);
+          searchHistoryTiles.innerHTML = `<p class="error-message">Unable to load search history.</p>`;
+        }
+      }
+    }
+
+    function toggleColorMenu(folderId, button) {
+      const folder = document.querySelector(`[data-folder-id="${folderId}"]`);
+      const colorMenu = folder.querySelector('.folder-color-menu');
+      const currentColor = folder.dataset.color;
+
+      // Update selected state
+      colorMenu.querySelectorAll('.color-option').forEach(option => {
+        option.classList.toggle('selected', option.dataset.color === currentColor);
+      });
+
+      // Toggle menu
+      colorMenu.classList.toggle('active');
+
+      // Close menu when clicking outside
+      const closeMenu = (e) => {
+        if (!colorMenu.contains(e.target) && e.target !== button) {
+          colorMenu.classList.remove('active');
+        }
+      };
+
+      if (colorMenu.classList.contains('active')) {
+        document.addEventListener('click', closeMenu);
+      } else {
+        document.removeEventListener('click', closeMenu);
+      }
+    }
+
+    async function updateFolderColor(folderId, color) {
+      if (!currentUser) return;
+
+      try {
+        await updateDoc(doc(db, 'folders', folderId), {
+          color: color
+        });
+        const folder = document.querySelector(`[data-folder-id="${folderId}"]`);
+        folder.dataset.color = color;
+        displayDeleteStatus("Folder color updated!", true);
+      } catch (error) {
+        console.error("Error updating folder color:", error);
+        displayDeleteStatus("Unable to update folder color.", false);
+      }
+    }
+
+    // Add drag and drop handlers for the main history view
+    const mainHistoryTiles = document.getElementById('searchHistoryTiles');
+
+    mainHistoryTiles.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      mainHistoryTiles.classList.add('drag-over');
+    });
+
+    mainHistoryTiles.addEventListener('dragleave', () => {
+      mainHistoryTiles.classList.remove('drag-over');
+    });
+
+    mainHistoryTiles.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      mainHistoryTiles.classList.remove('drag-over');
+
+      if (draggedTile) {
+        const searchId = draggedTile.dataset.searchId;
+
+        // First update the database
+        await moveTileToFolder(searchId, null);
+
+        // Only add to main history if it came from a folder
+        if (draggedTile.dataset.originalParent === 'folderViewContent') {
+          const clonedTile = draggedTile.cloneNode(true);
+          setupDragListeners(clonedTile);
+          mainHistoryTiles.appendChild(clonedTile);
+          draggedTile.remove();
+        }
+
+        // Hide the no history message
+        noHistoryMessage.style.display = 'none';
+      }
+    });
+
+    // Add a cleanup function to ensure all states are reset
+    function cleanupDragState() {
+      // Remove folder item dragging class
+      document.body.classList.remove('folder-item-dragging');
+      document.body.classList.remove('drag-over');
+      
+      // Properly close folder view if needed
+      const folderView = document.getElementById('folderView');
+      const dragHint = document.querySelector('.drag-hint');
+      
+      if (folderView && dragHint && folderView.contains(dragHint)) {
+        // Hide any visible drag hints
+        dragHint.style.display = 'none';
+        
+        // If the user has dropped the item outside but folderView hasn't been closed,
+        // attempt to close it directly by simulating a back button click
+        const backButton = folderView.querySelector('.folder-view-back');
+        if (backButton && backButton.onclick && folderView.classList.contains('active')) {
+          // Here we're making an extra call to ensure the folder view closes
+          backButton.onclick();
+        }
+      }
+      
+      // Remove any dragging classes from tiles
+      const draggingTile = document.querySelector('.dragging');
+      if (draggingTile) {
+        draggingTile.classList.remove('dragging');
+      }
+      
+      // Reset the draggedTile variable
+      draggedTile = null;
+    }
+    
+    // Update setupDragListeners to use the cleanup function
+    function setupDragListeners(tile) {
+      // Remove any existing drag event listeners first to avoid duplicates
+      tile.removeEventListener('dragstart', tile.dragStartHandler);
+      tile.removeEventListener('dragend', tile.dragEndHandler);
+      
+      // Create named handler functions we can reference later
+      tile.dragStartHandler = (e) => {
+        // Store the original draggedTile reference
+        draggedTile = tile;
+        tile.classList.add('dragging');
+        tile.dataset.originalParent = tile.parentElement.id;
+        
+        // If dragging from a folder view, add a document-level drop zone
+        if (tile.parentElement.id === 'folderViewContent') {
+          document.body.classList.add('folder-item-dragging');
+          
+          // Find and show the drag hint
+          const folderView = document.getElementById('folderView');
+          const dragHint = folderView.querySelector('.drag-hint');
+          if (dragHint) {
+            dragHint.style.display = 'flex';
+          }
+        }
+      };
+      
+      tile.dragEndHandler = () => {
+        cleanupDragState();
+      };
+      
+      // Attach the new handlers
+      tile.addEventListener('dragstart', tile.dragStartHandler);
+      tile.addEventListener('dragend', tile.dragEndHandler);
+    }
+
+    // Add document-level drag and drop for folder items
+    document.addEventListener('dragover', (e) => {
+      // Only handle document drops if dragging from folder
+      if (document.body.classList.contains('folder-item-dragging')) {
+        const folderView = document.getElementById('folderView');
+        
+        // Check if we're outside the folder view
+        if (!folderView.contains(e.target) && e.target !== folderView) {
+          e.preventDefault();
+          document.body.classList.add('drag-over');
+        }
+      }
+    });
+    
+    document.addEventListener('dragleave', (e) => {
+      // Check if we're leaving the document (relatedTarget will be null)
+      // Or if we're going to an element that's in a shadow DOM or iframe
+      if (!e.relatedTarget || e.clientX <= 0 || e.clientY <= 0 || 
+          e.clientX >= window.innerWidth || e.clientY >= window.innerHeight) {
+        document.body.classList.remove('drag-over');
+      }
+    });
+    
+    document.addEventListener('drop', async (e) => {
+      if (document.body.classList.contains('folder-item-dragging') && draggedTile) {
+        // Check if we're outside the folder view
+        const folderView = document.getElementById('folderView');
+        
+        if (!folderView.contains(e.target) && e.target !== folderView) {
+          e.preventDefault();
+          document.body.classList.remove('drag-over');
+          
+          const searchId = draggedTile.dataset.searchId;
+          const currentFolderId = draggedTile.closest('.folder-view').dataset.folderId;
+          
+          // Update database first
+          await moveTileToFolder(searchId, null);
+          
+          // Create a clone for the unsorted items section
+          const clonedTile = draggedTile.cloneNode(true);
+          
+          // Update badge on cloned tile
+          const badge = clonedTile.querySelector('.location-badge');
+          if (badge) {
+            badge.className = 'location-badge unsorted-location';
+            badge.innerHTML = '<i class="fas fa-layer-group"></i> Unsorted Items';
+          }
+          
+          // Add the cloned tile to unsorted items
+          const searchHistoryTiles = document.getElementById('searchHistoryTiles');
+          searchHistoryTiles.appendChild(clonedTile);
+          
+          // Re-attach drag event listeners to the cloned tile
+          setupDragListeners(clonedTile);
+          
+          // Hide the no history message
+          const noHistoryMessage = document.getElementById('noHistoryMessage');
+          noHistoryMessage.style.display = 'none';
+          
+          // Get the back button and directly execute its onclick handler
+          const backButton = folderView.querySelector('.folder-view-back');
+          if (backButton && backButton.onclick) {
+            // Execute the onclick handler directly
+            backButton.onclick();
+          } else {
+            // Fallback to manually closing the folder view
+            folderView.classList.remove('active');
+            const dragHint = folderView.querySelector('.drag-hint');
+            if (dragHint) {
+              folderView.removeChild(dragHint);
+            }
+          }
+          
+          // Also refresh the folder topics display
+          const folderContainer = document.querySelector(`[data-folder-id="${currentFolderId}"]`);
+          if (folderContainer) {
+            const topicList = folderContainer.querySelector('.topic-list');
+            if (topicList) {
+              await loadFolderTopics(currentFolderId, topicList);
+            }
+          }
+          
+          // Clean up all drag-related states
+          cleanupDragState();
+        }
+      }
+    });
+    
+    // Helper function to refresh a folder view
+    async function refreshFolderView(folderId) {
+      if (!currentUser) return;
+      
+      const folderViewContent = document.getElementById('folderViewContent');
+      const dragHint = document.querySelector('.drag-hint');
+      const folderView = document.getElementById('folderView');
+      const folderName = document.getElementById('folderViewTitle').textContent;
+      
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef,
+        where("userId", "==", currentUser.uid),
+        where("folderId", "==", folderId)
+      );
+      
+      try {
+        const querySnapshot = await getDocs(q);
+        folderViewContent.innerHTML = '';
+        
+        if (querySnapshot.empty) {
+          folderViewContent.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-folder-open empty-icon"></i>
+              <p>No items in this folder</p>
+            </div>
+          `;
+        } else {
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            const tile = createSearchTile(doc.id, searchData);
+            
+            // Update the folder badge to show the specific folder name
+            const badge = tile.querySelector('.location-badge');
+            if (badge) {
+              badge.innerHTML = `<i class="fas fa-folder"></i> Folder: ${folderName.substring(0, 15)}${folderName.length > 15 ? '...' : ''}`;
+            }
+            
+            // Add special drag handler for items in folder
+            tile.addEventListener('dragstart', () => {
+              if (dragHint) dragHint.style.display = 'flex';
+            });
+            
+            tile.addEventListener('dragend', () => {
+              if (dragHint) dragHint.style.display = 'none';
+            });
+            
+            folderViewContent.appendChild(tile);
+          });
+        }
+      } catch (error) {
+        console.error("Error refreshing folder view:", error);
+      }
+    }
+
+    // Helper function to refresh a folder view with a given folder name
+    async function refreshFolderViewWithName(folderId, folderName) {
+      if (!currentUser) return;
+      
+      const folderViewContent = document.getElementById('folderViewContent');
+      const dragHint = document.querySelector('.drag-hint');
+      
+      const savedSearchesRef = collection(db, 'savedSearches');
+      const q = query(savedSearchesRef,
+        where("userId", "==", currentUser.uid),
+        where("folderId", "==", folderId)
+      );
+      
+      try {
+        const querySnapshot = await getDocs(q);
+        folderViewContent.innerHTML = '';
+        
+        if (querySnapshot.empty) {
+          folderViewContent.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-folder-open empty-icon"></i>
+              <p>No items in this folder</p>
+            </div>
+          `;
+        } else {
+          querySnapshot.forEach((doc) => {
+            const searchData = doc.data();
+            const tile = createSearchTile(doc.id, searchData);
+            
+            // Update the folder badge to show the specific folder name
+            const badge = tile.querySelector('.location-badge');
+            if (badge) {
+              badge.innerHTML = `<i class="fas fa-folder"></i> Folder: ${folderName.substring(0, 15)}${folderName.length > 15 ? '...' : ''}`;
+            }
+            
+            // Add special drag handler for items in folder
+            tile.addEventListener('dragstart', () => {
+              if (dragHint) dragHint.style.display = 'flex';
+            });
+            
+            tile.addEventListener('dragend', () => {
+              if (dragHint) dragHint.style.display = 'none';
+            });
+            
+            folderViewContent.appendChild(tile);
+          });
+        }
+      } catch (error) {
+        console.error("Error refreshing folder view:", error);
+      }
+    }
+  </script>
+</body>
+
+</html>

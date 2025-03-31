@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Communities | studybase</title>
+  <script src="theme-loader.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="communities.css" rel="stylesheet" />
+  <link href="generalUI.css" rel="stylesheet" />
+  <style>
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      flex-direction: column;
+    }
+    .loading i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--bs-primary);
+    }
+    .dev-mode-banner {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-mode-banner i {
+      font-size: 1.25rem;
+    }
+    
+    /* Chat styles */
+    .message-list {
+      height: calc(100vh - 280px);
+      overflow-y: auto;
+      padding: 20px;
+      background-color: var(--bs-tertiary-bg);
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chat-form {
+      padding: 15px;
+      background-color: var(--bs-secondary-bg);
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .message {
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 16px;
+      max-width: 80%;
+      word-wrap: break-word;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message-mine {
+      align-self: flex-end;
+      background-color: var(--bs-primary);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .message-other {
+      align-self: flex-start;
+      background-color: var(--bs-secondary-bg);
+      border: 1px solid var(--bs-border-color);
+      border-bottom-left-radius: 4px;
+    }
+    
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 0.8rem;
+    }
+    
+    .message-user {
+      font-weight: bold;
+    }
+    
+    .message-time {
+      opacity: 0.7;
+    }
+    
+    .typing-indicator {
+      align-self: flex-start;
+      color: var(--bs-secondary-color);
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .typing-indicator .dots {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    
+    .typing-indicator .dot {
+      width: 4px;
+      height: 4px;
+      background-color: var(--bs-secondary-color);
+      border-radius: 50%;
+      animation: bounce 1.5s infinite;
+    }
+    
+    .typing-indicator .dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    .typing-indicator .dot:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .typing-indicator .dot:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--bs-secondary-color);
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--bs-secondary-color);
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html" class="active">Communities</a>
+        <a href="courses.html">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="communities-header">
+      <h2>Studybase Community Chat</h2>
+      <p>Connect and collaborate with other students</p>
+    </div>
+    
+    
+    
+    <div class="chat-container" id="chat-container">
+      <div class="loading" id="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading chat interface...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  <script type="module" src="communities.js"></script>
+</body>
+</html>

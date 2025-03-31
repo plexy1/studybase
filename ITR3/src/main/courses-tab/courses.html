@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Courses | studybase</title>
+  <script src="theme-loader.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="courses.css" rel="stylesheet" />
+  <link href="generalUI.css" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a class="navbar-brand">studybase</a>
+      <div class="nav-links">
+        <a href="search-topic.html">Search</a>
+        <a href="quiz.html">Study</a>
+        <a href="communities.html">Communities</a>
+        <a href="courses.html" class="active">Courses</a>
+        <a href="history.html">Library</a>
+        <a href="account.html">Account</a>
+      </div>
+      <div class="nav-utils">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+          <i class="fas fa-moon dark-icon"></i>
+          <i class="fas fa-sun light-icon"></i>
+        </button>
+        <div class="profile-img">
+          <img src="user.jpg" alt="Profile" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+    <div class="courses-header">
+      <h2>Search Course</h2>
+    </div>
+    
+    <div class="courses-grid">
+      <div class="course-selection-card">
+        <h3 class="card-title">Courses (SU term)</h3>
+        <div class="search-input">
+          <i class="fas fa-search input-icon"></i>
+          <input type="text" id="courseSearch" class="form-control" placeholder="Search courses by name or code...">
+        </div>
+        <select id="courseDropdown" class="form-select">
+          <option value="" disabled selected>Select a Course</option>
+        </select>
+      </div>
+
+      <div class="professor-card">
+        <h3 class="card-title">Professors</h3>
+        <ul id="professorList" class="list-group">
+          <li class="list-group-item disabled">Select a course to see professors</li>
+        </ul>
+      </div>
+
+      <div class="review-card">
+        <h3 class="card-title">Professor Reviews</h3>
+        <div id="reviewList" class="review-content">
+          <div class="empty-state">
+            <i class="fas fa-user-tie empty-icon"></i>
+            <p>Select a professor to see reviews</p>
+            <small class="rate-my-prof">from RateMyProf</small>
+          </div>
+        </div>
+
+        <h3 class="card-title mt-4">Course Reviews</h3>
+        <div id="courseReviewBox" class="review-content">
+          <div class="empty-state">
+            <i class="fas fa-book empty-icon"></i>
+            <p>Select a course to see reviews</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-container">
+      <a href="rate-course-experience.html" class="action-btn">
+        <i class="fas fa-star"></i> Rate Course Experience
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const htmlElement = document.documentElement;
+      const darkIcon = document.querySelector('.dark-icon');
+      const lightIcon = document.querySelector('.light-icon');
+      
+      // Check for saved theme preference or use preferred color scheme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
+      } else {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (newTheme === 'dark') {
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        } else {
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        }
+      });
+    });
+  </script>
+  <script type="module" src="courses.js"></script>
+</body>
+</html>

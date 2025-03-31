@@ -1,0 +1,182 @@
+<!doctype html>
+
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script type="module" src="login.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Studybase login page">
+    <title>studybase</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <script src="theme-loader.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="login-container">
+        <div class="dark-mode-toggle">
+          <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+            <i class="fas fa-moon dark-icon"></i>
+            <i class="fas fa-sun light-icon"></i>
+          </button>
+        </div>
+        
+        <div class="login-card">
+          <div class="login-header">
+            <h1 class="logo">studybase</h1>
+            <p class="subtitle">Sign in to your account</p>
+          </div>
+          
+          <form id="loginForm">
+            <div id="signInMessage" class="alert alert-danger" style="display: none;"></div>
+            
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fa-regular fa-user input-icon"></i>
+                <input type="text" class="form-control" id="floatingInput" placeholder="Username or Email" maxlength="30">
+                <small class="char-counter"><span id="emailCounter">0</span>/30</small>
+              </div>
+            </div>
+            
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" maxlength="20">
+                <small class="char-counter"><span id="passwordCounter">0</span>/20</small>
+              </div>
+            </div>
+            
+            <div class="form-options">
+              <div class="remember-me">
+                <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="remember-me">
+                <label class="form-check-label" for="flexCheckDefault">Remember me</label>
+              </div>
+              <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            
+            <button id="submit" type="submit" class="btn btn-primary login-btn">
+              <i class="fas fa-sign-in-alt me-2"></i>Sign in
+            </button>
+            
+            <div class="register-option">
+              <span>Don't have an account?</span>
+              <a href="create-account.html" class="register-link">Register</a>
+            </div>
+          </form>
+        </div>
+        
+        <div class="service-status">
+          <a href="status.html" class="status-link">
+            <i class="fas fa-circle status-indicator"></i>
+            All services operational
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="footer">
+      <div class="container">
+        <p class="mb-0">&copy; 2025 studybase | Group 7</p>
+      </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Dark mode toggle functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          htmlElement.setAttribute('data-bs-theme', 'dark');
+        }
+        
+        // Update icon based on current theme
+        updateThemeIcon();
+        
+        darkModeToggle.addEventListener('click', () => {
+          const currentTheme = htmlElement.getAttribute('data-bs-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          
+          htmlElement.setAttribute('data-bs-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          
+          // Update icon when theme changes
+          updateThemeIcon();
+        });
+        
+        function updateThemeIcon() {
+          const currentTheme = htmlElement.getAttribute('data-bs-theme');
+          const darkIcon = document.querySelector('.dark-icon');
+          const lightIcon = document.querySelector('.light-icon');
+          
+          if (currentTheme === 'dark') {
+            darkIcon.style.display = 'none';
+            lightIcon.style.display = 'block';
+          } else {
+            darkIcon.style.display = 'block';
+            lightIcon.style.display = 'none';
+          }
+        }
+      });
+
+      // Character counter functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const inputs = [
+          { input: 'floatingInput', counter: 'emailCounter' },
+          { input: 'floatingPassword', counter: 'passwordCounter' }
+        ];
+
+        inputs.forEach(({ input, counter }) => {
+          const inputElement = document.getElementById(input);
+          const counterElement = document.getElementById(counter);
+          
+          inputElement.addEventListener('input', () => {
+            counterElement.textContent = inputElement.value.length;
+          });
+        });
+      });
+    </script>
+
+    <style>
+      .input-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .form-control {
+        height: 48px;
+        padding: 0 45px 0 40px;
+        border-radius: 8px;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        z-index: 3;
+      }
+
+      .char-counter {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        font-size: 0.75rem;
+        pointer-events: none;
+      }
+
+      .input-group {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Studybase service status page">
+    <title>studybase - Service Status</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="status.css">
+    <script type="module" src="status_test.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="dark-mode-toggle">
+                <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon dark-icon"></i>
+                    <i class="fas fa-sun light-icon"></i>
+                </button>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-header">
+                    <h1 class="logo">studybase</h1>
+                    <p class="subtitle">Service Status</p>
+                    <div class="system-status">
+                        <i class="fas fa-circle status-indicator"></i>
+                        <span>All systems operational</span>
+                    </div>
+                </div>
+                
+                <div class="services-section">
+                    <h2>Services</h2>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Google Firebase</h4>
+                                <p id="firebase-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Google API</h4>
+                                <p id="google-api-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>YouTube API</h4>
+                                <p id="youtube-api-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Gemini API</h4>
+                                <p id="gemini-api-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Quiz Generation & Answer Check API</h4>
+                                <p id="future-test-1" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Rate Course Experience</h4>
+                                <p id="rate-course-experience-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>History Saving Service</h4>
+                                <p id="history-saving-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>Communities Chat Service</h4>
+                                <p id="communities-chat-status" class="status ok">
+                                    <i class="fas fa-circle status-dot"></i>
+                                    Operational
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="incidents-section">
+                    <h2>Recent Incidents</h2>
+                    <div class="incident-card">
+                        <div class="incident-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="incident-content">
+                            <p>No incidents reported in the last 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="uptime-section">
+                    <h2>Uptime History</h2>
+                    <div class="uptime-chart">
+                        <div class="uptime-days">
+                            <div class="uptime-block active" title="30 days ago"></div>
+                            <div class="uptime-block active" title="29 days ago"></div>
+                            <div class="uptime-block active" title="28 days ago"></div>
+                            <div class="uptime-block active" title="27 days ago"></div>
+                            <div class="uptime-block active" title="26 days ago"></div>
+                            <div class="uptime-block active" title="25 days ago"></div>
+                            <div class="uptime-block active" title="24 days ago"></div>
+                            <div class="uptime-block active" title="23 days ago"></div>
+                            <div class="uptime-block active" title="22 days ago"></div>
+                            <div class="uptime-block active" title="21 days ago"></div>
+                            <div class="uptime-block active" title="20 days ago"></div>
+                            <div class="uptime-block active" title="19 days ago"></div>
+                            <div class="uptime-block active" title="18 days ago"></div>
+                            <div class="uptime-block active" title="17 days ago"></div>
+                            <div class="uptime-block active" title="16 days ago"></div>
+                            <div class="uptime-block active" title="15 days ago"></div>
+                            <div class="uptime-block active" title="14 days ago"></div>
+                            <div class="uptime-block active" title="13 days ago"></div>
+                            <div class="uptime-block active" title="12 days ago"></div>
+                            <div class="uptime-block active" title="11 days ago"></div>
+                            <div class="uptime-block active" title="10 days ago"></div>
+                            <div class="uptime-block active" title="9 days ago"></div>
+                            <div class="uptime-block active" title="8 days ago"></div>
+                            <div class="uptime-block active" title="7 days ago"></div>
+                            <div class="uptime-block active" title="6 days ago"></div>
+                            <div class="uptime-block active" title="5 days ago"></div>
+                            <div class="uptime-block active" title="4 days ago"></div>
+                            <div class="uptime-block active" title="3 days ago"></div>
+                            <div class="uptime-block active" title="2 days ago"></div>
+                            <div class="uptime-block active" title="Yesterday"></div>
+                        </div>
+                        <p>All services have been operational in the last 30 days</p>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h2>Report an Issue</h2>
+                    <button id="report-btn" class="btn-report">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Report a Problem
+                    </button>
+                </div>
+            </div>
+            
+            <div class="back-to-app">
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to Login
+                </a>
+                <p class="copyright mt-3">&copy; 2025 studybase | Group 7</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Report button functionality
+        document.getElementById("report-btn").addEventListener("click", function() {
+            window.open("https://docs.google.com/forms/d/e/1FAIpQLSdoF0TITlc4DMRxeldX-ILRJp2Komxd3w2-eYecY_MEUGer7w/viewform?usp=sharing");
+        });
+        
+        // Dark mode toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved theme preference or use preferred color scheme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+            }
+            
+            // Update icon based on current theme
+            updateThemeIcon();
+            
+            darkModeToggle.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                htmlElement.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Update icon when theme changes
+                updateThemeIcon();
+            });
+            
+            function updateThemeIcon() {
+                const currentTheme = htmlElement.getAttribute('data-bs-theme');
+                const darkIcon = document.querySelector('.dark-icon');
+                const lightIcon = document.querySelector('.light-icon');
+                
+                if (currentTheme === 'dark') {
+                    darkIcon.style.display = 'none';
+                    lightIcon.style.display = 'block';
+                } else {
+                    darkIcon.style.display = 'block';
+                    lightIcon.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
